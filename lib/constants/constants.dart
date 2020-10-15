@@ -30,4 +30,5 @@ const USERS_ME_URL = '/users/me';
 
 const USF_URL = '/ufcs';
 const TERMS_URL = '/terms';
+const DISEASES_URL = '/diseases';
 const USER_TERMS_URL = '/users/terms';

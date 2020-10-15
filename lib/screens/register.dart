@@ -1,18 +1,20 @@
 import 'dart:convert';
 import 'dart:io';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
-import 'package:intl/date_symbol_data_local.dart';
-import 'package:nutriclock_app/models/AcceptanceTerms.dart';
-import 'package:nutriclock_app/network_utils/api.dart';
-import 'package:nutriclock_app/constants/constants.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:intl/date_symbol_data_local.dart';
+import 'package:intl/intl.dart';
+import 'package:nutriclock_app/constants/constants.dart';
+import 'package:nutriclock_app/models/AcceptanceTerms.dart';
+import 'package:nutriclock_app/models/Disease.dart';
 import 'package:nutriclock_app/models/Drug.dart';
 import 'package:nutriclock_app/models/User.dart';
+import 'package:nutriclock_app/models/Usf.dart';
+import 'package:nutriclock_app/network_utils/api.dart';
 import 'package:nutriclock_app/screens/home.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:nutriclock_app/models/Usf.dart';
 
 class Register extends StatefulWidget {
   @override
@@ -33,6 +35,7 @@ class _RegisterState extends State<Register> {
   var _image;
   var diseaseToAdd;
   var selectedDisease;
+  var selectedAlergy;
   var drugNameToAdd;
   var drugPosologyToAdd;
   var drugTimeToAdd;
@@ -45,7 +48,8 @@ class _RegisterState extends State<Register> {
   var _sunday = false;
   List<String> diseases = [];
   List<Drug> drugs = [];
-  List<String> diseasesOptions = ["a", "b"];
+  List<String> diseasesOptions = [];
+  List<String> allergiesOptions = [];
   List<Usf> usfs = [];
   final ptDatesFuture = initializeDateFormatting('pt', null);
   DateTime selectedDate = DateTime.now();
@@ -193,7 +197,6 @@ class _RegisterState extends State<Register> {
                                           ),
                                           icon: Icon(Icons.arrow_drop_down),
                                           onChanged: (newValue) {
-                                            print(newValue);
                                             setState(() {
                                               usfId = newValue;
                                             });
@@ -540,7 +543,7 @@ class _RegisterState extends State<Register> {
                                                   padding: EdgeInsets.only(
                                                       left: 16.0),
                                                   child: Text(
-                                                    'Medicação Fequente',
+                                                    'Medicamentos Habituais',
                                                     textAlign: TextAlign.left,
                                                     style: TextStyle(
                                                         color: Colors.grey),
@@ -666,7 +669,7 @@ class _RegisterState extends State<Register> {
                           focusedBorder: UnderlineInputBorder(
                             borderSide: BorderSide(color: Color(0xFFA3DC92)),
                           ),
-                          suffix: Text('mg'),
+                          suffix: Text('mg/ml'),
                           hintText: "Posologia",
                           hintStyle: TextStyle(
                               color: Color(0xFF9b9b9b),
@@ -685,9 +688,11 @@ class _RegisterState extends State<Register> {
                         },
                         isExpanded: true,
                         items: [
-                          "Das 6h ao 12h",
-                          "Das 12h às 18h",
-                          "Das 18h às 6h"
+                          "De 4 em 4h",
+                          "De 6 em 6h",
+                          "De 8 em 8h",
+                          "De 12 em 12h",
+                          "De 24 em 24h",
                         ].map<DropdownMenuItem<String>>((String value) {
                           return DropdownMenuItem<String>(
                             value: value,
@@ -908,6 +913,24 @@ class _RegisterState extends State<Register> {
                       );
                     }).toList(),
                   ),
+                  DropdownButton(
+                    value: selectedAlergy,
+                    hint: Text("Seleciona a alergia"),
+                    icon: Icon(Icons.arrow_drop_down),
+                    onChanged: (newValue) {
+                      setState(() {
+                        selectedAlergy = newValue;
+                      });
+                    },
+                    isExpanded: true,
+                    items: allergiesOptions
+                        .map<DropdownMenuItem<String>>((String value) {
+                      return DropdownMenuItem<String>(
+                        value: value,
+                        child: Text(value),
+                      );
+                    }).toList(),
+                  ),
                   TextFormField(
                     onChanged: (value) => {
                       this.setState(() {
@@ -935,10 +958,6 @@ class _RegisterState extends State<Register> {
               FlatButton(
                 child: Text('Adicionar'),
                 onPressed: () {
-                  if ((diseaseToAdd == null || diseaseToAdd.trim() == '') &&
-                      selectedDisease == null) {
-                    return;
-                  }
                   _addDisease();
                   Navigator.of(context).pop();
                 },
@@ -952,15 +971,23 @@ class _RegisterState extends State<Register> {
 
   _addDisease() {
     var auxDiseases = diseases;
-    if (diseaseToAdd != null && diseaseToAdd.trim() != '')
-      auxDiseases.add(diseaseToAdd);
-    else
-      auxDiseases.add(selectedDisease);
+    if (diseaseToAdd != null && diseaseToAdd.trim() != '') {
+      if (!auxDiseases.contains(diseaseToAdd)) auxDiseases.add(diseaseToAdd);
+    }
+
+    if (selectedDisease != null) {
+      if (!auxDiseases.contains(selectedDisease)) auxDiseases.add(selectedDisease);
+    }
+
+    if (selectedAlergy != null) {
+      if (!auxDiseases.contains(selectedAlergy)) auxDiseases.add(selectedAlergy);
+    }
 
     this.setState(() {
       diseases = auxDiseases;
       diseaseToAdd = null;
       selectedDisease = null;
+      selectedAlergy = null;
     });
   }
 
@@ -1142,6 +1169,9 @@ class _RegisterState extends State<Register> {
 
   void _loadDataFromServer() async {
     List<Usf> list = [];
+    List<String> diseasesList = [];
+    List<String> alergiesList = [];
+
     if (_isLoading) return;
 
     this.setState(() {
@@ -1154,6 +1184,7 @@ class _RegisterState extends State<Register> {
     try {
       var response = await Network().getWithoutAuth(USF_URL);
       var responseTerms = await Network().getWithoutAuth(TERMS_URL);
+      var responseDiseases = await Network().getWithoutAuth(DISEASES_URL);
 
       var body = json.decode(response.body);
 
@@ -1183,8 +1214,29 @@ class _RegisterState extends State<Register> {
       } else {
         isShowMessage = true;
       }
+
+      if (responseDiseases.statusCode == RESPONSE_SUCCESS) {
+        List<dynamic> data = json.decode(responseDiseases.body)[JSON_DATA_KEY];
+
+        data.forEach((element) {
+          Disease d = Disease.fromJson(element);
+          if (d.type == 'A') {
+            alergiesList.add(d.name);
+          } else {
+            diseasesList.add(d.name);
+          }
+        });
+
+        this.setState(() {
+          diseasesOptions = diseasesList;
+          allergiesOptions = alergiesList;
+        });
+
+      } else {
+        isShowMessage = true;
+      }
+
     } catch (error) {
-      print('catch $error');
       isShowMessage = true;
     }
 
@@ -1260,7 +1312,6 @@ class _RegisterState extends State<Register> {
         if (body[JSON_ERROR_KEY] != null) message = (body[JSON_ERROR_KEY]);
       }
     } catch (error) {
-      print(error);
       isShowMessage = true;
     }
 
@@ -1320,8 +1371,6 @@ class _RegisterState extends State<Register> {
     setState(() {
       if (pickedFile != null) {
         _image = File(pickedFile.path);
-      } else {
-        print('No image selected.');
       }
     });
   }
