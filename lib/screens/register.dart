@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'dart:io';
+import 'dart:core';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -39,6 +40,7 @@ class _RegisterState extends State<Register> {
   var drugNameToAdd;
   var drugPosologyToAdd;
   var drugTimeToAdd;
+  var _all = false;
   var _monday = false;
   var _tuesday = false;
   var _wednesday = false;
@@ -279,6 +281,32 @@ class _RegisterState extends State<Register> {
                                                   },
                                                 ),
                                               ],
+                                            ),
+                                            Row(
+                                              children: [
+                                                Padding(
+                                                  padding: EdgeInsets.only(
+                                                      left: 16.0,bottom: 16.0),
+                                                  child: Text(
+                                                    'Não me identifico',
+                                                    style: new TextStyle(
+                                                        fontSize: 16.0),
+                                                  ),
+                                                ),
+                                                Padding(
+                                                  padding: EdgeInsets.only(bottom: 16.0),
+                                                  child:
+                                                  Radio(
+                                                    value: 'NONE',
+                                                    groupValue: gender,
+                                                    onChanged: (value) => {
+                                                      this.setState(() {
+                                                        gender = value;
+                                                      }),
+                                                    },
+                                                  ),
+                                                ),
+                                              ],
                                             )
                                           ],
                                         ),
@@ -349,6 +377,13 @@ class _RegisterState extends State<Register> {
                                                 fontWeight: FontWeight.normal),
                                           ),
                                           validator: (weightValue) {
+                                            if (weightValue.isNotEmpty && double.tryParse(weightValue) == null) {
+                                              return ERROR_INVALID_FORMAT_FIELD;
+                                            }
+
+                                            if (weightValue.isNotEmpty && double.tryParse(weightValue) <= 0) {
+                                              return ERROR_NEGATIVE_VALUE;
+                                            }
                                             weight = weightValue;
                                             return null;
                                           },
@@ -379,6 +414,14 @@ class _RegisterState extends State<Register> {
                                                 fontWeight: FontWeight.normal),
                                           ),
                                           validator: (heightValue) {
+                                            if (heightValue.isNotEmpty && double.tryParse(heightValue) == null) {
+                                              return ERROR_INVALID_FORMAT_FIELD;
+                                            }
+
+                                            if (heightValue.isNotEmpty && double.tryParse(heightValue) <= 0) {
+                                              return ERROR_NEGATIVE_VALUE;
+                                            }
+
                                             height = heightValue;
                                             return null;
                                           },
@@ -713,6 +756,21 @@ class _RegisterState extends State<Register> {
                               color: Colors.grey,
                             ),
                           ),
+                          Row(
+                            children: [
+                              Checkbox(
+                                value: _all,
+                                onChanged: (bool newValue) {
+                                  setState(() {
+                                    _all = newValue;
+                                  });
+                                },
+                              ),
+                              Text(
+                                'Todos os dias',
+                              ),
+                            ],
+                          ),
                           Container(
                             width: double.maxFinite,
                             height: 40.0,
@@ -779,6 +837,15 @@ class _RegisterState extends State<Register> {
                                     ),
                                   ],
                                 ),
+                              ],
+                            ),
+                          ),
+                          Container(
+                            width: double.maxFinite,
+                            height: 40.0,
+                            child: ListView(
+                              scrollDirection: Axis.horizontal,
+                              children: [
                                 Row(
                                   children: [
                                     Checkbox(
@@ -845,13 +912,16 @@ class _RegisterState extends State<Register> {
                       }
                       var days = "";
 
-                      if (_sunday) days += "1,";
-                      if (_monday) days += "2,";
-                      if (_tuesday) days += "3,";
-                      if (_wednesday) days += "4,";
-                      if (_thursday) days += "5,";
-                      if (_friday) days += "6,";
-                      if (_saturday) days += "7,";
+                      if (_all) days = "1,2,3,4,5,6,7,";
+                      else {
+                        if (_sunday) days += "1,";
+                        if (_monday) days += "2,";
+                        if (_tuesday) days += "3,";
+                        if (_wednesday) days += "4,";
+                        if (_thursday) days += "5,";
+                        if (_friday) days += "6,";
+                        if (_saturday) days += "7,";
+                      }
 
                       var drugToAdd = Drug(drugNameToAdd, drugPosologyToAdd,
                           drugTimeToAdd, days);
@@ -862,6 +932,7 @@ class _RegisterState extends State<Register> {
 
                       this.setState(() {
                         drugs = auxDrugsList;
+                        _all = false;
                         _saturday = false;
                         _sunday = false;
                         _monday = false;

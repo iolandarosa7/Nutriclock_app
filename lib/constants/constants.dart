@@ -16,7 +16,8 @@ const int RESPONSE_SUCCESS_201 = 201;
 const String ERROR_MANDATORY_FIELD = 'O campo não pode estar vazio';
 const String ERROR_INVALID_FORMAT_FIELD = 'Formato inválido';
 const String ERROR_ADD_DRUG_FIELDS = 'Indique o nome e posologia';
-const ERROR_CONFIRMATION_PASS_MUST_BE_EQUAL = 'Deve ser igual à password';
+const String ERROR_CONFIRMATION_PASS_MUST_BE_EQUAL = 'Deve ser igual à password';
+const String ERROR_NEGATIVE_VALUE = 'O valor deve ser positivo';
 
 const String ERROR_GENERAL_API = 'Woops! Algo correu mal';
 const String ERROR_USER_NOT_FOUND_API = 'O utilizador não existe!';
