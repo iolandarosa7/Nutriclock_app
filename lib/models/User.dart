@@ -1,6 +1,3 @@
-import 'dart:convert';
-import 'dart:io';
-
 class User {
   int id;
   String name;
@@ -19,20 +16,20 @@ class User {
   User();
 
   Map<String, dynamic> toJson() => {
-    'id': id,
-    'name': name,
-    'gender': gender,
-    'weight': weight,
-    'height': height,
-    'email': email,
-    'role': role,
-    'active': active,
-    'avatarUrl': avatarUrl,
-    'birthday': birthday,
-    'diseases': diseases,
-    'ufc_id': ufc_id,
-    'terms_accepted': terms_accepted,
-  };
+        'id': id,
+        'name': name,
+        'gender': gender,
+        'weight': weight,
+        'height': height,
+        'email': email,
+        'role': role,
+        'active': active,
+        'avatarUrl': avatarUrl,
+        'birthday': birthday,
+        'diseases': diseases,
+        'ufc_id': ufc_id,
+        'terms_accepted': terms_accepted,
+      };
 
   User.fromJson(Map<String, dynamic> json)
       : name = json['name'],

@@ -51,6 +51,13 @@ flutter:
     - assets/images/background.jpg
     - assets/images/logo.png
     - assets/images/splash.png
+  fonts:
+    - family: Pacifico
+      fonts:
+        - asset: fonts/Pacifico-Regular.ttf
+    - family: Roboto
+      fonts:
+        - asset: fonts/Roboto-Medium.ttf
 
   # To add assets to your application, add an assets section, like this:
   # assets:

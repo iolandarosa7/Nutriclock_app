@@ -1,6 +1,6 @@
 import 'dart:convert';
-import 'dart:io';
 import 'dart:core';
+import 'dart:io';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -286,7 +286,7 @@ class _RegisterState extends State<Register> {
                                               children: [
                                                 Padding(
                                                   padding: EdgeInsets.only(
-                                                      left: 16.0,bottom: 16.0),
+                                                      left: 16.0, bottom: 16.0),
                                                   child: Text(
                                                     'Não me identifico',
                                                     style: new TextStyle(
@@ -294,9 +294,9 @@ class _RegisterState extends State<Register> {
                                                   ),
                                                 ),
                                                 Padding(
-                                                  padding: EdgeInsets.only(bottom: 16.0),
-                                                  child:
-                                                  Radio(
+                                                  padding: EdgeInsets.only(
+                                                      bottom: 16.0),
+                                                  child: Radio(
                                                     value: 'NONE',
                                                     groupValue: gender,
                                                     onChanged: (value) => {
@@ -377,11 +377,15 @@ class _RegisterState extends State<Register> {
                                                 fontWeight: FontWeight.normal),
                                           ),
                                           validator: (weightValue) {
-                                            if (weightValue.isNotEmpty && double.tryParse(weightValue) == null) {
+                                            if (weightValue.isNotEmpty &&
+                                                double.tryParse(weightValue) ==
+                                                    null) {
                                               return ERROR_INVALID_FORMAT_FIELD;
                                             }
 
-                                            if (weightValue.isNotEmpty && double.tryParse(weightValue) <= 0) {
+                                            if (weightValue.isNotEmpty &&
+                                                double.tryParse(weightValue) <=
+                                                    0) {
                                               return ERROR_NEGATIVE_VALUE;
                                             }
                                             weight = weightValue;
@@ -414,11 +418,15 @@ class _RegisterState extends State<Register> {
                                                 fontWeight: FontWeight.normal),
                                           ),
                                           validator: (heightValue) {
-                                            if (heightValue.isNotEmpty && double.tryParse(heightValue) == null) {
+                                            if (heightValue.isNotEmpty &&
+                                                double.tryParse(heightValue) ==
+                                                    null) {
                                               return ERROR_INVALID_FORMAT_FIELD;
                                             }
 
-                                            if (heightValue.isNotEmpty && double.tryParse(heightValue) <= 0) {
+                                            if (heightValue.isNotEmpty &&
+                                                double.tryParse(heightValue) <=
+                                                    0) {
                                               return ERROR_NEGATIVE_VALUE;
                                             }
 
@@ -518,7 +526,7 @@ class _RegisterState extends State<Register> {
                                               return ERROR_MANDATORY_FIELD;
                                             }
 
-                                            if (!passwordValue.isEmpty &&
+                                            if (passwordValue.isNotEmpty &&
                                                 passwordValue != password) {
                                               return ERROR_CONFIRMATION_PASS_MUST_BE_EQUAL;
                                             }
@@ -912,7 +920,8 @@ class _RegisterState extends State<Register> {
                       }
                       var days = "";
 
-                      if (_all) days = "1,2,3,4,5,6,7,";
+                      if (_all)
+                        days = "1,2,3,4,5,6,7,";
                       else {
                         if (_sunday) days += "1,";
                         if (_monday) days += "2,";
@@ -1047,11 +1056,13 @@ class _RegisterState extends State<Register> {
     }
 
     if (selectedDisease != null) {
-      if (!auxDiseases.contains(selectedDisease)) auxDiseases.add(selectedDisease);
+      if (!auxDiseases.contains(selectedDisease))
+        auxDiseases.add(selectedDisease);
     }
 
     if (selectedAlergy != null) {
-      if (!auxDiseases.contains(selectedAlergy)) auxDiseases.add(selectedAlergy);
+      if (!auxDiseases.contains(selectedAlergy))
+        auxDiseases.add(selectedAlergy);
     }
 
     this.setState(() {
@@ -1302,11 +1313,9 @@ class _RegisterState extends State<Register> {
           diseasesOptions = diseasesList;
           allergiesOptions = alergiesList;
         });
-
       } else {
         isShowMessage = true;
       }
-
     } catch (error) {
       isShowMessage = true;
     }

@@ -1,5 +1,3 @@
-import 'dart:io';
-
 class Drug {
   int userId;
   String name;
@@ -8,7 +6,7 @@ class Drug {
   int id;
   String posology;
 
-  Drug (String name, String posology, String timesADay, String timesAWeek){
+  Drug(String name, String posology, String timesADay, String timesAWeek) {
     this.name = name;
     this.timesADay = timesADay;
     this.timesAWeek = timesAWeek;
@@ -16,13 +14,13 @@ class Drug {
   }
 
   Map<String, dynamic> toJson() => {
-    'userId': userId,
-    'name': name,
-    'timesAWeek': timesAWeek,
-    'timesADay': timesADay,
-    'id': id,
-    'posology': posology,
-  };
+        'userId': userId,
+        'name': name,
+        'timesAWeek': timesAWeek,
+        'timesADay': timesADay,
+        'id': id,
+        'posology': posology,
+      };
 
   Drug.fromJson(Map<String, dynamic> json)
       : name = json['name'],

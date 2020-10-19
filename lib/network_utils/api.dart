@@ -10,7 +10,6 @@ import 'package:path/path.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class Network {
-  final String _baseUrl = 'https://57dd7393d36f.ngrok.io/api';
   var token;
 
   _getToken() async {
@@ -20,7 +19,7 @@ class Network {
 
   Future<http.Response> postWithoutAuth(
       Map<String, String> data, String apiUrl) {
-    var url = _baseUrl + apiUrl;
+    var url = Constants.BASE_API_URL + apiUrl;
     return http.post(url,
         headers: <String, String>{
           'Content-Type': 'application/json; charset=UTF-8',
@@ -31,7 +30,7 @@ class Network {
 
   Future<http.Response> registerUser(User user, File avatar, String password,
       List<Drug> drugs, String apiUrl) async {
-    var url = _baseUrl + apiUrl;
+    var url = Constants.BASE_API_URL + apiUrl;
 
     var request = http.MultipartRequest("POST", Uri.parse(url));
     request.fields['name'] = user.name;
@@ -64,7 +63,7 @@ class Network {
   }
 
   Future<http.Response> getWithAuth(String apiUrl) async {
-    var url = _baseUrl + apiUrl;
+    var url = Constants.BASE_API_URL + apiUrl;
     await _getToken();
     token = token.replaceAll("\"", "");
     return await http.get(
@@ -79,7 +78,7 @@ class Network {
 
   Future<http.Response> putWithAuth(
       Map<String, dynamic> data, String apiUrl) async {
-    var url = _baseUrl + apiUrl;
+    var url = Constants.BASE_API_URL + apiUrl;
     await _getToken();
     token = token.replaceAll("\"", "");
     return http.put(url,
@@ -92,7 +91,7 @@ class Network {
   }
 
   Future<http.Response> getWithoutAuth(String apiUrl) async {
-    var url = _baseUrl + apiUrl;
+    var url = Constants.BASE_API_URL + apiUrl;
     return await http.get(
       url,
       headers: <String, String>{

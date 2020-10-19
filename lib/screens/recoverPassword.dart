@@ -1,4 +1,3 @@
-import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:nutriclock_app/constants/constants.dart';
 import 'package:nutriclock_app/network_utils/api.dart';
@@ -41,8 +40,7 @@ class _RecoverPasswordState extends State<RecoverPassword> {
                       color: Colors.white,
                       margin: EdgeInsets.only(left: 20, right: 20),
                       shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(5.0)
-                      ),
+                          borderRadius: BorderRadius.circular(5.0)),
                       child: Column(
                         children: <Widget>[
                           Padding(
@@ -68,7 +66,8 @@ class _RecoverPasswordState extends State<RecoverPassword> {
                                     keyboardType: TextInputType.emailAddress,
                                     decoration: InputDecoration(
                                       focusedBorder: UnderlineInputBorder(
-                                        borderSide: BorderSide(color: Color(0xFFA3DC92)),
+                                        borderSide: BorderSide(
+                                            color: Color(0xFFA3DC92)),
                                       ),
                                       prefixIcon: Icon(
                                         Icons.email,
@@ -84,7 +83,9 @@ class _RecoverPasswordState extends State<RecoverPassword> {
                                       if (emailValue.isEmpty) {
                                         return ERROR_MANDATORY_FIELD;
                                       }
-                                      if (!RegExp(r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+").hasMatch(emailValue)) {
+                                      if (!RegExp(
+                                              r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
+                                          .hasMatch(emailValue)) {
                                         return ERROR_INVALID_FORMAT_FIELD;
                                       }
                                       email = emailValue;
@@ -93,15 +94,19 @@ class _RecoverPasswordState extends State<RecoverPassword> {
                                   ),
                                   Padding(
                                     padding: const EdgeInsets.only(top: 16.0),
-                                    child:
-                                    SizedBox(
+                                    child: SizedBox(
                                       width: double.infinity,
                                       child: FlatButton(
                                         child: Padding(
                                           padding: EdgeInsets.only(
-                                              top: 8, bottom: 8, left: 10, right: 10),
+                                              top: 8,
+                                              bottom: 8,
+                                              left: 10,
+                                              right: 10),
                                           child: Text(
-                                            _isLoading ? 'Aguarde...' : 'Submeter Email',
+                                            _isLoading
+                                                ? 'Aguarde...'
+                                                : 'Submeter Email',
                                             textDirection: TextDirection.ltr,
                                             style: TextStyle(
                                               color: Colors.white,
@@ -114,10 +119,12 @@ class _RecoverPasswordState extends State<RecoverPassword> {
                                         color: Color(0xFFA3DC92),
                                         disabledColor: Colors.grey,
                                         shape: new RoundedRectangleBorder(
-                                            borderRadius: new BorderRadius.circular(20.0)
-                                        ),
+                                            borderRadius:
+                                                new BorderRadius.circular(
+                                                    20.0)),
                                         onPressed: () {
-                                          if (_formKey.currentState.validate()) {
+                                          if (_formKey.currentState
+                                              .validate()) {
                                             _forgotPassword();
                                           }
                                         },
@@ -140,16 +147,17 @@ class _RecoverPasswordState extends State<RecoverPassword> {
       ),
     );
   }
-  
+
   void _forgotPassword() async {
     if (_isLoading) return;
-    
+
     setState(() {
       _isLoading = true;
     });
-    
+
     try {
-      var response = await Network().postWithoutAuth({'email': email}, PASSWORD_URL);
+      var response =
+          await Network().postWithoutAuth({'email': email}, PASSWORD_URL);
 
       if (response.statusCode == RESPONSE_SUCCESS_201) {
         message = 'Foi enviado um email para recuperação de password';
