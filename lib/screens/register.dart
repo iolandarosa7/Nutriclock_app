@@ -15,6 +15,7 @@ import 'package:nutriclock_app/models/User.dart';
 import 'package:nutriclock_app/models/Usf.dart';
 import 'package:nutriclock_app/network_utils/api.dart';
 import 'package:nutriclock_app/screens/home.dart';
+import 'package:nutriclock_app/utils/DropMenu.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class Register extends StatefulWidget {
@@ -53,6 +54,11 @@ class _RegisterState extends State<Register> {
   List<String> diseasesOptions = [];
   List<String> allergiesOptions = [];
   List<Usf> usfs = [];
+  List<DropMenu> gendersList = [
+    DropMenu('MALE', 'Masculino'),
+    DropMenu('FEMALE', 'Feminino'),
+    DropMenu('NONE', 'Não me identifico')
+  ];
   final ptDatesFuture = initializeDateFormatting('pt', null);
   DateTime selectedDate = DateTime.now();
   final dateFormat = new DateFormat('dd/MM/yyyy');
@@ -183,131 +189,86 @@ class _RegisterState extends State<Register> {
                                         SizedBox(
                                           height: 8.0,
                                         ),
-                                        DropdownButton(
-                                          value: usfId,
-                                          hint: Padding(
-                                            padding:
-                                                const EdgeInsets.only(left: 50),
-                                            child: Text(
-                                              "Unidade Saúde Familiar",
-                                              style: TextStyle(
-                                                  color: Color(0xFF9b9b9b),
-                                                  fontSize: 15,
-                                                  fontWeight:
-                                                      FontWeight.normal),
-                                            ),
-                                          ),
-                                          icon: Icon(Icons.arrow_drop_down),
-                                          onChanged: (newValue) {
-                                            setState(() {
-                                              usfId = newValue;
-                                            });
-                                          },
-                                          isExpanded: true,
-                                          items: usfs
-                                              .map<DropdownMenuItem<int>>(
-                                                  (Usf value) {
-                                            return DropdownMenuItem<int>(
-                                              value: value.id,
-                                              child: Padding(
-                                                padding: const EdgeInsets.only(
-                                                    left: 50),
-                                                child: Text(value.name),
-                                              ),
-                                            );
-                                          }).toList(),
-                                        ),
-                                        Column(
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.start,
+                                        Stack(
                                           children: <Widget>[
-                                            Padding(
-                                              padding: const EdgeInsets.only(
-                                                  top: 10.0, left: 10.0),
-                                              child: Row(
-                                                mainAxisAlignment:
-                                                    MainAxisAlignment.start,
-                                                children: [
-                                                  Icon(
-                                                    Icons.wc,
-                                                    color: Colors.grey,
-                                                  ),
-                                                  Padding(
-                                                    padding: EdgeInsets.only(
-                                                        left: 16.0),
-                                                    child: Text(
-                                                      'Género',
-                                                      textAlign: TextAlign.left,
-                                                      style: TextStyle(
-                                                          color: Colors.grey),
-                                                    ),
-                                                  )
-                                                ],
+                                            DropdownButton(
+                                              value: usfId,
+                                              hint: Padding(
+                                                padding:
+                                                const EdgeInsets.only(left: 50),
+                                                child: Text(
+                                                  "Unidade Saúde Familiar",
+                                                  style: TextStyle(
+                                                      color: Color(0xFF9b9b9b),
+                                                      fontSize: 15,
+                                                      fontWeight:
+                                                      FontWeight.normal),
+                                                ),
                                               ),
+                                              icon: Icon(Icons.arrow_drop_down),
+                                              onChanged: (newValue) {
+                                                setState(() {
+                                                  usfId = newValue;
+                                                });
+                                              },
+                                              isExpanded: true,
+                                              items: usfs
+                                                  .map<DropdownMenuItem<int>>(
+                                                      (Usf value) {
+                                                    return DropdownMenuItem<int>(
+                                                      value: value.id,
+                                                      child: Padding(
+                                                        padding: const EdgeInsets.only(
+                                                            left: 50),
+                                                        child: Text(value.name),
+                                                      ),
+                                                    );
+                                                  }).toList(),
                                             ),
-                                            Row(
-                                              children: [
-                                                Padding(
-                                                  padding: EdgeInsets.only(
-                                                      left: 16.0),
-                                                  child: Text(
-                                                    'Feminino',
-                                                    style: new TextStyle(
-                                                        fontSize: 16.0),
-                                                  ),
+                                            Container(
+                                                padding: const EdgeInsets.only(left: 10, top: 10),
+                                                child: Icon(Icons.home_work_sharp, color: Colors.grey,)),
+                                          ],
+                                        ),
+                                        Stack(
+                                          children: <Widget>[
+                                            DropdownButton(
+                                              value: gender,
+                                              hint: Padding(
+                                                padding:
+                                                const EdgeInsets.only(left: 50),
+                                                child: Text(
+                                                  "Género",
+                                                  style: TextStyle(
+                                                      color: Color(0xFF9b9b9b),
+                                                      fontSize: 15,
+                                                      fontWeight:
+                                                      FontWeight.normal),
                                                 ),
-                                                Radio(
-                                                  value: 'FEMALE',
-                                                  groupValue: gender,
-                                                  onChanged: (value) => {
-                                                    this.setState(() {
-                                                      gender = value;
-                                                    }),
-                                                  },
-                                                ),
-                                                Text(
-                                                  'Masculino',
-                                                  style: new TextStyle(
-                                                    fontSize: 16.0,
-                                                  ),
-                                                ),
-                                                Radio(
-                                                  value: 'MALE',
-                                                  groupValue: gender,
-                                                  onChanged: (value) => {
-                                                    this.setState(() {
-                                                      gender = value;
-                                                    }),
-                                                  },
-                                                ),
-                                              ],
+                                              ),
+                                              icon: Icon(Icons.arrow_drop_down),
+                                              onChanged: (newValue) {
+                                                setState(() {
+                                                  gender = newValue;
+                                                });
+                                              },
+                                              isExpanded: true,
+                                              items: gendersList
+                                                  .map<DropdownMenuItem<String>>(
+                                                      (DropMenu item) {
+                                                    return DropdownMenuItem<String>(
+                                                      value: item.value,
+                                                      child: Padding(
+                                                        padding: const EdgeInsets.only(
+                                                            left: 50),
+                                                        child: Text(item.description),
+                                                      ),
+                                                    );
+                                                  }).toList(),
                                             ),
-                                            Row(
-                                              children: [
-                                                Padding(
-                                                  padding: EdgeInsets.only(
-                                                      left: 16.0, bottom: 16.0),
-                                                  child: Text(
-                                                    'Não me identifico',
-                                                    style: new TextStyle(
-                                                        fontSize: 16.0),
-                                                  ),
-                                                ),
-                                                Padding(
-                                                  padding: EdgeInsets.only(
-                                                      bottom: 16.0),
-                                                  child: Radio(
-                                                    value: 'NONE',
-                                                    groupValue: gender,
-                                                    onChanged: (value) => {
-                                                      this.setState(() {
-                                                        gender = value;
-                                                      }),
-                                                    },
-                                                  ),
-                                                ),
-                                              ],
-                                            )
+                                            Container(
+                                                padding: const EdgeInsets.only(left: 10, top: 10),
+                                                child: Icon(Icons.wc, color: Colors.grey,)),
                                           ],
                                         ),
                                         Column(
@@ -339,16 +300,22 @@ class _RegisterState extends State<Register> {
                                               ),
                                             ),
                                             FlatButton(
-                                                color: Colors.transparent,
-                                                splashColor: Colors.black26,
-                                                onPressed: () =>
-                                                    _selectDate(context),
-                                                child: Text(
-                                                  dateFormat
-                                                      .format(selectedDate),
-                                                  style: TextStyle(
-                                                      color: Color(0xFF000000)),
-                                                ))
+                                              color: Colors.transparent,
+                                              splashColor: Colors.black26,
+                                              onPressed: () =>
+                                                  _selectDate(context),
+                                              child: Padding(
+                                                  padding: EdgeInsets.only(
+                                                      left: 35.0),
+                                                  child: Text(
+                                                    dateFormat
+                                                        .format(selectedDate),
+                                                    style: TextStyle(
+                                                      color: Color(0xFF000000),
+                                                      fontSize: 15,
+                                                    ),
+                                                  )),
+                                            ),
                                           ],
                                         ),
                                         TextFormField(
