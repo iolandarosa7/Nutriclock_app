@@ -347,9 +347,7 @@ class _LoginState extends State<Login> {
     });
 
     try {
-      var response = await Network().putWithAuth({'terms_accepted': '1'}, "$USER_TERMS_URL/$id");
-
-      print(response.statusCode);
+      await Network().putWithAuth({'terms_accepted': '1'}, "$USER_TERMS_URL/$id", null);
 
         Navigator.pushReplacement(
           context,

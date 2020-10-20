@@ -77,8 +77,10 @@ class Network {
   }
 
   Future<http.Response> putWithAuth(
-      Map<String, dynamic> data, String apiUrl) async {
+      Map<String, dynamic> data, String apiUrl, dynamic param) async {
     var url = Constants.BASE_API_URL + apiUrl;
+
+    if (param != null) url += "/$param";
     await _getToken();
     token = token.replaceAll("\"", "");
     return http.put(url,

@@ -210,7 +210,9 @@ class _HomeState extends State<Home> {
     localStorage.remove(LOCAL_STORAGE_USER_KEY);
     localStorage.remove(LOCAL_STORAGE_TOKEN_KEY);
 
-    Navigator.push(
-        context, new MaterialPageRoute(builder: (context) => Login()));
+    Navigator.pushReplacement(
+      context,
+      new MaterialPageRoute(builder: (context) => Login()),
+    );
   }
 }

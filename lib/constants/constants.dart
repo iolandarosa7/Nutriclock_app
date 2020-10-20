@@ -17,13 +17,14 @@ const String ERROR_MANDATORY_FIELD = 'O campo não pode estar vazio';
 const String ERROR_INVALID_FORMAT_FIELD = 'Formato inválido';
 const String ERROR_ADD_DRUG_FIELDS = 'Indique o nome e posologia';
 const String ERROR_CONFIRMATION_PASS_MUST_BE_EQUAL = 'Deve ser igual à password';
+const String ERROR_NEW_PASS_MUST_NOT_BE_EQUAL = 'Deve ser diferente da password atual';
 const String ERROR_NEGATIVE_VALUE = 'O valor deve ser positivo';
 const String ERROR_INVALID_FRAGMENT = 'Index inválido';
 
 const String ERROR_GENERAL_API = 'Woops! Algo correu mal';
 const String ERROR_USER_NOT_FOUND_API = 'O utilizador não existe!';
 
-const BASE_URL = 'https://62465d208879.ngrok.io';
+const BASE_URL = 'https://cc133b27908c.ngrok.io';
 const BASE_API_URL = '$BASE_URL/api';
 
 const LOGIN_URL = '/login';
