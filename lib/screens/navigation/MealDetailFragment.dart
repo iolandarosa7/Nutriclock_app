@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'dart:core';
 import 'dart:io';
 
@@ -6,7 +7,12 @@ import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:intl/date_symbol_data_local.dart';
 import 'package:intl/intl.dart';
+import 'package:nutriclock_app/constants/constants.dart';
+import 'package:nutriclock_app/models/Meal.dart';
+import 'package:nutriclock_app/models/User.dart';
+import 'package:nutriclock_app/network_utils/api.dart';
 import 'package:nutriclock_app/utils/DropMenu.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class MealDetailFragment extends StatefulWidget {
   @override
@@ -42,6 +48,7 @@ class _MealDetailFragmentState extends State<MealDetailFragment> {
     DropMenu('Chavena de chá', 'Chavena de chá'),
     DropMenu('Chavena de café', 'Chavena de café'),
     DropMenu('Prato', 'Prato'),
+    DropMenu('Tigela média', 'Tigela média'),
     DropMenu('Pires', 'Pires'),
     DropMenu('Outro', 'Outro'),
   ];
@@ -55,6 +62,26 @@ class _MealDetailFragmentState extends State<MealDetailFragment> {
   var _selectedUnit;
   var _observations;
   var _showError = false;
+  var _userId;
+
+  @override
+  void initState() {
+    _loadUserData();
+    super.initState();
+  }
+
+  _loadUserData() async {
+    SharedPreferences localStorage = await SharedPreferences.getInstance();
+
+    var storeUser = localStorage.getString(LOCAL_STORAGE_USER_KEY);
+
+    if (storeUser != null) {
+      User user = User.fromJson(json.decode(storeUser));
+      this.setState(() {
+        _userId = user.id;
+      });
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -466,14 +493,17 @@ class _MealDetailFragmentState extends State<MealDetailFragment> {
                                       borderRadius:
                                           new BorderRadius.circular(20.0)),
                                   onPressed: () {
-                                    if (_name == null || _name.isEmpty() ||
-                                        _selectedMealType == null || _selectedMealType.isEmpty() ||
-                                        _quantity == null || _quantity.isEmpty() ||
-                                        _selectedUnit == null || _selectedUnit.isEmpty()) {
+                                    if (!_formKey.currentState.validate() || _name == null || _name.trim() == "" ||
+                                        _selectedMealType == null || _selectedMealType.trim() == "" ||
+                                        _quantity == null || _quantity.trim == "" ||
+                                        _selectedUnit == null || _selectedUnit == "") {
                                       setState(() {
                                         _showError = true;
                                       });
+                                      return;
                                     }
+
+                                    _postNewMeal();
                                   },
                                 ),
                               ),
@@ -488,6 +518,60 @@ class _MealDetailFragmentState extends State<MealDetailFragment> {
             ),
           ),
         ));
+  }
+
+  void _postNewMeal() async {
+    var isShowMessage = false;
+    var message = "Ocorreu um erro ao adicionar a refeição";
+    if (_isLoading) return;
+
+    this.setState(() {
+      _isLoading = true;
+    });
+
+    var meal = Meal();
+    meal.name = _name;
+    meal.quantity = _quantity;
+    meal.relativeUnit = _selectedUnit;
+    meal.type = _selectedMealType;
+    meal.date = _date.toIso8601String();
+    meal.time = "${_time.hour}:${_time.minute < 9 ? "0 ${_time.minute}" : _time.minute}";
+    meal.observations = _observations;
+
+    try {
+      var response = await Network().postMeal(meal, _foodPhoto, _nutritionalInfoPhoto, _userId, MEAL_URL);
+
+      var body = json.decode(response.body);
+      print(response.statusCode);
+
+      if (response.statusCode == RESPONSE_SUCCESS_201) {
+        Navigator.of(context).pop();
+      } else {
+        isShowMessage = true;
+        if (body[JSON_ERROR_KEY] != null) message = (body[JSON_ERROR_KEY]);
+      }
+    } catch(error) {
+      isShowMessage = true;
+    }
+
+    if (isShowMessage) _showMessage(message);
+
+    setState(() {
+      _isLoading = false;
+    });
+  }
+
+  _showMessage(String message) {
+    final snackBar = SnackBar(
+      backgroundColor: Colors.red,
+      content: Text(message),
+      action: SnackBarAction(
+        label: 'Fechar',
+        textColor: Colors.white,
+        onPressed: () {},
+      ),
+    );
+    _scaffoldKey.currentState.showSnackBar(snackBar);
   }
 
   // show imagepicker

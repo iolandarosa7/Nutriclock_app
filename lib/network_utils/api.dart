@@ -5,6 +5,7 @@ import 'package:async/async.dart';
 import 'package:http/http.dart' as http;
 import 'package:nutriclock_app/constants/constants.dart' as Constants;
 import 'package:nutriclock_app/models/Drug.dart';
+import 'package:nutriclock_app/models/Meal.dart';
 import 'package:nutriclock_app/models/User.dart';
 import 'package:path/path.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -50,6 +51,50 @@ class Network {
       var fileLenght = await avatar.length();
       var multipartFileSign = http.MultipartFile('avatar', stream, fileLenght,
           filename: basename(avatar.path));
+      request.files.add(multipartFileSign);
+    }
+
+    try {
+      var streamedResponse = await request.send();
+      var response = http.Response.fromStream(streamedResponse);
+      return response;
+    } catch (e) {
+      rethrow;
+    }
+  }
+
+  Future<http.Response> postMeal(Meal meal, File foodPhoto, File nutritionalInfoPhoto, int userId, String apiUrl) async {
+    var url = Constants.BASE_API_URL + apiUrl;
+
+    await _getToken();
+    token = token.replaceAll("\"", "");
+
+    var request = http.MultipartRequest("POST", Uri.parse("$url/$userId"));
+    request.fields['name'] = meal.name;
+    request.fields['quantity'] = meal.quantity;
+    request.fields['relativeUnit'] = meal.relativeUnit;
+    request.fields['type'] = meal.type;
+    request.fields['date'] = meal.date;
+    request.fields['time'] = meal.time;
+    request.fields['observations'] = meal.observations;
+
+    request.headers['Accept'] = 'application/json';
+    request.headers['Content-type'] = 'application/json';
+    request.headers['Authorization'] = 'Bearer $token';
+
+    if (foodPhoto != null) {
+      var stream = http.ByteStream(DelegatingStream.typed(foodPhoto.openRead()));
+      var fileLenght = await foodPhoto.length();
+      var multipartFileSign = http.MultipartFile('foodPhoto', stream, fileLenght,
+          filename: basename(foodPhoto.path));
+      request.files.add(multipartFileSign);
+    }
+
+    if (nutritionalInfoPhoto != null) {
+      var stream = http.ByteStream(DelegatingStream.typed(nutritionalInfoPhoto.openRead()));
+      var fileLenght = await nutritionalInfoPhoto.length();
+      var multipartFileSign = http.MultipartFile('nutritionalInfoPhoto', stream, fileLenght,
+          filename: basename(nutritionalInfoPhoto.path));
       request.files.add(multipartFileSign);
     }
 
