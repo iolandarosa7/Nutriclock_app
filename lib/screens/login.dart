@@ -1,12 +1,13 @@
 import 'dart:convert';
+
 import 'package:flutter/material.dart';
-import 'package:nutriclock_app/models/AcceptanceTerms.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:nutriclock_app/constants/constants.dart';
-import 'package:nutriclock_app/screens/register.dart';
-import 'package:nutriclock_app/screens/recoverPassword.dart';
+import 'package:nutriclock_app/models/AcceptanceTerms.dart';
 import 'package:nutriclock_app/network_utils/api.dart';
 import 'package:nutriclock_app/screens/home.dart';
+import 'package:nutriclock_app/screens/recoverPassword.dart';
+import 'package:nutriclock_app/screens/register.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class Login extends StatefulWidget {
   @override
@@ -33,29 +34,28 @@ class _LoginState extends State<Login> {
     return Scaffold(
       key: _scaffoldKey,
       body: Container(
-          constraints: BoxConstraints.expand(),
-          decoration: BoxDecoration(
-           image: DecorationImage(
-              image: AssetImage("assets/images/background.jpg"),
-              fit: BoxFit.cover,
-            ),
-      ),
-      child: Stack(
-        children: <Widget>[
-          Positioned(
-            child: Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: <Widget>[
-                  Card(
-                    elevation: 4.0,
-                    color: Colors.white,
-                    margin: EdgeInsets.only(left: 20, right: 20),
-                    shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(15)),
-                    child:
-                        Column(
+        constraints: BoxConstraints.expand(),
+        decoration: BoxDecoration(
+          image: DecorationImage(
+            image: AssetImage("assets/images/background.jpg"),
+            fit: BoxFit.cover,
+          ),
+        ),
+        child: Stack(
+          children: <Widget>[
+            Positioned(
+              child: Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: <Widget>[
+                    Card(
+                        elevation: 4.0,
+                        color: Colors.white,
+                        margin: EdgeInsets.only(left: 20, right: 20),
+                        shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(15)),
+                        child: Column(
                           children: [
                             Padding(
                               padding: const EdgeInsets.all(10.0),
@@ -75,12 +75,14 @@ class _LoginState extends State<Login> {
                                       height: 16,
                                     ),
                                     TextFormField(
-                                      style: TextStyle(color: Color(0xFF000000)),
+                                      style:
+                                          TextStyle(color: Color(0xFF000000)),
                                       cursorColor: Color(0xFF9b9b9b),
                                       keyboardType: TextInputType.emailAddress,
                                       decoration: InputDecoration(
                                         focusedBorder: UnderlineInputBorder(
-                                          borderSide: BorderSide(color: Color(0xFFA3DC92)),
+                                          borderSide: BorderSide(
+                                              color: Color(0xFFA3DC92)),
                                         ),
                                         prefixIcon: Icon(
                                           Icons.email,
@@ -96,7 +98,9 @@ class _LoginState extends State<Login> {
                                         if (emailValue.isEmpty) {
                                           return ERROR_MANDATORY_FIELD;
                                         }
-                                        if (!RegExp(r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+").hasMatch(emailValue)) {
+                                        if (!RegExp(
+                                                r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
+                                            .hasMatch(emailValue)) {
                                           return ERROR_INVALID_FORMAT_FIELD;
                                         }
                                         email = emailValue;
@@ -104,13 +108,15 @@ class _LoginState extends State<Login> {
                                       },
                                     ),
                                     TextFormField(
-                                      style: TextStyle(color: Color(0xFF000000)),
+                                      style:
+                                          TextStyle(color: Color(0xFF000000)),
                                       cursorColor: Color(0xFF9b9b9b),
                                       keyboardType: TextInputType.text,
                                       obscureText: true,
                                       decoration: InputDecoration(
                                         focusedBorder: UnderlineInputBorder(
-                                          borderSide: BorderSide(color: Color(0xFFA3DC92)),
+                                          borderSide: BorderSide(
+                                              color: Color(0xFFA3DC92)),
                                         ),
                                         prefixIcon: Icon(
                                           Icons.vpn_key,
@@ -132,45 +138,51 @@ class _LoginState extends State<Login> {
                                     ),
                                     Padding(
                                       padding: const EdgeInsets.only(top: 16.0),
-                                      child:
-                                        SizedBox(
-                                          width: double.infinity,
-                                          child: FlatButton(
-                                            child: Padding(
-                                              padding: EdgeInsets.only(
-                                                  top: 8, bottom: 8, left: 10, right: 10),
-                                              child: Text(
-                                                _isLoading ? 'Aguarde...' : 'Login',
-                                                textDirection: TextDirection.ltr,
-                                                style: TextStyle(
-                                                  color: Colors.white,
-                                                  fontSize: 15.0,
-                                                  decoration: TextDecoration.none,
-                                                  fontWeight: FontWeight.normal,
-                                                ),
+                                      child: SizedBox(
+                                        width: double.infinity,
+                                        child: FlatButton(
+                                          child: Padding(
+                                            padding: EdgeInsets.only(
+                                                top: 8,
+                                                bottom: 8,
+                                                left: 10,
+                                                right: 10),
+                                            child: Text(
+                                              _isLoading
+                                                  ? 'Aguarde...'
+                                                  : 'Login',
+                                              textDirection: TextDirection.ltr,
+                                              style: TextStyle(
+                                                color: Colors.white,
+                                                fontSize: 15.0,
+                                                decoration: TextDecoration.none,
+                                                fontWeight: FontWeight.normal,
                                               ),
                                             ),
-                                            color: Color(0xFFA3DC92),
-                                            disabledColor: Colors.grey,
-                                            shape: new RoundedRectangleBorder(
-                                                borderRadius:
-                                                new BorderRadius.circular(20.0)),
-                                            onPressed: () {
-                                              if (_formKey.currentState.validate()) {
-                                                _login();
-                                              }
-                                            },
                                           ),
+                                          color: Color(0xFFA3DC92),
+                                          disabledColor: Colors.grey,
+                                          shape: new RoundedRectangleBorder(
+                                              borderRadius:
+                                                  new BorderRadius.circular(
+                                                      20.0)),
+                                          onPressed: () {
+                                            if (_formKey.currentState
+                                                .validate()) {
+                                              _login();
+                                            }
+                                          },
                                         ),
+                                      ),
                                     ),
                                   ],
                                 ),
                               ),
                             ),
                             Padding(
-                              padding: const EdgeInsets.only(left: 10.0, right: 10.0),
-                              child:
-                              SizedBox(
+                              padding: const EdgeInsets.only(
+                                  left: 10.0, right: 10.0),
+                              child: SizedBox(
                                 width: double.infinity,
                                 child: FlatButton(
                                   child: Padding(
@@ -191,7 +203,7 @@ class _LoginState extends State<Login> {
                                   disabledColor: Colors.grey,
                                   shape: new RoundedRectangleBorder(
                                       borderRadius:
-                                      new BorderRadius.circular(20.0)),
+                                          new BorderRadius.circular(20.0)),
                                   onPressed: () {
                                     Navigator.push(
                                         context,
@@ -202,13 +214,15 @@ class _LoginState extends State<Login> {
                               ),
                             ),
                             Padding(
-                              padding: const EdgeInsets.only(top: 16.0, bottom: 20.0),
+                              padding: const EdgeInsets.only(
+                                  top: 16.0, bottom: 20.0),
                               child: InkWell(
                                 onTap: () {
                                   Navigator.push(
                                       context,
                                       new MaterialPageRoute(
-                                          builder: (context) => RecoverPassword()));
+                                          builder: (context) =>
+                                              RecoverPassword()));
                                 },
                                 child: Text(
                                   'Recuperar Password',
@@ -222,15 +236,14 @@ class _LoginState extends State<Login> {
                               ),
                             ),
                           ],
-                        )
-                  ),
-                ],
+                        )),
+                  ],
+                ),
               ),
-            ),
-          )
-        ],
+            )
+          ],
+        ),
       ),
-    ),
     );
   }
 
@@ -245,12 +258,14 @@ class _LoginState extends State<Login> {
     });
 
     try {
-      var response = await Network().postWithoutAuth({'email': email, 'password': password}, LOGIN_URL);
+      var response = await Network()
+          .postWithoutAuth({'email': email, 'password': password}, LOGIN_URL);
       var body = json.decode(response.body);
 
       if (response.statusCode == RESPONSE_SUCCESS) {
         SharedPreferences localStorage = await SharedPreferences.getInstance();
-        localStorage.setString(LOCAL_STORAGE_TOKEN_KEY, json.encode(body[JSON_ACCESS_TOKEN_KEY]));
+        localStorage.setString(
+            LOCAL_STORAGE_TOKEN_KEY, json.encode(body[JSON_ACCESS_TOKEN_KEY]));
         response = await Network().getWithAuth(USERS_ME_URL);
         if (response.statusCode == RESPONSE_SUCCESS) {
           var data = json.decode(response.body)[JSON_DATA_KEY];
@@ -274,12 +289,11 @@ class _LoginState extends State<Login> {
           }
         } else {
           isShowMessage = true;
-          if(body[JSON_ERROR_KEY] != null) message = body[JSON_ERROR_KEY];
+          if (body[JSON_ERROR_KEY] != null) message = body[JSON_ERROR_KEY];
         }
       } else {
         isShowMessage = true;
-        if(body[JSON_ERROR_KEY] != null) message = (body[JSON_ERROR_KEY]);
-
+        if (body[JSON_ERROR_KEY] != null) message = (body[JSON_ERROR_KEY]);
       }
     } catch (error) {
       isShowMessage = true;
@@ -304,7 +318,6 @@ class _LoginState extends State<Login> {
     );
     _scaffoldKey.currentState.showSnackBar(snackBar);
   }
-
 
   Future<void> _showAcceptanceTermsModal(int id) async {
     return showDialog<void>(
@@ -347,14 +360,15 @@ class _LoginState extends State<Login> {
     });
 
     try {
-      await Network().putWithAuth({'terms_accepted': '1'}, "$USER_TERMS_URL/$id", null);
+      await Network()
+          .putWithAuth({'terms_accepted': '1'}, "$USER_TERMS_URL/$id", null);
 
-        Navigator.pushReplacement(
-          context,
-          new MaterialPageRoute(
-            builder: (context) => Home(),
-          ),
-        );
+      Navigator.pushReplacement(
+        context,
+        new MaterialPageRoute(
+          builder: (context) => Home(),
+        ),
+      );
     } catch (error) {
       print('catch $error');
     }
@@ -378,7 +392,8 @@ class _LoginState extends State<Login> {
       var responseTerms = await Network().getWithoutAuth(TERMS_URL);
 
       if (responseTerms.statusCode == RESPONSE_SUCCESS) {
-        var data = AcceptanceTerms.fromJson(json.decode(responseTerms.body)[JSON_DATA_KEY]);
+        var data = AcceptanceTerms.fromJson(
+            json.decode(responseTerms.body)[JSON_DATA_KEY]);
 
         this.setState(() {
           terms = data;
@@ -396,7 +411,5 @@ class _LoginState extends State<Login> {
     setState(() {
       _isLoading = false;
     });
-
-
   }
 }

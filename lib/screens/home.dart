@@ -25,6 +25,7 @@ class _HomeState extends State<Home> {
   String _name = '';
   String _email = '';
   String _avatarUrl = '';
+  String _title = '';
   int _selectedIndex = 0;
   int _currentIndex = 0;
 
@@ -56,12 +57,35 @@ class _HomeState extends State<Home> {
   }
 
   void _onItemTapped(int index) {
-    setState(() => _currentIndex = index);
-    setState(() => _selectedIndex = index);
+    var title = "";
+
+    switch(index) {
+      case 1:
+        title = "Diário";
+        break;
+      case 2:
+        title = "Sono";
+        break;
+      case 3:
+        title = "Exercício";
+        break;
+      case 4:
+        title = "Chat";
+        break;
+      default: title = "";
+    }
+    setState(() => {
+      _currentIndex = index,
+    });
+    setState(() =>
+    {
+      _selectedIndex = index,
+      _title = title
+    });
   }
 
-  _onSelectItem(int i) {
-    setState(() => _currentIndex = i);
+  _onSelectItem(int i, String title) {
+    setState(() => { _currentIndex = i, _title = title });
     if (i < 3) {
       setState(() => _selectedIndex = i);
     }
@@ -94,7 +118,7 @@ class _HomeState extends State<Home> {
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          "Nutriclock",
+          _title,
           style: TextStyle(
             fontFamily: 'Pacifico',
           ),
@@ -129,9 +153,7 @@ class _HomeState extends State<Home> {
         selectedItemColor: Color(0xFF74D44D),
         items: const <BottomNavigationBarItem>[
           BottomNavigationBarItem(
-            icon: Icon(
-              Icons.home,
-            ),
+            icon: Icon(Icons.home),
             label: 'Home',
           ),
           BottomNavigationBarItem(
@@ -160,6 +182,7 @@ class _HomeState extends State<Home> {
             UserAccountsDrawerHeader(
               currentAccountPicture: CircleAvatar(
                 backgroundImage: NetworkImage(_avatarUrl),
+                backgroundColor: Color(0xFF74D44D),
               ),
               accountName: new Text(this._name),
               accountEmail: new Text(this._email),
@@ -179,17 +202,17 @@ class _HomeState extends State<Home> {
                   'Relatórios',
                   style: TextStyle(color: Colors.grey),
                 ),
-                onTap: () => _onSelectItem(5),
+                onTap: () => _onSelectItem(5, "Relatórios"),
               ),
               ListTile(
                 leading: Icon(Icons.restaurant),
                 title: Text('Plano Alimentar', style: TextStyle(color: Colors.grey)),
-                onTap: () => _onSelectItem(6),
+                onTap: () => _onSelectItem(6, "Plano Alimentar"),
               ),
               ListTile(
                 leading: Icon(Icons.email),
                 title: Text('Contactos', style: TextStyle(color: Colors.grey)),
-                onTap: () => _onSelectItem(7),
+                onTap: () => _onSelectItem(7, "Contactos"),
               ),
             ])
           ],
