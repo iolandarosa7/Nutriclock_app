@@ -61,7 +61,7 @@ class _HomeState extends State<Home> {
 
     switch(index) {
       case 1:
-        title = "Diário";
+        title = "Diário Alimentar";
         break;
       case 2:
         title = "Sono";

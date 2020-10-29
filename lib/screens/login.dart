@@ -80,6 +80,9 @@ class _LoginState extends State<Login> {
                                       cursorColor: Color(0xFF9b9b9b),
                                       keyboardType: TextInputType.emailAddress,
                                       decoration: InputDecoration(
+                                        labelText: 'Email',
+                                        labelStyle:
+                                        TextStyle(color: Colors.grey),
                                         focusedBorder: UnderlineInputBorder(
                                           borderSide: BorderSide(
                                               color: Color(0xFFA3DC92)),
@@ -114,6 +117,9 @@ class _LoginState extends State<Login> {
                                       keyboardType: TextInputType.text,
                                       obscureText: true,
                                       decoration: InputDecoration(
+                                        labelText: 'Password',
+                                        labelStyle:
+                                            TextStyle(color: Colors.grey),
                                         focusedBorder: UnderlineInputBorder(
                                           borderSide: BorderSide(
                                               color: Color(0xFFA3DC92)),

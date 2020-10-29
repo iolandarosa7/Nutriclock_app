@@ -4,11 +4,13 @@ import 'dart:io';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_typeahead/flutter_typeahead.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:intl/date_symbol_data_local.dart';
 import 'package:intl/intl.dart';
 import 'package:nutriclock_app/constants/constants.dart';
 import 'package:nutriclock_app/models/Meal.dart';
+import 'package:nutriclock_app/models/StaticMealNameResponse.dart';
 import 'package:nutriclock_app/models/User.dart';
 import 'package:nutriclock_app/network_utils/api.dart';
 import 'package:nutriclock_app/utils/DropMenu.dart';
@@ -26,6 +28,7 @@ class _MealDetailFragmentState extends State<MealDetailFragment> {
   final ptDatesFuture = initializeDateFormatting('pt', null);
   final dateFormat = new DateFormat('dd/MM/yyyy');
   final picker = ImagePicker();
+  final TextEditingController _typeAheadController = TextEditingController();
   final _mealTypes = [
     DropMenu('P', 'Pequeno-almoço'),
     DropMenu('A', 'Almoço'),
@@ -56,6 +59,7 @@ class _MealDetailFragmentState extends State<MealDetailFragment> {
   TimeOfDay _time = TimeOfDay.now();
   File _foodPhoto;
   File _nutritionalInfoPhoto;
+  var _autocompleteSuggestions = [];
   var _name;
   var _selectedMealType;
   var _quantity;
@@ -66,12 +70,18 @@ class _MealDetailFragmentState extends State<MealDetailFragment> {
 
   @override
   void initState() {
-    _loadUserData();
+    _loadData();
     super.initState();
   }
 
-  _loadUserData() async {
+  _loadData() async {
+    if (_isLoading) return;
+
+    this.setState(() {
+      _isLoading = true;
+    });
     SharedPreferences localStorage = await SharedPreferences.getInstance();
+    List list = [];
 
     var storeUser = localStorage.getString(LOCAL_STORAGE_USER_KEY);
 
@@ -81,6 +91,30 @@ class _MealDetailFragmentState extends State<MealDetailFragment> {
         _userId = user.id;
       });
     }
+
+    try {
+      var response = await Network().getWithoutAuth(MEALS_NAMES_URL);
+
+      print(response.statusCode);
+
+      if (response.statusCode == RESPONSE_SUCCESS) {
+        List<dynamic> data = json.decode(response.body)[JSON_DATA_KEY];
+        data.forEach((element) {
+          StaticMealNameResponse value =
+              StaticMealNameResponse.fromJson(element);
+          list.add(value.name);
+        });
+      }
+
+      print(list.length);
+
+      setState(() {
+        _isLoading = false;
+        _autocompleteSuggestions = list;
+      });
+    } catch (error) {
+      print(error.toString());
+    }
   }
 
   @override
@@ -89,7 +123,7 @@ class _MealDetailFragmentState extends State<MealDetailFragment> {
         key: _scaffoldKey,
         appBar: AppBar(
           title: Text(
-            "Refeição",
+            "Novo Alimento",
             style: TextStyle(
               fontFamily: 'Pacifico',
             ),
@@ -198,14 +232,17 @@ class _MealDetailFragmentState extends State<MealDetailFragment> {
                         child: Column(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: <Widget>[
-                            _showError ? Text(
-                              "Os campos assinalados com * são obrigatórios!",
-                              style: TextStyle(
-                                color: Colors.redAccent,
-                                fontWeight: FontWeight.bold,
-                                fontSize: 12
-                              ),
-                            ): SizedBox(height: 0,),
+                            _showError
+                                ? Text(
+                                    "Os campos assinalados com * são obrigatórios!",
+                                    style: TextStyle(
+                                        color: Colors.redAccent,
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 12),
+                                  )
+                                : SizedBox(
+                                    height: 0,
+                                  ),
                             Stack(
                               children: <Widget>[
                                 DropdownButton(
@@ -250,25 +287,51 @@ class _MealDetailFragmentState extends State<MealDetailFragment> {
                                     )),
                               ],
                             ),
-                            TextFormField(
-                              style: TextStyle(color: Color(0xFF000000)),
-                              cursorColor: Color(0xFF9b9b9b),
-                              keyboardType: TextInputType.text,
-                              decoration: InputDecoration(
-                                focusedBorder: UnderlineInputBorder(
-                                  borderSide:
-                                      BorderSide(color: Color(0xFFA3DC92)),
+                            TypeAheadFormField(
+                              textFieldConfiguration: TextFieldConfiguration(
+                                controller: _typeAheadController,
+                                decoration: InputDecoration(
+                                  focusedBorder: UnderlineInputBorder(
+                                    borderSide:
+                                        BorderSide(color: Color(0xFFA3DC92)),
+                                  ),
+                                  prefixIcon: Icon(
+                                    Icons.restaurant,
+                                    color: Colors.grey,
+                                  ),
+                                  hintText: "Nome *",
+                                  hintStyle: TextStyle(
+                                      color: Color(0xFF9b9b9b),
+                                      fontSize: 15,
+                                      fontWeight: FontWeight.normal),
                                 ),
-                                prefixIcon: Icon(
-                                  Icons.restaurant,
-                                  color: Colors.grey,
-                                ),
-                                hintText: "Nome *",
-                                hintStyle: TextStyle(
-                                    color: Color(0xFF9b9b9b),
-                                    fontSize: 15,
-                                    fontWeight: FontWeight.normal),
                               ),
+                              itemBuilder: (context, suggestion) {
+                                return ListTile(
+                                  title: Text(suggestion),
+                                );
+                              },
+                              transitionBuilder: (context, suggestionsBox, controller) {
+                                return suggestionsBox;
+                              },
+                              onSuggestionSelected: (suggestion) {
+                                this._typeAheadController.text = suggestion;
+                              },
+                              suggestionsCallback: (pattern) {
+                                var list = [];
+                                var size = 0;
+                                _autocompleteSuggestions.forEach((element) {
+                                  if (size <= 20 &&
+                                      element
+                                          .toString()
+                                          .toLowerCase()
+                                          .startsWith(pattern)) {
+                                    list.add(element);
+                                    size++;
+                                  }
+                                });
+                                return list;
+                              },
                               validator: (value) {
                                 _name = value;
                                 return null;
@@ -493,10 +556,15 @@ class _MealDetailFragmentState extends State<MealDetailFragment> {
                                       borderRadius:
                                           new BorderRadius.circular(20.0)),
                                   onPressed: () {
-                                    if (!_formKey.currentState.validate() || _name == null || _name.trim() == "" ||
-                                        _selectedMealType == null || _selectedMealType.trim() == "" ||
-                                        _quantity == null || _quantity.trim == "" ||
-                                        _selectedUnit == null || _selectedUnit == "") {
+                                    if (!_formKey.currentState.validate() ||
+                                        _name == null ||
+                                        _name.trim() == "" ||
+                                        _selectedMealType == null ||
+                                        _selectedMealType.trim() == "" ||
+                                        _quantity == null ||
+                                        _quantity.trim == "" ||
+                                        _selectedUnit == null ||
+                                        _selectedUnit == "") {
                                       setState(() {
                                         _showError = true;
                                       });
@@ -535,11 +603,13 @@ class _MealDetailFragmentState extends State<MealDetailFragment> {
     meal.relativeUnit = _selectedUnit;
     meal.type = _selectedMealType;
     meal.date = _date.toIso8601String();
-    meal.time = "${_time.hour}:${_time.minute < 9 ? "0 ${_time.minute}" : _time.minute}";
+    meal.time =
+        "${_time.hour}:${_time.minute < 9 ? "0 ${_time.minute}" : _time.minute}";
     meal.observations = _observations;
 
     try {
-      var response = await Network().postMeal(meal, _foodPhoto, _nutritionalInfoPhoto, _userId, MEAL_URL);
+      var response = await Network()
+          .postMeal(meal, _foodPhoto, _nutritionalInfoPhoto, _userId, MEAL_URL);
 
       var body = json.decode(response.body);
       print(response.statusCode);
@@ -550,7 +620,7 @@ class _MealDetailFragmentState extends State<MealDetailFragment> {
         isShowMessage = true;
         if (body[JSON_ERROR_KEY] != null) message = (body[JSON_ERROR_KEY]);
       }
-    } catch(error) {
+    } catch (error) {
       isShowMessage = true;
     }
 

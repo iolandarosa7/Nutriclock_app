@@ -65,6 +65,9 @@ class _RecoverPasswordState extends State<RecoverPassword> {
                                     cursorColor: Color(0xFF9b9b9b),
                                     keyboardType: TextInputType.emailAddress,
                                     decoration: InputDecoration(
+                                      labelText: 'Email',
+                                      labelStyle:
+                                      TextStyle(color: Colors.grey),
                                       focusedBorder: UnderlineInputBorder(
                                         borderSide: BorderSide(
                                             color: Color(0xFFA3DC92)),
