@@ -34,6 +34,7 @@ const REGISTER_URL = '/users';
 const MEAL_URL = '/meals';
 const MEALS_USER_URL = '/meals-user';
 const MEALS_NAMES_URL = '/meal-names';
+const MEALS_STATS_URL = '/meals/stats';
 
 const USERS_ME_URL = '/users/me';
 
