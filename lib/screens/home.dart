@@ -2,7 +2,6 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:nutriclock_app/constants/constants.dart';
-import 'package:nutriclock_app/models/Statistics.dart';
 import 'package:nutriclock_app/models/User.dart';
 import 'package:nutriclock_app/network_utils/api.dart';
 import 'package:nutriclock_app/screens/drawer/ContactsFragment.dart';
@@ -60,7 +59,7 @@ class _HomeState extends State<Home> {
   void _onItemTapped(int index) {
     var title = "";
 
-    switch(index) {
+    switch (index) {
       case 1:
         title = "Diário Alimentar";
         break;
@@ -73,20 +72,17 @@ class _HomeState extends State<Home> {
       case 4:
         title = "Chat";
         break;
-      default: title = "";
+      default:
+        title = "";
     }
     setState(() => {
-      _currentIndex = index,
-    });
-    setState(() =>
-    {
-      _selectedIndex = index,
-      _title = title
-    });
+          _currentIndex = index,
+        });
+    setState(() => {_selectedIndex = index, _title = title});
   }
 
   _onSelectItem(int i, String title) {
-    setState(() => { _currentIndex = i, _title = title });
+    setState(() => {_currentIndex = i, _title = title});
     if (i < 3) {
       setState(() => _selectedIndex = i);
     }
@@ -207,7 +203,8 @@ class _HomeState extends State<Home> {
               ),
               ListTile(
                 leading: Icon(Icons.restaurant),
-                title: Text('Plano Alimentar', style: TextStyle(color: Colors.grey)),
+                title: Text('Plano Alimentar',
+                    style: TextStyle(color: Colors.grey)),
                 onTap: () => _onSelectItem(6, "Plano Alimentar"),
               ),
               ListTile(

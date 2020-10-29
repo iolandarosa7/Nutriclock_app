@@ -2,6 +2,7 @@ library constants;
 
 const String LOCAL_STORAGE_TOKEN_KEY = 'token';
 const String LOCAL_STORAGE_USER_KEY = 'user';
+const String LOCAL_STORAGE_MEALS_DAYS_DURATION_KEY = 'daysFromInitialMealDate';
 
 const String JSON_ACCESS_TOKEN_KEY = 'access_token';
 const String JSON_DATA_KEY = 'data';
@@ -16,8 +17,10 @@ const int RESPONSE_SUCCESS_201 = 201;
 const String ERROR_MANDATORY_FIELD = 'O campo não pode estar vazio';
 const String ERROR_INVALID_FORMAT_FIELD = 'Formato inválido';
 const String ERROR_ADD_DRUG_FIELDS = 'Indique o nome e posologia';
-const String ERROR_CONFIRMATION_PASS_MUST_BE_EQUAL = 'Deve ser igual à password';
-const String ERROR_NEW_PASS_MUST_NOT_BE_EQUAL = 'Deve ser diferente da password atual';
+const String ERROR_CONFIRMATION_PASS_MUST_BE_EQUAL =
+    'Deve ser igual à password';
+const String ERROR_NEW_PASS_MUST_NOT_BE_EQUAL =
+    'Deve ser diferente da password atual';
 const String ERROR_NEGATIVE_VALUE = 'O valor deve ser positivo';
 const String ERROR_INVALID_FRAGMENT = 'Index inválido';
 

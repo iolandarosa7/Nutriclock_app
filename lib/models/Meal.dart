@@ -15,19 +15,19 @@ class Meal {
   Meal();
 
   Map<String, dynamic> toJson() => {
-    'id': id,
-    'name': name,
-    'quantity': quantity,
-    'foodPhotoUrl': foodPhotoUrl,
-    'nutritionalInfoPhotoUrl': nutritionalInfoPhotoUrl,
-    'relativeUnit': relativeUnit,
-    'type': type,
-    'date': date,
-    'time': time,
-    'userId': userId,
-    'numericUnit': numericUnit,
-    'observations': observations
-  };
+        'id': id,
+        'name': name,
+        'quantity': quantity,
+        'foodPhotoUrl': foodPhotoUrl,
+        'nutritionalInfoPhotoUrl': nutritionalInfoPhotoUrl,
+        'relativeUnit': relativeUnit,
+        'type': type,
+        'date': date,
+        'time': time,
+        'userId': userId,
+        'numericUnit': numericUnit,
+        'observations': observations
+      };
 
   Meal.fromJson(Map<String, dynamic> json)
       : name = json['name'],

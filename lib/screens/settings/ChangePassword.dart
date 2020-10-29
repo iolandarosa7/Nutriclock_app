@@ -23,7 +23,7 @@ class _ChangePasswordState extends State<ChangePassword> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      key: _scaffoldKey,
+        key: _scaffoldKey,
         appBar: AppBar(
           title: Text(
             "Alterar Password",
@@ -187,7 +187,7 @@ class _ChangePasswordState extends State<ChangePassword> {
 
   _showMessage(String message, bool isError) {
     final snackBar = SnackBar(
-      backgroundColor: isError ? Colors.red: Colors.green,
+      backgroundColor: isError ? Colors.red : Colors.green,
       content: Text(message),
       action: SnackBarAction(
         label: 'Fechar',
@@ -217,7 +217,10 @@ class _ChangePasswordState extends State<ChangePassword> {
     });
 
     try {
-      var response = await Network().putWithAuth({'password': _password, "newPassword": _newPassword}, PASSWORD_URL, user.id);
+      var response = await Network().putWithAuth(
+          {'password': _password, "newPassword": _newPassword},
+          PASSWORD_URL,
+          user.id);
 
       var body = json.decode(response.body);
 
@@ -225,7 +228,7 @@ class _ChangePasswordState extends State<ChangePassword> {
         _showMessage("Password atualizada", false);
       } else {
         isShowMessage = true;
-        if(body[JSON_ERROR_KEY] != null) message = (body[JSON_ERROR_KEY]);
+        if (body[JSON_ERROR_KEY] != null) message = (body[JSON_ERROR_KEY]);
       }
     } catch (error) {
       isShowMessage = true;

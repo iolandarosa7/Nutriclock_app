@@ -82,7 +82,7 @@ class _LoginState extends State<Login> {
                                       decoration: InputDecoration(
                                         labelText: 'Email',
                                         labelStyle:
-                                        TextStyle(color: Colors.grey),
+                                            TextStyle(color: Colors.grey),
                                         focusedBorder: UnderlineInputBorder(
                                           borderSide: BorderSide(
                                               color: Color(0xFFA3DC92)),

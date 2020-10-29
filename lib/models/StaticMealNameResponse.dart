@@ -4,8 +4,8 @@ class StaticMealNameResponse {
   StaticMealNameResponse();
 
   Map<String, dynamic> toJson() => {
-    'name': name,
-  };
+        'name': name,
+      };
 
   StaticMealNameResponse.fromJson(Map<String, dynamic> json)
       : name = json['name'];

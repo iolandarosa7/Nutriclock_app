@@ -194,15 +194,15 @@ class _RegisterState extends State<Register> {
                                             DropdownButton(
                                               value: usfId,
                                               hint: Padding(
-                                                padding:
-                                                const EdgeInsets.only(left: 50),
+                                                padding: const EdgeInsets.only(
+                                                    left: 50),
                                                 child: Text(
                                                   "Unidade Saúde Familiar",
                                                   style: TextStyle(
                                                       color: Color(0xFF9b9b9b),
                                                       fontSize: 15,
                                                       fontWeight:
-                                                      FontWeight.normal),
+                                                          FontWeight.normal),
                                                 ),
                                               ),
                                               icon: Icon(Icons.arrow_drop_down),
@@ -215,19 +215,24 @@ class _RegisterState extends State<Register> {
                                               items: usfs
                                                   .map<DropdownMenuItem<int>>(
                                                       (Usf value) {
-                                                    return DropdownMenuItem<int>(
-                                                      value: value.id,
-                                                      child: Padding(
-                                                        padding: const EdgeInsets.only(
+                                                return DropdownMenuItem<int>(
+                                                  value: value.id,
+                                                  child: Padding(
+                                                    padding:
+                                                        const EdgeInsets.only(
                                                             left: 50),
-                                                        child: Text(value.name),
-                                                      ),
-                                                    );
-                                                  }).toList(),
+                                                    child: Text(value.name),
+                                                  ),
+                                                );
+                                              }).toList(),
                                             ),
                                             Container(
-                                                padding: const EdgeInsets.only(left: 10, top: 10),
-                                                child: Icon(Icons.home_work_sharp, color: Colors.grey,)),
+                                                padding: const EdgeInsets.only(
+                                                    left: 10, top: 10),
+                                                child: Icon(
+                                                  Icons.home_work_sharp,
+                                                  color: Colors.grey,
+                                                )),
                                           ],
                                         ),
                                         Stack(
@@ -235,15 +240,15 @@ class _RegisterState extends State<Register> {
                                             DropdownButton(
                                               value: gender,
                                               hint: Padding(
-                                                padding:
-                                                const EdgeInsets.only(left: 50),
+                                                padding: const EdgeInsets.only(
+                                                    left: 50),
                                                 child: Text(
                                                   "Género",
                                                   style: TextStyle(
                                                       color: Color(0xFF9b9b9b),
                                                       fontSize: 15,
                                                       fontWeight:
-                                                      FontWeight.normal),
+                                                          FontWeight.normal),
                                                 ),
                                               ),
                                               icon: Icon(Icons.arrow_drop_down),
@@ -253,22 +258,28 @@ class _RegisterState extends State<Register> {
                                                 });
                                               },
                                               isExpanded: true,
-                                              items: gendersList
-                                                  .map<DropdownMenuItem<String>>(
-                                                      (DropMenu item) {
-                                                    return DropdownMenuItem<String>(
-                                                      value: item.value,
-                                                      child: Padding(
-                                                        padding: const EdgeInsets.only(
+                                              items: gendersList.map<
+                                                      DropdownMenuItem<String>>(
+                                                  (DropMenu item) {
+                                                return DropdownMenuItem<String>(
+                                                  value: item.value,
+                                                  child: Padding(
+                                                    padding:
+                                                        const EdgeInsets.only(
                                                             left: 50),
-                                                        child: Text(item.description),
-                                                      ),
-                                                    );
-                                                  }).toList(),
+                                                    child:
+                                                        Text(item.description),
+                                                  ),
+                                                );
+                                              }).toList(),
                                             ),
                                             Container(
-                                                padding: const EdgeInsets.only(left: 10, top: 10),
-                                                child: Icon(Icons.wc, color: Colors.grey,)),
+                                                padding: const EdgeInsets.only(
+                                                    left: 10, top: 10),
+                                                child: Icon(
+                                                  Icons.wc,
+                                                  color: Colors.grey,
+                                                )),
                                           ],
                                         ),
                                         Column(

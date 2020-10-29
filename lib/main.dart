@@ -1,16 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:nutriclock_app/constants/constants.dart' as Constants;
-import 'package:shared_preferences/shared_preferences.dart';
-import 'package:nutriclock_app/screens/login.dart';
 import 'package:nutriclock_app/screens/home.dart';
+import 'package:nutriclock_app/screens/login.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:splashscreen/splashscreen.dart';
 
 void main() {
-  runApp(
-    new MaterialApp(
-      home: MyApp(),
-    )
-  );
+  runApp(new MaterialApp(
+    home: MyApp(),
+  ));
 }
 
 class MyApp extends StatefulWidget {
@@ -25,11 +23,9 @@ class _MyAppState extends State<MyApp> {
         seconds: 2,
         navigateAfterSeconds: new AfterSplash(),
         imageBackground: AssetImage("assets/images/splash.png"),
-        loaderColor: Colors.transparent
-    );
+        loaderColor: Colors.transparent);
   }
 }
-
 
 class AfterSplash extends StatelessWidget {
   @override

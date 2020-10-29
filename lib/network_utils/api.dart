@@ -63,7 +63,8 @@ class Network {
     }
   }
 
-  Future<http.Response> postMeal(Meal meal, File foodPhoto, File nutritionalInfoPhoto, int userId, String apiUrl) async {
+  Future<http.Response> postMeal(Meal meal, File foodPhoto,
+      File nutritionalInfoPhoto, int userId, String apiUrl) async {
     var url = Constants.BASE_API_URL + apiUrl;
 
     await _getToken();
@@ -83,17 +84,21 @@ class Network {
     request.headers['Authorization'] = 'Bearer $token';
 
     if (foodPhoto != null) {
-      var stream = http.ByteStream(DelegatingStream.typed(foodPhoto.openRead()));
+      var stream =
+          http.ByteStream(DelegatingStream.typed(foodPhoto.openRead()));
       var fileLenght = await foodPhoto.length();
-      var multipartFileSign = http.MultipartFile('foodPhoto', stream, fileLenght,
+      var multipartFileSign = http.MultipartFile(
+          'foodPhoto', stream, fileLenght,
           filename: basename(foodPhoto.path));
       request.files.add(multipartFileSign);
     }
 
     if (nutritionalInfoPhoto != null) {
-      var stream = http.ByteStream(DelegatingStream.typed(nutritionalInfoPhoto.openRead()));
+      var stream = http.ByteStream(
+          DelegatingStream.typed(nutritionalInfoPhoto.openRead()));
       var fileLenght = await nutritionalInfoPhoto.length();
-      var multipartFileSign = http.MultipartFile('nutritionalInfoPhoto', stream, fileLenght,
+      var multipartFileSign = http.MultipartFile(
+          'nutritionalInfoPhoto', stream, fileLenght,
           filename: basename(nutritionalInfoPhoto.path));
       request.files.add(multipartFileSign);
     }

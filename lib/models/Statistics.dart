@@ -6,10 +6,10 @@ class Statistics {
   Statistics();
 
   Map<String, dynamic> toJson() => {
-    'daysFromInitialDate': daysFromInitialDate,
-    'totalDaysRegistered': totalDaysRegistered,
-    'meals': meals,
-  };
+        'daysFromInitialDate': daysFromInitialDate,
+        'totalDaysRegistered': totalDaysRegistered,
+        'meals': meals,
+      };
 
   Statistics.fromJson(Map<String, dynamic> json)
       : daysFromInitialDate = json['daysFromInitialDate'],

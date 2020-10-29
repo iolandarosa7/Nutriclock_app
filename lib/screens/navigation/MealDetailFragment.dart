@@ -104,8 +104,6 @@ class _MealDetailFragmentState extends State<MealDetailFragment> {
         });
       }
 
-      print(list.length);
-
       setState(() {
         _isLoading = false;
         _autocompleteSuggestions = list;
@@ -309,7 +307,8 @@ class _MealDetailFragmentState extends State<MealDetailFragment> {
                                   title: Text(suggestion),
                                 );
                               },
-                              transitionBuilder: (context, suggestionsBox, controller) {
+                              transitionBuilder:
+                                  (context, suggestionsBox, controller) {
                                 return suggestionsBox;
                               },
                               onSuggestionSelected: (suggestion) {
