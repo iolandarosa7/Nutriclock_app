@@ -296,6 +296,9 @@ class _MealDetailFragmentState extends State<MealDetailFragment> {
                                     color: Colors.grey,
                                   ),
                                   hintText: "Nome *",
+                                  labelText: 'Nome *',
+                                  labelStyle:
+                                  TextStyle(color: Colors.grey),
                                   hintStyle: TextStyle(
                                       color: Color(0xFF9b9b9b),
                                       fontSize: 15,
@@ -352,6 +355,9 @@ class _MealDetailFragmentState extends State<MealDetailFragment> {
                                         color: Colors.grey,
                                       ),
                                       hintText: "Quant. *",
+                                      labelText: 'Quant. *',
+                                      labelStyle:
+                                      TextStyle(color: Colors.grey),
                                       hintStyle: TextStyle(
                                           color: Color(0xFF9b9b9b),
                                           fontSize: 15,
@@ -369,12 +375,12 @@ class _MealDetailFragmentState extends State<MealDetailFragment> {
                                     children: <Widget>[
                                       Padding(
                                         padding: const EdgeInsets.only(
-                                            top: 15, left: 8.0),
+                                            top: 26, left: 8.0),
                                         child: DropdownButton(
                                           value: _selectedUnit,
                                           hint: Padding(
                                             padding:
-                                                EdgeInsets.only(bottom: 16),
+                                                EdgeInsets.only(bottom: 20),
                                             child: Text(
                                               "Unidade *",
                                               style: TextStyle(
@@ -512,13 +518,16 @@ class _MealDetailFragmentState extends State<MealDetailFragment> {
                               maxLines: 4,
                               style: TextStyle(color: Color(0xFF000000)),
                               cursorColor: Color(0xFF9b9b9b),
-                              keyboardType: TextInputType.number,
+                              keyboardType: TextInputType.text,
                               decoration: InputDecoration(
                                 focusedBorder: UnderlineInputBorder(
                                   borderSide:
                                       BorderSide(color: Color(0xFFA3DC92)),
                                 ),
                                 hintText: "Informação Adicional",
+                                labelText: 'Informação Adicional',
+                                labelStyle:
+                                TextStyle(color: Colors.grey),
                                 hintStyle: TextStyle(
                                     color: Color(0xFF9b9b9b),
                                     fontSize: 15,
