@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:nutriclock_app/constants/constants.dart' as Constants;
+import 'package:nutriclock_app/network_utils/api.dart';
 import 'package:nutriclock_app/screens/home.dart';
 import 'package:nutriclock_app/screens/login.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:splashscreen/splashscreen.dart';
+
+import 'constants/constants.dart';
 
 void main() {
   runApp(new MaterialApp(
@@ -57,9 +60,12 @@ class _CheckAuthState extends State<CheckAuth> {
     var token = localStorage.getString(Constants.LOCAL_STORAGE_TOKEN_KEY);
 
     if (token != null) {
-      setState(() {
-        isAuth = true;
-      });
+      var response = await Network().getWithAuth(USERS_ME_URL);
+      if (response.statusCode == RESPONSE_SUCCESS) {
+        setState(() {
+          isAuth = true;
+        });
+      }
     }
   }
 
