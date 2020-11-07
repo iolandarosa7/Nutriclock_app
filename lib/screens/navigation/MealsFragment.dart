@@ -156,7 +156,7 @@ class _MealsFragmentState extends State<MealsFragment> {
                                                     constraints:
                                                         BoxConstraints.expand(),
                                                     child: Image.network(
-                                                      "$BASE_URL/storage/food/${value.foodPhotoUrl}",
+                                                      "$BASE_URL/storage/food/thumb_${value.foodPhotoUrl}",
                                                       fit: BoxFit.cover,
                                                     ),
                                                   ),
