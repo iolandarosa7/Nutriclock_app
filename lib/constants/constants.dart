@@ -21,18 +21,21 @@ const String ERROR_CONFIRMATION_PASS_MUST_BE_EQUAL =
     'Deve ser igual à password';
 const String ERROR_NEW_PASS_MUST_NOT_BE_EQUAL =
     'Deve ser diferente da password atual';
+const String ERROR_NEW_EMAIL_MUST_NOT_BE_EQUAL =
+    'Deve ser diferente do email atual';
 const String ERROR_NEGATIVE_VALUE = 'O valor deve ser positivo';
 const String ERROR_INVALID_FRAGMENT = 'Index inválido';
 
 const String ERROR_GENERAL_API = 'Woops! Algo correu mal';
 const String ERROR_USER_NOT_FOUND_API = 'O utilizador não existe!';
 
-const BASE_URL = 'https://aa643e78c5ab.ngrok.io';
+const BASE_URL = 'https://f43201d03194.ngrok.io';
 const BASE_API_URL = '$BASE_URL/api';
 
 const LOGIN_URL = '/login';
 const LOGOUT_URL = '/logout';
 const PASSWORD_URL = '/password';
+const EMAIL_URL = '/email';
 const REGISTER_URL = '/users';
 const MEAL_URL = '/meals';
 const MEALS_USER_URL = '/meals-user';

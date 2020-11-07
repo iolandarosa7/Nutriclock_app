@@ -66,6 +66,9 @@ class _ChangePasswordState extends State<ChangePassword> {
                           color: Colors.grey,
                         ),
                         hintText: "Password atual",
+                        labelText: 'Password atual',
+                        labelStyle:
+                        TextStyle(color: Colors.grey),
                         hintStyle: TextStyle(
                             color: Color(0xFF9b9b9b),
                             fontSize: 15,
@@ -96,6 +99,9 @@ class _ChangePasswordState extends State<ChangePassword> {
                           color: Colors.grey,
                         ),
                         hintText: "Nova password",
+                        labelText: 'Nova password',
+                        labelStyle:
+                        TextStyle(color: Colors.grey),
                         hintStyle: TextStyle(
                             color: Color(0xFF9b9b9b),
                             fontSize: 15,
@@ -131,6 +137,9 @@ class _ChangePasswordState extends State<ChangePassword> {
                           color: Colors.grey,
                         ),
                         hintText: "Confirmação de password",
+                        labelText: 'Confirmação de password',
+                        labelStyle:
+                        TextStyle(color: Colors.grey),
                         hintStyle: TextStyle(
                             color: Color(0xFF9b9b9b),
                             fontSize: 15,
