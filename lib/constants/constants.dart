@@ -27,7 +27,7 @@ const String ERROR_INVALID_FRAGMENT = 'Index inválido';
 const String ERROR_GENERAL_API = 'Woops! Algo correu mal';
 const String ERROR_USER_NOT_FOUND_API = 'O utilizador não existe!';
 
-const BASE_URL = 'https://83710a2a72d0.ngrok.io';
+const BASE_URL = 'https://aa643e78c5ab.ngrok.io';
 const BASE_API_URL = '$BASE_URL/api';
 
 const LOGIN_URL = '/login';

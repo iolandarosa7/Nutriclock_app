@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:nutriclock_app/constants/constants.dart';
 import 'package:nutriclock_app/models/User.dart';
 import 'package:nutriclock_app/network_utils/api.dart';
+import 'package:nutriclock_app/screens/drawer/BioMarkersFragment.dart';
 import 'package:nutriclock_app/screens/drawer/ContactsFragment.dart';
 import 'package:nutriclock_app/screens/drawer/FoodPlanFragment.dart';
 import 'package:nutriclock_app/screens/drawer/HomeFragment.dart';
@@ -108,6 +109,7 @@ class _HomeState extends State<Home> {
     ReportsFragment(),
     FoodPlanFragment(),
     ContactsFragment(),
+    BioMarkersFragment(),
   ];
 
   @override
@@ -211,6 +213,11 @@ class _HomeState extends State<Home> {
                 leading: Icon(Icons.email),
                 title: Text('Contactos', style: TextStyle(color: Colors.grey)),
                 onTap: () => _onSelectItem(7, "Contactos"),
+              ),
+              ListTile(
+                leading: Icon(Icons.accessibility),
+                title: Text('Biomarcadores', style: TextStyle(color: Colors.grey)),
+                onTap: () => _onSelectItem(8, "Biomarcadores"),
               ),
             ])
           ],
