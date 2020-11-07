@@ -119,7 +119,7 @@ class _HomeFragmentState extends State<HomeFragment> {
                                 backgroundColor: Colors.black12,
                                 progressColor: Colors.green,
                                 footer: Text(
-                                  "Total de Alimentos: $_totalMeals",
+                                  "Total de Alimentos / Refeições: $_totalMeals",
                                   textAlign: TextAlign.center,
                                   style: TextStyle(
                                       color: Colors.black54, fontSize: 12),
