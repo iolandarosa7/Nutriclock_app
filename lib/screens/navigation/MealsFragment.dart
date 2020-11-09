@@ -60,6 +60,7 @@ class _MealsFragmentState extends State<MealsFragment> {
     });
   }
 
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -188,7 +189,9 @@ class _MealsFragmentState extends State<MealsFragment> {
                               context,
                               MaterialPageRoute(
                                   builder: (context) => MealDetailFragment()),
-                            );
+                            ).then((value) => {
+                              _loadMealsList()
+                            });
                           },
                           child: Icon(Icons.add),
                           backgroundColor: Color(0xFF808e95),
