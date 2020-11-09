@@ -129,6 +129,7 @@ class _MealsFragmentState extends State<MealsFragment> {
                                     child: Padding(
                                   padding: EdgeInsets.all(4),
                                   child: GridView.count(
+                                    physics: ScrollPhysics(),
                                     crossAxisCount: 3,
                                     mainAxisSpacing: 4.0,
                                     crossAxisSpacing: 4.0,
@@ -140,6 +141,14 @@ class _MealsFragmentState extends State<MealsFragment> {
                                                 ? Container(
                                                     constraints:
                                                         BoxConstraints.expand(),
+                                                    child: Text(
+                                                      "${value.name}",
+                                                      textAlign: TextAlign.center,
+                                                      style: TextStyle(
+                                                        color: Colors.black54,
+                                                        fontFamily: 'Pacifico'
+                                                      ),
+                                                    ),
                                                     decoration: BoxDecoration(
                                                       gradient: LinearGradient(
                                                           begin: Alignment
