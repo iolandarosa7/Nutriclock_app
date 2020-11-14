@@ -297,8 +297,7 @@ class _MealDetailFragmentState extends State<MealDetailFragment> {
                                   ),
                                   hintText: "Nome *",
                                   labelText: 'Nome *',
-                                  labelStyle:
-                                  TextStyle(color: Colors.grey),
+                                  labelStyle: TextStyle(color: Colors.grey),
                                   hintStyle: TextStyle(
                                       color: Color(0xFF9b9b9b),
                                       fontSize: 15,
@@ -356,8 +355,7 @@ class _MealDetailFragmentState extends State<MealDetailFragment> {
                                       ),
                                       hintText: "Quant. *",
                                       labelText: 'Quant. *',
-                                      labelStyle:
-                                      TextStyle(color: Colors.grey),
+                                      labelStyle: TextStyle(color: Colors.grey),
                                       hintStyle: TextStyle(
                                           color: Color(0xFF9b9b9b),
                                           fontSize: 15,
@@ -526,8 +524,7 @@ class _MealDetailFragmentState extends State<MealDetailFragment> {
                                 ),
                                 hintText: "Informação Adicional",
                                 labelText: 'Informação Adicional',
-                                labelStyle:
-                                TextStyle(color: Colors.grey),
+                                labelStyle: TextStyle(color: Colors.grey),
                                 hintStyle: TextStyle(
                                     color: Color(0xFF9b9b9b),
                                     fontSize: 15,
@@ -577,6 +574,13 @@ class _MealDetailFragmentState extends State<MealDetailFragment> {
                                       return;
                                     }
 
+                                    if (_selectedUnit == "Outro" &&
+                                        (_observations == "" ||
+                                            _observations == null)) {
+                                      _showAdditionalInformationDialog();
+                                      return;
+                                    }
+
                                     _postNewMeal();
                                   },
                                 ),
@@ -592,6 +596,55 @@ class _MealDetailFragmentState extends State<MealDetailFragment> {
             ),
           ),
         ));
+  }
+
+  Future<void> _showAdditionalInformationDialog() async {
+    return showDialog<void>(
+      context: context,
+      barrierDismissible: false,
+      builder: (BuildContext context) {
+        return StatefulBuilder(
+            builder: (BuildContext context, StateSetter setState) {
+          return AlertDialog(
+            title: Text(
+                'Selecionou a unidade "Outro". Seria importante que desse alguma informação adicional sobre o produto.'),
+            content:
+                  TextFormField(
+                    maxLines: 4,
+                    style: TextStyle(color: Color(0xFF000000)),
+                    cursorColor: Color(0xFF9b9b9b),
+                    keyboardType: TextInputType.text,
+                    decoration: InputDecoration(
+                      focusedBorder: UnderlineInputBorder(
+                        borderSide: BorderSide(color: Color(0xFFA3DC92)),
+                      ),
+                      hintText: "Informação Adicional",
+                      labelText: 'Informação Adicional',
+                      labelStyle: TextStyle(color: Colors.grey),
+                      hintStyle: TextStyle(
+                          color: Color(0xFF9b9b9b),
+                          fontSize: 15,
+                          fontWeight: FontWeight.normal),
+                    ),
+                    onChanged: (value) => {
+                      this.setState(() {
+                        _observations = value;
+                      }),
+                    },
+                  ),
+            actions: <Widget>[
+              FlatButton(
+                child: Text('Ok'),
+                onPressed: () {
+                  _postNewMeal();
+                  Navigator.of(context).pop();
+                },
+              ),
+            ],
+          );
+        });
+      },
+    );
   }
 
   void _postNewMeal() async {
