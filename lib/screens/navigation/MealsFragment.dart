@@ -179,7 +179,7 @@ class _MealsFragmentState extends State<MealsFragment> {
                               ],
                             )),
                 ),
-                _daysFromInitialMeal <= 3
+                _daysFromInitialMeal == null || _daysFromInitialMeal <= 3
                     ? Positioned(
                         top: 10,
                         right: 20,
