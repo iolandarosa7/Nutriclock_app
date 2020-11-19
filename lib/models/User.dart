@@ -6,12 +6,14 @@ class User {
   String height;
   String email;
   String role;
-  int active;
+  bool active;
+  // int active;
   String avatarUrl;
   String birthday;
   String diseases;
   int ufc_id;
-  int terms_accepted;
+  bool terms_accepted;
+  // int terms_accepted;
 
   User();
 

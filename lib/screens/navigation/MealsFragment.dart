@@ -52,8 +52,6 @@ class _MealsFragmentState extends State<MealsFragment> {
       } else {}
     } catch (error) {}
 
-    print(daysFromInitialMeal);
-
     this.setState(() {
       _isLoading = false;
       _daysFromInitialMeal = daysFromInitialMeal;

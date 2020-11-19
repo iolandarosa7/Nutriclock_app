@@ -95,6 +95,8 @@ class _MealDetailFragmentState extends State<MealDetailFragment> {
     try {
       var response = await Network().getWithoutAuth(MEALS_NAMES_URL);
 
+      print(response.statusCode);
+
       if (response.statusCode == RESPONSE_SUCCESS) {
         List<dynamic> data = json.decode(response.body)[JSON_DATA_KEY];
         data.forEach((element) {
@@ -109,7 +111,7 @@ class _MealDetailFragmentState extends State<MealDetailFragment> {
         _autocompleteSuggestions = list;
       });
     } catch (error) {
-      print(error.toString());
+      print('error'+error.toString());
     }
   }
 
