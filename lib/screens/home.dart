@@ -46,7 +46,7 @@ class _HomeState extends State<Home> {
       var avatarUrl = '';
 
       if (user.avatarUrl != null) {
-        avatarUrl = "$BASE_URL/storage/avatars/${user.avatarUrl}";
+        avatarUrl = "$IMAGE_BASE_URL/avatars/${user.avatarUrl}";
       }
 
       setState(() {

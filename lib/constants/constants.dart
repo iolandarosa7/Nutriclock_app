@@ -30,6 +30,7 @@ const String ERROR_GENERAL_API = 'Woops! Algo correu mal';
 const String ERROR_USER_NOT_FOUND_API = 'O utilizador não existe!';
 
 const BASE_URL = 'https://nutriclock.herokuapp.com';
+const IMAGE_BASE_URL = 'https://nutriclock.s3-eu-west-1.amazonaws.com';
 // const BASE_URL = 'https://b025c5e2874c.ngrok.io';
 const BASE_API_URL = '$BASE_URL/api';
 
