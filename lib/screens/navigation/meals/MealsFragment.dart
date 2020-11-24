@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:nutriclock_app/constants/constants.dart';
 import 'package:nutriclock_app/models/Meal.dart';
 import 'package:nutriclock_app/network_utils/api.dart';
-import 'package:nutriclock_app/screens/navigation/MealDetailFragment.dart';
+import 'package:nutriclock_app/screens/navigation/meals/MealDetailFragment.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class MealsFragment extends StatefulWidget {

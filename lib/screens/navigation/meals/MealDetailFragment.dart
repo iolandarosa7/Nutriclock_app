@@ -778,24 +778,26 @@ class _MealDetailFragmentState extends State<MealDetailFragment> {
           _time = pickedTime;
           _showError = false;
         });
-        return;
       }
-      final DateTime picked = await showDatePicker(
-        context: context,
-        initialDate: _date,
-        firstDate: DateTime(1900),
-        lastDate: DateTime.now(),
-        initialDatePickerMode: DatePickerMode.year,
-        cancelText: 'Cancelar',
-        fieldLabelText: 'Data de Nascimento',
-      );
 
-      if (picked != null && picked != _date) {
-        setState(() {
-          _date = picked;
-          _showError = false;
-        });
-      }
+      return;
+    }
+
+    final DateTime picked = await showDatePicker(
+      context: context,
+      initialDate: _date,
+      firstDate: DateTime(1900),
+      lastDate: DateTime.now(),
+      initialDatePickerMode: DatePickerMode.year,
+      cancelText: 'Cancelar',
+      fieldLabelText: 'Data de Nascimento',
+    );
+
+    if (picked != null && picked != _date) {
+      setState(() {
+        _date = picked;
+        _showError = false;
+      });
     }
   }
 

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:nutriclock_app/screens/navigation/sleep/SleepCalendarFragment.dart';
 
 class SleepFragment extends StatefulWidget {
   @override
@@ -26,25 +27,40 @@ class _SleepFragmentState extends State<SleepFragment> {
               child: Column(
                 children: [
                   SizedBox(
-                    height: 16,
+                    height: 50,
                   ),
-                  Text(
-                    "Horas de Sono",
-                    style: TextStyle(
-                      color: Colors.black54,
-                      fontSize: 16,
-                      fontWeight: FontWeight.bold,
+                  GestureDetector(
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => SleepCalendarFragment()),
+                      );
+                    },
+                    child: Text(
+                      "Diário do Sono",
+                      style: TextStyle(
+                        color: Colors.black54,
+                        fontSize: 16,
+                        fontWeight: FontWeight.bold,
+                      ),
                     ),
                   ),
-                  ClipRect(
-                    child: Image.asset(
-                      "assets/images/pillow.png",
-                      fit: BoxFit.cover,
-                      height: 150,
+                  GestureDetector(
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => SleepCalendarFragment()),
+                      );
+                    },
+                    child: ClipRect(
+                      child: Image.asset(
+                        "assets/images/pillow.png",
+                        fit: BoxFit.cover,
+                        height: 120,
+                      ),
                     ),
-                  ),
-                  SizedBox(
-                    height: 16,
                   ),
                 ],
               ),
@@ -63,7 +79,7 @@ class _SleepFragmentState extends State<SleepFragment> {
               child: Column(
                 children: [
                   Text(
-                    "Estatisticas",
+                    "Estatísticas",
                     style: TextStyle(
                       color: Colors.black54,
                       fontSize: 16,
@@ -74,7 +90,7 @@ class _SleepFragmentState extends State<SleepFragment> {
                     child: Image.asset(
                       "assets/images/stats.png",
                       fit: BoxFit.cover,
-                      height: 150,
+                      height: 100,
                     ),
                   ),
                   SizedBox(
@@ -108,8 +124,11 @@ class _SleepFragmentState extends State<SleepFragment> {
                     child: Image.asset(
                       "assets/images/tips.png",
                       fit: BoxFit.cover,
-                      height: 150,
+                      height: 120,
                     ),
+                  ),
+                  SizedBox(
+                    height: 68,
                   ),
                 ],
               ),
@@ -120,7 +139,3 @@ class _SleepFragmentState extends State<SleepFragment> {
     ));
   }
 }
-
-/*
-
- */

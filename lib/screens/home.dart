@@ -12,8 +12,8 @@ import 'package:nutriclock_app/screens/drawer/ReportsFragment.dart';
 import 'package:nutriclock_app/screens/login.dart';
 import 'package:nutriclock_app/screens/navigation/ChatFragment.dart';
 import 'package:nutriclock_app/screens/navigation/ExerciseFragment.dart';
-import 'package:nutriclock_app/screens/navigation/MealsFragment.dart';
-import 'package:nutriclock_app/screens/navigation/SleepFragment.dart';
+import 'package:nutriclock_app/screens/navigation/meals/MealsFragment.dart';
+import 'package:nutriclock_app/screens/navigation/sleep/SleepFragment.dart';
 import 'package:nutriclock_app/screens/settings/Settings.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
