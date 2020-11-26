@@ -1,8 +1,14 @@
+import 'dart:convert';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/date_symbol_data_local.dart';
 import 'package:intl/intl.dart';
 import 'package:multiselect_formfield/multiselect_formfield.dart';
+import 'package:nutriclock_app/constants/constants.dart';
+import 'package:nutriclock_app/models/User.dart';
+import 'package:nutriclock_app/network_utils/api.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class SleepRegisterFragment extends StatefulWidget {
   final dynamic value;
@@ -22,8 +28,27 @@ class _SleepRegisterFragmentState extends State<SleepRegisterFragment> {
   TimeOfDay _wakeUpTime = TimeOfDay.now();
   TimeOfDay _endUpTime = TimeOfDay.now();
   var _hasWakeUp = false;
-  var _myActivities = [];
-  var _myMotives = [];
+  List<dynamic> _myActivities = [];
+  List<dynamic> _myMotives = [];
+  var _userId;
+
+  @override
+  void initState() {
+    _loadData();
+    super.initState();
+  }
+
+  _loadData() async {
+    SharedPreferences localStorage = await SharedPreferences.getInstance();
+    var storeUser = localStorage.getString(LOCAL_STORAGE_USER_KEY);
+
+    if (storeUser != null) {
+      User user = User.fromJson(json.decode(storeUser));
+      this.setState(() {
+        _userId = user.id;
+      });
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -125,9 +150,9 @@ class _SleepRegisterFragmentState extends State<SleepRegisterFragment> {
                                         color: Colors.transparent,
                                         splashColor: Colors.black26,
                                         onPressed: () =>
-                                            _selectDate(context, true),
+                                            _selectDate(context, false),
                                         child: Text(
-                                          "${_wakeUpTime.hour}:${_wakeUpTime.minute > 9 ? _wakeUpTime.minute : "0${_wakeUpTime.minute}"}",
+                                          "${_endUpTime.hour}:${_endUpTime.minute > 9 ? _endUpTime.minute : "0${_endUpTime.minute}"}",
                                           style: TextStyle(
                                             color: Color(0xFF000000),
                                             fontSize: 15,
@@ -322,7 +347,6 @@ class _SleepRegisterFragmentState extends State<SleepRegisterFragment> {
                                               initialValue: _myActivities,
                                               onSaved: (value) {
                                                 if (value == null) return;
-                                                print(value);
                                                 setState(() {
                                                   _myActivities = value;
                                                 });
@@ -406,7 +430,6 @@ class _SleepRegisterFragmentState extends State<SleepRegisterFragment> {
                                               initialValue: _myMotives,
                                               onSaved: (value) {
                                                 if (value == null) return;
-                                                print(value);
                                                 setState(() {
                                                   _myMotives = value;
                                                 });
@@ -444,6 +467,10 @@ class _SleepRegisterFragmentState extends State<SleepRegisterFragment> {
                                         borderRadius:
                                             new BorderRadius.circular(20.0)),
                                     onPressed: () {
+                                      if (_wakeUpTime == _endUpTime) {
+                                        _showMessage("A hora de deitar e levantar devem ser diferentes", Colors.red);
+                                        return;
+                                      }
                                       _registerSleep();
                                     },
                                   ),
@@ -462,7 +489,59 @@ class _SleepRegisterFragmentState extends State<SleepRegisterFragment> {
     );
   }
 
-  void _registerSleep() {}
+  void _registerSleep() async {
+    var isShowMessage = false;
+    var message = "Ocorreu um erro ao registar o sono";
+    if (_isLoading) return;
+    this.setState(() {
+      _isLoading = true;
+    });
+
+    try {
+      var response = await Network().postWithAuth({
+        'date': dateFormat.format(widget.value),
+        'userId': _userId,
+        'wakeUpTime': "${_wakeUpTime.hour}:${_wakeUpTime.minute > 9 ? _wakeUpTime.minute : "0${_wakeUpTime.minute}"}",
+        'sleepTime': "${_endUpTime.hour}:${_endUpTime.minute > 9 ? _endUpTime.minute : "0${_endUpTime.minute}"}",
+        'hasWakeUp': _hasWakeUp,
+        'activities': _myActivities,
+        'motives': _myMotives
+      }, SLEEP_URL);
+
+      var body = json.decode(response.body);
+
+      if (response.statusCode == RESPONSE_SUCCESS_201) {
+        Navigator.of(context).pop();
+        _showMessage("Registado com sucesso!", Colors.green);
+      } else {
+        isShowMessage = true;
+        if (body[JSON_ERROR_KEY] != null) message = (body[JSON_ERROR_KEY]);
+      }
+
+    } catch(error) {
+      isShowMessage = true;
+    }
+
+    if (isShowMessage) _showMessage(message, Colors.red);
+
+    setState(() {
+      _isLoading = false;
+    });
+
+  }
+
+  _showMessage(String message, Color backgroundColor) {
+    final snackBar = SnackBar(
+      backgroundColor: backgroundColor,
+      content: Text(message),
+      action: SnackBarAction(
+        label: 'Fechar',
+        textColor: Colors.white,
+        onPressed: () {},
+      ),
+    );
+    _scaffoldKey.currentState.showSnackBar(snackBar);
+  }
 
   // show datepicker
   void _selectDate(BuildContext context, bool isWakeUp) async {

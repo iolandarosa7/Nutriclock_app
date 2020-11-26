@@ -29,6 +29,21 @@ class Network {
         body: jsonEncode(data));
   }
 
+  Future<http.Response> postWithAuth(
+      Map<String, dynamic> data, String apiUrl) async {
+    var url = Constants.BASE_API_URL + apiUrl;
+    await _getToken();
+    var b = jsonEncode(data);
+    token = token.replaceAll("\"", "");
+    return http.post(url,
+        headers: <String, String>{
+          'Content-Type': 'application/json; charset=UTF-8',
+          'Accept': 'application/json',
+          'Authorization': 'Bearer $token'
+        },
+        body: jsonEncode(data));
+  }
+
   Future<http.Response> registerUser(User user, File avatar, String password,
       List<Drug> drugs, String apiUrl) async {
     var url = Constants.BASE_API_URL + apiUrl;
