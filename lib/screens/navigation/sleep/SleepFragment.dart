@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:nutriclock_app/screens/navigation/sleep/SleepCalendarFragment.dart';
 
+import 'SleepStatsFragment.dart';
+
 class SleepFragment extends StatefulWidget {
   @override
   _SleepFragmentState createState() => _SleepFragmentState();
@@ -78,19 +80,37 @@ class _SleepFragmentState extends State<SleepFragment> {
               padding: EdgeInsets.all(16),
               child: Column(
                 children: [
-                  Text(
-                    "Estatísticas",
-                    style: TextStyle(
-                      color: Colors.black54,
-                      fontSize: 16,
-                      fontWeight: FontWeight.bold,
+                  GestureDetector(
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => SleepStatsFragment()),
+                      );
+                    },
+                    child: Text(
+                      "Estatísticas",
+                      style: TextStyle(
+                        color: Colors.black54,
+                        fontSize: 16,
+                        fontWeight: FontWeight.bold,
+                      ),
                     ),
                   ),
-                  ClipRect(
-                    child: Image.asset(
-                      "assets/images/stats.png",
-                      fit: BoxFit.cover,
-                      height: 100,
+                  GestureDetector(
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => SleepStatsFragment()),
+                      );
+                    },
+                    child: ClipRect(
+                      child: Image.asset(
+                        "assets/images/stats.png",
+                        fit: BoxFit.cover,
+                        height: 100,
+                      ),
                     ),
                   ),
                   SizedBox(

@@ -290,52 +290,52 @@ class _SleepRegisterFragmentState extends State<SleepRegisterFragment> {
                                                 {
                                                   "display":
                                                       "Beber bebidas alcoólica",
-                                                  "value": "alcohol",
+                                                  "value": "Beber bebidas alcoólica",
                                                 },
                                                 {
                                                   "display":
                                                       "Beber bebidas com cafeína",
-                                                  "value": "coffee",
+                                                  "value": "Beber bebidas com cafeína",
                                                 },
                                                 {
                                                   "display":
                                                       "Comer refeição pesada",
-                                                  "value": "meal",
+                                                  "value": "Comer refeição pesada",
                                                 },
                                                 {
                                                   "display":
                                                       "Comeu doces / açúcares",
-                                                  "value": "sugars",
+                                                  "value": "Comeu doces / açúcares",
                                                 },
                                                 {
                                                   "display": "Estudar",
-                                                  "value": "study",
+                                                  "value": "Estudar",
                                                 },
                                                 {
                                                   "display":
                                                       "Praticar exercício físico",
-                                                  "value": "exercise",
+                                                  "value": "Praticar exercício físico",
                                                 },
                                                 {
                                                   "display": "Fumar",
-                                                  "value": "smoke",
+                                                  "value": "Fumar",
                                                 },
                                                 {
                                                   "display":
                                                       "Olhar para ecrã de smartphone, PC ou similar",
-                                                  "value": "screen",
+                                                  "value": "Olhar para ecrã de smartphone, PC ou similar",
                                                 },
                                                 {
                                                   "display": "Ver televisão",
-                                                  "value": "tv",
+                                                  "value": "Ver televisão",
                                                 },
                                                 {
                                                   "display": "Ler",
-                                                  "value": "read",
+                                                  "value": "Ler",
                                                 },
                                                 {
-                                                  "display": "Outra",
-                                                  "value": "another",
+                                                  "display": "Outra(s)",
+                                                  "value": "Outra(s)",
                                                 },
                                               ],
                                               textField: 'display',
@@ -390,35 +390,35 @@ class _SleepRegisterFragmentState extends State<SleepRegisterFragment> {
                                               dataSource: [
                                                 {
                                                   "display": "Dores",
-                                                  "value": "pain",
+                                                  "value": "Dores",
                                                 },
                                                 {
                                                   "display": "Medicação",
-                                                  "value": "medication",
+                                                  "value": "Medicação",
                                                 },
                                                 {
                                                   "display": "Insónia",
-                                                  "value": "insomnia",
+                                                  "value": "Insónia",
                                                 },
                                                 {
                                                   "display": "Barulho",
-                                                  "value": "noise",
+                                                  "value": "Barulho",
                                                 },
                                                 {
                                                   "display": "Pesadelo",
-                                                  "value": "dream",
+                                                  "value": "Pesadelo",
                                                 },
                                                 {
                                                   "display": "Claridade",
-                                                  "value": "light",
+                                                  "value": "Claridade",
                                                 },
                                                 {
                                                   "display": "Stress",
-                                                  "value": "stress",
+                                                  "value": "Stress",
                                                 },
                                                 {
-                                                  "display": "Outra",
-                                                  "value": "another",
+                                                  "display": "Outra(s)",
+                                                  "value": "Outra(s)",
                                                 },
                                               ],
                                               textField: 'display',

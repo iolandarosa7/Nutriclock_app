@@ -7,7 +7,6 @@ class Sleep {
   bool hasWakeUp;
   List<String> activities;
   List<String> motives;
-
   Sleep();
 
   Map<String, dynamic> toJson() => {

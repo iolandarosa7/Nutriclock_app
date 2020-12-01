@@ -95,8 +95,6 @@ class _MealDetailFragmentState extends State<MealDetailFragment> {
     try {
       var response = await Network().getWithoutAuth(MEALS_NAMES_URL);
 
-      print(response.statusCode);
-
       if (response.statusCode == RESPONSE_SUCCESS) {
         List<dynamic> data = json.decode(response.body)[JSON_DATA_KEY];
         data.forEach((element) {
@@ -110,9 +108,7 @@ class _MealDetailFragmentState extends State<MealDetailFragment> {
         _isLoading = false;
         _autocompleteSuggestions = list;
       });
-    } catch (error) {
-      print('error'+error.toString());
-    }
+    } catch (error) {}
   }
 
   @override
@@ -610,30 +606,29 @@ class _MealDetailFragmentState extends State<MealDetailFragment> {
           return AlertDialog(
             title: Text(
                 'Selecionou a unidade "Outro". Seria importante que desse alguma informação adicional sobre o produto.'),
-            content:
-                  TextFormField(
-                    maxLines: 4,
-                    style: TextStyle(color: Color(0xFF000000)),
-                    cursorColor: Color(0xFF9b9b9b),
-                    keyboardType: TextInputType.text,
-                    decoration: InputDecoration(
-                      focusedBorder: UnderlineInputBorder(
-                        borderSide: BorderSide(color: Color(0xFFA3DC92)),
-                      ),
-                      hintText: "Informação Adicional",
-                      labelText: 'Informação Adicional',
-                      labelStyle: TextStyle(color: Colors.grey),
-                      hintStyle: TextStyle(
-                          color: Color(0xFF9b9b9b),
-                          fontSize: 15,
-                          fontWeight: FontWeight.normal),
-                    ),
-                    onChanged: (value) => {
-                      this.setState(() {
-                        _observations = value;
-                      }),
-                    },
-                  ),
+            content: TextFormField(
+              maxLines: 4,
+              style: TextStyle(color: Color(0xFF000000)),
+              cursorColor: Color(0xFF9b9b9b),
+              keyboardType: TextInputType.text,
+              decoration: InputDecoration(
+                focusedBorder: UnderlineInputBorder(
+                  borderSide: BorderSide(color: Color(0xFFA3DC92)),
+                ),
+                hintText: "Informação Adicional",
+                labelText: 'Informação Adicional',
+                labelStyle: TextStyle(color: Colors.grey),
+                hintStyle: TextStyle(
+                    color: Color(0xFF9b9b9b),
+                    fontSize: 15,
+                    fontWeight: FontWeight.normal),
+              ),
+              onChanged: (value) => {
+                this.setState(() {
+                  _observations = value;
+                }),
+              },
+            ),
             actions: <Widget>[
               FlatButton(
                 child: Text('Ok'),
