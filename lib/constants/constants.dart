@@ -13,6 +13,7 @@ const String JSON_ID_KEY = 'id';
 
 const int RESPONSE_SUCCESS = 200;
 const int RESPONSE_SUCCESS_201 = 201;
+const int EIGHT_WEEK_DAYS = 8*7;
 
 const String ERROR_MANDATORY_FIELD = 'O campo não pode estar vazio';
 const String ERROR_INVALID_FORMAT_FIELD = 'Formato inválido';
@@ -31,8 +32,8 @@ const String ERROR_USER_NOT_FOUND_API = 'O utilizador não existe!';
 
 // const BASE_URL = 'https://nutriclock.herokuapp.com';
 // const IMAGE_BASE_URL = 'https://nutriclock.s3-eu-west-1.amazonaws.com';
-const IMAGE_BASE_URL = 'https://2a04d5273fb7.ngrok.io/storage/images';
-const BASE_URL = 'https://2a04d5273fb7.ngrok.io';
+const IMAGE_BASE_URL = 'https://460443f4476f.ngrok.io/storage/images';
+const BASE_URL = 'https://460443f4476f.ngrok.io';
 const BASE_API_URL = '$BASE_URL/api';
 
 const LOGIN_URL = '/login';
@@ -43,7 +44,6 @@ const REGISTER_URL = '/users';
 const MEAL_URL = '/meals';
 const MEALS_USER_URL = '/meals-user';
 const MEALS_NAMES_URL = '/meal-names';
-const MEALS_STATS_URL = '/meals/stats';
 
 const USERS_ME_URL = '/users/me';
 
@@ -54,3 +54,5 @@ const USER_TERMS_URL = '/users/terms';
 
 const SLEEP_URL = '/sleeps';
 const SLEEP_STATS_ME_URL = '/sleeps/myStats';
+
+const STATS_URL = '/stats';

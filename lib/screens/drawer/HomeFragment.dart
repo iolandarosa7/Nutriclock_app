@@ -5,7 +5,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:nutriclock_app/constants/constants.dart';
 import 'package:nutriclock_app/models/Statistics.dart';
-import 'package:nutriclock_app/models/User.dart';
 import 'package:nutriclock_app/network_utils/api.dart';
 import 'package:percent_indicator/circular_percent_indicator.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -18,6 +17,8 @@ class HomeFragment extends StatefulWidget {
 class _HomeFragmentState extends State<HomeFragment> {
   var _totalMeals = 0;
   var _mealDaysRegistered = 0;
+  var _totalSleeps = 0;
+  var _averageSleepHours = 0.0;
 
   @override
   void initState() {
@@ -27,30 +28,27 @@ class _HomeFragmentState extends State<HomeFragment> {
 
   _loadData() async {
     SharedPreferences localStorage = await SharedPreferences.getInstance();
-    var storeUser = localStorage.getString(LOCAL_STORAGE_USER_KEY);
     var days = 0;
 
-    if (storeUser != null) {
-      User user = User.fromJson(json.decode(storeUser));
-      try {
-        var response =
-            await Network().getWithAuth("$MEALS_STATS_URL/${user.id}");
+    try {
+      var response = await Network().getWithAuth("$STATS_URL");
 
-        if (response.statusCode == RESPONSE_SUCCESS) {
-          var data = Statistics.fromJson(json.decode(response.body));
-          this.setState(() {
-            _mealDaysRegistered = data.totalDaysRegistered;
-            _totalMeals = data.meals;
-          });
+      if (response.statusCode == RESPONSE_SUCCESS) {
+        var data = Statistics.fromJson(json.decode(response.body));
+        this.setState(() {
+          _mealDaysRegistered = data.totalDaysRegistered;
+          _totalMeals = data.meals;
+          _totalSleeps = data.totalSleepDays;
+          _averageSleepHours = data.averageSleepHours;
+        });
 
-          days = data.daysFromInitialDate;
-        }
-      } catch (error) {
-        print(error.toString());
+        days = data.daysFromInitialDate;
       }
-
-      localStorage.setInt(LOCAL_STORAGE_MEALS_DAYS_DURATION_KEY, days);
+    } catch (error) {
+      print(error.toString());
     }
+
+    localStorage.setInt(LOCAL_STORAGE_MEALS_DAYS_DURATION_KEY, days);
   }
 
   @override
@@ -131,14 +129,48 @@ class _HomeFragmentState extends State<HomeFragment> {
                         Text(
                           "Sono",
                           style: TextStyle(
-                              color: Color(0x9074D44D),
+                              color: _totalSleeps == 0
+                                  ? Color(0x9074D44D)
+                                  : Color(0xFF74D44D),
                               fontFamily: 'Pacifico',
                               fontSize: 16),
                         ),
-                        Text(
-                          "Ainda não há progresso para mostrar!",
-                          style: TextStyle(color: Colors.grey, fontSize: 12),
-                        ),
+                        _totalSleeps == 0
+                            ? Text(
+                                "Ainda não há progresso para mostrar!",
+                                textAlign: TextAlign.center,
+                                style:
+                                    TextStyle(color: Colors.grey, fontSize: 14),
+                              )
+                            : new CircularPercentIndicator(
+                                radius: 100.0,
+                                lineWidth: 10.0,
+                                percent: _totalSleeps / EIGHT_WEEK_DAYS,
+                                center: Column(children: [
+                                  SizedBox(
+                                    height: 20,
+                                  ),
+                                  new Icon(
+                                    Icons.bedtime,
+                                    size: 50.0,
+                                    color: Colors.green,
+                                  ),
+                                  Text(
+                                    "$_totalSleeps dias",
+                                    textAlign: TextAlign.center,
+                                    style: TextStyle(
+                                        color: Colors.green, fontSize: 12),
+                                  ),
+                                ]),
+                                backgroundColor: Colors.black12,
+                                progressColor: Colors.green,
+                                footer: Text(
+                                  "Média de Horas de Sono: $_averageSleepHours",
+                                  textAlign: TextAlign.center,
+                                  style: TextStyle(
+                                      color: Colors.black54, fontSize: 12),
+                                ),
+                              ),
                         SizedBox(
                           height: 30,
                         ),

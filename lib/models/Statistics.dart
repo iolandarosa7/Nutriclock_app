@@ -2,6 +2,8 @@ class Statistics {
   int daysFromInitialDate;
   int totalDaysRegistered;
   int meals;
+  int totalSleepDays;
+  double averageSleepHours;
 
   Statistics();
 
@@ -9,10 +11,14 @@ class Statistics {
         'daysFromInitialDate': daysFromInitialDate,
         'totalDaysRegistered': totalDaysRegistered,
         'meals': meals,
+        'totalSleepDays': totalSleepDays,
+        'averageSleepHours': averageSleepHours,
       };
 
   Statistics.fromJson(Map<String, dynamic> json)
       : daysFromInitialDate = json['daysFromInitialDate'],
         totalDaysRegistered = json['totalDaysRegistered'],
-        meals = json['meals'];
+        meals = json['meals'],
+        totalSleepDays = json['totalSleepDays'],
+        averageSleepHours = json['averageSleepHours'];
 }
