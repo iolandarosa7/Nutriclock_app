@@ -1,5 +1,10 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
+import 'package:nutriclock_app/constants/constants.dart';
+import 'package:nutriclock_app/network_utils/api.dart';
 import 'package:nutriclock_app/screens/navigation/sleep/SleepCalendarFragment.dart';
+import 'package:nutriclock_app/screens/navigation/sleep/SleepTipFragment.dart';
 
 import 'SleepStatsFragment.dart';
 
@@ -9,6 +14,28 @@ class SleepFragment extends StatefulWidget {
 }
 
 class _SleepFragmentState extends State<SleepFragment> {
+  var _showTips = false;
+
+  @override
+  void initState() {
+    _loadShowTip();
+    super.initState();
+  }
+
+  _loadShowTip() async {
+    try {
+      var response = await Network().getWithAuth(CONFIG_TIP_URL);
+      if (response.statusCode == RESPONSE_SUCCESS) {
+        var showTips = json.decode(response.body)[JSON_DATA_KEY]['value'];
+        print(showTips);
+
+        this.setState(() {
+          _showTips = showTips == "1" ? true: false;
+        });
+      } else {}
+    } catch (error) {}
+  }
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -42,9 +69,9 @@ class _SleepFragmentState extends State<SleepFragment> {
                     child: Text(
                       "Diário do Sono",
                       style: TextStyle(
-                        color: Colors.black54,
-                        fontSize: 16,
-                        fontWeight: FontWeight.bold,
+                          color: Colors.black,
+                          fontSize: 20,
+                          fontFamily: 'Pacifico'
                       ),
                     ),
                   ),
@@ -91,9 +118,9 @@ class _SleepFragmentState extends State<SleepFragment> {
                     child: Text(
                       "Estatísticas",
                       style: TextStyle(
-                        color: Colors.black54,
-                        fontSize: 16,
-                        fontWeight: FontWeight.bold,
+                          color: Colors.black,
+                          fontSize: 20,
+                          fontFamily: 'Pacifico'
                       ),
                     ),
                   ),
@@ -130,30 +157,50 @@ class _SleepFragmentState extends State<SleepFragment> {
             ),
             child: Padding(
               padding: EdgeInsets.all(16),
-              child: Column(
+              child: _showTips ?
+              Column(
                 children: [
-                  Text(
-                    "Dicas",
-                    style: TextStyle(
-                      color: Colors.black54,
-                      fontSize: 16,
-                      fontWeight: FontWeight.bold,
+                  GestureDetector(
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => SleepTipFragment()),
+                      );
+                    },
+                    child: Text(
+                      "Dicas",
+                      style: TextStyle(
+                        color: Colors.black,
+                        fontSize: 20,
+
+                        fontFamily: 'Pacifico'
+                      ),
                     ),
                   ),
-                  ClipRect(
-                    child: Image.asset(
-                      "assets/images/tips.png",
-                      fit: BoxFit.cover,
-                      height: 120,
+                  GestureDetector(
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => SleepTipFragment()),
+                      );
+                    },
+                    child: ClipRect(
+                      child: Image.asset(
+                        "assets/images/tips.png",
+                        fit: BoxFit.cover,
+                        height: 120,
+                      ),
                     ),
                   ),
                   SizedBox(
                     height: 68,
                   ),
                 ],
-              ),
+              ): SizedBox(height: 208,)
             ),
-          ),
+          )
         ],
       ),
     ));
