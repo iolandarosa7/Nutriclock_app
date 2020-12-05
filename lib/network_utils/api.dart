@@ -33,7 +33,6 @@ class Network {
       Map<String, dynamic> data, String apiUrl) async {
     var url = Constants.BASE_API_URL + apiUrl;
     await _getToken();
-    var b = jsonEncode(data);
     token = token.replaceAll("\"", "");
     return http.post(url,
         headers: <String, String>{
@@ -58,6 +57,8 @@ class Network {
     request.fields['drugs'] = jsonEncode(drugs);
     request.fields['birthday'] = user.birthday;
     request.fields['ufc_id'] = user.ufc_id.toString();
+    request.fields['height'] = user.height.toString();
+    request.fields['weight'] = user.weight.toString();
 
     request.headers['Accept'] = 'application/json';
 
