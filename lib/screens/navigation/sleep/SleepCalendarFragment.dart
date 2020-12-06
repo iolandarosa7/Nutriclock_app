@@ -26,7 +26,6 @@ class _SleepCalendarFragmentState extends State<SleepCalendarFragment> {
       ),
       body: SfDateRangePicker(
         view: DateRangePickerView.month,
-        enablePastDates: false,
         todayHighlightColor: Color(0xFF74D44D),
         selectionColor: Color(0xFF74D44D),
         monthCellStyle: DateRangePickerMonthCellStyle(
@@ -34,7 +33,7 @@ class _SleepCalendarFragmentState extends State<SleepCalendarFragment> {
               color:  Color(0xFF74D44D),
             )
         ),
-        minDate: new DateTime.now(),
+        minDate: new DateTime.now().subtract(new Duration(days: 2)),
         onSelectionChanged: (DateRangePickerSelectionChangedArgs args) {
           final dynamic value = args.value;
           Navigator.push(
