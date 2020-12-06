@@ -58,3 +58,4 @@ const SLEEP_STATS_ME_URL = '/sleeps/myStats';
 const STATS_URL = '/stats';
 const CONFIG_TIP_URL = '/configs/tips';
 const SLEEP_TIPS_URL = '/tips';
+const SLEEP_DATES_URL = '/sleepsByDate';

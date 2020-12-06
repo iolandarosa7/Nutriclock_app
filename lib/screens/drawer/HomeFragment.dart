@@ -31,7 +31,7 @@ class _HomeFragmentState extends State<HomeFragment> {
     var days = 0;
 
     try {
-      var response = await Network().getWithAuth("$STATS_URL");
+      var response = await Network().getWithAuth(STATS_URL);
 
       if (response.statusCode == RESPONSE_SUCCESS) {
         var data = Statistics.fromJson(json.decode(response.body));
