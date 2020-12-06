@@ -39,7 +39,7 @@ class _HomeFragmentState extends State<HomeFragment> {
           _mealDaysRegistered = data.totalDaysRegistered;
           _totalMeals = data.meals;
           _totalSleeps = data.totalSleepDays;
-          _averageSleepHours = data.averageSleepHours;
+          _averageSleepHours = double.parse(data.averageSleepHours);
         });
 
         days = data.daysFromInitialDate;

@@ -30,7 +30,8 @@ class _SleepFragmentState extends State<SleepFragment> {
         print(showTips);
 
         this.setState(() {
-          _showTips = showTips == "1" ? true: false;
+          //_showTips = showTips == "1" ? true: false;
+          _showTips = showTips == "true" ? true: false;
         });
       } else {}
     } catch (error) {}

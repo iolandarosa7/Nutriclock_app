@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:nutriclock_app/constants/constants.dart' as Constants;
 import 'package:nutriclock_app/network_utils/api.dart';
 import 'package:nutriclock_app/screens/home.dart';
@@ -10,6 +11,16 @@ import 'constants/constants.dart';
 
 void main() {
   runApp(new MaterialApp(
+    localizationsDelegates: [
+      GlobalMaterialLocalizations.delegate,
+      GlobalWidgetsLocalizations.delegate,
+      GlobalCupertinoLocalizations.delegate,
+    ],
+    supportedLocales: [
+      const Locale('en', ''),
+      const Locale('pt', ''),
+      const Locale('fr', ''),
+    ],
     home: MyApp(),
   ));
 }

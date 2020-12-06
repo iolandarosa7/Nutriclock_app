@@ -3,7 +3,7 @@ class Statistics {
   int totalDaysRegistered;
   int meals;
   int totalSleepDays;
-  double averageSleepHours;
+  String averageSleepHours;
 
   Statistics();
 
