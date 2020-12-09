@@ -2,7 +2,6 @@ library constants;
 
 const String LOCAL_STORAGE_TOKEN_KEY = 'token';
 const String LOCAL_STORAGE_USER_KEY = 'user';
-const String LOCAL_STORAGE_MEALS_DAYS_DURATION_KEY = 'daysFromInitialMealDate';
 
 const String JSON_ACCESS_TOKEN_KEY = 'access_token';
 const String JSON_DATA_KEY = 'data';
@@ -30,10 +29,10 @@ const String ERROR_INVALID_FRAGMENT = 'Index inválido';
 const String ERROR_GENERAL_API = 'Woops! Algo correu mal';
 const String ERROR_USER_NOT_FOUND_API = 'O utilizador não existe!';
 
-const BASE_URL = 'https://nutriclock.herokuapp.com';
-const IMAGE_BASE_URL = 'https://nutriclock.s3-eu-west-1.amazonaws.com';
-// const IMAGE_BASE_URL = 'https://460443f4476f.ngrok.io/storage/images';
-// const BASE_URL = 'https://7e09de8610a5.ngrok.io';
+// const BASE_URL = 'https://nutriclock.herokuapp.com';
+// const IMAGE_BASE_URL = 'https://nutriclock.s3-eu-west-1.amazonaws.com';
+const IMAGE_BASE_URL = 'https://ea25c14250e0.ngrok.io/storage';
+const BASE_URL = 'https://ea25c14250e0.ngrok.io';
 const BASE_API_URL = '$BASE_URL/api';
 
 const LOGIN_URL = '/login';

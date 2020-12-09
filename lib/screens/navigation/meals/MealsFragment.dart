@@ -4,9 +4,9 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:nutriclock_app/constants/constants.dart';
 import 'package:nutriclock_app/models/Meal.dart';
+import 'package:nutriclock_app/models/MealsResponse.dart';
 import 'package:nutriclock_app/network_utils/api.dart';
 import 'package:nutriclock_app/screens/navigation/meals/MealDetailFragment.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 class MealsFragment extends StatefulWidget {
   @override
@@ -15,8 +15,9 @@ class MealsFragment extends StatefulWidget {
 
 class _MealsFragmentState extends State<MealsFragment> {
   var _isLoading = false;
-  var meals = [];
+  MealsResponse _data;
   var _daysFromInitialMeal = 4;
+  final _scaffoldKey = GlobalKey<ScaffoldState>();
 
   @override
   void initState() {
@@ -25,181 +26,387 @@ class _MealsFragmentState extends State<MealsFragment> {
   }
 
   _loadMealsList() async {
-    List<Meal> list = [];
-
     if (_isLoading) return;
     this.setState(() {
       _isLoading = true;
     });
 
-    SharedPreferences localStorage = await SharedPreferences.getInstance();
-    var daysFromInitialMeal =
-        localStorage.getInt(LOCAL_STORAGE_MEALS_DAYS_DURATION_KEY);
+    MealsResponse mealResponse = MealsResponse();
+    mealResponse.mealsTypeByDate = [];
 
     try {
       var response = await Network().getWithAuth(MEALS_USER_URL);
       if (response.statusCode == RESPONSE_SUCCESS) {
-        List<dynamic> data = json.decode(response.body)[JSON_DATA_KEY];
-
-        data.forEach((element) {
-          Meal meal = Meal.fromJson(element);
-          list.add(meal);
+        var data = json.decode(response.body);
+        var daysFromInitialDate = data["daysFromInitialDate"];
+        List<dynamic> meals = data["meals"];
+        meals.forEach((element) {
+          var mealTypeByDate = MealTypeByDate();
+          mealTypeByDate.date = element["date"];
+          mealTypeByDate.breakfasts = _populateMeals(element["P"]);
+          mealTypeByDate.lunchs = _populateMeals(element["A"]);
+          mealTypeByDate.dinners = _populateMeals(element["J"]);
+          mealTypeByDate.snacks = _populateMeals(element["S"]);
+          mealTypeByDate.brunchs = _populateMeals(element["L"]);
+          mealTypeByDate.anothers = _populateMeals(element["O"]);
+          mealResponse.mealsTypeByDate.add(mealTypeByDate);
         });
-
         this.setState(() {
-          meals = list;
+          _daysFromInitialMeal = daysFromInitialDate;
+          _data = mealResponse;
+          _isLoading = false;
         });
-      } else {}
-    } catch (error) {}
-
-    this.setState(() {
-      _isLoading = false;
-      _daysFromInitialMeal = daysFromInitialMeal;
-    });
+      }
+    } catch (error) {
+      this.setState(() {
+        _isLoading = false;
+      });
+    }
   }
 
+  _populateMeals(List<dynamic> list) {
+    List<Meal> meals = [];
+    list.forEach((element) {
+      Meal meal = Meal.fromJson(element);
+      meals.add(meal);
+    });
+
+    return meals;
+  }
+
+  Widget _renderElement(List<Meal> meals, Color color, String description) {
+    return (meals.length > 0
+        ? Container(
+            height: 30,
+            width: double.infinity,
+            alignment: Alignment.centerLeft,
+            padding: EdgeInsets.only(left: 12),
+            decoration: BoxDecoration(
+              gradient: LinearGradient(
+                begin: Alignment.topLeft,
+                end: Alignment.bottomRight,
+                colors: [color, Color(0x10FFFFFF)],
+              ),
+              borderRadius: BorderRadius.only(
+                topLeft: Radius.circular(5),
+              ),
+            ),
+            child: Text(
+              description,
+              style: TextStyle(fontFamily: "Pacifico"),
+            ),
+          )
+        : SizedBox());
+  }
+
+  Widget _renderSpace(List<Meal> meals) {
+    return (meals.length > 0
+        ? SizedBox(
+            height: 8,
+          )
+        : SizedBox());
+  }
+
+  List<Widget> data() {
+    List<Widget> list = List();
+    _data.mealsTypeByDate.forEach((element) {
+      list.add(Padding(
+        padding: EdgeInsets.symmetric(vertical: 10, horizontal: 8),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              element.date,
+              style: TextStyle(
+                fontWeight: FontWeight.bold,
+                fontSize: 16,
+                color: Colors.black87,
+              ),
+            ),
+            Column(
+              children: [
+                _renderElement(
+                    element.breakfasts, Color(0xFFFFAEBC), "Pequeno-almoço"),
+                ..._renderMealsByType(
+                  element.breakfasts,
+                  Color(0xFFFFAEBC),
+                ),
+                _renderSpace(element.breakfasts),
+                _renderElement(element.lunchs, Color(0xFFA0E7E5), "Almoço"),
+                ..._renderMealsByType(
+                  element.lunchs,
+                  Color(0xFFA0E7E5),
+                ),
+                _renderSpace(element.lunchs),
+                _renderElement(element.brunchs, Color(0xFFB4F8C8), "Lanche"),
+                ..._renderMealsByType(
+                  element.brunchs,
+                  Color(0xFFB4F8C8),
+                ),
+                _renderSpace(element.brunchs),
+                _renderElement(element.dinners, Color(0xFFFBE7C6), "Jantar"),
+                ..._renderMealsByType(element.dinners, Color(0xFFFBE7C6)),
+                _renderSpace(element.dinners),
+                _renderElement(element.snacks, Color(0xFFFFA384), "Snacks"),
+                ..._renderMealsByType(
+                  element.snacks,
+                  Color(0xFFFFA384),
+                ),
+                _renderSpace(element.snacks),
+                _renderElement(element.anothers, Colors.grey, "Outros"),
+                ..._renderMealsByType(element.anothers, Colors.grey),
+                _renderSpace(element.anothers),
+              ],
+            ),
+          ],
+        ),
+      ));
+    });
+    return list;
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      key: _scaffoldKey,
       body: Container(
-          constraints: BoxConstraints.expand(),
-          decoration: BoxDecoration(
-            gradient: LinearGradient(
-                begin: Alignment.topCenter,
-                end: Alignment.bottomCenter,
-                colors: [Color(0x8074D44D), Color(0x20FFFFFF)]),
+        constraints: BoxConstraints.expand(),
+        decoration: BoxDecoration(
+          gradient: LinearGradient(
+            begin: Alignment.topCenter,
+            end: Alignment.bottomCenter,
+            colors: [Color(0x8074D44D), Color(0x20FFFFFF)],
           ),
-          child: SingleChildScrollView(
-            scrollDirection: Axis.vertical,
-            child: Stack(
-              children: <Widget>[
-                Positioned(
-                  child: Container(
-                      width: double.infinity,
-                      height: MediaQuery.of(context).size.height,
-                      margin: EdgeInsets.only(top: 40),
-                      decoration: BoxDecoration(
-                          borderRadius: BorderRadius.only(
-                              topLeft: Radius.circular(20),
-                              topRight: Radius.circular(20)),
-                          boxShadow: [
-                            BoxShadow(
-                                blurRadius: 2.0,
-                                spreadRadius: 0.4,
-                                offset: Offset(0.1, 0.5)),
-                          ],
-                          color: Colors.white),
-                      child: meals.isEmpty
-                          ? Padding(
-                              padding: EdgeInsets.all(20),
-                              child: Column(
-                                children: [
-                                  Text(
-                                    "Nenhum alimento adicionado.",
-                                    style: TextStyle(color: Colors.grey),
-                                  ),
-                                  SizedBox(
-                                    height: 16,
-                                  ),
-                                  Text(
-                                    "Começa já a registar o teu Diário Alimentar com tudo o que compõe as tuas refeições.",
-                                    textAlign: TextAlign.center,
-                                    style: TextStyle(color: Colors.grey),
-                                  ),
-                                ],
-                              ))
-                          : Column(
-                              children: [
-                                SizedBox(
-                                  height: 30,
-                                ),
-                                _daysFromInitialMeal <= 3
-                                    ? Text(
-                                        "Estes são os alimentos que tens comido",
-                                        textAlign: TextAlign.center,
-                                      )
-                                    : Text(
-                                        "O registo do teu diário alimentar está finalizado!"),
-                                SizedBox(
-                                  height: 16,
-                                ),
-                                Expanded(
-                                    child: Padding(
-                                  padding: EdgeInsets.all(4),
-                                  child: GridView.count(
-                                    physics: ScrollPhysics(),
-                                    crossAxisCount: 3,
-                                    mainAxisSpacing: 4.0,
-                                    crossAxisSpacing: 4.0,
-                                    children: meals.map<GridTile>((value) {
-                                      return GridTile(
-                                        child: Stack(
-                                          children: [
-                                            value.foodPhotoUrl == null
-                                                ? Container(
-                                                    constraints:
-                                                        BoxConstraints.expand(),
-                                                    child: Text(
-                                                      "${value.name}",
-                                                      textAlign: TextAlign.center,
-                                                      style: TextStyle(
-                                                        color: Colors.black54,
-                                                        fontFamily: 'Pacifico'
-                                                      ),
-                                                    ),
-                                                    decoration: BoxDecoration(
-                                                      gradient: LinearGradient(
-                                                          begin: Alignment
-                                                              .topCenter,
-                                                          end: Alignment
-                                                              .bottomCenter,
-                                                          colors: [
-                                                            Color(0x8074D44D),
-                                                            Color(0x20FFFFFF)
-                                                          ]),
-                                                    ),
-                                                  )
-                                                : Container(
-                                                    constraints:
-                                                        BoxConstraints.expand(),
-                                                    child: Image.network(
-                                                      "$IMAGE_BASE_URL/food/thumb_${value.foodPhotoUrl}",
-                                                      fit: BoxFit.cover,
-                                                    ),
-                                                  ),
-                                          ],
-                                        ),
-                                      );
-                                    }).toList(),
-                                  ),
-                                ))
-                              ],
-                            )),
+        ),
+        child: Stack(
+          children: [
+            Positioned(
+              child: Container(
+                width: double.infinity,
+                height: MediaQuery.of(context).size.height,
+                margin: EdgeInsets.only(top: 40),
+                decoration: BoxDecoration(
+                  boxShadow: [
+                    BoxShadow(
+                      blurRadius: 2.0,
+                      spreadRadius: 0.4,
+                      offset: Offset(0.1, 0.5),
+                    ),
+                  ],
+                  borderRadius: BorderRadius.only(
+                      topLeft: Radius.circular(15),
+                      topRight: Radius.circular(15)),
+                  color: Colors.white,
                 ),
-                _daysFromInitialMeal == null || _daysFromInitialMeal <= 3
-                    ? Positioned(
-                        top: 10,
-                        right: 20,
-                        child: FloatingActionButton(
-                          onPressed: () {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) => MealDetailFragment()),
-                            ).then((value) => {
-                              _loadMealsList()
-                            });
-                          },
-                          child: Icon(Icons.add),
-                          backgroundColor: Color(0xFF808e95),
-                          elevation: 50,
-                        ),
-                      )
-                    : Text(""),
-              ],
+                child: _data == null ||
+                        _data.mealsTypeByDate == null ||
+                        _data.mealsTypeByDate.isEmpty
+                    ? Padding(
+                        padding: EdgeInsets.all(20),
+                        child: Column(
+                          children: [
+                            Text(
+                              "Nenhum alimento adicionado.",
+                              style: TextStyle(color: Colors.grey),
+                            ),
+                            SizedBox(
+                              height: 16,
+                            ),
+                            Text(
+                              "Começa já a registar o teu Diário Alimentar com tudo o que compõe as tuas refeições.",
+                              textAlign: TextAlign.center,
+                              style: TextStyle(color: Colors.grey),
+                            ),
+                          ],
+                        ))
+                    : SingleChildScrollView(
+                        scrollDirection: Axis.vertical,
+                        padding: EdgeInsets.all(4),
+                        child: Column(children: data()),
+                      ),
+              ),
             ),
-          )),
+            _daysFromInitialMeal == null || _daysFromInitialMeal <= 3
+                ? Positioned(
+                    top: 10,
+                    right: 20,
+                    child: FloatingActionButton(
+                      onPressed: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => MealDetailFragment()),
+                        ).then((value) => {_loadMealsList()});
+                      },
+                      child: Icon(Icons.add),
+                      backgroundColor: Color(0xFF808e95),
+                      elevation: 50,
+                    ),
+                  )
+                : Text(""),
+          ],
+        ),
+      ),
     );
   }
+
+  List<Widget> _renderMealsByType(List<Meal> meals, Color color) {
+    List<Widget> list = List();
+
+    meals.forEach((element) {
+      list.add(
+        Padding(
+          padding: EdgeInsets.only(bottom: 0),
+          child: Stack(
+            children: [
+              Positioned(
+                child: Container(
+                  height: 100,
+                  decoration: BoxDecoration(
+                    border: Border(
+                      left: BorderSide(color: color, width: 10.0),
+                    ),
+                  ),
+                  child: SizedBox(
+                    width: double.infinity,
+                    child: ClipRect(
+                      child: Image.network(
+                        "$IMAGE_BASE_URL/food/thumb_${element.foodPhotoUrl}",
+                        fit: BoxFit.cover,
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+              Positioned(
+                bottom: 8,
+                right: 0,
+                height: 70,
+                child: Column(
+                  children: [
+                    Expanded(
+                      flex: 5,
+                      child: FloatingActionButton(
+                        child: Icon(
+                          Icons.edit,
+                          size: 15,
+                          color: Colors.white,
+                        ),
+                        backgroundColor: Colors.blue,
+                        onPressed: () {
+                          // do your thing here
+                        },
+                      ),
+                    ),
+                    SizedBox(
+                      height: 8,
+                    ),
+                    Expanded(
+                      flex: 5,
+                      child: FloatingActionButton(
+                        child: Icon(
+                          Icons.delete,
+                          size: 15,
+                          color: Colors.white,
+                        ),
+                        backgroundColor: Colors.redAccent,
+                        onPressed: () {
+                          this._showDeleteMealConfirmation(element);
+                        },
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ],
+          ),
+        ),
+      );
+    });
+    return list;
+  }
+
+  Future<void> _showDeleteMealConfirmation(Meal meal) async {
+    if (_isLoading) return;
+
+    return showDialog<void>(
+        context: context,
+        barrierDismissible: true,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            title: Text("Apagar refeição / alimento"),
+            content: SingleChildScrollView(
+              child: ListBody(
+                children: <Widget>[
+                  Text(
+                    "Tem a certeza que deseja apagar a refeição / alimento selecionado?",
+                    style: TextStyle(
+                      fontSize: 14.0,
+                      color: Colors.grey,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            actions: <Widget>[
+              FlatButton(
+                child: Text('Cancelar', style: TextStyle(color: Colors.white),),
+                color: Colors.grey,
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+              ),
+              FlatButton(
+                child: Text('Eliminar'),
+                color: Colors.red,
+                onPressed: () {
+                  Navigator.of(context).pop();
+                  _deleteMeal(meal);
+                },
+              ),
+            ],
+          );
+        });
+  }
+
+  _deleteMeal(meal) async {
+    if (_isLoading) return;
+
+    this.setState(() {
+      _isLoading = true;
+    });
+
+    try {
+      var response = await Network().deletetWithAuth(MEAL_URL, meal.id);
+      setState(() {
+        _isLoading = false;
+      });
+      if (response.statusCode == RESPONSE_SUCCESS) {
+        _showMessage("Eliminado com sucesso", Colors.green);
+        _loadMealsList();
+      } else {
+        _showMessage("Não é possivel eliminar o elemento seleccionado", Colors.red);
+      }
+    } catch (error) {
+      setState(() {
+        _isLoading = false;
+      });
+      _showMessage("Não é possivel eliminar o elemento seleccionado", Colors.red);
+    }
+  }
+
+  _showMessage(String message, Color color) {
+    final snackBar = SnackBar(
+      backgroundColor: color,
+      content: Text(message),
+      action: SnackBarAction(
+        label: 'Fechar',
+        textColor: Colors.white,
+        onPressed: () {},
+      ),
+    );
+    _scaffoldKey.currentState.showSnackBar(snackBar);
+  }
+
+
 }

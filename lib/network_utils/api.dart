@@ -43,6 +43,19 @@ class Network {
         body: jsonEncode(data));
   }
 
+  Future<http.Response> deletetWithAuth(
+      String apiUrl, dynamic id) async {
+    var url = Constants.BASE_API_URL + apiUrl + "/$id";
+    await _getToken();
+    token = token.replaceAll("\"", "");
+    return http.delete(url,
+        headers: <String, String>{
+          'Content-Type': 'application/json; charset=UTF-8',
+          'Accept': 'application/json',
+          'Authorization': 'Bearer $token'
+        },);
+  }
+
   Future<http.Response> registerUser(User user, File avatar, String password,
       List<Drug> drugs, String apiUrl) async {
     var url = Constants.BASE_API_URL + apiUrl;

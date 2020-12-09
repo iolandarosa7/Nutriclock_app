@@ -7,7 +7,6 @@ import 'package:nutriclock_app/constants/constants.dart';
 import 'package:nutriclock_app/models/Statistics.dart';
 import 'package:nutriclock_app/network_utils/api.dart';
 import 'package:percent_indicator/circular_percent_indicator.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 class HomeFragment extends StatefulWidget {
   @override
@@ -27,9 +26,6 @@ class _HomeFragmentState extends State<HomeFragment> {
   }
 
   _loadData() async {
-    SharedPreferences localStorage = await SharedPreferences.getInstance();
-    var days = 0;
-
     try {
       var response = await Network().getWithAuth(STATS_URL);
 
@@ -41,14 +37,10 @@ class _HomeFragmentState extends State<HomeFragment> {
           _totalSleeps = data.totalSleepDays;
           _averageSleepHours = double.parse(data.averageSleepHours);
         });
-
-        days = data.daysFromInitialDate;
       }
     } catch (error) {
       print(error.toString());
     }
-
-    localStorage.setInt(LOCAL_STORAGE_MEALS_DAYS_DURATION_KEY, days);
   }
 
   @override
