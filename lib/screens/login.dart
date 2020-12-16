@@ -1,6 +1,8 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:loading/indicator/ball_pulse_indicator.dart';
+import 'package:loading/loading.dart';
 import 'package:nutriclock_app/constants/constants.dart';
 import 'package:nutriclock_app/models/AcceptanceTerms.dart';
 import 'package:nutriclock_app/network_utils/api.dart';
@@ -33,7 +35,14 @@ class _LoginState extends State<Login> {
   Widget build(BuildContext context) {
     return Scaffold(
       key: _scaffoldKey,
-      body: Container(
+      body: _isLoading
+          ? Center(
+        child: Loading(
+            indicator: BallPulseIndicator(),
+            size: 50.0,
+            color: Colors.orangeAccent),
+      )
+          : Container(
         constraints: BoxConstraints.expand(),
         decoration: BoxDecoration(
           image: DecorationImage(

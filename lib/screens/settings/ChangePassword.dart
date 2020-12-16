@@ -2,6 +2,8 @@ import 'dart:convert';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:loading/indicator/ball_pulse_indicator.dart';
+import 'package:loading/loading.dart';
 import 'package:nutriclock_app/constants/constants.dart';
 import 'package:nutriclock_app/models/User.dart';
 import 'package:nutriclock_app/network_utils/api.dart';
@@ -33,165 +35,175 @@ class _ChangePasswordState extends State<ChangePassword> {
           ),
           backgroundColor: Color(0xFF74D44D),
         ),
-        body: Container(
-            child: SingleChildScrollView(
-          child: Padding(
-            padding: EdgeInsets.all(24.0),
-            child: Form(
-                key: _formKey,
-                child: Column(
-                  children: <Widget>[
-                    Text(
-                      "Esta password será utilizada durante a autenticação. A sua alteração ir-se-á refletir no Login.",
-                      textAlign: TextAlign.center,
-                      style: TextStyle(
-                        color: Colors.grey,
-                        fontSize: 12.0,
-                      ),
-                    ),
-                    SizedBox(
-                      height: 30,
-                    ),
-                    TextFormField(
-                      style: TextStyle(color: Color(0xFF000000)),
-                      cursorColor: Color(0xFF9b9b9b),
-                      keyboardType: TextInputType.text,
-                      obscureText: true,
-                      decoration: InputDecoration(
-                        focusedBorder: UnderlineInputBorder(
-                          borderSide: BorderSide(color: Color(0xFFA3DC92)),
-                        ),
-                        prefixIcon: Icon(
-                          Icons.vpn_key,
-                          color: Colors.grey,
-                        ),
-                        hintText: "Password atual",
-                        labelText: 'Password atual',
-                        labelStyle:
-                        TextStyle(color: Colors.grey),
-                        hintStyle: TextStyle(
-                            color: Color(0xFF9b9b9b),
-                            fontSize: 15,
-                            fontWeight: FontWeight.normal),
-                      ),
-                      validator: (passwordValue) {
-                        if (passwordValue.isEmpty) {
-                          return ERROR_MANDATORY_FIELD;
-                        }
-                        _password = passwordValue;
-                        return null;
-                      },
-                    ),
-                    SizedBox(
-                      height: 8,
-                    ),
-                    TextFormField(
-                      style: TextStyle(color: Color(0xFF000000)),
-                      cursorColor: Color(0xFF9b9b9b),
-                      keyboardType: TextInputType.text,
-                      obscureText: true,
-                      decoration: InputDecoration(
-                        focusedBorder: UnderlineInputBorder(
-                          borderSide: BorderSide(color: Color(0xFFA3DC92)),
-                        ),
-                        prefixIcon: Icon(
-                          Icons.vpn_key,
-                          color: Colors.grey,
-                        ),
-                        hintText: "Nova password",
-                        labelText: 'Nova password',
-                        labelStyle:
-                        TextStyle(color: Colors.grey),
-                        hintStyle: TextStyle(
-                            color: Color(0xFF9b9b9b),
-                            fontSize: 15,
-                            fontWeight: FontWeight.normal),
-                      ),
-                      validator: (passwordValue) {
-                        if (passwordValue.isEmpty) {
-                          return ERROR_MANDATORY_FIELD;
-                        }
-
-                        if (passwordValue.isNotEmpty &&
-                            passwordValue == _password) {
-                          return ERROR_NEW_PASS_MUST_NOT_BE_EQUAL;
-                        }
-                        _newPassword = passwordValue;
-                        return null;
-                      },
-                    ),
-                    SizedBox(
-                      height: 8,
-                    ),
-                    TextFormField(
-                      style: TextStyle(color: Color(0xFF000000)),
-                      cursorColor: Color(0xFF9b9b9b),
-                      keyboardType: TextInputType.text,
-                      obscureText: true,
-                      decoration: InputDecoration(
-                        focusedBorder: UnderlineInputBorder(
-                          borderSide: BorderSide(color: Color(0xFFA3DC92)),
-                        ),
-                        prefixIcon: Icon(
-                          Icons.vpn_key,
-                          color: Colors.grey,
-                        ),
-                        hintText: "Confirmação de password",
-                        labelText: 'Confirmação de password',
-                        labelStyle:
-                        TextStyle(color: Colors.grey),
-                        hintStyle: TextStyle(
-                            color: Color(0xFF9b9b9b),
-                            fontSize: 15,
-                            fontWeight: FontWeight.normal),
-                      ),
-                      validator: (passwordValue) {
-                        if (passwordValue.isEmpty) {
-                          return ERROR_MANDATORY_FIELD;
-                        }
-
-                        if (passwordValue.isNotEmpty &&
-                            passwordValue != _newPassword) {
-                          return ERROR_CONFIRMATION_PASS_MUST_BE_EQUAL;
-                        }
-                        _confirmationPassword = passwordValue;
-                        return null;
-                      },
-                    ),
-                    SizedBox(
-                      height: 30,
-                    ),
-                    SizedBox(
-                      width: double.infinity,
-                      child: FlatButton(
-                        child: Padding(
-                          padding: EdgeInsets.only(
-                              top: 8, bottom: 8, left: 10, right: 10),
-                          child: Text(
-                            _isLoading ? 'Aguarde...' : 'Alterar Password',
+        body: _isLoading
+            ? Center(
+                child: Loading(
+                    indicator: BallPulseIndicator(),
+                    size: 50.0,
+                    color: Colors.orangeAccent),
+              )
+            : Container(
+                child: SingleChildScrollView(
+                child: Padding(
+                  padding: EdgeInsets.all(24.0),
+                  child: Form(
+                      key: _formKey,
+                      child: Column(
+                        children: <Widget>[
+                          Text(
+                            "Esta password será utilizada durante a autenticação. A sua alteração ir-se-á refletir no Login.",
+                            textAlign: TextAlign.center,
                             style: TextStyle(
-                              color: Colors.white,
-                              fontSize: 15.0,
-                              decoration: TextDecoration.none,
-                              fontWeight: FontWeight.normal,
+                              color: Colors.grey,
+                              fontSize: 12.0,
                             ),
                           ),
-                        ),
-                        color: Color(0xFFA3DC92),
-                        disabledColor: Colors.grey,
-                        shape: new RoundedRectangleBorder(
-                            borderRadius: new BorderRadius.circular(20.0)),
-                        onPressed: () {
-                          if (_formKey.currentState.validate()) {
-                            _updatePassword();
-                          }
-                        },
-                      ),
-                    ),
-                  ],
-                )),
-          ),
-        )));
+                          SizedBox(
+                            height: 30,
+                          ),
+                          TextFormField(
+                            style: TextStyle(color: Color(0xFF000000)),
+                            cursorColor: Color(0xFF9b9b9b),
+                            keyboardType: TextInputType.text,
+                            obscureText: true,
+                            decoration: InputDecoration(
+                              focusedBorder: UnderlineInputBorder(
+                                borderSide:
+                                    BorderSide(color: Color(0xFFA3DC92)),
+                              ),
+                              prefixIcon: Icon(
+                                Icons.vpn_key,
+                                color: Colors.grey,
+                              ),
+                              hintText: "Password atual",
+                              labelText: 'Password atual',
+                              labelStyle: TextStyle(color: Colors.grey),
+                              hintStyle: TextStyle(
+                                  color: Color(0xFF9b9b9b),
+                                  fontSize: 15,
+                                  fontWeight: FontWeight.normal),
+                            ),
+                            validator: (passwordValue) {
+                              if (passwordValue.isEmpty) {
+                                return ERROR_MANDATORY_FIELD;
+                              }
+                              _password = passwordValue;
+                              return null;
+                            },
+                          ),
+                          SizedBox(
+                            height: 8,
+                          ),
+                          TextFormField(
+                            style: TextStyle(color: Color(0xFF000000)),
+                            cursorColor: Color(0xFF9b9b9b),
+                            keyboardType: TextInputType.text,
+                            obscureText: true,
+                            decoration: InputDecoration(
+                              focusedBorder: UnderlineInputBorder(
+                                borderSide:
+                                    BorderSide(color: Color(0xFFA3DC92)),
+                              ),
+                              prefixIcon: Icon(
+                                Icons.vpn_key,
+                                color: Colors.grey,
+                              ),
+                              hintText: "Nova password",
+                              labelText: 'Nova password',
+                              labelStyle: TextStyle(color: Colors.grey),
+                              hintStyle: TextStyle(
+                                  color: Color(0xFF9b9b9b),
+                                  fontSize: 15,
+                                  fontWeight: FontWeight.normal),
+                            ),
+                            validator: (passwordValue) {
+                              if (passwordValue.isEmpty) {
+                                return ERROR_MANDATORY_FIELD;
+                              }
+
+                              if (passwordValue.isNotEmpty &&
+                                  passwordValue == _password) {
+                                return ERROR_NEW_PASS_MUST_NOT_BE_EQUAL;
+                              }
+                              _newPassword = passwordValue;
+                              return null;
+                            },
+                          ),
+                          SizedBox(
+                            height: 8,
+                          ),
+                          TextFormField(
+                            style: TextStyle(color: Color(0xFF000000)),
+                            cursorColor: Color(0xFF9b9b9b),
+                            keyboardType: TextInputType.text,
+                            obscureText: true,
+                            decoration: InputDecoration(
+                              focusedBorder: UnderlineInputBorder(
+                                borderSide:
+                                    BorderSide(color: Color(0xFFA3DC92)),
+                              ),
+                              prefixIcon: Icon(
+                                Icons.vpn_key,
+                                color: Colors.grey,
+                              ),
+                              hintText: "Confirmação de password",
+                              labelText: 'Confirmação de password',
+                              labelStyle: TextStyle(color: Colors.grey),
+                              hintStyle: TextStyle(
+                                  color: Color(0xFF9b9b9b),
+                                  fontSize: 15,
+                                  fontWeight: FontWeight.normal),
+                            ),
+                            validator: (passwordValue) {
+                              if (passwordValue.isEmpty) {
+                                return ERROR_MANDATORY_FIELD;
+                              }
+
+                              if (passwordValue.isNotEmpty &&
+                                  passwordValue != _newPassword) {
+                                return ERROR_CONFIRMATION_PASS_MUST_BE_EQUAL;
+                              }
+                              _confirmationPassword = passwordValue;
+                              return null;
+                            },
+                          ),
+                          SizedBox(
+                            height: 30,
+                          ),
+                          SizedBox(
+                            width: double.infinity,
+                            child: FlatButton(
+                              child: Padding(
+                                padding: EdgeInsets.only(
+                                    top: 8, bottom: 8, left: 10, right: 10),
+                                child: Text(
+                                  _isLoading
+                                      ? 'Aguarde...'
+                                      : 'Alterar Password',
+                                  style: TextStyle(
+                                    color: Colors.white,
+                                    fontSize: 15.0,
+                                    decoration: TextDecoration.none,
+                                    fontWeight: FontWeight.normal,
+                                  ),
+                                ),
+                              ),
+                              color: Color(0xFFA3DC92),
+                              disabledColor: Colors.grey,
+                              shape: new RoundedRectangleBorder(
+                                  borderRadius:
+                                      new BorderRadius.circular(20.0)),
+                              onPressed: () {
+                                if (_formKey.currentState.validate()) {
+                                  _updatePassword();
+                                }
+                              },
+                            ),
+                          ),
+                        ],
+                      )),
+                ),
+              )));
   }
 
   _showMessage(String message, bool isError) {

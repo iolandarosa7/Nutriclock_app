@@ -2,6 +2,8 @@ import 'dart:convert';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:loading/indicator/ball_pulse_indicator.dart';
+import 'package:loading/loading.dart';
 import 'package:nutriclock_app/constants/constants.dart';
 import 'package:nutriclock_app/models/Meal.dart';
 import 'package:nutriclock_app/models/MealsResponse.dart';
@@ -79,33 +81,33 @@ class _MealsFragmentState extends State<MealsFragment> {
   Widget _renderElement(List<Meal> meals, Color color, String description) {
     return (meals.length > 0
         ? Container(
-            height: 30,
-            width: double.infinity,
-            alignment: Alignment.centerLeft,
-            padding: EdgeInsets.only(left: 12),
-            decoration: BoxDecoration(
-              gradient: LinearGradient(
-                begin: Alignment.topLeft,
-                end: Alignment.bottomRight,
-                colors: [color, Color(0x10FFFFFF)],
-              ),
-              borderRadius: BorderRadius.only(
-                topLeft: Radius.circular(5),
-              ),
-            ),
-            child: Text(
-              description,
-              style: TextStyle(fontFamily: "Pacifico"),
-            ),
-          )
+      height: 30,
+      width: double.infinity,
+      alignment: Alignment.centerLeft,
+      padding: EdgeInsets.only(left: 12),
+      decoration: BoxDecoration(
+        gradient: LinearGradient(
+          begin: Alignment.topLeft,
+          end: Alignment.bottomRight,
+          colors: [color, Color(0x10FFFFFF)],
+        ),
+        borderRadius: BorderRadius.only(
+          topLeft: Radius.circular(5),
+        ),
+      ),
+      child: Text(
+        description,
+        style: TextStyle(fontFamily: "Pacifico"),
+      ),
+    )
         : SizedBox());
   }
 
   Widget _renderSpace(List<Meal> meals) {
     return (meals.length > 0
         ? SizedBox(
-            height: 8,
-          )
+      height: 8,
+    )
         : SizedBox());
   }
 
@@ -184,67 +186,76 @@ class _MealsFragmentState extends State<MealsFragment> {
           children: [
             Positioned(
               child: Container(
-                width: double.infinity,
-                height: MediaQuery.of(context).size.height,
-                margin: EdgeInsets.only(top: 40),
-                decoration: BoxDecoration(
-                  boxShadow: [
-                    BoxShadow(
-                      blurRadius: 2.0,
-                      spreadRadius: 0.4,
-                      offset: Offset(0.1, 0.5),
-                    ),
-                  ],
-                  borderRadius: BorderRadius.only(
-                      topLeft: Radius.circular(15),
-                      topRight: Radius.circular(15)),
-                  color: Colors.white,
-                ),
-                child: _data == null ||
-                        _data.mealsTypeByDate == null ||
-                        _data.mealsTypeByDate.isEmpty
-                    ? Padding(
-                        padding: EdgeInsets.all(20),
-                        child: Column(
-                          children: [
-                            Text(
-                              "Nenhum alimento adicionado.",
-                              style: TextStyle(color: Colors.grey),
-                            ),
-                            SizedBox(
-                              height: 16,
-                            ),
-                            Text(
-                              "Começa já a registar o teu Diário Alimentar com tudo o que compõe as tuas refeições.",
-                              textAlign: TextAlign.center,
-                              style: TextStyle(color: Colors.grey),
-                            ),
-                          ],
-                        ))
-                    : SingleChildScrollView(
-                        scrollDirection: Axis.vertical,
-                        padding: EdgeInsets.all(4),
-                        child: Column(children: data()),
+                  width: double.infinity,
+                  height: MediaQuery
+                      .of(context)
+                      .size
+                      .height,
+                  margin: EdgeInsets.only(top: 40),
+                  decoration: BoxDecoration(
+                    boxShadow: [
+                      BoxShadow(
+                        blurRadius: 2.0,
+                        spreadRadius: 0.4,
+                        offset: Offset(0.1, 0.5),
                       ),
-              ),
+                    ],
+                    borderRadius: BorderRadius.only(
+                        topLeft: Radius.circular(15),
+                        topRight: Radius.circular(15)),
+                    color: Colors.white,
+                  ),
+                  child: _isLoading ? Center(
+                    child: Loading(
+                        indicator: BallPulseIndicator(),
+                        size: 50.0,
+                        color: Colors.orangeAccent),
+                  ) :
+                  (_data == null ||
+                      _data.mealsTypeByDate == null ||
+                      _data.mealsTypeByDate.isEmpty
+                      ? Padding(
+                      padding: EdgeInsets.all(20),
+                      child: Column(
+                        children: [
+                          Text(
+                            "Nenhum alimento adicionado.",
+                            style: TextStyle(color: Colors.grey),
+                          ),
+                          SizedBox(
+                            height: 16,
+                          ),
+                          Text(
+                            "Começa já a registar o teu Diário Alimentar com tudo o que compõe as tuas refeições.",
+                            textAlign: TextAlign.center,
+                            style: TextStyle(color: Colors.grey),
+                          ),
+                        ],
+                      ))
+                      : SingleChildScrollView(
+                    scrollDirection: Axis.vertical,
+                    padding: EdgeInsets.all(4),
+                    child: Column(children: data()),
+                  )
+                  )),
             ),
             _daysFromInitialMeal == null || _daysFromInitialMeal <= 3
                 ? Positioned(
-                    top: 10,
-                    right: 20,
-                    child: FloatingActionButton(
-                      onPressed: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => MealCreateFragment()),
-                        ).then((value) => {_loadMealsList()});
-                      },
-                      child: Icon(Icons.add),
-                      backgroundColor: Color(0xFF808e95),
-                      elevation: 50,
-                    ),
-                  )
+              top: 10,
+              right: 20,
+              child: FloatingActionButton(
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => MealCreateFragment()),
+                  ).then((value) => {_loadMealsList()});
+                },
+                child: Icon(Icons.add),
+                backgroundColor: Color(0xFF808e95),
+                elevation: 50,
+              ),
+            )
                 : Text(""),
           ],
         ),

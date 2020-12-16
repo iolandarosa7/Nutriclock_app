@@ -1,6 +1,8 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:loading/indicator/ball_pulse_indicator.dart';
+import 'package:loading/loading.dart';
 import 'package:nutriclock_app/constants/constants.dart';
 import 'package:nutriclock_app/network_utils/api.dart';
 import 'package:nutriclock_app/utils/DropMenu.dart';
@@ -96,110 +98,120 @@ class _SleepStatsFragmentState extends State<SleepStatsFragment> {
           ),
           backgroundColor: Color(0xFF74D44D),
         ),
-        body: Column(
-          children: [
-            Padding(
-              padding: EdgeInsets.only(top: 16),
-              child: Text(
-                'Horas de Sono',
-                style: TextStyle(
-                    color: Colors.black38,
-                    fontWeight: FontWeight.bold,
-                    fontSize: 18.0),
-              ),
-            ),
-            Padding(
-              padding: EdgeInsets.only(top: 0, left: 20, right: 20, bottom: 8),
-              child: Row(
+        body: _isLoading
+            ? Center(
+                child: Loading(
+                    indicator: BallPulseIndicator(),
+                    size: 50.0,
+                    color: Colors.orangeAccent),
+              )
+            : Column(
                 children: [
-                  Icon(
-                    Icons.calendar_today,
-                    color: Colors.grey,
-                  ),
-                  SizedBox(
-                    width: 16,
-                  ),
-                  Expanded(
-                    flex: 7,
-                    child: DropdownButton(
-                      value: _selectedMonth,
-                      hint: Text(
-                        "Filtrar por ano",
-                        style: TextStyle(
-                            color: Color(0xFF9b9b9b),
-                            fontSize: 15,
-                            fontWeight: FontWeight.normal),
-                      ),
-                      icon: Icon(Icons.arrow_drop_down),
-                      onChanged: (newValue) {
-                        _setDataSource(_selectedYear, newValue);
-                      },
-                      isExpanded: true,
-                      items: _monthsByYear
-                          .map<DropdownMenuItem<String>>((DropMenu item) {
-                        return DropdownMenuItem<String>(
-                          value: item.value,
-                          child: Text(item.description),
-                        );
-                      }).toList(),
+                  Padding(
+                    padding: EdgeInsets.only(top: 16),
+                    child: Text(
+                      'Horas de Sono',
+                      style: TextStyle(
+                          color: Colors.black38,
+                          fontWeight: FontWeight.bold,
+                          fontSize: 18.0),
                     ),
                   ),
-                  SizedBox(
-                    width: 16,
+                  Padding(
+                    padding:
+                        EdgeInsets.only(top: 0, left: 20, right: 20, bottom: 8),
+                    child: Row(
+                      children: [
+                        Icon(
+                          Icons.calendar_today,
+                          color: Colors.grey,
+                        ),
+                        SizedBox(
+                          width: 16,
+                        ),
+                        Expanded(
+                          flex: 7,
+                          child: DropdownButton(
+                            value: _selectedMonth,
+                            hint: Text(
+                              "Filtrar por ano",
+                              style: TextStyle(
+                                  color: Color(0xFF9b9b9b),
+                                  fontSize: 15,
+                                  fontWeight: FontWeight.normal),
+                            ),
+                            icon: Icon(Icons.arrow_drop_down),
+                            onChanged: (newValue) {
+                              _setDataSource(_selectedYear, newValue);
+                            },
+                            isExpanded: true,
+                            items: _monthsByYear
+                                .map<DropdownMenuItem<String>>((DropMenu item) {
+                              return DropdownMenuItem<String>(
+                                value: item.value,
+                                child: Text(item.description),
+                              );
+                            }).toList(),
+                          ),
+                        ),
+                        SizedBox(
+                          width: 16,
+                        ),
+                        Expanded(
+                          flex: 3,
+                          child: DropdownButton(
+                            value: _selectedYear,
+                            hint: Text(
+                              "Filtrar por ano",
+                              style: TextStyle(
+                                  color: Color(0xFF9b9b9b),
+                                  fontSize: 15,
+                                  fontWeight: FontWeight.normal),
+                            ),
+                            icon: Icon(Icons.arrow_drop_down),
+                            onChanged: (newValue) {
+                              _populateMonthsByYear(newValue);
+                              _setDataSource(newValue, _monthsByYear[0].value);
+                            },
+                            isExpanded: true,
+                            items: _years
+                                .map<DropdownMenuItem<String>>((DropMenu item) {
+                              return DropdownMenuItem<String>(
+                                value: item.value,
+                                child: Text(item.description),
+                              );
+                            }).toList(),
+                          ),
+                        ),
+                      ],
+                    ),
                   ),
                   Expanded(
-                    flex: 3,
-                    child: DropdownButton(
-                      value: _selectedYear,
-                      hint: Text(
-                        "Filtrar por ano",
-                        style: TextStyle(
-                            color: Color(0xFF9b9b9b),
-                            fontSize: 15,
-                            fontWeight: FontWeight.normal),
-                      ),
-                      icon: Icon(Icons.arrow_drop_down),
-                      onChanged: (newValue) {
-                        _populateMonthsByYear(newValue);
-                        _setDataSource(newValue, _monthsByYear[0].value);
-                      },
-                      isExpanded: true,
-                      items:
-                          _years.map<DropdownMenuItem<String>>((DropMenu item) {
-                        return DropdownMenuItem<String>(
-                          value: item.value,
-                          child: Text(item.description),
-                        );
-                      }).toList(),
-                    ),
+                    flex: 1,
+                    child: SfCartesianChart(
+                        primaryXAxis: CategoryAxis(),
+                        // Enable legend
+                        legend: Legend(
+                          isVisible: false,
+                        ),
+                        // Enable tooltip
+                        tooltipBehavior: TooltipBehavior(enable: true),
+                        series: <ChartSeries<_ChartData, String>>[
+                          ColumnSeries<_ChartData, String>(
+                              name: 'Horas de Sono',
+                              dataSource: _dataSource,
+                              xValueMapper: (_ChartData sales, _) => sales.day,
+                              yValueMapper: (_ChartData sales, _) =>
+                                  sales.hours,
+                              color: Color(0xFF74D44D),
+                              opacity: 0.6,
+                              // Enable data label
+                              dataLabelSettings:
+                                  DataLabelSettings(isVisible: true)),
+                        ]),
                   ),
                 ],
-              ),
-            ),
-            Expanded(
-              flex: 1,
-              child: SfCartesianChart(
-                  primaryXAxis: CategoryAxis(),
-                  // Enable legend
-                  legend: Legend(
-                    isVisible: false,
-                  ),
-                  // Enable tooltip
-                  tooltipBehavior: TooltipBehavior(enable: true),
-                  series: <ChartSeries<_ChartData, String>>[
-                    ColumnSeries<_ChartData, String>(
-                        name: 'Horas de Sono',
-                        dataSource: _dataSource,
-                        xValueMapper: (_ChartData sales, _) => sales.day,
-                        yValueMapper: (_ChartData sales, _) => sales.hours,
-                        color: Color(0xFF74D44D),
-                        opacity: 0.6,
-                        // Enable data label
-                        dataLabelSettings: DataLabelSettings(isVisible: true)),
-                  ]),
-            ),
-          ],
-        ));
+              ));
   }
 
   _parseMonths(value) {
