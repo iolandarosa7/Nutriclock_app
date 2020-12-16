@@ -6,7 +6,9 @@ import 'package:nutriclock_app/constants/constants.dart';
 import 'package:nutriclock_app/models/Meal.dart';
 import 'package:nutriclock_app/models/MealsResponse.dart';
 import 'package:nutriclock_app/network_utils/api.dart';
-import 'package:nutriclock_app/screens/navigation/meals/MealDetailFragment.dart';
+import 'package:nutriclock_app/screens/navigation/meals/MealUpdateFragment.dart';
+
+import 'MealCreateFragment.dart';
 
 class MealsFragment extends StatefulWidget {
   @override
@@ -138,23 +140,23 @@ class _MealsFragmentState extends State<MealsFragment> {
                   Color(0xFFA0E7E5),
                 ),
                 _renderSpace(element.lunchs),
-                _renderElement(element.brunchs, Color(0xFFB4F8C8), "Lanche"),
+                _renderElement(element.brunchs, Color(0xFFFFDAC1), "Lanche"),
                 ..._renderMealsByType(
                   element.brunchs,
-                  Color(0xFFB4F8C8),
+                  Color(0xFFFFDAC1),
                 ),
                 _renderSpace(element.brunchs),
-                _renderElement(element.dinners, Color(0xFFFBE7C6), "Jantar"),
-                ..._renderMealsByType(element.dinners, Color(0xFFFBE7C6)),
+                _renderElement(element.dinners, Color(0xFFC9E0EC), "Jantar"),
+                ..._renderMealsByType(element.dinners, Color(0xFFC9E0EC)),
                 _renderSpace(element.dinners),
-                _renderElement(element.snacks, Color(0xFFFFA384), "Snacks"),
+                _renderElement(element.snacks, Color(0xFFCCDDC0), "Snacks"),
                 ..._renderMealsByType(
                   element.snacks,
-                  Color(0xFFFFA384),
+                  Color(0xFFCCDDC0),
                 ),
                 _renderSpace(element.snacks),
-                _renderElement(element.anothers, Colors.grey, "Outros"),
-                ..._renderMealsByType(element.anothers, Colors.grey),
+                _renderElement(element.anothers, Color(0xFFC7CEEA), "Outros"),
+                ..._renderMealsByType(element.anothers, Color(0xFFC7CEEA)),
                 _renderSpace(element.anothers),
               ],
             ),
@@ -235,7 +237,7 @@ class _MealsFragmentState extends State<MealsFragment> {
                         Navigator.push(
                           context,
                           MaterialPageRoute(
-                              builder: (context) => MealDetailFragment()),
+                              builder: (context) => MealCreateFragment()),
                         ).then((value) => {_loadMealsList()});
                       },
                       child: Icon(Icons.add),
@@ -255,71 +257,76 @@ class _MealsFragmentState extends State<MealsFragment> {
 
     meals.forEach((element) {
       list.add(
-        Padding(
-          padding: EdgeInsets.only(bottom: 0),
-          child: Stack(
-            children: [
-              Positioned(
-                child: Container(
-                  height: 100,
-                  decoration: BoxDecoration(
-                    border: Border(
-                      left: BorderSide(color: color, width: 10.0),
-                    ),
+        Stack(
+          children: [
+            Positioned(
+              child: Container(
+                height: 100,
+                decoration: BoxDecoration(
+                  border: Border(
+                    left: BorderSide(color: color, width: 10.0),
                   ),
-                  child: SizedBox(
-                    width: double.infinity,
-                    child: ClipRect(
-                      child: Image.network(
-                        "$IMAGE_BASE_URL/food/thumb_${element.foodPhotoUrl}",
-                        fit: BoxFit.cover,
-                      ),
+                ),
+                child: SizedBox(
+                  width: double.infinity,
+                  child: ClipRect(
+                    child: Image.network(
+                      "$IMAGE_BASE_URL/food/thumb_${element.foodPhotoUrl}",
+                      fit: BoxFit.cover,
                     ),
                   ),
                 ),
               ),
-              Positioned(
-                bottom: 8,
-                right: 0,
-                height: 70,
-                child: Column(
-                  children: [
-                    Expanded(
-                      flex: 5,
-                      child: FloatingActionButton(
-                        child: Icon(
-                          Icons.edit,
-                          size: 15,
-                          color: Colors.white,
-                        ),
-                        backgroundColor: Colors.blue,
-                        onPressed: () {
-                          // do your thing here
-                        },
+            ),
+            Positioned(
+              bottom: 8,
+              right: 0,
+              height: 70,
+              child: Column(
+                children: [
+                  Expanded(
+                    flex: 5,
+                    child: FloatingActionButton(
+                      heroTag: "edit${element.id}",
+                      child: Icon(
+                        Icons.edit,
+                        size: 15,
+                        color: Colors.white,
                       ),
+                      backgroundColor: Colors.blue,
+                      onPressed: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) =>
+                                MealUpdateFragment(meal: element),
+                          ),
+                        );
+                      },
                     ),
-                    SizedBox(
-                      height: 8,
-                    ),
-                    Expanded(
-                      flex: 5,
-                      child: FloatingActionButton(
-                        child: Icon(
-                          Icons.delete,
-                          size: 15,
-                          color: Colors.white,
-                        ),
-                        backgroundColor: Colors.redAccent,
-                        onPressed: () {
-                          this._showDeleteMealConfirmation(element);
-                        },
+                  ),
+                  SizedBox(
+                    height: 8,
+                  ),
+                  Expanded(
+                    flex: 5,
+                    child: FloatingActionButton(
+                      heroTag: "delete${element.id}",
+                      child: Icon(
+                        Icons.delete,
+                        size: 15,
+                        color: Colors.white,
                       ),
+                      backgroundColor: Colors.redAccent,
+                      onPressed: () {
+                        this._showDeleteMealConfirmation(element);
+                      },
                     ),
-                  ],
-                ),
+                  ),
+                ],
               ),
-            ],
-          ),
+            ),
+          ],
         ),
       );
     });
@@ -350,7 +357,10 @@ class _MealsFragmentState extends State<MealsFragment> {
             ),
             actions: <Widget>[
               FlatButton(
-                child: Text('Cancelar', style: TextStyle(color: Colors.white),),
+                child: Text(
+                  'Cancelar',
+                  style: TextStyle(color: Colors.white),
+                ),
                 color: Colors.grey,
                 onPressed: () {
                   Navigator.of(context).pop();
@@ -385,13 +395,15 @@ class _MealsFragmentState extends State<MealsFragment> {
         _showMessage("Eliminado com sucesso", Colors.green);
         _loadMealsList();
       } else {
-        _showMessage("Não é possivel eliminar o elemento seleccionado", Colors.red);
+        _showMessage(
+            "Não é possivel eliminar o elemento seleccionado", Colors.red);
       }
     } catch (error) {
       setState(() {
         _isLoading = false;
       });
-      _showMessage("Não é possivel eliminar o elemento seleccionado", Colors.red);
+      _showMessage(
+          "Não é possivel eliminar o elemento seleccionado", Colors.red);
     }
   }
 
@@ -407,6 +419,4 @@ class _MealsFragmentState extends State<MealsFragment> {
     );
     _scaffoldKey.currentState.showSnackBar(snackBar);
   }
-
-
 }

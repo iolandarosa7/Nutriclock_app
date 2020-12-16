@@ -35,6 +35,7 @@ dependencies:
   syncfusion_flutter_datepicker: ^18.3.50-beta
   multiselect_formfield: ^0.1.5
   syncfusion_flutter_charts: ^18.3.52
+  loading: ^1.0.2
 
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
