@@ -153,7 +153,7 @@ class _SleepRegisterFragmentState extends State<SleepRegisterFragment> {
                                             padding:
                                                 EdgeInsets.only(left: 40.0),
                                             child: Text(
-                                              'Hora de deitar',
+                                              'Hora de deitar da véspera',
                                               textAlign: TextAlign.left,
                                               style: TextStyle(
                                                   color: Colors.black45),
@@ -188,7 +188,7 @@ class _SleepRegisterFragmentState extends State<SleepRegisterFragment> {
                                             padding:
                                                 EdgeInsets.only(left: 40.0),
                                             child: Text(
-                                              'Hora de levantar',
+                                              'Hora de levantar de hoje',
                                               textAlign: TextAlign.left,
                                               style: TextStyle(
                                                   color: Colors.black45),
