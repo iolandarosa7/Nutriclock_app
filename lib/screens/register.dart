@@ -741,6 +741,8 @@ class _RegisterState extends State<Register> {
                                                       if (_formKey.currentState
                                                           .validate()) {
                                                         _showAcceptanceTermsModal();
+                                                      } else {
+                                                        _showMessage("Corrija os erros no formulário!");
                                                       }
                                                     },
                                                   ),
