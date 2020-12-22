@@ -1,10 +1,10 @@
 import 'dart:convert';
 
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:nutriclock_app/constants/constants.dart';
 import 'package:nutriclock_app/network_utils/api.dart';
 import 'package:nutriclock_app/screens/navigation/sleep/SleepCalendarFragment.dart';
-import 'package:nutriclock_app/screens/navigation/sleep/SleepTipFragment.dart';
 
 import 'SleepStatsFragment.dart';
 
@@ -30,7 +30,7 @@ class _SleepFragmentState extends State<SleepFragment> {
         print(showTips);
 
         this.setState(() {
-          _showTips = (showTips == "true" || showTips == "1") ? true: false;
+          _showTips = (showTips == "true" || showTips == "1") ? true : false;
         });
       } else {}
     } catch (error) {}
@@ -39,170 +39,141 @@ class _SleepFragmentState extends State<SleepFragment> {
   @override
   Widget build(BuildContext context) {
     return Container(
-        child: SingleChildScrollView(
-      scrollDirection: Axis.vertical,
+      width: double.infinity,
+      decoration: BoxDecoration(
+        gradient: LinearGradient(
+            begin: Alignment.topCenter,
+            end: Alignment.bottomCenter,
+            colors: [Color(0x8074D44D), Color(0x20FFFFFF)]),
+      ),
       child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          Container(
-            width: double.infinity,
-            decoration: BoxDecoration(
-              gradient: LinearGradient(
-                  begin: Alignment.topCenter,
-                  end: Alignment.bottomCenter,
-                  colors: [Color(0x8074D44D), Color(0x20FFFFFF)]),
+          Card(
+            elevation: 2.0,
+            color: Colors.white,
+            margin: EdgeInsets.only(left: 16, right: 16, bottom: 20),
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(0),
             ),
-            child: Padding(
-              padding: EdgeInsets.all(16),
-              child: Column(
-                children: [
-                  SizedBox(
-                    height: 50,
-                  ),
-                  GestureDetector(
-                    onTap: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => SleepCalendarFragment()),
-                      );
-                    },
-                    child: Text(
+            child: GestureDetector(
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => SleepCalendarFragment()),
+                );
+              },
+              child: Padding(
+                padding: EdgeInsets.all(16),
+                child: Column(
+                  children: [
+                    SizedBox(
+                      width: double.infinity,
+                    ),
+                    ClipRect(
+                      child: Icon(
+                        Icons.bedtime,
+                        size: 50.0,
+                        color: Colors.green,
+                      ),
+                    ),
+                    Text(
                       "Diário do Sono",
                       style: TextStyle(
                           color: Colors.black,
                           fontSize: 20,
-                          fontFamily: 'Pacifico'
-                      ),
+                          fontFamily: 'Pacifico'),
                     ),
-                  ),
-                  GestureDetector(
-                    onTap: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => SleepCalendarFragment()),
-                      );
-                    },
-                    child: ClipRect(
-                      child: Image.asset(
-                        "assets/images/pillow.png",
-                        fit: BoxFit.cover,
-                        height: 120,
-                      ),
-                    ),
-                  ),
-                ],
+                  ],
+                ),
               ),
             ),
           ),
-          Container(
-            width: double.infinity,
-            decoration: BoxDecoration(
-              gradient: LinearGradient(
-                  begin: Alignment.topCenter,
-                  end: Alignment.bottomCenter,
-                  colors: [Color(0x20FFFFFF), Color(0x80A8DFFE)]),
+          Card(
+            elevation: 2.0,
+            color: Colors.white,
+            margin: EdgeInsets.only(left: 16, right: 16, bottom: 20),
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(0),
             ),
-            child: Padding(
-              padding: EdgeInsets.all(16),
-              child: Column(
-                children: [
-                  GestureDetector(
-                    onTap: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => SleepStatsFragment()),
-                      );
-                    },
-                    child: Text(
+            child: GestureDetector(
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => SleepStatsFragment()),
+                );
+              },
+              child: Padding(
+                padding: EdgeInsets.all(16),
+                child: Column(
+                  children: [
+                    SizedBox(
+                      width: double.infinity,
+                    ),
+                    ClipRect(
+                      child: Icon(
+                        Icons.bar_chart,
+                        size: 50.0,
+                        color: Colors.green,
+                      ),
+                    ),
+                    Text(
                       "Estatísticas",
                       style: TextStyle(
                           color: Colors.black,
                           fontSize: 20,
-                          fontFamily: 'Pacifico'
-                      ),
+                          fontFamily: 'Pacifico'),
                     ),
-                  ),
-                  GestureDetector(
-                    onTap: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => SleepStatsFragment()),
-                      );
-                    },
-                    child: ClipRect(
-                      child: Image.asset(
-                        "assets/images/stats.png",
-                        fit: BoxFit.cover,
-                        height: 100,
-                      ),
-                    ),
-                  ),
-                  SizedBox(
-                    height: 16,
-                  ),
-                ],
+                  ],
+                ),
               ),
             ),
           ),
-          Container(
-            width: double.infinity,
-            decoration: BoxDecoration(
-              gradient: LinearGradient(
-                  begin: Alignment.topCenter,
-                  end: Alignment.bottomCenter,
-                  colors: [Color(0x80A8DFFE), Color(0x4074D44D)]),
+      _showTips ?
+          Card(
+            elevation: 2.0,
+            color: Colors.white,
+            margin: EdgeInsets.only(left: 16, right: 16, bottom: 20),
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(0),
             ),
-            child: Padding(
-              padding: EdgeInsets.all(16),
-              child: _showTips ?
-              Column(
-                children: [
-                  GestureDetector(
-                    onTap: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => SleepTipFragment()),
-                      );
-                    },
-                    child: Text(
-                      "Dicas",
-                      style: TextStyle(
-                        color: Colors.black,
-                        fontSize: 20,
-
-                        fontFamily: 'Pacifico'
-                      ),
-                    ),
-                  ),
-                  GestureDetector(
-                    onTap: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => SleepTipFragment()),
-                      );
-                    },
-                    child: ClipRect(
-                      child: Image.asset(
-                        "assets/images/tips.png",
-                        fit: BoxFit.cover,
-                        height: 120,
-                      ),
-                    ),
-                  ),
-                  SizedBox(
-                    height: 68,
-                  ),
-                ],
-              ): SizedBox(height: 208,)
+            child: GestureDetector(
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => SleepStatsFragment()),
+                );
+              },
+              child: Padding(
+                padding: EdgeInsets.all(16),
+                child: Column(
+                        children: [
+                          ClipRect(
+                            child: Icon(
+                              Icons.lightbulb,
+                              size: 50.0,
+                              color: Colors.yellow,
+                            ),
+                          ),
+                          Text(
+                            "Dicas",
+                            style: TextStyle(
+                                color: Colors.black,
+                                fontSize: 20,
+                                fontFamily: 'Pacifico'),
+                          ),
+                          SizedBox(
+                            width: double.infinity,
+                          ),
+                        ],
+                      )
+              ),
             ),
-          )
+          ) : SizedBox(),
         ],
       ),
-    ));
+    );
   }
 }

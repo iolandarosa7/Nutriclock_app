@@ -33,6 +33,7 @@ class _MealUpdateFragmentState extends State<MealUpdateFragment> {
   final dateParser = DateFormat('yyyy-MM-dd');
   final _mealTypes = [
     DropMenu('P', 'Pequeno-almoço'),
+    DropMenu('M', 'Meio da manhã'),
     DropMenu('A', 'Almoço'),
     DropMenu('L', 'Lanche'),
     DropMenu('J', 'Jantar'),

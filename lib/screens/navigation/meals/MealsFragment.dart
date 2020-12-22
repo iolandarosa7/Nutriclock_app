@@ -48,6 +48,7 @@ class _MealsFragmentState extends State<MealsFragment> {
           var mealTypeByDate = MealTypeByDate();
           mealTypeByDate.date = element["date"];
           mealTypeByDate.breakfasts = _populateMeals(element["P"]);
+          mealTypeByDate.midMorning = _populateMeals(element["M"]);
           mealTypeByDate.lunchs = _populateMeals(element["A"]);
           mealTypeByDate.dinners = _populateMeals(element["J"]);
           mealTypeByDate.snacks = _populateMeals(element["S"]);
@@ -136,6 +137,12 @@ class _MealsFragmentState extends State<MealsFragment> {
                   Color(0xFFFFAEBC),
                 ),
                 _renderSpace(element.breakfasts),
+                _renderElement(element.midMorning, Color(0xFFC7CEEA), "Lanche da manhã"),
+                ..._renderMealsByType(
+                  element.midMorning,
+                  Color(0xFFC7CEEA),
+                ),
+                _renderSpace(element.midMorning),
                 _renderElement(element.lunchs, Color(0xFFA0E7E5), "Almoço"),
                 ..._renderMealsByType(
                   element.lunchs,
@@ -151,15 +158,15 @@ class _MealsFragmentState extends State<MealsFragment> {
                 _renderElement(element.dinners, Color(0xFFC9E0EC), "Jantar"),
                 ..._renderMealsByType(element.dinners, Color(0xFFC9E0EC)),
                 _renderSpace(element.dinners),
+                _renderElement(element.anothers, Color(0xFFffd5cd), "Ceia"),
+                ..._renderMealsByType(element.anothers, Color(0xFFffd5cd)),
+                _renderSpace(element.anothers),
                 _renderElement(element.snacks, Color(0xFFCCDDC0), "Snacks"),
                 ..._renderMealsByType(
                   element.snacks,
                   Color(0xFFCCDDC0),
                 ),
                 _renderSpace(element.snacks),
-                _renderElement(element.anothers, Color(0xFFC7CEEA), "Outros"),
-                ..._renderMealsByType(element.anothers, Color(0xFFC7CEEA)),
-                _renderSpace(element.anothers),
               ],
             ),
           ],

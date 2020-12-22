@@ -9,6 +9,7 @@ class MealsResponse {
 class MealTypeByDate {
   String date;
   List<Meal> breakfasts;
+  List<Meal> midMorning;
   List<Meal> lunchs;
   List<Meal> dinners;
   List<Meal> snacks;

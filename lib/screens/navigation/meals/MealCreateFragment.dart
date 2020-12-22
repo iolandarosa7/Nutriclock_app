@@ -13,11 +13,12 @@ class _MealCreateFragmentState extends State<MealCreateFragment> {
   final _scaffoldKey = GlobalKey<ScaffoldState>();
   final _types = [
     MealType('P', 'Pequeno-almoço', Color(0xFFFFAEBC)),
+    MealType('M', 'Meio da manhã', Color(0xFFC7CEEA)),
     MealType('A', 'Almoço', Color(0xFFA0E7E5)),
     MealType('L', 'Lanche', Color(0xFFFFDAC1)),
     MealType('J', 'Jantar', Color(0xFFC9E0EC)),
+    MealType('O', 'Ceia', Color(0xFFffd5cd)),
     MealType('S', 'Snack', Color(0xFFCCDDC0)),
-    MealType('O', 'Outro', Color(0xFFC7CEEA)),
   ];
 
   @override
