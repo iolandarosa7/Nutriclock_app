@@ -122,6 +122,33 @@ class _MealUpdateFragmentState extends State<MealUpdateFragment> {
     } catch (error) {}
   }
 
+  Widget _renderImageFoodDefault() {
+    return Container(
+      decoration: BoxDecoration(
+          color: Colors.black12,
+          border: Border(right: BorderSide(color: Colors.white))),
+      child: Icon(
+        Icons.image_rounded,
+        color: Colors.grey[800],
+      ),
+    );
+  }
+
+  Widget _renderImageNutriDefault() {
+    return Container(
+      decoration: BoxDecoration(
+        color: Colors.black12,
+        border: Border(
+          left: BorderSide(color: Colors.white),
+        ),
+      ),
+      child: Icon(
+        Icons.image_rounded,
+        color: Colors.grey[800],
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -232,14 +259,23 @@ class _MealUpdateFragmentState extends State<MealUpdateFragment> {
                                           child: Container(
                                             height: 100,
                                             child: SizedBox(
-                                              width: double.infinity,
-                                              child: ClipRect(
-                                                child: Image.network(
-                                                  "$IMAGE_BASE_URL/food/thumb_$_foodPhotoUrl",
-                                                  fit: BoxFit.cover,
-                                                ),
-                                              ),
-                                            ),
+                                                width: double.infinity,
+                                                child: _foodPhotoUrl != null
+                                                    ? ClipRect(
+                                                        child: Image.network(
+                                                            "$IMAGE_BASE_URL/food/thumb_$_foodPhotoUrl",
+                                                            fit: BoxFit.cover,
+                                                            errorBuilder:
+                                                                (BuildContext
+                                                                        context,
+                                                                    Object
+                                                                        exception,
+                                                                    StackTrace
+                                                                        stackTrace) {
+                                                          return _renderImageFoodDefault();
+                                                        }),
+                                                      )
+                                                    : _renderImageFoodDefault()),
                                           ),
                                         ),
                                         Positioned(
@@ -255,7 +291,8 @@ class _MealUpdateFragmentState extends State<MealUpdateFragment> {
                                             ),
                                             backgroundColor: Colors.blue,
                                             onPressed: () {
-                                              _showPicker(context, 'FOOD_PHOTO');
+                                              _showPicker(
+                                                  context, 'FOOD_PHOTO');
                                             },
                                           ),
                                         ),
@@ -272,11 +309,21 @@ class _MealUpdateFragmentState extends State<MealUpdateFragment> {
                                             child: SizedBox(
                                               width: double.infinity,
                                               child: ClipRect(
-                                                child: Image.network(
-                                                  "$IMAGE_BASE_URL/nutritionalInfo/thumb_$_nutritionalInfoPhotoUrl",
-                                                  fit: BoxFit.cover,
-                                                ),
-                                              ),
+                                                  child: _nutritionalInfoPhotoUrl !=
+                                                          null
+                                                      ? Image.network(
+                                                          "$IMAGE_BASE_URL/nutritionalInfo/thumb_$_nutritionalInfoPhotoUrl",
+                                                          fit: BoxFit.cover,
+                                                          errorBuilder:
+                                                              (BuildContext
+                                                                      context,
+                                                                  Object
+                                                                      exception,
+                                                                  StackTrace
+                                                                      stackTrace) {
+                                                          return _renderImageNutriDefault();
+                                                        })
+                                                      : _renderImageNutriDefault()),
                                             ),
                                           ),
                                         ),
@@ -293,7 +340,8 @@ class _MealUpdateFragmentState extends State<MealUpdateFragment> {
                                             ),
                                             backgroundColor: Colors.blue,
                                             onPressed: () {
-                                              _showPicker(context, 'NUTRI_INFO_PHOTO');
+                                              _showPicker(
+                                                  context, 'NUTRI_INFO_PHOTO');
                                             },
                                           ),
                                         ),
@@ -595,7 +643,7 @@ class _MealUpdateFragmentState extends State<MealUpdateFragment> {
                                       _showAdditionalInformationDialog();
                                       return;
                                     }
-                                     _updateMeal();
+                                    _updateMeal();
                                   },
                                 ),
                               ),

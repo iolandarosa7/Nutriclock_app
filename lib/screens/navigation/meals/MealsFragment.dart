@@ -82,33 +82,33 @@ class _MealsFragmentState extends State<MealsFragment> {
   Widget _renderElement(List<Meal> meals, Color color, String description) {
     return (meals.length > 0
         ? Container(
-      height: 30,
-      width: double.infinity,
-      alignment: Alignment.centerLeft,
-      padding: EdgeInsets.only(left: 12),
-      decoration: BoxDecoration(
-        gradient: LinearGradient(
-          begin: Alignment.topLeft,
-          end: Alignment.bottomRight,
-          colors: [color, Color(0x10FFFFFF)],
-        ),
-        borderRadius: BorderRadius.only(
-          topLeft: Radius.circular(5),
-        ),
-      ),
-      child: Text(
-        description,
-        style: TextStyle(fontFamily: "Pacifico"),
-      ),
-    )
+            height: 30,
+            width: double.infinity,
+            alignment: Alignment.centerLeft,
+            padding: EdgeInsets.only(left: 12),
+            decoration: BoxDecoration(
+              gradient: LinearGradient(
+                begin: Alignment.topLeft,
+                end: Alignment.bottomRight,
+                colors: [color, Color(0x10FFFFFF)],
+              ),
+              borderRadius: BorderRadius.only(
+                topLeft: Radius.circular(5),
+              ),
+            ),
+            child: Text(
+              description,
+              style: TextStyle(fontFamily: "Pacifico"),
+            ),
+          )
         : SizedBox());
   }
 
   Widget _renderSpace(List<Meal> meals) {
     return (meals.length > 0
         ? SizedBox(
-      height: 8,
-    )
+            height: 8,
+          )
         : SizedBox());
   }
 
@@ -137,7 +137,8 @@ class _MealsFragmentState extends State<MealsFragment> {
                   Color(0xFFFFAEBC),
                 ),
                 _renderSpace(element.breakfasts),
-                _renderElement(element.midMorning, Color(0xFFC7CEEA), "Lanche da manhã"),
+                _renderElement(
+                    element.midMorning, Color(0xFFC7CEEA), "Lanche da manhã"),
                 ..._renderMealsByType(
                   element.midMorning,
                   Color(0xFFC7CEEA),
@@ -194,10 +195,7 @@ class _MealsFragmentState extends State<MealsFragment> {
             Positioned(
               child: Container(
                   width: double.infinity,
-                  height: MediaQuery
-                      .of(context)
-                      .size
-                      .height,
+                  height: MediaQuery.of(context).size.height,
                   margin: EdgeInsets.only(top: 40),
                   decoration: BoxDecoration(
                     boxShadow: [
@@ -212,60 +210,76 @@ class _MealsFragmentState extends State<MealsFragment> {
                         topRight: Radius.circular(15)),
                     color: Colors.white,
                   ),
-                  child: _isLoading ? Center(
-                    child: Loading(
-                        indicator: BallPulseIndicator(),
-                        size: 50.0,
-                        color: Colors.orangeAccent),
-                  ) :
-                  (_data == null ||
-                      _data.mealsTypeByDate == null ||
-                      _data.mealsTypeByDate.isEmpty
-                      ? Padding(
-                      padding: EdgeInsets.all(20),
-                      child: Column(
-                        children: [
-                          Text(
-                            "Nenhum alimento adicionado.",
-                            style: TextStyle(color: Colors.grey),
-                          ),
-                          SizedBox(
-                            height: 16,
-                          ),
-                          Text(
-                            "Começa já a registar o teu Diário Alimentar com tudo o que compõe as tuas refeições.",
-                            textAlign: TextAlign.center,
-                            style: TextStyle(color: Colors.grey),
-                          ),
-                        ],
-                      ))
-                      : SingleChildScrollView(
-                    scrollDirection: Axis.vertical,
-                    padding: EdgeInsets.all(4),
-                    child: Column(children: data()),
-                  )
-                  )),
+                  child: _isLoading
+                      ? Center(
+                          child: Loading(
+                              indicator: BallPulseIndicator(),
+                              size: 50.0,
+                              color: Colors.orangeAccent),
+                        )
+                      : (_data == null ||
+                              _data.mealsTypeByDate == null ||
+                              _data.mealsTypeByDate.isEmpty
+                          ? Padding(
+                              padding: EdgeInsets.all(20),
+                              child: Column(
+                                children: [
+                                  Text(
+                                    "Nenhum alimento adicionado.",
+                                    style: TextStyle(color: Colors.grey),
+                                  ),
+                                  SizedBox(
+                                    height: 16,
+                                  ),
+                                  Text(
+                                    "Começa já a registar o teu Diário Alimentar com tudo o que compõe as tuas refeições.",
+                                    textAlign: TextAlign.center,
+                                    style: TextStyle(color: Colors.grey),
+                                  ),
+                                ],
+                              ))
+                          : SingleChildScrollView(
+                              scrollDirection: Axis.vertical,
+                              padding: EdgeInsets.all(4),
+                              child: Column(children: data()),
+                            ))),
             ),
             _daysFromInitialMeal == null || _daysFromInitialMeal <= 3
                 ? Positioned(
-              top: 10,
-              right: 20,
-              child: FloatingActionButton(
-                onPressed: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => MealCreateFragment()),
-                  ).then((value) => {_loadMealsList()});
-                },
-                child: Icon(Icons.add),
-                backgroundColor: Color(0xFF808e95),
-                elevation: 50,
-              ),
-            )
+                    top: 10,
+                    right: 20,
+                    child: FloatingActionButton(
+                      onPressed: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => MealCreateFragment()),
+                        ).then((value) => {_loadMealsList()});
+                      },
+                      child: Icon(Icons.add),
+                      backgroundColor: Color(0xFF808e95),
+                      elevation: 50,
+                    ),
+                  )
                 : Text(""),
           ],
         ),
+      ),
+    );
+  }
+
+  Widget _renderImageDefault() {
+    return Container(
+      decoration: BoxDecoration(
+        color: Colors.black12,
+        border: Border(
+          top: BorderSide(color: Colors.white),
+          left: BorderSide(color: Colors.white),
+        ),
+      ),
+      child: Icon(
+        Icons.image_rounded,
+        color: Colors.grey[800],
       ),
     );
   }
@@ -288,10 +302,16 @@ class _MealsFragmentState extends State<MealsFragment> {
                 child: SizedBox(
                   width: double.infinity,
                   child: ClipRect(
-                    child: Image.network(
-                      "$IMAGE_BASE_URL/food/thumb_${element.foodPhotoUrl}",
-                      fit: BoxFit.cover,
-                    ),
+                    child: element.foodPhotoUrl != null
+                        ? Image.network(
+                            "$IMAGE_BASE_URL/food/thumb_${element.foodPhotoUrl}",
+                            fit: BoxFit.cover,
+                            errorBuilder: (BuildContext context,
+                                Object exception, StackTrace stackTrace) {
+                              return _renderImageDefault();
+                            },
+                          )
+                        : _renderImageDefault(),
                   ),
                 ),
               ),

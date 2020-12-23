@@ -182,6 +182,7 @@ class _HomeState extends State<Home> {
               currentAccountPicture: CircleAvatar(
                 backgroundImage: NetworkImage(_avatarUrl),
                 backgroundColor: Color(0xFF74D44D),
+                onBackgroundImageError: (_, __) {},
               ),
               accountName: new Text(this._name),
               accountEmail: new Text(this._email),

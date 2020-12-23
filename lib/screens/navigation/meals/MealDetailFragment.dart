@@ -6,8 +6,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_typeahead/flutter_typeahead.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:intl/date_symbol_data_local.dart';
-import 'package:intl/intl.dart';
 import 'package:loading/indicator/ball_pulse_indicator.dart';
 import 'package:loading/loading.dart';
 import 'package:nutriclock_app/constants/constants.dart';
@@ -20,8 +18,10 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 class MealDetailFragment extends StatefulWidget {
   final String type;
+  final DateTime date;
+  final String time;
 
-  MealDetailFragment({Key key, @required this.type}) : super(key: key);
+  MealDetailFragment({Key key, @required this.type, @required this.date, @required this.time}) : super(key: key);
 
   @override
   _MealDetailFragmentState createState() => _MealDetailFragmentState();
@@ -31,8 +31,6 @@ class _MealDetailFragmentState extends State<MealDetailFragment> {
   final _formKey = GlobalKey<FormState>();
   final _scaffoldKey = GlobalKey<ScaffoldState>();
   var _isLoading = false;
-  final ptDatesFuture = initializeDateFormatting('pt', null);
-  final dateFormat = new DateFormat('dd/MM/yyyy');
   final picker = ImagePicker();
   final TextEditingController _typeAheadController = TextEditingController();
   final _units = [
@@ -53,8 +51,6 @@ class _MealDetailFragmentState extends State<MealDetailFragment> {
     DropMenu('Pires', 'Pires'),
     DropMenu('Outro', 'Outro'),
   ];
-  DateTime _date = DateTime.now();
-  TimeOfDay _time = TimeOfDay.now();
   File _foodPhoto;
   File _nutritionalInfoPhoto;
   var _autocompleteSuggestions = [];
@@ -273,99 +269,6 @@ class _MealDetailFragmentState extends State<MealDetailFragment> {
                                           ),
                                         );
                                       }).toList(),
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ),
-                          ],
-                        ),
-                        Row(
-                          children: [
-                            // date picker
-                            Expanded(
-                              flex: 5,
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Padding(
-                                    padding: const EdgeInsets.only(
-                                        top: 10.0, left: 10.0),
-                                    child: Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.start,
-                                      children: [
-                                        Icon(
-                                          Icons.calendar_today,
-                                          color: Colors.grey,
-                                        ),
-                                        Padding(
-                                          padding: EdgeInsets.only(left: 16.0),
-                                          child: Text(
-                                            'Data',
-                                            textAlign: TextAlign.left,
-                                            style:
-                                                TextStyle(color: Colors.grey),
-                                          ),
-                                        )
-                                      ],
-                                    ),
-                                  ),
-                                  FlatButton(
-                                    color: Colors.transparent,
-                                    splashColor: Colors.black26,
-                                    onPressed: () =>
-                                        _selectDate(context, 'DATE'),
-                                    child: Text(
-                                      dateFormat.format(_date),
-                                      style: TextStyle(
-                                        color: Color(0xFF000000),
-                                        fontSize: 15,
-                                      ),
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ),
-                            Expanded(
-                              flex: 5,
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Padding(
-                                    padding: const EdgeInsets.only(
-                                        top: 10.0, left: 10.0),
-                                    child: Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.start,
-                                      children: [
-                                        Icon(
-                                          Icons.access_time,
-                                          color: Colors.grey,
-                                        ),
-                                        Padding(
-                                          padding: EdgeInsets.only(left: 16.0),
-                                          child: Text(
-                                            'Hora',
-                                            textAlign: TextAlign.left,
-                                            style:
-                                                TextStyle(color: Colors.grey),
-                                          ),
-                                        )
-                                      ],
-                                    ),
-                                  ),
-                                  FlatButton(
-                                    color: Colors.transparent,
-                                    splashColor: Colors.black26,
-                                    onPressed: () =>
-                                        _selectDate(context, 'TIME'),
-                                    child: Text(
-                                      "${_time.hour}:${_time.minute > 9 ? _time.minute : "0${_time.minute}"} horas",
-                                      style: TextStyle(
-                                        color: Color(0xFF000000),
-                                        fontSize: 15,
-                                      ),
                                     ),
                                   ),
                                 ],
@@ -629,9 +532,8 @@ class _MealDetailFragmentState extends State<MealDetailFragment> {
     meal.quantity = _quantity;
     meal.relativeUnit = _selectedUnit;
     meal.type = this.widget.type;
-    meal.date = _date.toIso8601String();
-    meal.time =
-        "${_time.hour}:${_time.minute < 9 ? "0 ${_time.minute}" : _time.minute}";
+    meal.date = this.widget.date.toIso8601String();
+    meal.time = this.widget.time;
     meal.observations = _observations;
 
     try {
@@ -723,91 +625,5 @@ class _MealDetailFragmentState extends State<MealDetailFragment> {
         _showError = false;
       }
     });
-  }
-
-  // show datepicker
-  void _selectDate(BuildContext context, String type) async {
-    final ThemeData themeData = Theme.of(context);
-    assert(themeData.platform != null);
-
-    switch (themeData.platform) {
-      case TargetPlatform.android:
-      case TargetPlatform.fuchsia:
-      case TargetPlatform.linux:
-      case TargetPlatform.windows:
-        return buildMaterialDatePicker(context, type);
-      case TargetPlatform.iOS:
-      case TargetPlatform.macOS:
-        return buildCupertinoDatePicker(context, type);
-    }
-  }
-
-  void buildMaterialDatePicker(BuildContext context, String type) async {
-    if (type == 'TIME') {
-      final pickedTime =
-          await showTimePicker(context: context, initialTime: _time);
-
-      if (pickedTime != null && pickedTime != _time) {
-        setState(() {
-          _time = pickedTime;
-          _showError = false;
-        });
-      }
-
-      return;
-    }
-
-    final DateTime picked = await showDatePicker(
-      context: context,
-      initialDate: _date,
-      firstDate: DateTime(1900),
-      lastDate: DateTime.now(),
-      initialDatePickerMode: DatePickerMode.year,
-      cancelText: 'Cancelar',
-      fieldLabelText: 'Data de Nascimento',
-    );
-
-    if (picked != null && picked != _date) {
-      setState(() {
-        _date = picked;
-        _showError = false;
-      });
-    }
-  }
-
-  void buildCupertinoDatePicker(BuildContext context, String type) async {
-    showModalBottomSheet(
-        context: context,
-        builder: (BuildContext builder) {
-          return Container(
-            height: MediaQuery.of(context).copyWith().size.height / 3,
-            color: Colors.white,
-            child: CupertinoDatePicker(
-              mode: type == 'TIME'
-                  ? CupertinoDatePickerMode.time
-                  : CupertinoDatePickerMode.date,
-              onDateTimeChanged: (picked) {
-                if (type != 'TIME' && picked != null && picked != _date)
-                  setState(() {
-                    _date = picked;
-                    _showError = false;
-                  });
-
-                if (type == 'TIME' && picked != null && picked != _time)
-                  setState(() {
-                    _time = TimeOfDay(hour: picked.hour, minute: picked.minute);
-                    _showError = false;
-                  });
-              },
-              initialDateTime: type == 'TIME'
-                  ? DateTime(1969, 1, 1, _time.hour, _time.minute)
-                  : _date,
-              minimumYear: 2000,
-              maximumYear: 2025,
-              use24hFormat: true,
-              minuteInterval: 1,
-            ),
-          );
-        });
   }
 }
