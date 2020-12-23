@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'dart:core';
+import 'dart:io';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -73,6 +74,7 @@ class _MealUpdateFragmentState extends State<MealUpdateFragment> {
   var _foodPhotoUrl;
   var _nutritionalInfoPhotoUrl;
   var _observations;
+  var _pickedPhoto;
 
   @override
   void initState() {
@@ -659,11 +661,56 @@ class _MealUpdateFragmentState extends State<MealUpdateFragment> {
     );
   }
 
-  void _updateMeal() async {
+  Future _updateMeal() async {
+    var isShowMessage = false;
+    var message = "Ocorreu um erro ao adicionar a refeição";
     if (_isLoading) return;
+
     this.setState(() {
       _isLoading = true;
     });
+
+    try {
+      var response = await Network().putWithAuth({
+        'name': _name,
+        'quantity': _quantity,
+        'relativeUnit': _unit,
+        'type': _type,
+        'date': _date.toIso8601String(),
+        'time':
+            "${_time.hour}:${_time.minute > 9 ? _time.minute : "0${_time.minute}"}",
+        'observations': _observations
+      }, MEALS_UPDATE_URL, this.widget.meal.id);
+
+      var body = json.decode(response.body);
+
+      if (response.statusCode == RESPONSE_SUCCESS) {
+        Navigator.of(context).pop();
+      } else {
+        isShowMessage = true;
+        if (body[JSON_ERROR_KEY] != null) message = (body[JSON_ERROR_KEY]);
+      }
+    } catch (error) {
+      isShowMessage = true;
+    }
+    if (isShowMessage) _showMessage(message);
+
+    setState(() {
+      _isLoading = false;
+    });
+  }
+
+  _showMessage(String message) {
+    final snackBar = SnackBar(
+      backgroundColor: Colors.red,
+      content: Text(message),
+      action: SnackBarAction(
+        label: 'Fechar',
+        textColor: Colors.white,
+        onPressed: () {},
+      ),
+    );
+    _scaffoldKey.currentState.showSnackBar(snackBar);
   }
 
   // show imagepicker
@@ -699,17 +746,75 @@ class _MealUpdateFragmentState extends State<MealUpdateFragment> {
 
   Future getImage(ImageSource source, String type) async {
     final pickedFile = await picker.getImage(source: source, imageQuality: 50);
+    if (pickedFile != null) {
+      await _submitPhoto(type, File(pickedFile.path));
+    }
+  }
 
-    /*setState(() {
-      if (pickedFile != null) {
-        if (type == 'FOOD_PHOTO') {
-          _foodPhoto = File(pickedFile.path);
-          _showError = false;
-        } else
-          _nutritionalInfoPhoto = File(pickedFile.path);
-        _showError = false;
+  Future _submitPhoto(String type, File file) async {
+    try {
+      if (_isLoading) return;
+      this.setState(() {
+        _isLoading = true;
+      });
+
+      var response = await Network().postImageFormData(
+          file, "$MEAL_URL/${this.widget.meal.id}/$PHOTOS_URL", type);
+
+      this.setState(() {
+        _isLoading = false;
+      });
+
+      print(response.statusCode);
+
+      if (response.statusCode == RESPONSE_SUCCESS) {
+        var data = json.decode(response.body)[JSON_DATA_KEY];
+        print(data);
+
+        if (type == 'NUTRI_INFO_PHOTO') {
+          this.setState(() {
+            _nutritionalInfoPhotoUrl = data;
+          });
+          return;
+        }
+
+        this.setState(() {
+          _foodPhotoUrl = data;
+        });
       }
-    });*/
+    } catch (error) {
+      print(error);
+      this.setState(() {
+        _isLoading = false;
+      });
+    }
+    /*
+    try {
+      var response = await Network()
+          .postMeal(meal, _foodPhoto, _nutritionalInfoPhoto, _userId, MEAL_URL);
+
+      var body = json.decode(response.body);
+      print(response.statusCode);
+
+      if (response.statusCode == RESPONSE_SUCCESS_201) {
+        _typeAheadController.text = '';
+
+        setState(() {
+         _name = null;
+         _quantity = null;
+         _selectedUnit = null;
+         _observations = null;
+         _foodPhoto = null;
+         _nutritionalInfoPhoto = null;
+        });
+      } else {
+        isShowMessage = true;
+        if (body[JSON_ERROR_KEY] != null) message = (body[JSON_ERROR_KEY]);
+      }
+    } catch (error) {
+      isShowMessage = true;
+    }
+     */
   }
 
   Future<void> _showAdditionalInformationDialog() async {
@@ -846,190 +951,3 @@ class _MealUpdateFragmentState extends State<MealUpdateFragment> {
         });
   }
 }
-
-/*
-class _MealUpdateFragmentState extends State<MealUpdateFragment> {
-  final picker = ImagePicker();
-
-
-
-
-  File _foodPhoto;
-  File _nutritionalInfoPhoto;
-
-  var _name;
-  var _selectedMealType;
-  var _quantity;
-  var _selectedUnit;
-  var _observations;
-  var _showError = false;
-  var _userId;
-
-
-
-  _loadData() async {
-
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-
-
-          ),
-        ));
-  }
-
-  Future<void> _showAdditionalInformationDialog() async {
-    return showDialog<void>(
-      context: context,
-      barrierDismissible: false,
-      builder: (BuildContext context) {
-        return StatefulBuilder(
-            builder: (BuildContext context, StateSetter setState) {
-              return AlertDialog(
-                title: Text(
-                    'Selecionou a unidade "Outro". Seria importante que desse alguma informação adicional sobre o produto.'),
-                content: TextFormField(
-                  maxLines: 4,
-                  style: TextStyle(color: Color(0xFF000000)),
-                  cursorColor: Color(0xFF9b9b9b),
-                  keyboardType: TextInputType.text,
-                  decoration: InputDecoration(
-                    focusedBorder: UnderlineInputBorder(
-                      borderSide: BorderSide(color: Color(0xFFA3DC92)),
-                    ),
-                    hintText: "Informação Adicional",
-                    labelText: 'Informação Adicional',
-                    labelStyle: TextStyle(color: Colors.grey),
-                    hintStyle: TextStyle(
-                        color: Color(0xFF9b9b9b),
-                        fontSize: 15,
-                        fontWeight: FontWeight.normal),
-                  ),
-                  onChanged: (value) => {
-                    this.setState(() {
-                      _observations = value;
-                    }),
-                  },
-                ),
-                actions: <Widget>[
-                  FlatButton(
-                    child: Text('Ok'),
-                    onPressed: () {
-                      _postNewMeal();
-                      Navigator.of(context).pop();
-                    },
-                  ),
-                ],
-              );
-            });
-      },
-    );
-  }
-
-  void _postNewMeal() async {
-    var isShowMessage = false;
-    var message = "Ocorreu um erro ao adicionar a refeição";
-    if (_isLoading) return;
-
-    this.setState(() {
-      _isLoading = true;
-    });
-
-    var meal = Meal();
-    meal.name = _name;
-    meal.quantity = _quantity;
-    meal.relativeUnit = _selectedUnit;
-    meal.type = _selectedMealType;
-    meal.date = _date.toIso8601String();
-    meal.time =
-    "${_time.hour}:${_time.minute < 9 ? "0 ${_time.minute}" : _time.minute}";
-    meal.observations = _observations;
-
-    try {
-      var response = await Network()
-          .postMeal(meal, _foodPhoto, _nutritionalInfoPhoto, _userId, MEAL_URL);
-
-      var body = json.decode(response.body);
-      print(response.statusCode);
-
-      if (response.statusCode == RESPONSE_SUCCESS_201) {
-        Navigator.of(context).pop();
-      } else {
-        isShowMessage = true;
-        if (body[JSON_ERROR_KEY] != null) message = (body[JSON_ERROR_KEY]);
-      }
-    } catch (error) {
-      isShowMessage = true;
-    }
-
-    if (isShowMessage) _showMessage(message);
-
-    setState(() {
-      _isLoading = false;
-    });
-  }
-
-  _showMessage(String message) {
-    final snackBar = SnackBar(
-      backgroundColor: Colors.red,
-      content: Text(message),
-      action: SnackBarAction(
-        label: 'Fechar',
-        textColor: Colors.white,
-        onPressed: () {},
-      ),
-    );
-    _scaffoldKey.currentState.showSnackBar(snackBar);
-  }
-
-  // show imagepicker
-  void _showPicker(context, type) {
-    showModalBottomSheet(
-        context: context,
-        builder: (BuildContext bc) {
-          return SafeArea(
-            child: Container(
-              child: new Wrap(
-                children: <Widget>[
-                  new ListTile(
-                      leading: new Icon(Icons.photo_library),
-                      title: new Text('Galeria de Imagens'),
-                      onTap: () {
-                        getImage(ImageSource.gallery, type);
-                        Navigator.pop(context);
-                      }),
-                  new ListTile(
-                    leading: new Icon(Icons.photo_camera),
-                    title: new Text('Câmara'),
-                    onTap: () {
-                      getImage(ImageSource.camera, type);
-                      Navigator.pop(context);
-                    },
-                  ),
-                ],
-              ),
-            ),
-          );
-        });
-  }
-
-  Future getImage(ImageSource source, String type) async {
-    final pickedFile = await picker.getImage(source: source, imageQuality: 50);
-
-    setState(() {
-      if (pickedFile != null) {
-        if (type == 'FOOD_PHOTO') {
-          _foodPhoto = File(pickedFile.path);
-          _showError = false;
-        } else
-          _nutritionalInfoPhoto = File(pickedFile.path);
-        _showError = false;
-      }
-    });
-  }
-
-
-}
-*/

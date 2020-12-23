@@ -12,7 +12,7 @@ const String JSON_ID_KEY = 'id';
 
 const int RESPONSE_SUCCESS = 200;
 const int RESPONSE_SUCCESS_201 = 201;
-const int EIGHT_WEEK_DAYS = 8*7;
+const int EIGHT_WEEK_DAYS = 8 * 7;
 
 const String ERROR_MANDATORY_FIELD = 'O campo não pode estar vazio';
 const String ERROR_INVALID_FORMAT_FIELD = 'Formato inválido';
@@ -43,6 +43,8 @@ const REGISTER_URL = '/users';
 const MEAL_URL = '/meals';
 const MEALS_USER_URL = '/meals-user';
 const MEALS_NAMES_URL = '/meal-names';
+const MEALS_UPDATE_URL = '/meals-update';
+const PHOTOS_URL = 'photo';
 
 const USERS_ME_URL = '/users/me';
 

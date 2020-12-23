@@ -40,6 +40,7 @@ class _MealsFragmentState extends State<MealsFragment> {
 
     try {
       var response = await Network().getWithAuth(MEALS_USER_URL);
+      print(response.statusCode);
       if (response.statusCode == RESPONSE_SUCCESS) {
         var data = json.decode(response.body);
         var daysFromInitialDate = data["daysFromInitialDate"];
@@ -339,7 +340,7 @@ class _MealsFragmentState extends State<MealsFragment> {
                             builder: (context) =>
                                 MealUpdateFragment(meal: element),
                           ),
-                        );
+                        ).then((value) => {_loadMealsList()});
                       },
                     ),
                   ),

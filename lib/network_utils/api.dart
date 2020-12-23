@@ -43,17 +43,18 @@ class Network {
         body: jsonEncode(data));
   }
 
-  Future<http.Response> deletetWithAuth(
-      String apiUrl, dynamic id) async {
+  Future<http.Response> deletetWithAuth(String apiUrl, dynamic id) async {
     var url = Constants.BASE_API_URL + apiUrl + "/$id";
     await _getToken();
     token = token.replaceAll("\"", "");
-    return http.delete(url,
-        headers: <String, String>{
-          'Content-Type': 'application/json; charset=UTF-8',
-          'Accept': 'application/json',
-          'Authorization': 'Bearer $token'
-        },);
+    return http.delete(
+      url,
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+        'Accept': 'application/json',
+        'Authorization': 'Bearer $token'
+      },
+    );
   }
 
   Future<http.Response> registerUser(User user, File avatar, String password,
@@ -82,6 +83,36 @@ class Network {
           filename: basename(avatar.path));
       request.files.add(multipartFileSign);
     }
+
+    try {
+      var streamedResponse = await request.send();
+      var response = http.Response.fromStream(streamedResponse);
+      return response;
+    } catch (e) {
+      rethrow;
+    }
+  }
+
+  Future<http.Response> postImageFormData(
+      File file, String apiUrl, String type) async {
+    var url = Constants.BASE_API_URL + apiUrl;
+
+    await _getToken();
+    token = token.replaceAll("\"", "");
+
+    var request = http.MultipartRequest("POST", Uri.parse("$url"));
+
+    request.headers['Accept'] = 'application/json';
+    request.headers['Content-type'] = 'application/json';
+    request.headers['Authorization'] = 'Bearer $token';
+
+    request.fields['type'] = type;
+
+    var stream = http.ByteStream(DelegatingStream.typed(file.openRead()));
+    var fileLenght = await file.length();
+    var multipartFileSign = http.MultipartFile('file', stream, fileLenght,
+        filename: basename(file.path));
+    request.files.add(multipartFileSign);
 
     try {
       var streamedResponse = await request.send();
