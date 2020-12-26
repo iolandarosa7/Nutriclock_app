@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:nutriclock_app/constants/constants.dart';
 import 'package:nutriclock_app/network_utils/api.dart';
 import 'package:nutriclock_app/screens/navigation/sleep/SleepCalendarFragment.dart';
+import 'package:nutriclock_app/screens/navigation/sleep/SleepTipFragment.dart';
 
 import 'SleepStatsFragment.dart';
 
@@ -143,7 +144,7 @@ class _SleepFragmentState extends State<SleepFragment> {
               onTap: () {
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => SleepStatsFragment()),
+                  MaterialPageRoute(builder: (context) => SleepTipFragment()),
                 );
               },
               child: Padding(

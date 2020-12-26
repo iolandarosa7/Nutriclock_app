@@ -43,6 +43,7 @@ class _RegisterState extends State<Register> {
   var drugNameToAdd;
   var drugPosologyToAdd;
   var drugTimeToAdd;
+  var drugTypeToAdd;
   var _all = false;
   var _monday = false;
   var _tuesday = false;
@@ -742,7 +743,8 @@ class _RegisterState extends State<Register> {
                                                           .validate()) {
                                                         _showAcceptanceTermsModal();
                                                       } else {
-                                                        _showMessage("Corrija os erros no formulário!");
+                                                        _showMessage(
+                                                            "Corrija os erros no formulário!");
                                                       }
                                                     },
                                                   ),
@@ -772,10 +774,36 @@ class _RegisterState extends State<Register> {
           return StatefulBuilder(
             builder: (BuildContext context, StateSetter setState) {
               return AlertDialog(
-                title: Text("Adicionar Medicação"),
+                title: Text("Adicionar Medicação / Suplemento"),
                 content: SingleChildScrollView(
                   child: ListBody(
                     children: <Widget>[
+                      DropdownButton(
+                        value: drugTypeToAdd,
+                        hint: Text(
+                          "Tipo",
+                          style: TextStyle(
+                              color: Color(0xFF9b9b9b),
+                              fontSize: 15,
+                              fontWeight: FontWeight.normal),
+                        ),
+                        icon: Icon(Icons.arrow_drop_down),
+                        onChanged: (newValue) {
+                          setState(() {
+                            drugTypeToAdd = newValue;
+                          });
+                        },
+                        isExpanded: true,
+                        items: [
+                          DropMenu('M', 'Medicação'),
+                          DropMenu('S', 'Suplemento'),
+                        ].map<DropdownMenuItem<String>>((DropMenu item) {
+                          return DropdownMenuItem<String>(
+                            value: item.value,
+                            child: Text(item.description),
+                          );
+                        }).toList(),
+                      ),
                       TextFormField(
                         onChanged: (value) => {
                           this.setState(() {
@@ -1022,7 +1050,7 @@ class _RegisterState extends State<Register> {
                       }
 
                       var drugToAdd = Drug(drugNameToAdd, drugPosologyToAdd,
-                          drugTimeToAdd, days);
+                          drugTimeToAdd, days, drugTypeToAdd);
 
                       var auxDrugsList = drugs;
 

@@ -40,10 +40,16 @@ class _HomeFragmentState extends State<HomeFragment> {
 
       if (response.statusCode == RESPONSE_SUCCESS) {
         var data = Statistics.fromJson(json.decode(response.body));
+
+        var daysRegistered = 0;
+        var sleeps = 0;
+
+        if (data.totalDaysRegistered != null) daysRegistered = data.totalDaysRegistered;
+        if (data.totalSleepDays != null) sleeps = data.totalSleepDays;
         this.setState(() {
-          _mealDaysRegistered = data.totalDaysRegistered;
+          _mealDaysRegistered = daysRegistered;
           _totalMeals = data.meals;
-          _totalSleeps = data.totalSleepDays;
+          _totalSleeps = sleeps;
           _averageSleepHours = double.parse(data.averageSleepHours);
           _isLoading = false;
         });

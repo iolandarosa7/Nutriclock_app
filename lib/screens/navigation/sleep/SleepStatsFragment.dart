@@ -50,14 +50,13 @@ class _SleepStatsFragmentState extends State<SleepStatsFragment> {
       this._populateMonthsByYear(_years[0].value);
 
       this._setDataSource(_years[0].value, _monthsByYear[0].value);
-
-      setState(() {
-        _isLoading = false;
-        // _autocompleteSuggestions = list;
-      });
     } catch (error) {
-      _isLoading = false;
     }
+
+    setState(() {
+      _isLoading = false;
+      // _autocompleteSuggestions = list;
+    });
   }
 
   _populateMonthsByYear(String year) {

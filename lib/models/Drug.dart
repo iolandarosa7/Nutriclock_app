@@ -5,12 +5,14 @@ class Drug {
   String timesADay;
   int id;
   String posology;
+  String type;
 
-  Drug(String name, String posology, String timesADay, String timesAWeek) {
+  Drug(String name, String posology, String timesADay, String timesAWeek, String type) {
     this.name = name;
     this.timesADay = timesADay;
     this.timesAWeek = timesAWeek;
     this.posology = posology;
+    this.type = type;
   }
 
   Map<String, dynamic> toJson() => {
@@ -20,6 +22,7 @@ class Drug {
         'timesADay': timesADay,
         'id': id,
         'posology': posology,
+        'type': type,
       };
 
   Drug.fromJson(Map<String, dynamic> json)
@@ -28,5 +31,6 @@ class Drug {
         timesAWeek = json['timesAWeek'],
         timesADay = json['timesADay'],
         posology = json['posology'],
+        type = json['type'],
         id = json['id'];
 }
