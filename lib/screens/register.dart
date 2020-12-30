@@ -769,7 +769,6 @@ class _RegisterState extends State<Register> {
   Future<void> _showAddDrugModal() async {
     return showDialog<void>(
         context: context,
-        barrierDismissible: false,
         builder: (BuildContext context) {
           return StatefulBuilder(
             builder: (BuildContext context, StateSetter setState) {
@@ -778,6 +777,14 @@ class _RegisterState extends State<Register> {
                 content: SingleChildScrollView(
                   child: ListBody(
                     children: <Widget>[
+                      Text(
+                        "Esta informação poderá posteriormenmte ser confirmada com o seu médico",
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                          color: Colors.grey,
+                          fontSize: 10,
+                        ),
+                      ),
                       DropdownButton(
                         value: drugTypeToAdd,
                         hint: Text(
@@ -1083,7 +1090,6 @@ class _RegisterState extends State<Register> {
   Future<void> _showAddDiseaseModal() async {
     return showDialog<void>(
       context: context,
-      barrierDismissible: false,
       builder: (BuildContext context) {
         return StatefulBuilder(
             builder: (BuildContext context, StateSetter setState) {
@@ -1092,6 +1098,14 @@ class _RegisterState extends State<Register> {
             content: SingleChildScrollView(
               child: ListBody(
                 children: <Widget>[
+                  Text(
+                    "Esta informação poderá posteriormenmte ser confirmada com o seu médico",
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
+                      color: Colors.grey,
+                      fontSize: 10,
+                    ),
+                  ),
                   DropdownButton(
                     value: selectedDisease,
                     hint: Text("Seleciona a doença"),
