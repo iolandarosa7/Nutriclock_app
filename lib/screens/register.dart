@@ -672,7 +672,7 @@ class _RegisterState extends State<Register> {
                                                             EdgeInsets.only(
                                                                 left: 16.0),
                                                         child: Text(
-                                                          'Medicamentos Habituais',
+                                                          'Medicamentos / Suplementos Habituais',
                                                           textAlign:
                                                               TextAlign.left,
                                                           style: TextStyle(

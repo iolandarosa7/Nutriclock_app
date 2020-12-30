@@ -335,8 +335,8 @@ class _SleepRegisterFragmentState extends State<SleepRegisterFragment> {
                                                           "Comeu doces / açúcares",
                                                     },
                                                     {
-                                                      "display": "Estudar",
-                                                      "value": "Estudar",
+                                                      "display": "Estudar / Trabalhar",
+                                                      "value": "Estudar / Trabalhar",
                                                     },
                                                     {
                                                       "display":
