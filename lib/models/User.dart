@@ -6,14 +6,15 @@ class User {
   String height;
   String email;
   String role;
-  bool active;
-  // int active;
+  // bool active;
+  int active;
   String avatarUrl;
   String birthday;
   String diseases;
   int ufc_id;
-  bool terms_accepted;
-  //int terms_accepted;
+  // bool terms_accepted;
+  int terms_accepted;
+  int unreadMessages;
 
   User();
 
@@ -31,6 +32,7 @@ class User {
         'diseases': diseases,
         'ufc_id': ufc_id,
         'terms_accepted': terms_accepted,
+        'unreadMessages': unreadMessages,
       };
 
   User.fromJson(Map<String, dynamic> json)
@@ -46,5 +48,6 @@ class User {
         birthday = json['birthday'],
         diseases = json['diseases'],
         ufc_id = json['ufc_id'],
+        unreadMessages = json['unreadMessages'],
         terms_accepted = json['terms_accepted'];
 }

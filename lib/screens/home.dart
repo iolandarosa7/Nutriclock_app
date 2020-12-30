@@ -10,7 +10,7 @@ import 'package:nutriclock_app/screens/drawer/FoodPlanFragment.dart';
 import 'package:nutriclock_app/screens/drawer/HomeFragment.dart';
 import 'package:nutriclock_app/screens/drawer/ReportsFragment.dart';
 import 'package:nutriclock_app/screens/login.dart';
-import 'package:nutriclock_app/screens/navigation/ChatFragment.dart';
+import 'file:///C:/Users/landi/AndroidStudioProjects/nutriclock_app/lib/screens/navigation/chat/ChatFragment.dart';
 import 'package:nutriclock_app/screens/navigation/ExerciseFragment.dart';
 import 'package:nutriclock_app/screens/navigation/meals/MealsFragment.dart';
 import 'package:nutriclock_app/screens/navigation/sleep/SleepFragment.dart';
