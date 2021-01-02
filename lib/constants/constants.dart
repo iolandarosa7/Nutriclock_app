@@ -32,7 +32,7 @@ const String ERROR_USER_NOT_FOUND_API = 'O utilizador não existe!';
 // const BASE_URL = 'https://nutriclock.herokuapp.com';
 const IMAGE_BASE_URL = 'https://nutriclock.s3-eu-west-1.amazonaws.com';
 // const IMAGE_BASE_URL = 'https://ea25c14250e0.ngrok.io/storage';
-const BASE_URL = 'https://7bc74a12beb0.ngrok.io';
+const BASE_URL = 'https://d95fa89c500c.ngrok.io';
 const BASE_API_URL = '$BASE_URL/api';
 
 const LOGIN_URL = '/login';
@@ -61,3 +61,5 @@ const CONFIG_TIP_URL = '/configs/tips';
 const SLEEP_TIPS_URL = '/tips';
 const SLEEP_DATES_URL = '/sleepsByDate';
 const PROFESSIONALS_BY_USF = '/professionalsByUsf';
+const MESSAGES_FROM_USER = '/messagesFromUser';
+const MESSAGES = '/messages';

@@ -8,6 +8,7 @@ import 'package:loading/loading.dart';
 import 'package:nutriclock_app/constants/constants.dart';
 import 'package:nutriclock_app/models/User.dart';
 import 'package:nutriclock_app/network_utils/api.dart';
+import 'package:nutriclock_app/screens/navigation/chat/MessageHistoryFragment.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class ChatFragment extends StatefulWidget {
@@ -30,35 +31,45 @@ class _ChatFragmentState extends State<ChatFragment> {
     return Scaffold(
       body: _isLoading
           ? Center(
-              child: Loading(
-                  indicator: BallPulseIndicator(),
-                  size: 50.0,
-                  color: Colors.orangeAccent),
-            )
+        child: Loading(
+            indicator: BallPulseIndicator(),
+            size: 50.0,
+            color: Colors.orangeAccent),
+      )
           : ListView.builder(
-              padding:
-                  const EdgeInsets.only(top: 16, left: 8, bottom: 8, right: 8),
-              itemCount: _professionals.length,
-              itemBuilder: (BuildContext context, int index) {
-                return Card(
-                  child: ListTile(
-                    leading: _professionals[index].unreadMessages > 0
-                        ? Badge(
-                            shape: BadgeShape.circle,
-                            badgeColor: Colors.redAccent,
-                            badgeContent: Text(
-                                "${_professionals[index].unreadMessages}",
-                                style: TextStyle(color: Colors.white)),
-                          )
-                        : SizedBox(),
-                    trailing: Icon(
-                      Icons.chat_rounded,
-                      color: Color(0xFF74D44D),
+          padding:
+          const EdgeInsets.only(top: 16, left: 8, bottom: 8, right: 8),
+          itemCount: _professionals.length,
+          itemBuilder: (BuildContext context, int index) {
+            return Card(
+              child: ListTile(
+                leading: _professionals[index].unreadMessages > 0
+                    ? Badge(
+                  shape: BadgeShape.circle,
+                  badgeColor: Colors.redAccent,
+                  badgeContent: Text(
+                      "${_professionals[index].unreadMessages}",
+                      style: TextStyle(color: Colors.white)),
+                )
+                    : SizedBox(),
+                trailing: Icon(
+                  Icons.chat_rounded,
+                  color: Color(0xFF74D44D),
+                ),
+                title: Text('${_professionals[index].name}'),
+                onTap: () =>
+                {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) =>
+                            MessageHistoryFragment(user: _professionals[index])
                     ),
-                    title: Text('${_professionals[index].name}'),
-                  ),
-                );
-              }),
+                  ).then((value) => {_getProfessionalsByUsf()})
+                },
+              ),
+            );
+          }),
     );
   }
 
@@ -78,7 +89,7 @@ class _ChatFragmentState extends State<ChatFragment> {
       User user = User.fromJson(json.decode(storeUser));
       try {
         var response =
-            await Network().getWithAuth("$PROFESSIONALS_BY_USF/${user.ufc_id}");
+        await Network().getWithAuth("$PROFESSIONALS_BY_USF/${user.ufc_id}");
 
         if (response.statusCode == RESPONSE_SUCCESS) {
           List<dynamic> data = json.decode(response.body)[JSON_DATA_KEY];
