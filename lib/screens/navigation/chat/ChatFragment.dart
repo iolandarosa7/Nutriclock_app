@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:convert';
 
 import 'package:badges/badges.dart';
@@ -10,8 +11,11 @@ import 'package:nutriclock_app/models/User.dart';
 import 'package:nutriclock_app/network_utils/api.dart';
 import 'package:nutriclock_app/screens/navigation/chat/MessageHistoryFragment.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:web_socket_channel/io.dart';
+import 'package:web_socket_channel/web_socket_channel.dart';
 
 class ChatFragment extends StatefulWidget {
+  ChatFragment({Key key}) : super(key: key);
   @override
   _ChatFragmentState createState() => _ChatFragmentState();
 }
@@ -19,11 +23,60 @@ class ChatFragment extends StatefulWidget {
 class _ChatFragmentState extends State<ChatFragment> {
   var _isLoading = false;
   List<User> _professionals = [];
+  User authUser;
+  var channel = IOWebSocketChannel.connect(WEBSOCKET_URL);
+  var _shouldConnect = true;
 
   @override
   void initState() {
+    _loadUser();
     _getProfessionalsByUsf();
+    channel.stream.listen(this.onData, onError: this.onError, onDone: this.onDone);
     super.initState();
+  }
+
+  onDone() {
+    debugPrint("Socket is closed");
+    if (_shouldConnect) connectToSocket();
+  }
+
+  onError(err) {
+    var exception = err as WebSocketChannelException;
+    print("socket error ${err.runtimeType.toString()} ${exception.message}");
+  }
+
+  onData(event) {
+    var parsedArray = event.toString().replaceAll("'", "").split(":");
+    var senderId = parsedArray[3].split(",")[0].trim();
+    var receiverId = parsedArray[6].split(",")[0].trim();
+
+    if (int.parse(senderId) == authUser.id || int.parse(receiverId) == authUser.id) {
+      _getProfessionalsByUsf();
+    }
+  }
+
+
+  @override
+  void dispose() {
+    _shouldConnect = false;
+    channel.sink.close();
+    super.dispose();
+  }
+
+  connectToSocket() {
+    channel = IOWebSocketChannel.connect(WEBSOCKET_URL);
+    print('socket connect');
+  }
+
+  _loadUser() async {
+    SharedPreferences localStorage = await SharedPreferences.getInstance();
+
+    var storeUser = localStorage.getString(LOCAL_STORAGE_USER_KEY);
+
+    if (storeUser != null) {
+      User user = User.fromJson(json.decode(storeUser));
+      this.authUser = user;
+    }
   }
 
   @override

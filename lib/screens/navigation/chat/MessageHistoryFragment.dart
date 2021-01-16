@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:convert';
 
 import 'package:badges/badges.dart';
@@ -10,6 +11,8 @@ import 'package:nutriclock_app/models/Message.dart';
 import 'package:nutriclock_app/models/User.dart';
 import 'package:nutriclock_app/network_utils/api.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:web_socket_channel/io.dart';
+import 'package:web_socket_channel/web_socket_channel.dart';
 
 class MessageHistoryFragment extends StatefulWidget {
   final User user;
@@ -25,11 +28,72 @@ class _MessageHistoryFragmentState extends State<MessageHistoryFragment> {
   var _response;
   User authUser;
   List<Message> _messages = [];
+  var channel = IOWebSocketChannel.connect(WEBSOCKET_URL);
+  var _shouldConnect = true;
 
   @override
   void initState() {
     _loadData();
+    channel.stream.listen(this.onData, onError: this.onError, onDone: this.onDone);
     super.initState();
+  }
+
+  onDone() {
+    debugPrint("Socket is closed");
+    if (_shouldConnect) connectToSocket();
+  }
+
+  onError(err) {
+    var exception = err as WebSocketChannelException;
+    print("socket error ${err.runtimeType.toString()} ${exception.message}");
+  }
+
+
+  @override
+  void dispose() {
+    _shouldConnect = false;
+    channel.sink.close();
+    super.dispose();
+  }
+
+  connectToSocket() {
+    channel = IOWebSocketChannel.connect(WEBSOCKET_URL);
+    print('socket connect');
+  }
+
+  onData(event) {
+    var parsedArray = event.toString().replaceAll("'", "").split(":");
+    var senderId = parsedArray[3].split(",")[0].trim();
+    var senderName = parsedArray[4].split(",")[0].trim();
+    var senderPhotoUrl = parsedArray[5].split(",")[0].trim();
+    var receiverId = parsedArray[6].split(",")[0].trim();
+    var receiverName = parsedArray[7].split(",")[0].trim();
+    var receiverPhotoUrl = parsedArray[8].split(",")[0].trim();
+    var message = parsedArray[9].split(",")[0].trim();
+
+    if (receiverId == authUser.id.toString() ||
+        senderId == authUser.id.toString()) {
+      var m = Message();
+      m.created_at = new DateTime.now().toIso8601String();
+      m.senderId = int.parse(senderId);
+      m.senderName = senderName;
+      m.senderPhotoUrl = senderPhotoUrl;
+      m.receiverId = int.parse(receiverId);
+      m.receiverName = receiverName;
+      m.receiverPhotoUrl = receiverPhotoUrl;
+      m.message = message;
+      m.refMessageId = null;
+      m.read = 0;
+      _addMessage(m);
+    }
+  }
+
+  _addMessage(Message message) {
+    var auxMessages = _messages;
+    auxMessages.add(message);
+    this.setState(() {
+      _messages = auxMessages;
+    });
   }
 
   @override
@@ -158,7 +222,7 @@ class _MessageHistoryFragmentState extends State<MessageHistoryFragment> {
 
     var messageId = _getRefMessageId();
 
-    print({
+    var messageToSend = {
       'senderId': authUser.id,
       'senderName': authUser.name,
       'senderPhotoUrl': authUser.avatarUrl,
@@ -168,28 +232,16 @@ class _MessageHistoryFragmentState extends State<MessageHistoryFragment> {
       'message': _response,
       'read': false,
       'refMessageId': messageId,
-    });
-
+      'fromModal': false,
+    };
     try {
-      var response = await Network().postWithAuth({
-        'senderId': authUser.id,
-        'senderName': authUser.name,
-        'senderPhotoUrl': authUser.avatarUrl,
-        'receiverId': this.widget.user.id,
-        'receiverName': this.widget.user.name,
-        'receiverPhotoUrl': this.widget.user.avatarUrl,
-        'message': _response,
-        'read': false,
-        'refMessageId': messageId,
-      }, "$MESSAGES");
-
-      print(response.statusCode);
-
+      var response = await Network().postWithAuth(messageToSend, "$MESSAGES");
+      if (response.statusCode == RESPONSE_SUCCESS_201) {
+        this.channel.sink.add("\"{type:\'store\',message:$messageToSend}\"");
+      }
       this.setState(() {
         _isLoading = false;
       });
-
-      _loadData();
     } catch (error) {
       this.setState(() {
         _isLoading = false;
