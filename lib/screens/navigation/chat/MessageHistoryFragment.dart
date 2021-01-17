@@ -31,6 +31,7 @@ class _MessageHistoryFragmentState extends State<MessageHistoryFragment> {
   var channel = IOWebSocketChannel.connect(WEBSOCKET_URL);
   var _shouldConnect = true;
   var _scrollController = ScrollController();
+  var hasMore = true;
 
   @override
   void initState() {
@@ -43,10 +44,7 @@ class _MessageHistoryFragmentState extends State<MessageHistoryFragment> {
   _scrollListener() {
     if (_scrollController.offset >= _scrollController.position.maxScrollExtent &&
         !_scrollController.position.outOfRange) {
-      setState(() {
-        debugPrint("reach the top 1");
-      });
-      _loadData();
+      if (hasMore) _loadData();
     }
   }
 
@@ -102,6 +100,9 @@ class _MessageHistoryFragmentState extends State<MessageHistoryFragment> {
 
   _addMessage(Message message) {
     var auxMessages = _messages;
+    auxMessages.forEach((element) {
+      element.read = 1;
+    });
     auxMessages.add(message);
     this.setState(() {
       _messages = auxMessages;
@@ -265,6 +266,7 @@ class _MessageHistoryFragmentState extends State<MessageHistoryFragment> {
 
   _loadData() async {
     List<Message> list = _messages;
+    var previousSize = _messages.length;
     if (_isLoading) return;
     this.setState(() {
       _isLoading = true;
@@ -280,8 +282,6 @@ class _MessageHistoryFragmentState extends State<MessageHistoryFragment> {
         var response = await Network()
             .getWithAuth("$MESSAGES_FROM_USER/${widget.user.id}?skip=${_messages.length}");
 
-        print(response.statusCode);
-
         if (response.statusCode == RESPONSE_SUCCESS) {
           List<dynamic> data = json.decode(response.body)[JSON_DATA_KEY];
 
@@ -291,8 +291,9 @@ class _MessageHistoryFragmentState extends State<MessageHistoryFragment> {
           });
 
           this.setState(() {
-            _messages = _messages;
+            _messages = list;
             authUser = user;
+            hasMore = data.length > 0;
           });
         } else {}
       } catch (error) {}
