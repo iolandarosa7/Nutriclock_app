@@ -32,7 +32,7 @@ const String ERROR_USER_NOT_FOUND_API = 'O utilizador não existe!';
 // const BASE_URL = 'https://nutriclock.herokuapp.com';
 const IMAGE_BASE_URL = 'https://nutriclock.s3-eu-west-1.amazonaws.com';
 // const IMAGE_BASE_URL = 'https://ea25c14250e0.ngrok.io/storage';
-const BASE_URL = 'https://a5820b2f932c.ngrok.io';
+const BASE_URL = 'https://9bc7a74dc30f.ngrok.io';
 const BASE_API_URL = '$BASE_URL/api';
 const WEBSOCKET_URL = 'wss://nutriclock-websocket.herokuapp.com';
 

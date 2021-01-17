@@ -30,12 +30,24 @@ class _MessageHistoryFragmentState extends State<MessageHistoryFragment> {
   List<Message> _messages = [];
   var channel = IOWebSocketChannel.connect(WEBSOCKET_URL);
   var _shouldConnect = true;
+  var _scrollController = ScrollController();
 
   @override
   void initState() {
+    _scrollController.addListener(_scrollListener);
     _loadData();
     channel.stream.listen(this.onData, onError: this.onError, onDone: this.onDone);
     super.initState();
+  }
+
+  _scrollListener() {
+    if (_scrollController.offset >= _scrollController.position.maxScrollExtent &&
+        !_scrollController.position.outOfRange) {
+      setState(() {
+        debugPrint("reach the top 1");
+      });
+      _loadData();
+    }
   }
 
   onDone() {
@@ -129,6 +141,7 @@ class _MessageHistoryFragmentState extends State<MessageHistoryFragment> {
                     child: SingleChildScrollView(
                       scrollDirection: Axis.vertical,
                       reverse: true,
+                      controller: _scrollController,
                       child: _messages == null || _messages.length == 0
                           ? Center(
                               child: Padding(
@@ -251,7 +264,7 @@ class _MessageHistoryFragmentState extends State<MessageHistoryFragment> {
   }
 
   _loadData() async {
-    List<Message> list = [];
+    List<Message> list = _messages;
     if (_isLoading) return;
     this.setState(() {
       _isLoading = true;
@@ -265,18 +278,20 @@ class _MessageHistoryFragmentState extends State<MessageHistoryFragment> {
       User user = User.fromJson(json.decode(storeUser));
       try {
         var response = await Network()
-            .getWithAuth("$MESSAGES_FROM_USER/${widget.user.id}");
+            .getWithAuth("$MESSAGES_FROM_USER/${widget.user.id}?skip=${_messages.length}");
+
+        print(response.statusCode);
 
         if (response.statusCode == RESPONSE_SUCCESS) {
           List<dynamic> data = json.decode(response.body)[JSON_DATA_KEY];
 
           data.forEach((element) {
             Message m = Message.fromJson(element);
-            list.add(m);
+            list.insert(0, m);
           });
 
           this.setState(() {
-            _messages = list;
+            _messages = _messages;
             authUser = user;
           });
         } else {}
