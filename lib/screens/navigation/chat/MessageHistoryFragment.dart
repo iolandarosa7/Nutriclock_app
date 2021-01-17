@@ -128,6 +128,7 @@ class _MessageHistoryFragmentState extends State<MessageHistoryFragment> {
                     bottom: 110,
                     child: SingleChildScrollView(
                       scrollDirection: Axis.vertical,
+                      reverse: true,
                       child: _messages == null || _messages.length == 0
                           ? Center(
                               child: Padding(
