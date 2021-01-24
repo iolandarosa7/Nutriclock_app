@@ -36,7 +36,7 @@ class _ChatFragmentState extends State<ChatFragment> {
   }
 
   onDone() {
-    debugPrint("Socket is closed");
+    print("Socket is closed");
     if (_shouldConnect) connectToSocket();
   }
 
@@ -47,10 +47,12 @@ class _ChatFragmentState extends State<ChatFragment> {
 
   onData(event) {
     var parsedArray = event.toString().replaceAll("'", "").split(":");
+    var type = parsedArray[1].split(",")[0].trim();
     var senderId = parsedArray[3].split(",")[0].trim();
     var receiverId = parsedArray[6].split(",")[0].trim();
 
     if (int.parse(senderId) == authUser.id || int.parse(receiverId) == authUser.id) {
+      if (type == 'update') return;
       _getProfessionalsByUsf();
     }
   }
@@ -143,6 +145,8 @@ class _ChatFragmentState extends State<ChatFragment> {
       try {
         var response =
         await Network().getWithAuth("$PROFESSIONALS_BY_USF/${user.ufc_id}");
+
+        print("$PROFESSIONALS_BY_USF/${user.ufc_id}");
 
         if (response.statusCode == RESPONSE_SUCCESS) {
           List<dynamic> data = json.decode(response.body)[JSON_DATA_KEY];

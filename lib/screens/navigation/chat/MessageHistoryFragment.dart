@@ -4,6 +4,7 @@ import 'dart:convert';
 import 'package:badges/badges.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:loading/indicator/ball_pulse_indicator.dart';
 import 'package:loading/loading.dart';
 import 'package:nutriclock_app/constants/constants.dart';
@@ -32,6 +33,7 @@ class _MessageHistoryFragmentState extends State<MessageHistoryFragment> {
   var _shouldConnect = true;
   var _scrollController = ScrollController();
   var hasMore = true;
+  final dateFormat = new DateFormat('dd/MM/yyyy hh:mm');
 
   @override
   void initState() {
@@ -73,40 +75,46 @@ class _MessageHistoryFragmentState extends State<MessageHistoryFragment> {
 
   onData(event) {
     var parsedArray = event.toString().replaceAll("'", "").split(":");
+    var type = parsedArray[1].split(",")[0].trim();
     var senderId = parsedArray[3].split(",")[0].trim();
-    var senderName = parsedArray[4].split(",")[0].trim();
-    var senderPhotoUrl = parsedArray[5].split(",")[0].trim();
     var receiverId = parsedArray[6].split(",")[0].trim();
-    var receiverName = parsedArray[7].split(",")[0].trim();
-    var receiverPhotoUrl = parsedArray[8].split(",")[0].trim();
     var message = parsedArray[9].split(",")[0].trim();
+    var id = parsedArray[parsedArray.length-1].split("}")[0].trim();
 
     if (receiverId == authUser.id.toString() ||
         senderId == authUser.id.toString()) {
-      var m = Message();
-      m.created_at = new DateTime.now().toIso8601String();
-      m.senderId = int.parse(senderId);
-      m.senderName = senderName;
-      m.senderPhotoUrl = senderPhotoUrl;
-      m.receiverId = int.parse(receiverId);
-      m.receiverName = receiverName;
-      m.receiverPhotoUrl = receiverPhotoUrl;
-      m.message = message;
-      m.refMessageId = null;
-      m.read = 0;
-      _addMessage(m);
-    }
-  }
+      if (type == 'store') {
+        setState(() {
+          _messages = [];
+        });
+        _loadData();
+      } else if (type == 'update'){
+        var aux = _messages;
+        aux.forEach((element) {
+          if (element.id == int.parse(id)) {
+            element.message = message;
+          }
+        });
 
-  _addMessage(Message message) {
-    var auxMessages = _messages;
-    auxMessages.forEach((element) {
-      element.read = 1;
-    });
-    auxMessages.add(message);
-    this.setState(() {
-      _messages = auxMessages;
-    });
+        this.setState(() {
+          _messages = aux;
+        });
+      } else if(type == 'delete') {
+        var selectedMessage;
+        var aux = _messages;
+        aux.forEach((element) {
+          print(id);
+          print(element.id);
+          if (element.id == int.parse(id)) {
+            selectedMessage = element;
+          }
+        });
+        aux.remove(selectedMessage);
+        this.setState(() {
+          _messages = aux;
+        });
+      }
+    }
   }
 
   @override
@@ -266,7 +274,6 @@ class _MessageHistoryFragmentState extends State<MessageHistoryFragment> {
 
   _loadData() async {
     List<Message> list = _messages;
-    var previousSize = _messages.length;
     if (_isLoading) return;
     this.setState(() {
       _isLoading = true;
@@ -332,10 +339,23 @@ class _MessageHistoryFragmentState extends State<MessageHistoryFragment> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
-              Text(
-                "Eu, ${message.created_at}",
-                style: TextStyle(
-                    fontFamily: 'Neucha', fontSize: 12, color: Colors.black54),
+              Row(
+                children: [
+                  message.read == 0
+                      ? Badge(
+                    badgeColor: Colors.redAccent,
+                    badgeContent: Text(""),
+                  )
+                      : SizedBox(),
+                  SizedBox(
+                    width: 4,
+                  ),
+                  Text(
+                    "Eu, ${_getStringTime(DateTime.parse(message.created_at))}",
+                    style: TextStyle(
+                        fontFamily: 'Neucha', fontSize: 12, color: Colors.black54),
+                  ),
+                ],
               ),
               SizedBox(
                 height: 8,
@@ -350,6 +370,14 @@ class _MessageHistoryFragmentState extends State<MessageHistoryFragment> {
         ),
       ),
     );
+  }
+
+  _getStringTime(DateTime d) {
+    return "${_parseTwoDigits(d.day)}/${_parseTwoDigits(d.month)}/${d.year} ${_parseTwoDigits(d.hour)}:${_parseTwoDigits(d.minute)}";
+  }
+
+  _parseTwoDigits(int value){
+    return value > 9 ? "$value":"0$value";
   }
 
   _renderUserMessage(Message message) {
@@ -377,7 +405,7 @@ class _MessageHistoryFragmentState extends State<MessageHistoryFragment> {
                     width: 4,
                   ),
                   Text(
-                    "${message.senderName}, ${message.created_at}",
+                    "${message.senderName}, ${_getStringTime(DateTime.parse(message.created_at))}",
                     style: TextStyle(
                         fontFamily: 'PatrickHand',
                         fontSize: 12,
