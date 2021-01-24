@@ -9,8 +9,8 @@ class Message {
   String receiverPhotoUrl;
   String message;
   dynamic refMessageId;
-  int read;
-  // bool read;
+  // int read;
+  bool read;
 
   Message();
 
