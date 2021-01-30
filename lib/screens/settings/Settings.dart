@@ -14,50 +14,56 @@ class SettingsList extends StatelessWidget {
               fontFamily: 'Pacifico',
             ),
           ),
-          backgroundColor: Color(0xFF74D44D),
+          backgroundColor: Color(0xFFA3E1CB),
         ),
         body: ListView(
           children: [
             ListTile(
-              leading: Icon(Icons.person),
+              leading: Icon(
+                Icons.person,
+                color: Color(0xFF60B2A3),
+              ),
               title: Text(
                 "Perfil",
                 style: TextStyle(
-                  color: Colors.grey,
+                  color: Color(0xFF60B2A3),
                   fontFamily: 'Roboto',
                 ),
               ),
-              trailing: Icon(Icons.keyboard_arrow_right),
+              trailing:
+                  Icon(Icons.keyboard_arrow_right, color: Color(0xFF60B2A3)),
               onTap: () {
                 Navigator.of(context)
                     .push(MaterialPageRoute(builder: (context) => Profile()));
               },
             ),
             ListTile(
-              leading: Icon(Icons.lock),
+              leading: Icon(Icons.lock, color: Color(0xFF60B2A3)),
               title: Text(
                 "Alterar Password",
                 style: TextStyle(
-                  color: Colors.grey,
+                  color: Color(0xFF60B2A3),
                   fontFamily: 'Roboto',
                 ),
               ),
-              trailing: Icon(Icons.keyboard_arrow_right),
+              trailing:
+                  Icon(Icons.keyboard_arrow_right, color: Color(0xFF60B2A3)),
               onTap: () {
                 Navigator.of(context).push(
                     MaterialPageRoute(builder: (context) => ChangePassword()));
               },
             ),
             ListTile(
-              leading: Icon(Icons.email),
+              leading: Icon(Icons.email, color: Color(0xFF60B2A3)),
               title: Text(
                 "Alterar Email",
                 style: TextStyle(
-                  color: Colors.grey,
+                  color: Color(0xFF60B2A3),
                   fontFamily: 'Roboto',
                 ),
               ),
-              trailing: Icon(Icons.keyboard_arrow_right),
+              trailing:
+                  Icon(Icons.keyboard_arrow_right, color: Color(0xFF60B2A3)),
               onTap: () {
                 Navigator.of(context).push(
                     MaterialPageRoute(builder: (context) => ChangeEmail()));

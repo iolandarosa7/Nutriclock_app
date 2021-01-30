@@ -44,7 +44,8 @@ class _HomeFragmentState extends State<HomeFragment> {
         var daysRegistered = 0;
         var sleeps = 0;
 
-        if (data.totalDaysRegistered != null) daysRegistered = data.totalDaysRegistered;
+        if (data.totalDaysRegistered != null)
+          daysRegistered = data.totalDaysRegistered;
         if (data.totalSleepDays != null) sleeps = data.totalSleepDays;
         this.setState(() {
           _mealDaysRegistered = daysRegistered;
@@ -64,22 +65,23 @@ class _HomeFragmentState extends State<HomeFragment> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: _isLoading
-          ? Center(
-              child: Loading(
-                  indicator: BallPulseIndicator(),
-                  size: 50.0,
-                  color: Colors.orangeAccent),
-            )
-          : Container(
-              width: double.infinity,
-              decoration: BoxDecoration(
-                gradient: LinearGradient(
-                    begin: Alignment.topCenter,
-                    end: Alignment.bottomCenter,
-                    colors: [Color(0x8074D44D), Color(0x20FFFFFF)]),
-              ),
-              child: SingleChildScrollView(
+      body: Container(
+        width: double.infinity,
+        height: double.infinity,
+        decoration: BoxDecoration(
+          image: DecorationImage(
+            image: AssetImage("assets/images/bg_home.jpg"),
+            fit: BoxFit.fill,
+          ),
+        ),
+        child: _isLoading
+            ? Center(
+                child: Loading(
+                    indicator: BallPulseIndicator(),
+                    size: 50.0,
+                    color: Color(0xFFFFBCBC)),
+              )
+            : SingleChildScrollView(
                 scrollDirection: Axis.vertical,
                 child: Padding(
                   padding: EdgeInsets.all(16.0),
@@ -92,7 +94,7 @@ class _HomeFragmentState extends State<HomeFragment> {
                       Text(
                         "Diário Alimentar",
                         style: TextStyle(
-                            color: Color(0xFF74D44D),
+                            color: Color(0xFF60B2A3),
                             fontFamily: 'Pacifico',
                             fontSize: 16),
                       ),
@@ -107,20 +109,20 @@ class _HomeFragmentState extends State<HomeFragment> {
                           new Icon(
                             Icons.ramen_dining,
                             size: 50.0,
-                            color: Colors.green,
+                            color: Color(0xFFFFBCBC),
                           ),
                           Text(
                             "$_mealDaysRegistered dias",
                             textAlign: TextAlign.center,
-                            style: TextStyle(color: Colors.green, fontSize: 12),
+                            style: TextStyle(color: Colors.grey, fontSize: 12),
                           ),
                         ]),
-                        backgroundColor: Colors.black12,
-                        progressColor: Colors.green,
+                        backgroundColor: Color(0xFFF6EEEE),
+                        progressColor: Color(0xFFFFBCBC),
                         footer: Text(
                           "Total de Alimentos / Refeições: $_totalMeals",
                           textAlign: TextAlign.center,
-                          style: TextStyle(color: Colors.black54, fontSize: 12),
+                          style: TextStyle(color: Color(0xFF797979), fontSize: 12),
                         ),
                       ),
                       SizedBox(
@@ -129,7 +131,7 @@ class _HomeFragmentState extends State<HomeFragment> {
                       Text(
                         "Sono",
                         style: TextStyle(
-                            color: Color(0xFF74D44D),
+                            color: Color(0xFF60B2A3),
                             fontFamily: 'Pacifico',
                             fontSize: 16),
                       ),
@@ -144,20 +146,20 @@ class _HomeFragmentState extends State<HomeFragment> {
                           new Icon(
                             Icons.bedtime,
                             size: 50.0,
-                            color: Colors.green,
+                            color: Color(0xFFA0DDFF),
                           ),
                           Text(
                             "$_totalSleeps dias",
                             textAlign: TextAlign.center,
-                            style: TextStyle(color: Colors.green, fontSize: 12),
+                            style: TextStyle(color: Colors.grey, fontSize: 12),
                           ),
                         ]),
-                        backgroundColor: Colors.black12,
-                        progressColor: Colors.green,
+                        backgroundColor: Color(0xFFDEF3FF),
+                        progressColor: Color(0xFFA0DDFF),
                         footer: Text(
                           "Média de Horas de Sono: $_averageSleepHours",
                           textAlign: TextAlign.center,
-                          style: TextStyle(color: Colors.black54, fontSize: 12),
+                          style: TextStyle(color: Color(0xFF797979), fontSize: 12),
                         ),
                       ),
                       SizedBox(
@@ -166,7 +168,7 @@ class _HomeFragmentState extends State<HomeFragment> {
                       Text(
                         "Exercicio",
                         style: TextStyle(
-                            color: Color(0xFF74D44D),
+                            color: Color(0xFF60B2A3),
                             fontFamily: 'Pacifico',
                             fontSize: 16),
                       ),
@@ -181,27 +183,27 @@ class _HomeFragmentState extends State<HomeFragment> {
                           new Icon(
                             Icons.directions_run_rounded,
                             size: 50.0,
-                            color: Colors.green,
+                            color: Color(0xFFF4D481),
                           ),
                           Text(
                             "$_totalExerciseHours dias",
                             textAlign: TextAlign.center,
-                            style: TextStyle(color: Colors.green, fontSize: 12),
+                            style: TextStyle(color: Colors.grey, fontSize: 12),
                           ),
                         ]),
-                        backgroundColor: Colors.black12,
-                        progressColor: Colors.green,
+                        backgroundColor: Color(0xFFFFF4D6),
+                        progressColor: Color(0xFFF4D481),
                         footer: Text(
                           "Média de Horas de Exercicio: 0",
                           textAlign: TextAlign.center,
-                          style: TextStyle(color: Colors.black54, fontSize: 12),
+                          style: TextStyle(color: Color(0xFF797979), fontSize: 12),
                         ),
                       ),
                     ],
                   ),
                 ),
               ),
-            ),
+      ),
     );
   }
 }

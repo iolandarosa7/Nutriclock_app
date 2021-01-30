@@ -10,12 +10,13 @@ import 'package:nutriclock_app/screens/drawer/FoodPlanFragment.dart';
 import 'package:nutriclock_app/screens/drawer/HomeFragment.dart';
 import 'package:nutriclock_app/screens/drawer/ReportsFragment.dart';
 import 'package:nutriclock_app/screens/login.dart';
-import 'file:///C:/Users/landi/AndroidStudioProjects/nutriclock_app/lib/screens/navigation/chat/ChatFragment.dart';
 import 'package:nutriclock_app/screens/navigation/ExerciseFragment.dart';
 import 'package:nutriclock_app/screens/navigation/meals/MealsFragment.dart';
 import 'package:nutriclock_app/screens/navigation/sleep/SleepFragment.dart';
 import 'package:nutriclock_app/screens/settings/Settings.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+
+import 'file:///C:/Users/landi/AndroidStudioProjects/nutriclock_app/lib/screens/navigation/chat/ChatFragment.dart';
 
 class Home extends StatefulWidget {
   @override
@@ -122,7 +123,7 @@ class _HomeState extends State<Home> {
             fontFamily: 'Pacifico',
           ),
         ),
-        backgroundColor: Color(0xFF74D44D),
+        backgroundColor: Color(0xFFA3E1CB),
         actions: <Widget>[
           IconButton(
             icon: Icon(Icons.settings),
@@ -142,14 +143,14 @@ class _HomeState extends State<Home> {
       ),
       bottomNavigationBar: BottomNavigationBar(
         selectedIconTheme: IconThemeData(
-          color: Color(0xFF74D44D),
+          color: Color(0xFF60B2A3),
           opacity: 1,
         ),
         unselectedIconTheme: IconThemeData(
-          color: Color(0xFF74D44D),
+          color: Color(0xFFA3E1CB),
           opacity: 0.6,
         ),
-        selectedItemColor: Color(0xFF74D44D),
+        selectedItemColor: Color(0xFF60B2A3),
         items: const <BottomNavigationBarItem>[
           BottomNavigationBarItem(
             icon: Icon(Icons.home),
@@ -181,43 +182,59 @@ class _HomeState extends State<Home> {
             UserAccountsDrawerHeader(
               currentAccountPicture: CircleAvatar(
                 backgroundImage: NetworkImage(_avatarUrl),
-                backgroundColor: Color(0xFF74D44D),
+                backgroundColor: Color(0xFFC1FECB),
                 onBackgroundImageError: (_, __) {},
               ),
-              accountName: new Text(this._name),
-              accountEmail: new Text(this._email),
+              accountName: new Text(
+                this._name,
+                style: TextStyle(color: Color(0xFFA3E1CB)),
+              ),
+              accountEmail: new Text(this._email,
+                  style: TextStyle(color: Color(0xFF60B2A3))),
               decoration: BoxDecoration(
-                gradient: LinearGradient(
-                    begin: Alignment.topRight,
-                    end: Alignment.bottomLeft,
-                    colors: [Color(0x6074D44D), Color(0xFF74D44D)]),
+                image: DecorationImage(
+                  image: AssetImage("assets/images/bg_drawer.jpg"),
+                  fit: BoxFit.cover,
+                ),
               ),
             ),
             new Column(children: [
               ListTile(
                 leading: Icon(
                   Icons.insert_chart,
+                  color: Color(0xFFA3E1CB),
                 ),
                 title: Text(
                   'Relatórios',
-                  style: TextStyle(color: Colors.grey),
+                  style: TextStyle(color: Color(0xFF60B2A3)),
                 ),
                 onTap: () => _onSelectItem(5, "Relatórios"),
               ),
               ListTile(
-                leading: Icon(Icons.restaurant),
+                leading: Icon(
+                  Icons.restaurant,
+                  color: Color(0xFFA3E1CB),
+                ),
                 title: Text('Plano Alimentar',
-                    style: TextStyle(color: Colors.grey)),
+                    style: TextStyle(color: Color(0xFF60B2A3))),
                 onTap: () => _onSelectItem(6, "Plano Alimentar"),
               ),
               ListTile(
-                leading: Icon(Icons.email),
-                title: Text('Contactos', style: TextStyle(color: Colors.grey)),
+                leading: Icon(
+                  Icons.email,
+                  color: Color(0xFFA3E1CB),
+                ),
+                title: Text('Contactos',
+                    style: TextStyle(color: Color(0xFF60B2A3))),
                 onTap: () => _onSelectItem(7, "Contactos"),
               ),
               ListTile(
-                leading: Icon(Icons.accessibility),
-                title: Text('Biomarcadores', style: TextStyle(color: Colors.grey)),
+                leading: Icon(
+                  Icons.accessibility,
+                  color: Color(0xFFA3E1CB),
+                ),
+                title: Text('Biomarcadores',
+                    style: TextStyle(color: Color(0xFF60B2A3))),
                 onTap: () => _onSelectItem(8, "Biomarcadores"),
               ),
             ])

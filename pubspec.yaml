@@ -67,6 +67,8 @@ flutter:
     - assets/images/tips.png
     - assets/images/stats.png
     - assets/images/pillow.png
+    - assets/images/bg_drawer.jpg
+    - assets/images/bg_home.jpg
   fonts:
     - family: Pacifico
       fonts:

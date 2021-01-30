@@ -11,7 +11,7 @@ class Profile extends StatelessWidget {
               fontFamily: 'Pacifico',
             ),
           ),
-          backgroundColor: Color(0xFF74D44D),
+          backgroundColor: Color(0xFFA3E1CB),
         ),
         body: Center(
           child: Text('Perfil'),
