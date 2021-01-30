@@ -21,22 +21,22 @@ class _RecoverPasswordState extends State<RecoverPassword> {
   Widget build(BuildContext context) {
     return Scaffold(
       key: _scaffoldKey,
-      body: _isLoading
-          ? Center(
-              child: Loading(
-                  indicator: BallPulseIndicator(),
-                  size: 50.0,
-                  color: Colors.orangeAccent),
-            )
-          : Container(
-              constraints: BoxConstraints.expand(),
-              decoration: BoxDecoration(
-                image: DecorationImage(
-                  image: AssetImage("assets/images/background.jpg"),
-                  fit: BoxFit.cover,
-                ),
-              ),
-              child: Stack(
+      body: Container(
+        constraints: BoxConstraints.expand(),
+        decoration: BoxDecoration(
+          image: DecorationImage(
+            image: AssetImage("assets/images/bg_login.png"),
+            fit: BoxFit.cover,
+          ),
+        ),
+        child: _isLoading
+            ? Center(
+                child: Loading(
+                    indicator: BallPulseIndicator(),
+                    size: 50.0,
+                    color: Colors.orangeAccent),
+              )
+            : Stack(
                 children: <Widget>[
                   Positioned(
                     child: Padding(
@@ -82,11 +82,11 @@ class _RecoverPasswordState extends State<RecoverPassword> {
                                                 TextStyle(color: Colors.grey),
                                             focusedBorder: UnderlineInputBorder(
                                               borderSide: BorderSide(
-                                                  color: Color(0xFFA3DC92)),
+                                                  color: Color(0xFFA3E1CB)),
                                             ),
                                             prefixIcon: Icon(
                                               Icons.email,
-                                              color: Colors.grey,
+                                              color: Color(0xFFA3E1CB),
                                             ),
                                             hintText: "Preencha o email",
                                             hintStyle: TextStyle(
@@ -135,7 +135,7 @@ class _RecoverPasswordState extends State<RecoverPassword> {
                                                   ),
                                                 ),
                                               ),
-                                              color: Color(0xFFA3DC92),
+                                              color: Color(0xFFA3E1CB),
                                               disabledColor: Colors.grey,
                                               shape: new RoundedRectangleBorder(
                                                   borderRadius:
@@ -163,7 +163,7 @@ class _RecoverPasswordState extends State<RecoverPassword> {
                   )
                 ],
               ),
-            ),
+      ),
     );
   }
 

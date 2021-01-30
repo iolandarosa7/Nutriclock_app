@@ -83,7 +83,7 @@ class _RegisterState extends State<Register> {
           constraints: BoxConstraints.expand(),
           decoration: BoxDecoration(
             image: DecorationImage(
-              image: AssetImage("assets/images/background.jpg"),
+              image: AssetImage("assets/images/bg_login.png"),
               fit: BoxFit.cover,
             ),
           ),
@@ -92,7 +92,7 @@ class _RegisterState extends State<Register> {
                   child: Loading(
                       indicator: BallPulseIndicator(),
                       size: 50.0,
-                      color: Colors.orangeAccent),
+                      color: Color(0xFFFFBCBC)),
                 )
               : SingleChildScrollView(
                   scrollDirection: Axis.vertical,
@@ -139,7 +139,7 @@ class _RegisterState extends State<Register> {
                                                   child: CircleAvatar(
                                                     radius: 55,
                                                     backgroundColor:
-                                                        Colors.grey,
+                                                        Color(0xFFd7d7d7),
                                                     child: _image != null
                                                         ? ClipRRect(
                                                             borderRadius:
@@ -155,8 +155,8 @@ class _RegisterState extends State<Register> {
                                                           )
                                                         : Container(
                                                             decoration: BoxDecoration(
-                                                                color:
-                                                                    Colors.grey,
+                                                                color: Color(
+                                                                    0xFFd7d7d7),
                                                                 borderRadius:
                                                                     BorderRadius
                                                                         .circular(
@@ -183,11 +183,11 @@ class _RegisterState extends State<Register> {
                                                       UnderlineInputBorder(
                                                     borderSide: BorderSide(
                                                         color:
-                                                            Color(0xFFA3DC92)),
+                                                            Color(0xFFA3E1CB)),
                                                   ),
                                                   prefixIcon: Icon(
                                                     Icons.person,
-                                                    color: Colors.grey,
+                                                    color: Color(0xFFA3E1CB),
                                                   ),
                                                   labelText: 'Nome',
                                                   labelStyle: TextStyle(
@@ -230,7 +230,9 @@ class _RegisterState extends State<Register> {
                                                       ),
                                                     ),
                                                     icon: Icon(
-                                                        Icons.arrow_drop_down),
+                                                        Icons.arrow_drop_down,
+                                                        color:
+                                                            Color(0xFFA3E1CB)),
                                                     onChanged: (newValue) {
                                                       setState(() {
                                                         usfId = newValue;
@@ -261,7 +263,8 @@ class _RegisterState extends State<Register> {
                                                               top: 10),
                                                       child: Icon(
                                                         Icons.home_work_sharp,
-                                                        color: Colors.grey,
+                                                        color:
+                                                            Color(0xFFA3E1CB),
                                                       )),
                                                 ],
                                               ),
@@ -285,7 +288,9 @@ class _RegisterState extends State<Register> {
                                                       ),
                                                     ),
                                                     icon: Icon(
-                                                        Icons.arrow_drop_down),
+                                                        Icons.arrow_drop_down,
+                                                        color:
+                                                            Color(0xFFA3E1CB)),
                                                     onChanged: (newValue) {
                                                       setState(() {
                                                         gender = newValue;
@@ -317,7 +322,8 @@ class _RegisterState extends State<Register> {
                                                               top: 10),
                                                       child: Icon(
                                                         Icons.wc,
-                                                        color: Colors.grey,
+                                                        color:
+                                                            Color(0xFFA3E1CB),
                                                       )),
                                                 ],
                                               ),
@@ -337,7 +343,8 @@ class _RegisterState extends State<Register> {
                                                       children: [
                                                         Icon(
                                                           Icons.calendar_today,
-                                                          color: Colors.grey,
+                                                          color:
+                                                              Color(0xFFA3E1CB),
                                                         ),
                                                         Padding(
                                                           padding:
@@ -387,11 +394,11 @@ class _RegisterState extends State<Register> {
                                                       UnderlineInputBorder(
                                                     borderSide: BorderSide(
                                                         color:
-                                                            Color(0xFFA3DC92)),
+                                                            Color(0xFFA3E1CB)),
                                                   ),
                                                   prefixIcon: Icon(
                                                     Icons.accessibility,
-                                                    color: Colors.grey,
+                                                    color: Color(0xFFA3E1CB),
                                                   ),
                                                   suffix: Text(
                                                     'kg',
@@ -438,11 +445,11 @@ class _RegisterState extends State<Register> {
                                                       UnderlineInputBorder(
                                                     borderSide: BorderSide(
                                                         color:
-                                                            Color(0xFFA3DC92)),
+                                                            Color(0xFFA3E1CB)),
                                                   ),
                                                   prefixIcon: Icon(
                                                     Icons.swap_vert,
-                                                    color: Colors.grey,
+                                                    color: Color(0xFFA3E1CB),
                                                   ),
                                                   suffix: Text(
                                                     'cm',
@@ -493,11 +500,11 @@ class _RegisterState extends State<Register> {
                                                       UnderlineInputBorder(
                                                     borderSide: BorderSide(
                                                         color:
-                                                            Color(0xFFA3DC92)),
+                                                            Color(0xFFA3E1CB)),
                                                   ),
                                                   prefixIcon: Icon(
                                                     Icons.email,
-                                                    color: Colors.grey,
+                                                    color: Color(0xFFA3E1CB),
                                                   ),
                                                   hintText: "Email",
                                                   labelText: 'Email',
@@ -534,11 +541,11 @@ class _RegisterState extends State<Register> {
                                                       UnderlineInputBorder(
                                                     borderSide: BorderSide(
                                                         color:
-                                                            Color(0xFFA3DC92)),
+                                                            Color(0xFFA3E1CB)),
                                                   ),
                                                   prefixIcon: Icon(
                                                     Icons.vpn_key,
-                                                    color: Colors.grey,
+                                                    color: Color(0xFFA3E1CB),
                                                   ),
                                                   hintText: "Password",
                                                   labelText: 'Password',
@@ -570,11 +577,11 @@ class _RegisterState extends State<Register> {
                                                       UnderlineInputBorder(
                                                     borderSide: BorderSide(
                                                         color:
-                                                            Color(0xFFA3DC92)),
+                                                            Color(0xFFA3E1CB)),
                                                   ),
                                                   prefixIcon: Icon(
                                                     Icons.vpn_key,
-                                                    color: Colors.grey,
+                                                    color: Color(0xFFA3E1CB),
                                                   ),
                                                   hintText:
                                                       "Confirmação de password",
@@ -616,7 +623,7 @@ class _RegisterState extends State<Register> {
                                                   children: [
                                                     Icon(
                                                       Icons.healing,
-                                                      color: Colors.grey,
+                                                      color: Color(0xFFA3E1CB),
                                                     ),
                                                     Expanded(
                                                       child: Padding(
@@ -646,9 +653,9 @@ class _RegisterState extends State<Register> {
                                                         child: Icon(
                                                             Icons.add_circle,
                                                             color: Color(
-                                                                0xFFA3DC92)),
+                                                                0xFFA3E1CB)),
                                                         highlightColor:
-                                                            Colors.green,
+                                                            Color(0xFF60B2A3),
                                                       ),
                                                     )
                                                   ],
@@ -664,7 +671,7 @@ class _RegisterState extends State<Register> {
                                                   children: [
                                                     Icon(
                                                       Icons.receipt,
-                                                      color: Colors.grey,
+                                                      color: Color(0xFFA3E1CB),
                                                     ),
                                                     Expanded(
                                                       child: Padding(
@@ -694,9 +701,9 @@ class _RegisterState extends State<Register> {
                                                         child: Icon(
                                                             Icons.add_circle,
                                                             color: Color(
-                                                                0xFFA3DC92)),
+                                                                0xFFA3E1CB)),
                                                         highlightColor:
-                                                            Colors.green,
+                                                            Color(0xFF60B2A3),
                                                       ),
                                                     )
                                                   ],
@@ -730,7 +737,7 @@ class _RegisterState extends State<Register> {
                                                         ),
                                                       ),
                                                     ),
-                                                    color: Color(0xFFA3DC92),
+                                                    color: Color(0xFFA3E1CB),
                                                     disabledColor: Colors.grey,
                                                     shape:
                                                         new RoundedRectangleBorder(
@@ -773,7 +780,13 @@ class _RegisterState extends State<Register> {
           return StatefulBuilder(
             builder: (BuildContext context, StateSetter setState) {
               return AlertDialog(
-                title: Text("Adicionar Medicação / Suplemento"),
+                title: Text(
+                  "Adicionar Medicação / Suplemento",
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                    color: Color(0xFFA3E1CB),
+                  ),
+                ),
                 content: SingleChildScrollView(
                   child: ListBody(
                     children: <Widget>[
@@ -822,7 +835,7 @@ class _RegisterState extends State<Register> {
                         keyboardType: TextInputType.text,
                         decoration: InputDecoration(
                           focusedBorder: UnderlineInputBorder(
-                            borderSide: BorderSide(color: Color(0xFFA3DC92)),
+                            borderSide: BorderSide(color: Color(0xFFA3E1CB)),
                           ),
                           hintText: "Nome",
                           hintStyle: TextStyle(
@@ -842,7 +855,7 @@ class _RegisterState extends State<Register> {
                         keyboardType: TextInputType.number,
                         decoration: InputDecoration(
                           focusedBorder: UnderlineInputBorder(
-                            borderSide: BorderSide(color: Color(0xFFA3DC92)),
+                            borderSide: BorderSide(color: Color(0xFFA3E1CB)),
                           ),
                           suffix: Text('mg/ml'),
                           hintText: "Posologia",
@@ -1033,7 +1046,7 @@ class _RegisterState extends State<Register> {
                 ),
                 actions: <Widget>[
                   FlatButton(
-                    child: Text('Adicionar'),
+                    child: Text('Adicionar', style: TextStyle(color: Color(0xFF60B2A3)),),
                     onPressed: () {
                       if (drugNameToAdd == null ||
                           drugNameToAdd.trim() == "" ||
@@ -1094,7 +1107,7 @@ class _RegisterState extends State<Register> {
         return StatefulBuilder(
             builder: (BuildContext context, StateSetter setState) {
           return AlertDialog(
-            title: Text('Adicionar Problema de Saúde'),
+            title: Text('Adicionar Problema de Saúde', textAlign: TextAlign.center ,style: TextStyle(color: Color(0xFFA3E1CB)),),
             content: SingleChildScrollView(
               child: ListBody(
                 children: <Widget>[
@@ -1153,7 +1166,7 @@ class _RegisterState extends State<Register> {
                     keyboardType: TextInputType.text,
                     decoration: InputDecoration(
                       focusedBorder: UnderlineInputBorder(
-                        borderSide: BorderSide(color: Color(0xFFA3DC92)),
+                        borderSide: BorderSide(color: Color(0xFFA3E1CB)),
                       ),
                       hintText: "Outra doença",
                       hintStyle: TextStyle(
@@ -1167,7 +1180,7 @@ class _RegisterState extends State<Register> {
             ),
             actions: <Widget>[
               FlatButton(
-                child: Text('Adicionar'),
+                child: Text('Adicionar', style: TextStyle(color: Color(0xFF60B2A3)),),
                 onPressed: () {
                   _addDisease();
                   Navigator.of(context).pop();

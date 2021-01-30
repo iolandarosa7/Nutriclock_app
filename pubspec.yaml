@@ -58,9 +58,10 @@ flutter:
   # the material Icons class.
   uses-material-design: true
   assets:
+    - assets/images/splash.png
+    - assets/images/bg_login.png
     - assets/images/background.jpg
     - assets/images/logo.png
-    - assets/images/splash.png
     - assets/images/logo_horizontal.png
     - assets/images/header.png
     - assets/images/tips.png
