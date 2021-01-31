@@ -42,137 +42,51 @@ class _SleepFragmentState extends State<SleepFragment> {
     return Container(
       width: double.infinity,
       decoration: BoxDecoration(
-        gradient: LinearGradient(
-            begin: Alignment.topCenter,
-            end: Alignment.bottomCenter,
-            colors: [Color(0x8074D44D), Color(0x20FFFFFF)]),
+        image: DecorationImage(
+          image: AssetImage("assets/images/bg_sleep.jpg"),
+          fit: BoxFit.cover,
+        ),
       ),
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
-        crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          Card(
-            elevation: 2.0,
-            color: Colors.white,
-            margin: EdgeInsets.only(left: 16, right: 16, bottom: 20),
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(0),
-            ),
-            child: GestureDetector(
-              onTap: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                      builder: (context) => SleepCalendarFragment()),
-                );
-              },
-              child: Padding(
-                padding: EdgeInsets.all(16),
-                child: Column(
-                  children: [
-                    SizedBox(
-                      width: double.infinity,
-                    ),
-                    ClipRect(
-                      child: Icon(
-                        Icons.bedtime,
-                        size: 50.0,
-                        color: Colors.green,
-                      ),
-                    ),
-                    Text(
-                      "Diário do Sono",
-                      style: TextStyle(
-                          color: Colors.black,
-                          fontSize: 20,
-                          fontFamily: 'Pacifico'),
-                    ),
-                  ],
-                ),
-              ),
-            ),
+          GestureDetector(
+            onTap: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (context) => SleepCalendarFragment()),
+              );
+            },
+            child: Image(image: AssetImage('assets/sleep/sleep.png')),
           ),
-          Card(
-            elevation: 2.0,
-            color: Colors.white,
-            margin: EdgeInsets.only(left: 16, right: 16, bottom: 20),
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(0),
-            ),
-            child: GestureDetector(
-              onTap: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => SleepStatsFragment()),
-                );
-              },
-              child: Padding(
-                padding: EdgeInsets.all(16),
-                child: Column(
-                  children: [
-                    SizedBox(
-                      width: double.infinity,
-                    ),
-                    ClipRect(
-                      child: Icon(
-                        Icons.bar_chart,
-                        size: 50.0,
-                        color: Colors.green,
-                      ),
-                    ),
-                    Text(
-                      "Estatísticas",
-                      style: TextStyle(
-                          color: Colors.black,
-                          fontSize: 20,
-                          fontFamily: 'Pacifico'),
-                    ),
-                  ],
-                ),
-              ),
-            ),
+          SizedBox(
+            height: 20,
           ),
-      _showTips ?
-          Card(
-            elevation: 2.0,
-            color: Colors.white,
-            margin: EdgeInsets.only(left: 16, right: 16, bottom: 20),
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(0),
-            ),
-            child: GestureDetector(
-              onTap: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => SleepTipFragment()),
-                );
-              },
-              child: Padding(
-                padding: EdgeInsets.all(16),
-                child: Column(
-                        children: [
-                          ClipRect(
-                            child: Icon(
-                              Icons.lightbulb,
-                              size: 50.0,
-                              color: Colors.yellow,
-                            ),
-                          ),
-                          Text(
-                            "Dicas",
-                            style: TextStyle(
-                                color: Colors.black,
-                                fontSize: 20,
-                                fontFamily: 'Pacifico'),
-                          ),
-                          SizedBox(
-                            width: double.infinity,
-                          ),
-                        ],
-                      )
-              ),
-            ),
-          ) : SizedBox(),
+          GestureDetector(
+            onTap: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => SleepStatsFragment()),
+              );
+            },
+            child: Image(image: AssetImage('assets/sleep/stats.png')),
+          ),
+          SizedBox(
+            height: 20,
+          ),
+          _showTips
+              ? GestureDetector(
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => SleepTipFragment()),
+                    );
+                  },
+                  child: Image(image: AssetImage('assets/sleep/tip.png')),
+                )
+              : SizedBox(),
         ],
       ),
     );

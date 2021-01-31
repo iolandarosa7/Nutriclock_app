@@ -62,30 +62,53 @@ class _SleepTipFragmentState extends State<SleepTipFragment> {
             fontFamily: 'Pacifico',
           ),
         ),
-        backgroundColor: Color(0xFF74D44D),
+        backgroundColor: Color(0xFFA3E1CB),
       ),
-      body: _isLoading
-          ? Center(
-              child: Loading(
+      body: Container(
+        constraints: BoxConstraints.expand(),
+        decoration: BoxDecoration(
+          image: DecorationImage(
+            image: AssetImage("assets/images/bg_sleep.jpg"),
+            fit: BoxFit.fill,
+          ),
+        ),
+        child: _isLoading
+            ? Center(
+                child: Loading(
                   indicator: BallPulseIndicator(),
                   size: 50.0,
-                  color: Colors.orangeAccent),
-            )
-          : ListView.builder(
-              padding:
-                  const EdgeInsets.only(top: 16, left: 8, bottom: 8, right: 8),
-              itemCount: _tips.length,
-              itemBuilder: (BuildContext context, int index) {
-                return Card(
-                  child: ListTile(
-                    leading: Icon(
-                      Icons.check_circle_outline_rounded,
-                      color: Color(0xFF74D44D),
+                  color: Color(0xFFFFBCBC),
+                ),
+              )
+            : ListView.builder(
+                padding: const EdgeInsets.only(
+                    top: 16, left: 0, bottom: 8, right: 40),
+                itemCount: _tips.length,
+                itemBuilder: (BuildContext context, int index) {
+                  return Card(
+                    shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.only(
+                            topRight: Radius.circular(50),
+                            bottomRight: Radius.circular(50))),
+                    margin: EdgeInsets.only(bottom: 10, top: 20),
+                    shadowColor: Color(0xFFA3E1CB),
+                    elevation: 10,
+                    child: ListTile(
+                      leading: Icon(
+                        Icons.star_rounded,
+                        color: Color(0xFFF4D481),
+                      ),
+                      title: Text(
+                        '${_tips[index].description}',
+                        style: TextStyle(
+                            color: Color(0xFF60B2A3),
+                            fontFamily: 'PatrickHand',
+                            fontSize: 20),
+                      ),
                     ),
-                    title: Text('${_tips[index].description}'),
-                  ),
-                );
-              }),
+                  );
+                }),
+      ),
     );
   }
 }

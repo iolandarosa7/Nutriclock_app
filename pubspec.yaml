@@ -60,7 +60,7 @@ flutter:
   assets:
     - assets/images/splash.png
     - assets/images/bg_login.png
-    - assets/images/background.jpg
+    - assets/images/nutri.png
     - assets/images/logo.png
     - assets/images/logo_horizontal.png
     - assets/images/header.png
@@ -69,6 +69,12 @@ flutter:
     - assets/images/pillow.png
     - assets/images/bg_drawer.jpg
     - assets/images/bg_home.jpg
+    - assets/images/bg_sleep.jpg
+    - assets/sleep/sleep.png
+    - assets/sleep/stats.png
+    - assets/sleep/tip.png
+    - assets/images/header_chat.png
+    - assets/images/bg_chat.jpg
   fonts:
     - family: Pacifico
       fonts:

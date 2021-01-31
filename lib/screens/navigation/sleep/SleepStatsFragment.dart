@@ -50,8 +50,7 @@ class _SleepStatsFragmentState extends State<SleepStatsFragment> {
       this._populateMonthsByYear(_years[0].value);
 
       this._setDataSource(_years[0].value, _monthsByYear[0].value);
-    } catch (error) {
-    }
+    } catch (error) {}
 
     setState(() {
       _isLoading = false;
@@ -88,21 +87,30 @@ class _SleepStatsFragmentState extends State<SleepStatsFragment> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(
-          title: Text(
-            "Estatísticas de Sono",
-            style: TextStyle(
-              fontFamily: 'Pacifico',
-            ),
+      appBar: AppBar(
+        title: Text(
+          "Estatísticas de Sono",
+          style: TextStyle(
+            fontFamily: 'Pacifico',
           ),
-          backgroundColor: Color(0xFF74D44D),
         ),
-        body: _isLoading
+        backgroundColor: Color(0xFFA3E1CB),
+      ),
+      body: Container(
+        constraints: BoxConstraints.expand(),
+        decoration: BoxDecoration(
+          image: DecorationImage(
+            image: AssetImage("assets/images/bg_sleep.jpg"),
+            fit: BoxFit.fill,
+          ),
+        ),
+        child: _isLoading
             ? Center(
                 child: Loading(
-                    indicator: BallPulseIndicator(),
-                    size: 50.0,
-                    color: Colors.orangeAccent),
+                  indicator: BallPulseIndicator(),
+                  size: 50.0,
+                  color: Color(0xFFFFBCBC),
+                ),
               )
             : Column(
                 children: [
@@ -111,7 +119,7 @@ class _SleepStatsFragmentState extends State<SleepStatsFragment> {
                     child: Text(
                       'Horas de Sono',
                       style: TextStyle(
-                          color: Colors.black38,
+                          color: Color(0xFF60B2A3),
                           fontWeight: FontWeight.bold,
                           fontSize: 18.0),
                     ),
@@ -123,7 +131,7 @@ class _SleepStatsFragmentState extends State<SleepStatsFragment> {
                       children: [
                         Icon(
                           Icons.calendar_today,
-                          color: Colors.grey,
+                          color: Color(0xFF60B2A3),
                         ),
                         SizedBox(
                           width: 16,
@@ -139,7 +147,10 @@ class _SleepStatsFragmentState extends State<SleepStatsFragment> {
                                   fontSize: 15,
                                   fontWeight: FontWeight.normal),
                             ),
-                            icon: Icon(Icons.arrow_drop_down),
+                            icon: Icon(
+                              Icons.arrow_drop_down,
+                              color: Color(0xFF60B2A3),
+                            ),
                             onChanged: (newValue) {
                               _setDataSource(_selectedYear, newValue);
                             },
@@ -167,7 +178,10 @@ class _SleepStatsFragmentState extends State<SleepStatsFragment> {
                                   fontSize: 15,
                                   fontWeight: FontWeight.normal),
                             ),
-                            icon: Icon(Icons.arrow_drop_down),
+                            icon: Icon(
+                              Icons.arrow_drop_down,
+                              color: Color(0xFF60B2A3),
+                            ),
                             onChanged: (newValue) {
                               _populateMonthsByYear(newValue);
                               _setDataSource(newValue, _monthsByYear[0].value);
@@ -202,7 +216,7 @@ class _SleepStatsFragmentState extends State<SleepStatsFragment> {
                               xValueMapper: (_ChartData sales, _) => sales.day,
                               yValueMapper: (_ChartData sales, _) =>
                                   sales.hours,
-                              color: Color(0xFF74D44D),
+                              color: Color(0xFFC18C8C),
                               opacity: 0.6,
                               // Enable data label
                               dataLabelSettings:
@@ -210,7 +224,9 @@ class _SleepStatsFragmentState extends State<SleepStatsFragment> {
                         ]),
                   ),
                 ],
-              ));
+              ),
+      ),
+    );
   }
 
   _parseMonths(value) {

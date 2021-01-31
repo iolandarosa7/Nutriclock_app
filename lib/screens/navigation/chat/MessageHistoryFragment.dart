@@ -129,15 +129,22 @@ class _MessageHistoryFragmentState extends State<MessageHistoryFragment> {
             fontFamily: 'Pacifico',
           ),
         ),
-        backgroundColor: Color(0xFF74D44D),
+        backgroundColor: Color(0xFFA3E1CB),
       ),
       body: Container(
+        constraints: BoxConstraints.expand(),
+        decoration: BoxDecoration(
+          image: DecorationImage(
+            image: AssetImage("assets/images/bg_chat.jpg"),
+            fit: BoxFit.fill,
+          ),
+        ),
         child: _isLoading
             ? Center(
                 child: Loading(
                   indicator: BallPulseIndicator(),
                   size: 50.0,
-                  color: Colors.orangeAccent,
+                  color: Color(0xFFFFBCBC),
                 ),
               )
             : Stack(
@@ -168,62 +175,60 @@ class _MessageHistoryFragmentState extends State<MessageHistoryFragment> {
                             ),
                     ),
                   ),
-                  Stack(
-                    children: [
-                      Positioned(
-                        bottom: 0,
-                        right: 70,
-                        left: 10,
-                        child: Form(
-                          key: _formKey,
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              TextFormField(
-                                style: TextStyle(color: Color(0xFF000000)),
-                                cursorColor: Color(0xFF9b9b9b),
-                                keyboardType: TextInputType.multiline,
-                                maxLines: 4,
-                                decoration: InputDecoration(
-                                  labelText: 'Escreva a mensagem a enviar...',
-                                  labelStyle: TextStyle(color: Colors.grey),
-                                  focusedBorder: UnderlineInputBorder(
-                                    borderSide:
-                                        BorderSide(color: Color(0xFFA3DC92)),
+                    Stack(
+                      children: [
+                        Positioned(
+                          bottom: 0,
+                          right: 0,
+                          left: 0,
+                          child: Form(
+                            key: _formKey,
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                TextFormField(
+                                  style: TextStyle(color: Color(0xFF000000)),
+                                  cursorColor: Color(0xFF9b9b9b),
+                                  keyboardType: TextInputType.multiline,
+                                  maxLines: 3,
+                                  decoration: InputDecoration(
+                                    filled: true,
+                                    fillColor: Colors.white,
+                                    labelText: 'Escreva a mensagem a enviar...',
+                                    labelStyle: TextStyle(color: Colors.grey),
+                                    hintStyle: TextStyle(
+                                        color: Color(0xFF9b9b9b),
+                                        fontSize: 15,
+                                        fontWeight: FontWeight.normal),
                                   ),
-                                  hintStyle: TextStyle(
-                                      color: Color(0xFF9b9b9b),
-                                      fontSize: 15,
-                                      fontWeight: FontWeight.normal),
+                                  validator: (value) {
+                                    if (value.isEmpty) {
+                                      return ERROR_MANDATORY_FIELD;
+                                    }
+                                    _response = value;
+                                    return null;
+                                  },
                                 ),
-                                validator: (value) {
-                                  if (value.isEmpty) {
-                                    return ERROR_MANDATORY_FIELD;
-                                  }
-                                  _response = value;
-                                  return null;
-                                },
-                              ),
-                            ],
+                              ],
+                            ),
                           ),
                         ),
-                      ),
-                      Positioned(
-                        bottom: 60,
-                        right: 5,
-                        child: FloatingActionButton(
-                          onPressed: () => {
-                            if (_formKey.currentState.validate())
-                              {_postNewMessage()}
-                          },
-                          backgroundColor: Color(0xFF74D44D),
-                          child: Icon(
-                            Icons.send,
+                        Positioned(
+                          bottom: 70,
+                          right: 5,
+                          child: FloatingActionButton(
+                            onPressed: () => {
+                              if (_formKey.currentState.validate())
+                                {_postNewMessage()}
+                            },
+                            backgroundColor: Color(0xFFA3E1CB),
+                            child: Icon(
+                              Icons.send,
+                            ),
                           ),
                         ),
-                      ),
-                    ],
-                  )
+                      ],
+                    ),
                 ],
               ),
       ),
@@ -330,10 +335,11 @@ class _MessageHistoryFragmentState extends State<MessageHistoryFragment> {
     return Padding(
       padding: EdgeInsets.only(right: 50),
       child: Card(
-        color: Color(0xFFcff6cf),
+        color: Color(0xFFF4FFFD),
         shape: new RoundedRectangleBorder(
           borderRadius: new BorderRadius.circular(10.0),
         ),
+        shadowColor: Color(0xFFA0DDFF),
         child: Padding(
           padding: EdgeInsets.all(10),
           child: Column(
@@ -341,7 +347,7 @@ class _MessageHistoryFragmentState extends State<MessageHistoryFragment> {
             children: [
               Row(
                 children: [
-                  message.read == 0
+                  message.read == 0 || message.read == false
                       ? Badge(
                     badgeColor: Colors.redAccent,
                     badgeContent: Text(""),
@@ -353,7 +359,7 @@ class _MessageHistoryFragmentState extends State<MessageHistoryFragment> {
                   Text(
                     "Eu, ${_getStringTime(DateTime.parse(message.created_at))}",
                     style: TextStyle(
-                        fontFamily: 'Neucha', fontSize: 12, color: Colors.black54),
+                        fontFamily: 'Neucha', fontSize: 12, color: Color(0xFF6890A7)),
                   ),
                 ],
               ),
@@ -384,7 +390,8 @@ class _MessageHistoryFragmentState extends State<MessageHistoryFragment> {
     return Padding(
       padding: EdgeInsets.only(left: 50),
       child: Card(
-        color: Color(0xFFddf3f5),
+        color: Color(0xFFFFF6F6),
+        shadowColor: Color(0xFFFFBCBC),
         shape: new RoundedRectangleBorder(
           borderRadius: new BorderRadius.circular(10.0),
         ),
@@ -395,7 +402,7 @@ class _MessageHistoryFragmentState extends State<MessageHistoryFragment> {
             children: [
               Row(
                 children: [
-                  message.read == 0
+                  message.read == 0 || message.read == false
                       ? Badge(
                           badgeColor: Colors.redAccent,
                           badgeContent: Text(""),
@@ -409,7 +416,7 @@ class _MessageHistoryFragmentState extends State<MessageHistoryFragment> {
                     style: TextStyle(
                         fontFamily: 'PatrickHand',
                         fontSize: 12,
-                        color: Colors.black54),
+                        color: Color(0xFFC18C8C)),
                   ),
                 ],
               ),

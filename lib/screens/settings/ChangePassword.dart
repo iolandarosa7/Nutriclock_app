@@ -67,8 +67,15 @@ class _ChangePasswordState extends State<ChangePassword> {
                             ),
                             child: Column(
                               children: [
+                                SizedBox(
+                                  height: 20,
+                                ),
+                                Image(
+                                  image: AssetImage("assets/images/nutri.png"),
+                                  height: 45,
+                                ),
                                 Padding(
-                                  padding: const EdgeInsets.all(20.0),
+                                  padding: const EdgeInsets.all(10.0),
                                   child: Form(
                                     key: _formKey,
                                     child: Column(

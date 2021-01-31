@@ -1,7 +1,5 @@
-import 'dart:async';
 import 'dart:convert';
 
-import 'package:badges/badges.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:loading/indicator/ball_pulse_indicator.dart';
@@ -16,6 +14,7 @@ import 'package:web_socket_channel/web_socket_channel.dart';
 
 class ChatFragment extends StatefulWidget {
   ChatFragment({Key key}) : super(key: key);
+
   @override
   _ChatFragmentState createState() => _ChatFragmentState();
 }
@@ -31,7 +30,8 @@ class _ChatFragmentState extends State<ChatFragment> {
   void initState() {
     _loadUser();
     _getProfessionalsByUsf();
-    channel.stream.listen(this.onData, onError: this.onError, onDone: this.onDone);
+    channel.stream
+        .listen(this.onData, onError: this.onError, onDone: this.onDone);
     super.initState();
   }
 
@@ -51,12 +51,12 @@ class _ChatFragmentState extends State<ChatFragment> {
     var senderId = parsedArray[3].split(",")[0].trim();
     var receiverId = parsedArray[6].split(",")[0].trim();
 
-    if (int.parse(senderId) == authUser.id || int.parse(receiverId) == authUser.id) {
+    if (int.parse(senderId) == authUser.id ||
+        int.parse(receiverId) == authUser.id) {
       if (type == 'update') return;
       _getProfessionalsByUsf();
     }
   }
-
 
   @override
   void dispose() {
@@ -84,47 +84,73 @@ class _ChatFragmentState extends State<ChatFragment> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: _isLoading
-          ? Center(
-        child: Loading(
-            indicator: BallPulseIndicator(),
-            size: 50.0,
-            color: Colors.orangeAccent),
-      )
-          : ListView.builder(
-          padding:
-          const EdgeInsets.only(top: 16, left: 8, bottom: 8, right: 8),
-          itemCount: _professionals.length,
-          itemBuilder: (BuildContext context, int index) {
-            return Card(
-              child: ListTile(
-                leading: _professionals[index].unreadMessages > 0
-                    ? Badge(
-                  shape: BadgeShape.circle,
-                  badgeColor: Colors.redAccent,
-                  badgeContent: Text(
-                      "${_professionals[index].unreadMessages}",
-                      style: TextStyle(color: Colors.white)),
-                )
-                    : SizedBox(),
-                trailing: Icon(
-                  Icons.chat_rounded,
-                  color: Color(0xFF74D44D),
+      body: Container(
+        constraints: BoxConstraints.expand(),
+        decoration: BoxDecoration(
+          image: DecorationImage(
+            image: AssetImage("assets/images/bg_chat.jpg"),
+            fit: BoxFit.fill,
+          ),
+        ),
+        child: _isLoading
+            ? Center(
+                child: Loading(
+                  indicator: BallPulseIndicator(),
+                  size: 50.0,
+                  color: Color(0xFFFFBCBC),
                 ),
-                title: Text('${_professionals[index].name}'),
-                onTap: () =>
-                {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) =>
-                            MessageHistoryFragment(user: _professionals[index])
+              )
+            : ListView.builder(
+                padding: const EdgeInsets.only(
+                    top: 16, left: 0, bottom: 8, right: 16),
+                itemCount: _professionals.length,
+                itemBuilder: (BuildContext context, int index) {
+                  return Card(
+                    shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.only(
+                            topRight: Radius.circular(50),
+                            bottomRight: Radius.circular(50))),
+                    margin: EdgeInsets.only(bottom: 10, top: 20),
+                    shadowColor: Color(0xFFFFBCBC),
+                    elevation: 10,
+                    child: ListTile(
+                      leading: Image.network(
+                        "$IMAGE_BASE_URL/avatars/${_professionals[index].avatarUrl}",
+                        fit: BoxFit.cover,
+                        errorBuilder: (BuildContext context, Object exception,
+                            StackTrace stackTrace) {
+                          return _renderImageDefault();
+                        },
+                      ),
+                      title: Text(
+                        '${_professionals[index].name}',
+                        style:
+                            TextStyle(fontFamily: 'PatrickHand', fontSize: 20),
+                      ),
+                      trailing: Icon(
+                        Icons.chat_bubble_outlined,
+                        color: Color(0xFFA3E1CB),
+                      ),
+                      onTap: () => {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => MessageHistoryFragment(
+                                  user: _professionals[index])),
+                        ).then((value) => {_getProfessionalsByUsf()})
+                      },
                     ),
-                  ).then((value) => {_getProfessionalsByUsf()})
-                },
-              ),
-            );
-          }),
+                  );
+                }),
+      ),
+    );
+  }
+
+  Widget _renderImageDefault() {
+    return Container(
+      child: Icon(
+        Icons.image_rounded,
+      ),
     );
   }
 
@@ -144,7 +170,7 @@ class _ChatFragmentState extends State<ChatFragment> {
       User user = User.fromJson(json.decode(storeUser));
       try {
         var response =
-        await Network().getWithAuth("$PROFESSIONALS_BY_USF/${user.ufc_id}");
+            await Network().getWithAuth("$PROFESSIONALS_BY_USF/${user.ufc_id}");
 
         print("$PROFESSIONALS_BY_USF/${user.ufc_id}");
 

@@ -55,15 +55,15 @@ class _SleepCalendarFragmentState extends State<SleepCalendarFragment> {
             fontFamily: 'Pacifico',
           ),
         ),
-        backgroundColor: Color(0xFF74D44D),
+        backgroundColor: Color(0xFFA3E1CB),
       ),
       body: SfDateRangePicker(
         view: DateRangePickerView.month,
-        todayHighlightColor: Color(0xFF74D44D),
-        selectionColor: Color(0xFF74D44D),
+        todayHighlightColor: Color(0xFF60B2A3),
+        selectionColor: Color(0xFFA3E1CB),
         monthCellStyle: DateRangePickerMonthCellStyle(
           todayTextStyle: TextStyle(
-            color: Color(0xFF74D44D),
+            color: Color(0xFF60B2A3),
           ),
           blackoutDatesDecoration: BoxDecoration(
               color: const Color(0xFFDFDFDF),
