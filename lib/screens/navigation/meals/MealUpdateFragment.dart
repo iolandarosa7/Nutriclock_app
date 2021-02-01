@@ -162,110 +162,171 @@ class _MealUpdateFragmentState extends State<MealUpdateFragment> {
             fontFamily: 'Pacifico',
           ),
         ),
-        backgroundColor: Color(0xFF74D44D),
+        backgroundColor: Color(0xFFA3E1CB),
       ),
       body: Container(
+        constraints: BoxConstraints.expand(),
+        decoration: BoxDecoration(
+          image: DecorationImage(
+            image: AssetImage("assets/images/bg_login.png"),
+            fit: BoxFit.cover,
+          ),
+        ),
         child: _isLoading
             ? Center(
                 child: Loading(
                     indicator: BallPulseIndicator(),
                     size: 50.0,
-                    color: Colors.orangeAccent),
+                    color: Color(0xFFFFBCBC)),
               )
             : SingleChildScrollView(
                 scrollDirection: Axis.vertical,
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: <Widget>[
-                    Padding(
-                      padding: const EdgeInsets.only(
-                          top: 10.0, left: 20.0, right: 20.0, bottom: 10.0),
-                      child: Form(
-                        key: _formKey,
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: <Widget>[
-                            _showError
-                                ? Text(
-                                    "Os campos assinalados com * são obrigatórios!",
-                                    style: TextStyle(
-                                        color: Colors.redAccent,
-                                        fontWeight: FontWeight.bold,
-                                        fontSize: 12),
-                                  )
-                                : SizedBox(
-                                    height: 0,
+                child: Card(
+                  elevation: 4.0,
+                  color: Colors.white,
+                  margin: EdgeInsets.only(left: 20, right: 20, top: 20),
+                  shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(15)),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: <Widget>[
+                      Padding(
+                        padding: const EdgeInsets.only(
+                            top: 10.0, left: 20.0, right: 20.0, bottom: 10.0),
+                        child: Form(
+                          key: _formKey,
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: <Widget>[
+                              _showError
+                                  ? Text(
+                                      "Os campos assinalados com * são obrigatórios!",
+                                      style: TextStyle(
+                                          color: Colors.redAccent,
+                                          fontWeight: FontWeight.bold,
+                                          fontSize: 12),
+                                    )
+                                  : SizedBox(
+                                      height: 0,
+                                    ),
+                              TypeAheadFormField(
+                                textFieldConfiguration: TextFieldConfiguration(
+                                  controller: _typeAheadController,
+                                  decoration: InputDecoration(
+                                    focusedBorder: UnderlineInputBorder(
+                                      borderSide:
+                                          BorderSide(color: Color(0xFFA3E1CB)),
+                                    ),
+                                    prefixIcon: Icon(
+                                      Icons.restaurant,
+                                      color: Color(0xFFA3E1CB),
+                                    ),
+                                    hintText: "Nome *",
+                                    labelText: 'Nome *',
+                                    labelStyle: TextStyle(color: Colors.grey),
+                                    hintStyle: TextStyle(
+                                        color: Color(0xFF9b9b9b),
+                                        fontSize: 15,
+                                        fontWeight: FontWeight.normal),
                                   ),
-                            TypeAheadFormField(
-                              textFieldConfiguration: TextFieldConfiguration(
-                                controller: _typeAheadController,
-                                decoration: InputDecoration(
-                                  focusedBorder: UnderlineInputBorder(
-                                    borderSide:
-                                        BorderSide(color: Color(0xFFA3DC92)),
-                                  ),
-                                  prefixIcon: Icon(
-                                    Icons.restaurant,
-                                    color: Colors.grey,
-                                  ),
-                                  hintText: "Nome *",
-                                  labelText: 'Nome *',
-                                  labelStyle: TextStyle(color: Colors.grey),
-                                  hintStyle: TextStyle(
-                                      color: Color(0xFF9b9b9b),
-                                      fontSize: 15,
-                                      fontWeight: FontWeight.normal),
                                 ),
+                                itemBuilder: (context, suggestion) {
+                                  return ListTile(
+                                    title: Text(suggestion),
+                                  );
+                                },
+                                transitionBuilder:
+                                    (context, suggestionsBox, controller) {
+                                  return suggestionsBox;
+                                },
+                                onSuggestionSelected: (suggestion) {
+                                  this._typeAheadController.text = suggestion;
+                                },
+                                suggestionsCallback: (pattern) {
+                                  var list = [];
+                                  var size = 0;
+                                  _autocompleteSuggestions.forEach((element) {
+                                    if (size <= 20 &&
+                                        element
+                                            .toString()
+                                            .toLowerCase()
+                                            .startsWith(pattern)) {
+                                      list.add(element);
+                                      size++;
+                                    }
+                                  });
+                                  return list;
+                                },
+                                validator: (value) {
+                                  _name = value;
+                                  return null;
+                                },
                               ),
-                              itemBuilder: (context, suggestion) {
-                                return ListTile(
-                                  title: Text(suggestion),
-                                );
-                              },
-                              transitionBuilder:
-                                  (context, suggestionsBox, controller) {
-                                return suggestionsBox;
-                              },
-                              onSuggestionSelected: (suggestion) {
-                                this._typeAheadController.text = suggestion;
-                              },
-                              suggestionsCallback: (pattern) {
-                                var list = [];
-                                var size = 0;
-                                _autocompleteSuggestions.forEach((element) {
-                                  if (size <= 20 &&
-                                      element
-                                          .toString()
-                                          .toLowerCase()
-                                          .startsWith(pattern)) {
-                                    list.add(element);
-                                    size++;
-                                  }
-                                });
-                                return list;
-                              },
-                              validator: (value) {
-                                _name = value;
-                                return null;
-                              },
-                            ),
-                            Padding(
-                              padding: EdgeInsets.only(top: 24, bottom: 16),
-                              child: Row(
-                                children: [
-                                  Expanded(
-                                    flex: 5,
-                                    child: Stack(
-                                      children: [
-                                        Positioned(
-                                          child: Container(
-                                            height: 100,
-                                            child: SizedBox(
+                              Padding(
+                                padding: EdgeInsets.only(top: 24, bottom: 16),
+                                child: Row(
+                                  children: [
+                                    Expanded(
+                                      flex: 5,
+                                      child: Stack(
+                                        children: [
+                                          Positioned(
+                                            child: Container(
+                                              height: 100,
+                                              child: SizedBox(
+                                                  width: double.infinity,
+                                                  child: _foodPhotoUrl != null
+                                                      ? ClipRect(
+                                                          child: Image.network(
+                                                              "$IMAGE_BASE_URL/food/thumb_$_foodPhotoUrl",
+                                                              fit: BoxFit.cover,
+                                                              errorBuilder: (BuildContext
+                                                                      context,
+                                                                  Object
+                                                                      exception,
+                                                                  StackTrace
+                                                                      stackTrace) {
+                                                            return _renderImageFoodDefault();
+                                                          }),
+                                                        )
+                                                      : _renderImageFoodDefault()),
+                                            ),
+                                          ),
+                                          Positioned(
+                                            bottom: 4,
+                                            right: 0,
+                                            height: 40,
+                                            child: FloatingActionButton(
+                                              heroTag: _foodPhotoUrl,
+                                              child: Icon(
+                                                Icons.edit,
+                                                size: 15,
+                                                color: Colors.white,
+                                              ),
+                                              backgroundColor: Colors.blue,
+                                              onPressed: () {
+                                                _showPicker(
+                                                    context, 'FOOD_PHOTO');
+                                              },
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                    Expanded(
+                                      flex: 5,
+                                      child: Stack(
+                                        children: [
+                                          Positioned(
+                                            child: Container(
+                                              height: 100,
+                                              child: SizedBox(
                                                 width: double.infinity,
-                                                child: _foodPhotoUrl != null
-                                                    ? ClipRect(
-                                                        child: Image.network(
-                                                            "$IMAGE_BASE_URL/food/thumb_$_foodPhotoUrl",
+                                                child: ClipRect(
+                                                    child: _nutritionalInfoPhotoUrl !=
+                                                            null
+                                                        ? Image.network(
+                                                            "$IMAGE_BASE_URL/nutritionalInfo/thumb_$_nutritionalInfoPhotoUrl",
                                                             fit: BoxFit.cover,
                                                             errorBuilder:
                                                                 (BuildContext
@@ -274,77 +335,160 @@ class _MealUpdateFragmentState extends State<MealUpdateFragment> {
                                                                         exception,
                                                                     StackTrace
                                                                         stackTrace) {
-                                                          return _renderImageFoodDefault();
-                                                        }),
-                                                      )
-                                                    : _renderImageFoodDefault()),
-                                          ),
-                                        ),
-                                        Positioned(
-                                          bottom: 4,
-                                          right: 0,
-                                          height: 40,
-                                          child: FloatingActionButton(
-                                            heroTag: _foodPhotoUrl,
-                                            child: Icon(
-                                              Icons.edit,
-                                              size: 15,
-                                              color: Colors.white,
+                                                            return _renderImageNutriDefault();
+                                                          })
+                                                        : _renderImageNutriDefault()),
+                                              ),
                                             ),
-                                            backgroundColor: Colors.blue,
-                                            onPressed: () {
-                                              _showPicker(
-                                                  context, 'FOOD_PHOTO');
-                                            },
                                           ),
+                                          Positioned(
+                                            bottom: 4,
+                                            right: 0,
+                                            height: 40,
+                                            child: FloatingActionButton(
+                                              heroTag: _nutritionalInfoPhotoUrl,
+                                              child: Icon(
+                                                Icons.edit,
+                                                size: 15,
+                                                color: Colors.white,
+                                              ),
+                                              backgroundColor: Colors.blue,
+                                              onPressed: () {
+                                                _showPicker(context,
+                                                    'NUTRI_INFO_PHOTO');
+                                              },
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                              Stack(
+                                children: <Widget>[
+                                  DropdownButton(
+                                    value: _type,
+                                    hint: Padding(
+                                      padding: const EdgeInsets.only(
+                                        left: 50,
+                                      ),
+                                      child: Text(
+                                        "Tipo de Refeição *",
+                                        style: TextStyle(
+                                            color: Color(0xFF9b9b9b),
+                                            fontSize: 15,
+                                            fontWeight: FontWeight.normal),
+                                      ),
+                                    ),
+                                    icon: Icon(Icons.arrow_drop_down, color: Color(0xFFA3E1CB),),
+                                    onChanged: (newValue) {
+                                      setState(() {
+                                        _type = newValue;
+                                        _showError = false;
+                                      });
+                                    },
+                                    isExpanded: true,
+                                    items: _mealTypes
+                                        .map<DropdownMenuItem<String>>(
+                                            (DropMenu value) {
+                                      return DropdownMenuItem<String>(
+                                        value: value.value,
+                                        child: Padding(
+                                          padding:
+                                              const EdgeInsets.only(left: 50),
+                                          child: Text(value.description),
                                         ),
-                                      ],
+                                      );
+                                    }).toList(),
+                                  ),
+                                  Container(
+                                      padding: const EdgeInsets.only(
+                                          left: 10, top: 10),
+                                      child: Icon(
+                                        Icons.list,
+                                        color: Color(0xFFA3E1CB),
+                                      )),
+                                ],
+                              ),
+                              Row(
+                                children: [
+                                  Expanded(
+                                    flex: 3,
+                                    child: TextFormField(
+                                      initialValue:
+                                          this.widget.meal.quantity.toString(),
+                                      style:
+                                          TextStyle(color: Color(0xFF000000)),
+                                      cursorColor: Color(0xFF9b9b9b),
+                                      keyboardType: TextInputType.number,
+                                      decoration: InputDecoration(
+                                        focusedBorder: UnderlineInputBorder(
+                                          borderSide: BorderSide(
+                                              color: Color(0xFFA3E1CB)),
+                                        ),
+                                        prefixIcon: Icon(
+                                          Icons.check_circle,
+                                          color: Color(0xFFA3E1CB),
+                                        ),
+                                        hintText: "Quant. *",
+                                        labelText: 'Quant. *',
+                                        labelStyle:
+                                            TextStyle(color: Colors.grey),
+                                        hintStyle: TextStyle(
+                                            color: Color(0xFF9b9b9b),
+                                            fontSize: 15,
+                                            fontWeight: FontWeight.normal),
+                                      ),
+                                      validator: (value) {
+                                        _quantity = value;
+                                        return null;
+                                      },
                                     ),
                                   ),
                                   Expanded(
                                     flex: 5,
                                     child: Stack(
-                                      children: [
-                                        Positioned(
-                                          child: Container(
-                                            height: 100,
-                                            child: SizedBox(
-                                              width: double.infinity,
-                                              child: ClipRect(
-                                                  child: _nutritionalInfoPhotoUrl !=
-                                                          null
-                                                      ? Image.network(
-                                                          "$IMAGE_BASE_URL/nutritionalInfo/thumb_$_nutritionalInfoPhotoUrl",
-                                                          fit: BoxFit.cover,
-                                                          errorBuilder:
-                                                              (BuildContext
-                                                                      context,
-                                                                  Object
-                                                                      exception,
-                                                                  StackTrace
-                                                                      stackTrace) {
-                                                          return _renderImageNutriDefault();
-                                                        })
-                                                      : _renderImageNutriDefault()),
+                                      children: <Widget>[
+                                        Padding(
+                                          padding: const EdgeInsets.only(
+                                              top: 26, left: 8.0),
+                                          child: DropdownButton(
+                                            value: _unit,
+                                            hint: Padding(
+                                              padding:
+                                                  EdgeInsets.only(bottom: 20),
+                                              child: Text(
+                                                "Unidade *",
+                                                style: TextStyle(
+                                                    color: Color(0xFF9b9b9b),
+                                                    fontSize: 15,
+                                                    fontWeight:
+                                                        FontWeight.normal),
+                                              ),
                                             ),
-                                          ),
-                                        ),
-                                        Positioned(
-                                          bottom: 4,
-                                          right: 0,
-                                          height: 40,
-                                          child: FloatingActionButton(
-                                            heroTag: _nutritionalInfoPhotoUrl,
-                                            child: Icon(
-                                              Icons.edit,
-                                              size: 15,
-                                              color: Colors.white,
-                                            ),
-                                            backgroundColor: Colors.blue,
-                                            onPressed: () {
-                                              _showPicker(
-                                                  context, 'NUTRI_INFO_PHOTO');
+                                            icon: Icon(Icons.arrow_drop_down, color: Color(0xFFA3E1CB)),
+                                            onChanged: (newValue) {
+                                              setState(() {
+                                                _unit = newValue;
+                                                _showError = false;
+                                              });
                                             },
+                                            isExpanded: true,
+                                            items: _units
+                                                .map<DropdownMenuItem<String>>(
+                                                    (DropMenu value) {
+                                              return DropdownMenuItem<String>(
+                                                value: value.value,
+                                                child: Padding(
+                                                  padding:
+                                                      const EdgeInsets.only(
+                                                          bottom: 16),
+                                                  child:
+                                                      Text(value.description),
+                                                ),
+                                              );
+                                            }).toList(),
                                           ),
                                         ),
                                       ],
@@ -352,309 +496,185 @@ class _MealUpdateFragmentState extends State<MealUpdateFragment> {
                                   ),
                                 ],
                               ),
-                            ),
-                            Stack(
-                              children: <Widget>[
-                                DropdownButton(
-                                  value: _type,
-                                  hint: Padding(
-                                    padding: const EdgeInsets.only(
-                                      left: 50,
-                                    ),
-                                    child: Text(
-                                      "Tipo de Refeição *",
-                                      style: TextStyle(
-                                          color: Color(0xFF9b9b9b),
-                                          fontSize: 15,
-                                          fontWeight: FontWeight.normal),
+                              Row(
+                                children: [
+                                  Expanded(
+                                    flex: 5,
+                                    child: Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        Padding(
+                                          padding: const EdgeInsets.only(
+                                              top: 10.0, left: 10.0),
+                                          child: Row(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.start,
+                                            children: [
+                                              Icon(
+                                                Icons.calendar_today,
+                                                color: Color(0xFFA3E1CB),
+                                              ),
+                                              Padding(
+                                                padding:
+                                                    EdgeInsets.only(left: 16.0),
+                                                child: Text(
+                                                  'Data',
+                                                  textAlign: TextAlign.left,
+                                                  style: TextStyle(
+                                                      color: Colors.grey),
+                                                ),
+                                              )
+                                            ],
+                                          ),
+                                        ),
+                                        FlatButton(
+                                          color: Colors.transparent,
+                                          splashColor: Colors.black26,
+                                          onPressed: () =>
+                                              _selectDate(context, 'DATE'),
+                                          child: Text(
+                                            dateFormat.format(_date),
+                                            style: TextStyle(
+                                              color: Color(0xFF000000),
+                                              fontSize: 15,
+                                            ),
+                                          ),
+                                        ),
+                                      ],
                                     ),
                                   ),
-                                  icon: Icon(Icons.arrow_drop_down),
-                                  onChanged: (newValue) {
-                                    setState(() {
-                                      _type = newValue;
-                                      _showError = false;
-                                    });
-                                  },
-                                  isExpanded: true,
-                                  items: _mealTypes
-                                      .map<DropdownMenuItem<String>>(
-                                          (DropMenu value) {
-                                    return DropdownMenuItem<String>(
-                                      value: value.value,
-                                      child: Padding(
-                                        padding:
-                                            const EdgeInsets.only(left: 50),
-                                        child: Text(value.description),
-                                      ),
-                                    );
-                                  }).toList(),
-                                ),
-                                Container(
-                                    padding: const EdgeInsets.only(
-                                        left: 10, top: 10),
-                                    child: Icon(
-                                      Icons.list,
-                                      color: Colors.grey,
-                                    )),
-                              ],
-                            ),
-                            Row(
-                              children: [
-                                Expanded(
-                                  flex: 3,
-                                  child: TextFormField(
-                                    initialValue:
-                                        this.widget.meal.quantity.toString(),
-                                    style: TextStyle(color: Color(0xFF000000)),
-                                    cursorColor: Color(0xFF9b9b9b),
-                                    keyboardType: TextInputType.number,
-                                    decoration: InputDecoration(
-                                      focusedBorder: UnderlineInputBorder(
-                                        borderSide: BorderSide(
-                                            color: Color(0xFFA3DC92)),
-                                      ),
-                                      prefixIcon: Icon(
-                                        Icons.check_circle,
-                                        color: Colors.grey,
-                                      ),
-                                      hintText: "Quant. *",
-                                      labelText: 'Quant. *',
-                                      labelStyle: TextStyle(color: Colors.grey),
-                                      hintStyle: TextStyle(
-                                          color: Color(0xFF9b9b9b),
-                                          fontSize: 15,
-                                          fontWeight: FontWeight.normal),
+                                  Expanded(
+                                    flex: 5,
+                                    child: Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        Padding(
+                                          padding: const EdgeInsets.only(
+                                              top: 10.0, left: 10.0),
+                                          child: Row(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.start,
+                                            children: [
+                                              Icon(
+                                                Icons.access_time,
+                                                color: Color(0xFFA3E1CB),
+                                              ),
+                                              Padding(
+                                                padding:
+                                                    EdgeInsets.only(left: 16.0),
+                                                child: Text(
+                                                  'Hora',
+                                                  textAlign: TextAlign.left,
+                                                  style: TextStyle(
+                                                      color: Colors.grey),
+                                                ),
+                                              )
+                                            ],
+                                          ),
+                                        ),
+                                        FlatButton(
+                                          color: Colors.transparent,
+                                          splashColor: Colors.black26,
+                                          onPressed: () =>
+                                              _selectDate(context, 'TIME'),
+                                          child: Text(
+                                            "${_time.hour}:${_time.minute > 9 ? _time.minute : "0${_time.minute}"} horas",
+                                            style: TextStyle(
+                                              color: Color(0xFF000000),
+                                              fontSize: 15,
+                                            ),
+                                          ),
+                                        ),
+                                      ],
                                     ),
-                                    validator: (value) {
-                                      _quantity = value;
-                                      return null;
+                                  ),
+                                ],
+                              ),
+                              TextFormField(
+                                maxLines: 4,
+                                style: TextStyle(color: Color(0xFF000000)),
+                                cursorColor: Color(0xFF9b9b9b),
+                                keyboardType: TextInputType.text,
+                                initialValue: this.widget.meal.observations,
+                                decoration: InputDecoration(
+                                  focusedBorder: UnderlineInputBorder(
+                                    borderSide:
+                                        BorderSide(color: Color(0xFFA3E1CB)),
+                                  ),
+                                  hintText: "Informação Adicional",
+                                  labelText: 'Informação Adicional',
+                                  labelStyle: TextStyle(color: Colors.grey),
+                                  hintStyle: TextStyle(
+                                      color: Color(0xFF9b9b9b),
+                                      fontSize: 15,
+                                      fontWeight: FontWeight.normal),
+                                ),
+                                validator: (value) {
+                                  _observations = value;
+                                  return null;
+                                },
+                              ),
+                              Padding(
+                                padding: const EdgeInsets.only(top: 16.0),
+                                child: SizedBox(
+                                  width: double.infinity,
+                                  child: FlatButton(
+                                    child: Padding(
+                                      padding: EdgeInsets.only(
+                                          top: 8,
+                                          bottom: 8,
+                                          left: 10,
+                                          right: 10),
+                                      child: Text(
+                                        _isLoading ? 'Aguarde...' : 'Confirmar',
+                                        style: TextStyle(
+                                          color: Colors.white,
+                                          fontSize: 15.0,
+                                          decoration: TextDecoration.none,
+                                          fontWeight: FontWeight.normal,
+                                        ),
+                                      ),
+                                    ),
+                                    color: Color(0xFFA3E1CB),
+                                    disabledColor: Colors.grey,
+                                    shape: new RoundedRectangleBorder(
+                                        borderRadius:
+                                            new BorderRadius.circular(20.0)),
+                                    onPressed: () {
+                                      if (!_formKey.currentState.validate() ||
+                                          _name == null ||
+                                          _name.trim() == "" ||
+                                          _type == null ||
+                                          _type.trim() == "" ||
+                                          _quantity == null ||
+                                          _quantity.trim == "" ||
+                                          _unit == null ||
+                                          _unit == "") {
+                                        setState(() {
+                                          _showError = true;
+                                        });
+                                        return;
+                                      }
+
+                                      if (_unit == "Outro" &&
+                                          (_observations == "" ||
+                                              _observations == null)) {
+                                        _showAdditionalInformationDialog();
+                                        return;
+                                      }
+                                      _updateMeal();
                                     },
                                   ),
                                 ),
-                                Expanded(
-                                  flex: 5,
-                                  child: Stack(
-                                    children: <Widget>[
-                                      Padding(
-                                        padding: const EdgeInsets.only(
-                                            top: 26, left: 8.0),
-                                        child: DropdownButton(
-                                          value: _unit,
-                                          hint: Padding(
-                                            padding:
-                                                EdgeInsets.only(bottom: 20),
-                                            child: Text(
-                                              "Unidade *",
-                                              style: TextStyle(
-                                                  color: Color(0xFF9b9b9b),
-                                                  fontSize: 15,
-                                                  fontWeight:
-                                                      FontWeight.normal),
-                                            ),
-                                          ),
-                                          icon: Icon(Icons.arrow_drop_down),
-                                          onChanged: (newValue) {
-                                            setState(() {
-                                              _unit = newValue;
-                                              _showError = false;
-                                            });
-                                          },
-                                          isExpanded: true,
-                                          items: _units
-                                              .map<DropdownMenuItem<String>>(
-                                                  (DropMenu value) {
-                                            return DropdownMenuItem<String>(
-                                              value: value.value,
-                                              child: Padding(
-                                                padding: const EdgeInsets.only(
-                                                    bottom: 16),
-                                                child: Text(value.description),
-                                              ),
-                                            );
-                                          }).toList(),
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                              ],
-                            ),
-                            Row(
-                              children: [
-                                Expanded(
-                                  flex: 5,
-                                  child: Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: [
-                                      Padding(
-                                        padding: const EdgeInsets.only(
-                                            top: 10.0, left: 10.0),
-                                        child: Row(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.start,
-                                          children: [
-                                            Icon(
-                                              Icons.calendar_today,
-                                              color: Colors.grey,
-                                            ),
-                                            Padding(
-                                              padding:
-                                                  EdgeInsets.only(left: 16.0),
-                                              child: Text(
-                                                'Data',
-                                                textAlign: TextAlign.left,
-                                                style: TextStyle(
-                                                    color: Colors.grey),
-                                              ),
-                                            )
-                                          ],
-                                        ),
-                                      ),
-                                      FlatButton(
-                                        color: Colors.transparent,
-                                        splashColor: Colors.black26,
-                                        onPressed: () =>
-                                            _selectDate(context, 'DATE'),
-                                        child: Text(
-                                          dateFormat.format(_date),
-                                          style: TextStyle(
-                                            color: Color(0xFF000000),
-                                            fontSize: 15,
-                                          ),
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                                Expanded(
-                                  flex: 5,
-                                  child: Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: [
-                                      Padding(
-                                        padding: const EdgeInsets.only(
-                                            top: 10.0, left: 10.0),
-                                        child: Row(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.start,
-                                          children: [
-                                            Icon(
-                                              Icons.access_time,
-                                              color: Colors.grey,
-                                            ),
-                                            Padding(
-                                              padding:
-                                                  EdgeInsets.only(left: 16.0),
-                                              child: Text(
-                                                'Hora',
-                                                textAlign: TextAlign.left,
-                                                style: TextStyle(
-                                                    color: Colors.grey),
-                                              ),
-                                            )
-                                          ],
-                                        ),
-                                      ),
-                                      FlatButton(
-                                        color: Colors.transparent,
-                                        splashColor: Colors.black26,
-                                        onPressed: () =>
-                                            _selectDate(context, 'TIME'),
-                                        child: Text(
-                                          "${_time.hour}:${_time.minute > 9 ? _time.minute : "0${_time.minute}"} horas",
-                                          style: TextStyle(
-                                            color: Color(0xFF000000),
-                                            fontSize: 15,
-                                          ),
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                              ],
-                            ),
-                            TextFormField(
-                              maxLines: 4,
-                              style: TextStyle(color: Color(0xFF000000)),
-                              cursorColor: Color(0xFF9b9b9b),
-                              keyboardType: TextInputType.text,
-                              initialValue: this.widget.meal.observations,
-                              decoration: InputDecoration(
-                                focusedBorder: UnderlineInputBorder(
-                                  borderSide:
-                                      BorderSide(color: Color(0xFFA3DC92)),
-                                ),
-                                hintText: "Informação Adicional",
-                                labelText: 'Informação Adicional',
-                                labelStyle: TextStyle(color: Colors.grey),
-                                hintStyle: TextStyle(
-                                    color: Color(0xFF9b9b9b),
-                                    fontSize: 15,
-                                    fontWeight: FontWeight.normal),
                               ),
-                              validator: (value) {
-                                _observations = value;
-                                return null;
-                              },
-                            ),
-                            Padding(
-                              padding: const EdgeInsets.only(top: 16.0),
-                              child: SizedBox(
-                                width: double.infinity,
-                                child: FlatButton(
-                                  child: Padding(
-                                    padding: EdgeInsets.only(
-                                        top: 8, bottom: 8, left: 10, right: 10),
-                                    child: Text(
-                                      _isLoading ? 'Aguarde...' : 'Confirmar',
-                                      style: TextStyle(
-                                        color: Colors.white,
-                                        fontSize: 15.0,
-                                        decoration: TextDecoration.none,
-                                        fontWeight: FontWeight.normal,
-                                      ),
-                                    ),
-                                  ),
-                                  color: Color(0xFFA3DC92),
-                                  disabledColor: Colors.grey,
-                                  shape: new RoundedRectangleBorder(
-                                      borderRadius:
-                                          new BorderRadius.circular(20.0)),
-                                  onPressed: () {
-                                    if (!_formKey.currentState.validate() ||
-                                        _name == null ||
-                                        _name.trim() == "" ||
-                                        _type == null ||
-                                        _type.trim() == "" ||
-                                        _quantity == null ||
-                                        _quantity.trim == "" ||
-                                        _unit == null ||
-                                        _unit == "") {
-                                      setState(() {
-                                        _showError = true;
-                                      });
-                                      return;
-                                    }
-
-                                    if (_unit == "Outro" &&
-                                        (_observations == "" ||
-                                            _observations == null)) {
-                                      _showAdditionalInformationDialog();
-                                      return;
-                                    }
-                                    _updateMeal();
-                                  },
-                                ),
-                              ),
-                            ),
-                          ],
+                            ],
+                          ),
                         ),
                       ),
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
               ),
       ),

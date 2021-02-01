@@ -17,13 +17,13 @@ class _MealCreateFragmentState extends State<MealCreateFragment> {
   final ptDatesFuture = initializeDateFormatting('pt', null);
   final dateFormat = new DateFormat('dd/MM/yyyy');
   final _types = [
-    MealType('P', 'Pequeno-almoço', Color(0xFFFFAEBC)),
-    MealType('M', 'Meio da manhã', Color(0xFFC7CEEA)),
-    MealType('A', 'Almoço', Color(0xFFA0E7E5)),
-    MealType('L', 'Lanche', Color(0xFFFFDAC1)),
-    MealType('J', 'Jantar', Color(0xFFC9E0EC)),
-    MealType('O', 'Ceia', Color(0xFFffd5cd)),
-    MealType('S', 'Snack', Color(0xFFCCDDC0)),
+    MealType('P', 'Pequeno-almoço', Icons.breakfast_dining),
+    MealType('M', 'Meio da manhã', Icons.local_cafe),
+    MealType('A', 'Almoço', Icons.dinner_dining),
+    MealType('L', 'Lanche', Icons.bakery_dining),
+    MealType('J', 'Jantar', Icons.brunch_dining),
+    MealType('O', 'Ceia', Icons.lunch_dining),
+    MealType('S', 'Snack', Icons.local_pizza_rounded),
   ];
   DateTime _date = DateTime.now();
   TimeOfDay _time = TimeOfDay.now();
@@ -39,9 +39,16 @@ class _MealCreateFragmentState extends State<MealCreateFragment> {
             fontFamily: 'Pacifico',
           ),
         ),
-        backgroundColor: Color(0xFF74D44D),
+        backgroundColor: Color(0xFFA3E1CB),
       ),
       body: Container(
+        constraints: BoxConstraints.expand(),
+        decoration: BoxDecoration(
+          image: DecorationImage(
+            image: AssetImage("assets/images/bg_home.jpg"),
+            fit: BoxFit.fill,
+          ),
+        ),
         child: SingleChildScrollView(
           scrollDirection: Axis.vertical,
           child: Column(
@@ -55,37 +62,46 @@ class _MealCreateFragmentState extends State<MealCreateFragment> {
   List<Widget> data() {
     List<Widget> list = List();
     _types.forEach((element) {
-      list.add(
-        Padding(
-          padding: const EdgeInsets.only(top: 32.0, left: 32, right: 32),
-          child: SizedBox(
-            width: double.infinity,
-            height: 50,
-            child: FlatButton(
+      list.add(GestureDetector(
+          onTap: () {
+            _showDateTimeModal(element.type);
+          },
+          child: Card(
+            shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.only(
+                    topRight: Radius.circular(50),
+                    bottomRight: Radius.circular(50))),
+            margin: EdgeInsets.only(top: 30, right: 40),
+            shadowColor: Color(0xFFA3E1CB),
+            elevation: 10,
+            child: SizedBox(
+              width: double.infinity,
+              height: 50,
               child: Padding(
-                padding:
-                    EdgeInsets.only(top: 8, bottom: 8, left: 10, right: 10),
-                child: Text(
-                  element.name,
-                  style: TextStyle(
-                    fontFamily: 'Pacifico',
-                    fontSize: 15.0,
-                    decoration: TextDecoration.none,
-                    fontWeight: FontWeight.normal,
-                  ),
-                ),
-              ),
-              color: element.color,
-              shape: new RoundedRectangleBorder(
-                borderRadius: new BorderRadius.circular(25.0),
-              ),
-              onPressed: () {
-                _showDateTimeModal(element.type);
-              },
+                  padding: EdgeInsets.only(top: 8, bottom: 8, left: 20),
+                  child: Row(
+                    children: [
+                      Icon(
+                        element.icon,
+                        color: Color(0xFFF4D481),
+                      ),
+                      SizedBox(
+                        width: 20,
+                      ),
+                      Text(
+                        element.name,
+                        style: TextStyle(
+                          color: Color(0xFF60B2A3),
+                          fontFamily: 'PatrickHand',
+                          fontSize: 20,
+                          decoration: TextDecoration.none,
+                          fontWeight: FontWeight.normal,
+                        ),
+                      ),
+                    ],
+                  )),
             ),
-          ),
-        ),
-      );
+          )));
     });
     return list;
   }
@@ -97,7 +113,11 @@ class _MealCreateFragmentState extends State<MealCreateFragment> {
         return StatefulBuilder(
             builder: (BuildContext context, StateSetter setState) {
           return AlertDialog(
-            title: Text('Data / Hora da Refeição'),
+            title: Text(
+              'Data / Hora da Refeição',
+              textAlign: TextAlign.center,
+              style: TextStyle(color: Color(0xFFA3E1CB)),
+            ),
             content: SingleChildScrollView(
               child: Column(
                 children: [
@@ -108,13 +128,13 @@ class _MealCreateFragmentState extends State<MealCreateFragment> {
                         padding: EdgeInsets.only(bottom: 8, right: 4),
                         child: Icon(
                           Icons.calendar_today,
-                          color: Colors.grey,
+                          color: Color(0xFFA3E1CB),
                         ),
                       ),
                       Text(
                         'Data',
                         textAlign: TextAlign.left,
-                        style: TextStyle(color: Colors.grey),
+                        style: TextStyle(color: Color(0xFFA3E1CB)),
                       ),
                       FlatButton(
                         color: Colors.transparent,
@@ -137,13 +157,13 @@ class _MealCreateFragmentState extends State<MealCreateFragment> {
                         padding: EdgeInsets.only(bottom: 4, right: 4),
                         child: Icon(
                           Icons.access_time,
-                          color: Colors.grey,
+                          color: Color(0xFFA3E1CB),
                         ),
                       ),
                       Text(
                         'Hora',
                         textAlign: TextAlign.left,
-                        style: TextStyle(color: Colors.grey),
+                        style: TextStyle(color: Color(0xFFA3E1CB)),
                       ),
                       FlatButton(
                         color: Colors.transparent,
@@ -164,7 +184,10 @@ class _MealCreateFragmentState extends State<MealCreateFragment> {
             ),
             actions: <Widget>[
               FlatButton(
-                child: Text('Ok'),
+                child: Text(
+                  'Ok',
+                  style: TextStyle(color: Color(0xFF60B2A3)),
+                ),
                 onPressed: () {
                   Navigator.of(context).pop();
                   Navigator.push(
@@ -271,11 +294,11 @@ class _MealCreateFragmentState extends State<MealCreateFragment> {
 class MealType {
   String type;
   String name;
-  Color color;
+  IconData icon;
 
-  MealType(type, name, color) {
+  MealType(type, name, icon) {
     this.type = type;
     this.name = name;
-    this.color = color;
+    this.icon = icon;
   }
 }

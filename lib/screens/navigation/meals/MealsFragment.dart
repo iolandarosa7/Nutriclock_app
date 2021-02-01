@@ -80,7 +80,7 @@ class _MealsFragmentState extends State<MealsFragment> {
     return meals;
   }
 
-  Widget _renderElement(List<Meal> meals, Color color, String description) {
+  Widget _renderElement(List<Meal> meals, String description) {
     return (meals.length > 0
         ? Container(
             height: 30,
@@ -91,7 +91,7 @@ class _MealsFragmentState extends State<MealsFragment> {
               gradient: LinearGradient(
                 begin: Alignment.topLeft,
                 end: Alignment.bottomRight,
-                colors: [color, Color(0x10FFFFFF)],
+                colors: [Color(0xFFE6A9A9), Color(0x10FFFFFF)],
               ),
               borderRadius: BorderRadius.only(
                 topLeft: Radius.circular(5),
@@ -99,7 +99,7 @@ class _MealsFragmentState extends State<MealsFragment> {
             ),
             child: Text(
               description,
-              style: TextStyle(fontFamily: "Pacifico"),
+              style: TextStyle(fontFamily: "Pacifico", color: Colors.white),
             ),
           )
         : SizedBox());
@@ -116,64 +116,59 @@ class _MealsFragmentState extends State<MealsFragment> {
   List<Widget> data() {
     List<Widget> list = List();
     _data.mealsTypeByDate.forEach((element) {
-      list.add(Padding(
-        padding: EdgeInsets.symmetric(vertical: 10, horizontal: 8),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(
-              element.date,
-              style: TextStyle(
-                fontWeight: FontWeight.bold,
-                fontSize: 16,
-                color: Colors.black87,
-              ),
-            ),
-            Column(
+      list.add(
+        Card(
+          elevation: 4.0,
+          color: Colors.white,
+          margin: EdgeInsets.only(left: 20, right: 20, bottom: 20),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(15),
+          ),
+          child: Padding(
+            padding: EdgeInsets.symmetric(vertical: 10, horizontal: 8),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                _renderElement(
-                    element.breakfasts, Color(0xFFFFAEBC), "Pequeno-almoço"),
-                ..._renderMealsByType(
-                  element.breakfasts,
-                  Color(0xFFFFAEBC),
+                Text(
+                  element.date,
+                  style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                    color: Color(0xFF60B2A3),
+                  ),
                 ),
-                _renderSpace(element.breakfasts),
-                _renderElement(
-                    element.midMorning, Color(0xFFC7CEEA), "Lanche da manhã"),
-                ..._renderMealsByType(
-                  element.midMorning,
-                  Color(0xFFC7CEEA),
+                SizedBox(
+                  height: 20,
                 ),
-                _renderSpace(element.midMorning),
-                _renderElement(element.lunchs, Color(0xFFA0E7E5), "Almoço"),
-                ..._renderMealsByType(
-                  element.lunchs,
-                  Color(0xFFA0E7E5),
+                Column(
+                  children: [
+                    _renderElement(element.breakfasts, "Pequeno-almoço"),
+                    ..._renderMealsByType(element.breakfasts),
+                    _renderSpace(element.breakfasts),
+                    _renderElement(element.midMorning, "Lanche da manhã"),
+                    ..._renderMealsByType(element.midMorning),
+                    _renderSpace(element.midMorning),
+                    _renderElement(element.lunchs, "Almoço"),
+                    ..._renderMealsByType(element.lunchs),
+                    _renderSpace(element.lunchs),
+                    _renderElement(element.brunchs, "Lanche"),
+                    ..._renderMealsByType(element.brunchs),
+                    _renderSpace(element.brunchs),
+                    _renderElement(element.dinners, "Jantar"),
+                    ..._renderMealsByType(element.dinners),
+                    _renderSpace(element.dinners),
+                    _renderElement(element.anothers, "Ceia"),
+                    ..._renderMealsByType(element.anothers),
+                    _renderSpace(element.anothers),
+                    _renderElement(element.snacks, "Snacks"),
+                    ..._renderMealsByType(element.snacks),
+                    _renderSpace(element.snacks),
+                  ],
                 ),
-                _renderSpace(element.lunchs),
-                _renderElement(element.brunchs, Color(0xFFFFDAC1), "Lanche"),
-                ..._renderMealsByType(
-                  element.brunchs,
-                  Color(0xFFFFDAC1),
-                ),
-                _renderSpace(element.brunchs),
-                _renderElement(element.dinners, Color(0xFFC9E0EC), "Jantar"),
-                ..._renderMealsByType(element.dinners, Color(0xFFC9E0EC)),
-                _renderSpace(element.dinners),
-                _renderElement(element.anothers, Color(0xFFffd5cd), "Ceia"),
-                ..._renderMealsByType(element.anothers, Color(0xFFffd5cd)),
-                _renderSpace(element.anothers),
-                _renderElement(element.snacks, Color(0xFFCCDDC0), "Snacks"),
-                ..._renderMealsByType(
-                  element.snacks,
-                  Color(0xFFCCDDC0),
-                ),
-                _renderSpace(element.snacks),
               ],
             ),
-          ],
+          ),
         ),
-      ));
+      );
     });
     return list;
   }
@@ -185,49 +180,42 @@ class _MealsFragmentState extends State<MealsFragment> {
       body: Container(
         constraints: BoxConstraints.expand(),
         decoration: BoxDecoration(
-          gradient: LinearGradient(
-            begin: Alignment.topCenter,
-            end: Alignment.bottomCenter,
-            colors: [Color(0x8074D44D), Color(0x20FFFFFF)],
+          image: DecorationImage(
+            image: AssetImage("assets/images/bg_home.jpg"),
+            fit: BoxFit.fill,
           ),
         ),
-        child: Stack(
-          children: [
-            Positioned(
-              child: Container(
-                  width: double.infinity,
-                  height: MediaQuery.of(context).size.height,
-                  margin: EdgeInsets.only(top: 40),
-                  decoration: BoxDecoration(
-                    boxShadow: [
-                      BoxShadow(
-                        blurRadius: 2.0,
-                        spreadRadius: 0.4,
-                        offset: Offset(0.1, 0.5),
-                      ),
-                    ],
-                    borderRadius: BorderRadius.only(
-                        topLeft: Radius.circular(15),
-                        topRight: Radius.circular(15)),
-                    color: Colors.white,
-                  ),
-                  child: _isLoading
-                      ? Center(
-                          child: Loading(
-                              indicator: BallPulseIndicator(),
-                              size: 50.0,
-                              color: Colors.orangeAccent),
-                        )
-                      : (_data == null ||
-                              _data.mealsTypeByDate == null ||
-                              _data.mealsTypeByDate.isEmpty
-                          ? Padding(
+        child: _isLoading
+            ? Center(
+                child: Loading(
+                  indicator: BallPulseIndicator(),
+                  size: 50.0,
+                  color: Color(0xFFFFBCBC),
+                ),
+              )
+            : Stack(
+                children: [
+                  Positioned(
+                    top: 40,
+                    left: 0,
+                    right: 0,
+                    child: _data == null ||
+                            _data.mealsTypeByDate == null ||
+                            _data.mealsTypeByDate.isEmpty
+                        ? Card(
+                            elevation: 4.0,
+                            color: Colors.white,
+                            margin: EdgeInsets.only(left: 20, right: 20),
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(15),
+                            ),
+                            child: Padding(
                               padding: EdgeInsets.all(20),
                               child: Column(
                                 children: [
                                   Text(
                                     "Nenhum alimento adicionado.",
-                                    style: TextStyle(color: Colors.grey),
+                                    style: TextStyle(color: Colors.black),
                                   ),
                                   SizedBox(
                                     height: 16,
@@ -238,33 +226,36 @@ class _MealsFragmentState extends State<MealsFragment> {
                                     style: TextStyle(color: Colors.grey),
                                   ),
                                 ],
-                              ))
-                          : SingleChildScrollView(
-                              scrollDirection: Axis.vertical,
-                              padding: EdgeInsets.all(4),
-                              child: Column(children: data()),
-                            ))),
-            ),
-            _daysFromInitialMeal == null || _daysFromInitialMeal <= 3
-                ? Positioned(
-                    top: 10,
-                    right: 20,
-                    child: FloatingActionButton(
-                      onPressed: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => MealCreateFragment()),
-                        ).then((value) => {_loadMealsList()});
-                      },
-                      child: Icon(Icons.add),
-                      backgroundColor: Color(0xFF808e95),
-                      elevation: 50,
-                    ),
-                  )
-                : Text(""),
-          ],
-        ),
+                              ),
+                            ),
+                          )
+                        : SingleChildScrollView(
+                            scrollDirection: Axis.vertical,
+                            padding: EdgeInsets.all(4),
+                            child: Column(children: data()),
+                          ),
+                  ),
+                  _daysFromInitialMeal == null || _daysFromInitialMeal <= 3
+                      ? Positioned(
+                          top: 10,
+                          right: 20,
+                          child: FloatingActionButton(
+                            onPressed: () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => MealCreateFragment()),
+                              ).then((value) => {_loadMealsList()});
+                            },
+                            child: Icon(Icons.add),
+                            backgroundColor: Color(0xFF60B2A3),
+                            elevation: 50,
+                          ),
+                        )
+                      : Text(""),
+                ],
+              ),
+        /*child: */
       ),
     );
   }
@@ -285,7 +276,7 @@ class _MealsFragmentState extends State<MealsFragment> {
     );
   }
 
-  List<Widget> _renderMealsByType(List<Meal> meals, Color color) {
+  List<Widget> _renderMealsByType(List<Meal> meals) {
     List<Widget> list = List();
 
     meals.forEach((element) {
@@ -297,7 +288,7 @@ class _MealsFragmentState extends State<MealsFragment> {
                 height: 100,
                 decoration: BoxDecoration(
                   border: Border(
-                    left: BorderSide(color: color, width: 10.0),
+                    left: BorderSide(color: Color(0xFFE6A9A9), width: 10.0),
                   ),
                 ),
                 child: SizedBox(
@@ -380,7 +371,13 @@ class _MealsFragmentState extends State<MealsFragment> {
         barrierDismissible: true,
         builder: (BuildContext context) {
           return AlertDialog(
-            title: Text("Apagar refeição / alimento"),
+            title: Text(
+              "Apagar refeição / alimento",
+              textAlign: TextAlign.center,
+              style: TextStyle(
+                color: Color(0xFFA3E1CB),
+              ),
+            ),
             content: SingleChildScrollView(
               child: ListBody(
                 children: <Widget>[
