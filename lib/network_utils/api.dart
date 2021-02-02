@@ -50,6 +50,7 @@ class Network {
 
     var request = http.MultipartRequest("POST", Uri.parse(url));
     request.headers['Accept'] = 'application/json';
+    request.headers['Authorization'] = 'Bearer $token';
 
     var stream = http.ByteStream(DelegatingStream.typed(file.openRead()));
     var fileLenght = await file.length();

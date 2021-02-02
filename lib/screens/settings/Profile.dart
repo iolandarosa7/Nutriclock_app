@@ -424,20 +424,20 @@ class _ProfileState extends State<Profile> {
                                 _showPicker(context);
                               },
                               child: SizedBox(
-                                  height: 100,
-                                  width: 100,
-                                  child: ClipRRect(
-                                    borderRadius: BorderRadius.circular(50.0),
-                                    child: Image.network(
-                                      "$IMAGE_BASE_URL/avatars/${_user.avatarUrl}",
-                                      fit: BoxFit.fill,
-                                      errorBuilder: (BuildContext context,
-                                          Object exception,
-                                          StackTrace stackTrace) {
-                                        return _renderImageDefault();
-                                      },
-                                    ),
+                                height: 100,
+                                width: 100,
+                                child: ClipRRect(
+                                  borderRadius: BorderRadius.circular(50.0),
+                                  child: Image.network(
+                                    "$IMAGE_BASE_URL/avatars/${_user.avatarUrl}",
+                                    fit: BoxFit.fill,
+                                    errorBuilder: (BuildContext context,
+                                        Object exception,
+                                        StackTrace stackTrace) {
+                                      return _renderImageDefault();
+                                    },
                                   ),
+                                ),
                               ),
                             ),
                           )
@@ -546,8 +546,49 @@ class _ProfileState extends State<Profile> {
     final pickedFile = await picker.getImage(source: source, imageQuality: 50);
 
     if (pickedFile != null) {
-        Network().updateAvatar("", File(pickedFile.path));
+      if (!this._isLoading) {
+        var isShowMessage = false;
+        this.setState(() {
+          _isLoading = true;
+        });
+        try {
+          var response =
+              await Network().updateAvatar(USERS_AVATAR_URL, File(pickedFile.path));
+
+          if (response.statusCode == RESPONSE_SUCCESS) {
+            var data = User.fromJson(json.decode(response.body)[JSON_DATA_KEY]);
+
+            SharedPreferences localStorage = await SharedPreferences.getInstance();
+            localStorage.setString(LOCAL_STORAGE_USER_KEY, json.encode(data));
+
+            this.setState(() {
+              _user = data;
+            });
+          } else { isShowMessage = true; }
+        } catch (error) {
+          isShowMessage = true;
+        }
+
+        this.setState(() {
+          _isLoading = false;
+        });
+
+        if (isShowMessage) _showMessage("Ocorreu um erro no upload");
+      }
     }
+  }
+
+  _showMessage(String message) {
+    final snackBar = SnackBar(
+      backgroundColor: Colors.red,
+      content: Text(message),
+      action: SnackBarAction(
+        label: 'Fechar',
+        textColor: Colors.white,
+        onPressed: () {},
+      ),
+    );
+    _scaffoldKey.currentState.showSnackBar(snackBar);
   }
 
   void _selectDate(BuildContext context) async {
