@@ -43,6 +43,30 @@ class Network {
         body: jsonEncode(data));
   }
 
+  Future<http.Response> updateAvatar(String apiUrl, File file) async {
+    var url = Constants.BASE_API_URL + apiUrl;
+    await _getToken();
+    token = token.replaceAll("\"", "");
+
+    var request = http.MultipartRequest("POST", Uri.parse(url));
+    request.headers['Accept'] = 'application/json';
+
+    var stream = http.ByteStream(DelegatingStream.typed(file.openRead()));
+    var fileLenght = await file.length();
+    var multipartFileSign = http.MultipartFile('avatar', stream, fileLenght,
+          filename: basename(file.path));
+    request.files.add(multipartFileSign);
+
+    try {
+      var streamedResponse = await request.send();
+      var response = http.Response.fromStream(streamedResponse);
+      return response;
+    } catch (e) {
+      rethrow;
+    }
+
+  }
+
   Future<http.Response> deletetWithAuth(String apiUrl, dynamic id) async {
     var url = Constants.BASE_API_URL + apiUrl + "/$id";
     await _getToken();

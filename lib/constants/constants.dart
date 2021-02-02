@@ -29,10 +29,10 @@ const String ERROR_INVALID_FRAGMENT = 'Index inválido';
 const String ERROR_GENERAL_API = 'Woops! Algo correu mal';
 const String ERROR_USER_NOT_FOUND_API = 'O utilizador não existe!';
 
-const BASE_URL = 'https://nutriclock.herokuapp.com';
+// const BASE_URL = 'https://nutriclock.herokuapp.com';
 const IMAGE_BASE_URL = 'https://nutriclock.s3-eu-west-1.amazonaws.com';
 // const IMAGE_BASE_URL = 'https://ea25c14250e0.ngrok.io/storage';
-// const BASE_URL = 'https://617ed231a8bf.ngrok.io';
+const BASE_URL = 'https://b8f66970c9b4.ngrok.io';
 const BASE_API_URL = '$BASE_URL/api';
 // wss://nutriclock-websocket.herokuapp.com
 const WEBSOCKET_URL = 'wss://nutriclock-websocket.herokuapp.com';
@@ -49,6 +49,7 @@ const MEALS_UPDATE_URL = '/meals-update';
 const PHOTOS_URL = 'photo';
 
 const USERS_ME_URL = '/users/me';
+const USERS_AVATAR_URL = '/users/avatar';
 
 const USF_URL = '/ufcs';
 const TERMS_URL = '/terms';
