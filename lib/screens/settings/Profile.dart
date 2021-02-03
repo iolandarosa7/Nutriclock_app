@@ -11,6 +11,7 @@ import 'package:nutriclock_app/constants/constants.dart';
 import 'package:nutriclock_app/models/User.dart';
 import 'package:nutriclock_app/models/Usf.dart';
 import 'package:nutriclock_app/network_utils/api.dart';
+import 'package:nutriclock_app/screens/settings/Diseases.dart';
 import 'package:nutriclock_app/utils/DropMenu.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -59,7 +60,7 @@ class _ProfileState extends State<Profile> {
             icon: Icon(Icons.medical_services_rounded),
             tooltip: 'Medicamentos / Suplementos',
             onPressed: () {
-              openPage(context);
+              openDiseasesList(context);
             },
           ),
           IconButton(
@@ -108,6 +109,7 @@ class _ProfileState extends State<Profile> {
                                 child: Column(
                                   children: [
                                     TextFormField(
+                                      initialValue: _user.name,
                                       style:
                                           TextStyle(color: Color(0xFF000000)),
                                       cursorColor: Color(0xFF9b9b9b),
@@ -144,7 +146,7 @@ class _ProfileState extends State<Profile> {
                                     Stack(
                                       children: <Widget>[
                                         DropdownButton(
-                                          value: _usfs[0].id,
+                                          value: _user.ufc_id,
                                           hint: Padding(
                                             padding:
                                                 const EdgeInsets.only(left: 50),
@@ -190,7 +192,7 @@ class _ProfileState extends State<Profile> {
                                     Stack(
                                       children: <Widget>[
                                         DropdownButton(
-                                          value: 'MALE',
+                                          value: _user.gender,
                                           hint: Padding(
                                             padding:
                                                 const EdgeInsets.only(left: 50),
@@ -278,92 +280,119 @@ class _ProfileState extends State<Profile> {
                                         ),
                                       ],
                                     ),
-                                    TextFormField(
-                                      style:
-                                          TextStyle(color: Color(0xFF000000)),
-                                      cursorColor: Color(0xFF9b9b9b),
-                                      keyboardType: TextInputType.number,
-                                      decoration: InputDecoration(
-                                        focusedBorder: UnderlineInputBorder(
-                                          borderSide: BorderSide(
-                                              color: Color(0xFFA3E1CB)),
-                                        ),
-                                        prefixIcon: Icon(
-                                          Icons.accessibility,
-                                          color: Color(0xFFA3E1CB),
-                                        ),
-                                        suffix: Text(
-                                          'kg',
-                                          style: TextStyle(
-                                              color: Color(0xFF000000)),
-                                        ),
-                                        hintText: "Peso",
-                                        labelText: 'Peso',
-                                        labelStyle:
-                                            TextStyle(color: Colors.grey),
-                                        hintStyle: TextStyle(
-                                            color: Color(0xFF9b9b9b),
-                                            fontSize: 15,
-                                            fontWeight: FontWeight.normal),
-                                      ),
-                                      validator: (weightValue) {
-                                        if (weightValue.isNotEmpty &&
-                                            double.tryParse(weightValue) ==
-                                                null) {
-                                          return ERROR_INVALID_FORMAT_FIELD;
-                                        }
+                                    Row(
+                                      children: [
+                                        Expanded(
+                                          flex: 1,
+                                          child: TextFormField(
+                                            initialValue:
+                                                _user.weight.toString(),
+                                            style: TextStyle(
+                                                color: Color(0xFF000000)),
+                                            cursorColor: Color(0xFF9b9b9b),
+                                            keyboardType: TextInputType.number,
+                                            decoration: InputDecoration(
+                                              focusedBorder:
+                                                  UnderlineInputBorder(
+                                                borderSide: BorderSide(
+                                                    color: Color(0xFFA3E1CB)),
+                                              ),
+                                              prefixIcon: Icon(
+                                                Icons.accessibility,
+                                                color: Color(0xFFA3E1CB),
+                                              ),
+                                              suffix: Text(
+                                                'kg',
+                                                style: TextStyle(
+                                                    color: Color(0xFF000000)),
+                                              ),
+                                              hintText: "Peso",
+                                              labelText: 'Peso',
+                                              labelStyle:
+                                                  TextStyle(color: Colors.grey),
+                                              hintStyle: TextStyle(
+                                                  color: Color(0xFF9b9b9b),
+                                                  fontSize: 15,
+                                                  fontWeight:
+                                                      FontWeight.normal),
+                                            ),
+                                            validator: (weightValue) {
+                                              if (weightValue.isNotEmpty &&
+                                                  double.tryParse(
+                                                          weightValue) ==
+                                                      null) {
+                                                return ERROR_INVALID_FORMAT_FIELD;
+                                              }
 
-                                        if (weightValue.isNotEmpty &&
-                                            double.tryParse(weightValue) <= 0) {
-                                          return ERROR_NEGATIVE_VALUE;
-                                        }
-                                        _user.weight = weightValue;
-                                        return null;
-                                      },
-                                    ),
-                                    TextFormField(
-                                      style:
-                                          TextStyle(color: Color(0xFF000000)),
-                                      cursorColor: Color(0xFF9b9b9b),
-                                      keyboardType: TextInputType.number,
-                                      decoration: InputDecoration(
-                                        focusedBorder: UnderlineInputBorder(
-                                          borderSide: BorderSide(
-                                              color: Color(0xFFA3E1CB)),
+                                              if (weightValue.isNotEmpty &&
+                                                  double.tryParse(
+                                                          weightValue) <=
+                                                      0) {
+                                                return ERROR_NEGATIVE_VALUE;
+                                              }
+                                              _user.weight = weightValue;
+                                              return null;
+                                            },
+                                          ),
                                         ),
-                                        prefixIcon: Icon(
-                                          Icons.swap_vert,
-                                          color: Color(0xFFA3E1CB),
+                                        SizedBox(
+                                          width: 16,
                                         ),
-                                        suffix: Text(
-                                          'cm',
-                                          style: TextStyle(
-                                              color: Color(0xFF000000)),
-                                        ),
-                                        hintText: "Altura",
-                                        labelText: 'Altura',
-                                        labelStyle:
-                                            TextStyle(color: Colors.grey),
-                                        hintStyle: TextStyle(
-                                            color: Color(0xFF9b9b9b),
-                                            fontSize: 15,
-                                            fontWeight: FontWeight.normal),
-                                      ),
-                                      validator: (heightValue) {
-                                        if (heightValue.isNotEmpty &&
-                                            double.tryParse(heightValue) ==
-                                                null) {
-                                          return ERROR_INVALID_FORMAT_FIELD;
-                                        }
+                                        Expanded(
+                                          flex: 1,
+                                          child: TextFormField(
+                                            initialValue:
+                                                _user.height.toString(),
+                                            style: TextStyle(
+                                                color: Color(0xFF000000)),
+                                            cursorColor: Color(0xFF9b9b9b),
+                                            keyboardType: TextInputType.number,
+                                            decoration: InputDecoration(
+                                              focusedBorder:
+                                                  UnderlineInputBorder(
+                                                borderSide: BorderSide(
+                                                    color: Color(0xFFA3E1CB)),
+                                              ),
+                                              prefixIcon: Icon(
+                                                Icons.swap_vert,
+                                                color: Color(0xFFA3E1CB),
+                                              ),
+                                              suffix: Text(
+                                                'cm',
+                                                style: TextStyle(
+                                                    color: Color(0xFF000000)),
+                                              ),
+                                              hintText: "Altura",
+                                              labelText: 'Altura',
+                                              labelStyle:
+                                                  TextStyle(color: Colors.grey),
+                                              hintStyle: TextStyle(
+                                                  color: Color(0xFF9b9b9b),
+                                                  fontSize: 15,
+                                                  fontWeight:
+                                                      FontWeight.normal),
+                                            ),
+                                            validator: (heightValue) {
+                                              if (heightValue.isNotEmpty &&
+                                                  double.tryParse(
+                                                          heightValue) ==
+                                                      null) {
+                                                return ERROR_INVALID_FORMAT_FIELD;
+                                              }
 
-                                        if (heightValue.isNotEmpty &&
-                                            double.tryParse(heightValue) <= 0) {
-                                          return ERROR_NEGATIVE_VALUE;
-                                        }
+                                              if (heightValue.isNotEmpty &&
+                                                  double.tryParse(
+                                                          heightValue) <=
+                                                      0) {
+                                                return ERROR_NEGATIVE_VALUE;
+                                              }
 
-                                        _user.height = heightValue;
-                                        return null;
-                                      },
+                                              _user.height = heightValue;
+                                              return null;
+                                            },
+                                          ),
+                                        ),
+                                      ],
                                     ),
                                     SizedBox(
                                       height: 24.0,
@@ -382,7 +411,7 @@ class _ProfileState extends State<Profile> {
                                             child: Text(
                                               _isLoading
                                                   ? 'Aguarde...'
-                                                  : 'Registar',
+                                                  : 'Guardar Perfil',
                                               style: TextStyle(
                                                 color: Colors.white,
                                                 fontSize: 15.0,
@@ -400,10 +429,10 @@ class _ProfileState extends State<Profile> {
                                           onPressed: () {
                                             if (_formKey.currentState
                                                 .validate()) {
-                                              //_showAcceptanceTermsModal();
+                                              _updateUser();
                                             } else {
-                                              /*_showMessage(
-                                "Corrija os erros no formulário!");*/
+                                              _showMessage(
+                                                  "Corrija os erros no formulário!");
                                             }
                                           },
                                         ),
@@ -456,6 +485,13 @@ class _ProfileState extends State<Profile> {
     );
   }
 
+  void openDiseasesList(BuildContext context) {
+    Navigator.push(
+      context,
+      MaterialPageRoute(builder: (context) => Diseases()),
+    );
+  }
+
   Widget _renderImageDefault() {
     return Container(
       decoration: BoxDecoration(
@@ -503,6 +539,7 @@ class _ProfileState extends State<Profile> {
         User user = User.fromJson(json.decode(storeUser));
         this.setState(() {
           _user = user;
+          selectedDate = DateTime.parse(_user.birthday);
         });
       }
     } catch (error) {}
@@ -552,19 +589,22 @@ class _ProfileState extends State<Profile> {
           _isLoading = true;
         });
         try {
-          var response =
-              await Network().updateAvatar(USERS_AVATAR_URL, File(pickedFile.path));
+          var response = await Network()
+              .updateAvatar(USERS_AVATAR_URL, File(pickedFile.path));
 
           if (response.statusCode == RESPONSE_SUCCESS) {
             var data = User.fromJson(json.decode(response.body)[JSON_DATA_KEY]);
 
-            SharedPreferences localStorage = await SharedPreferences.getInstance();
+            SharedPreferences localStorage =
+                await SharedPreferences.getInstance();
             localStorage.setString(LOCAL_STORAGE_USER_KEY, json.encode(data));
 
             this.setState(() {
               _user = data;
             });
-          } else { isShowMessage = true; }
+          } else {
+            isShowMessage = true;
+          }
         } catch (error) {
           isShowMessage = true;
         }
@@ -575,6 +615,49 @@ class _ProfileState extends State<Profile> {
 
         if (isShowMessage) _showMessage("Ocorreu um erro no upload");
       }
+    }
+  }
+
+  _updateUser() async {
+    var isShowMessage = false;
+
+    if (!this._isLoading) {
+      this.setState(() {
+        _isLoading = true;
+      });
+
+      try {
+        var response = await Network().postWithAuth({
+          'name': _user.name,
+          'gender': _user.gender,
+          'weight': _user.weight,
+          'height': _user.height,
+          'birthday': _user.birthday
+        }, USERS_PROFILE_URL);
+
+        if (response.statusCode == RESPONSE_SUCCESS) {
+          var data = User.fromJson(json.decode(response.body)[JSON_DATA_KEY]);
+
+          SharedPreferences localStorage =
+              await SharedPreferences.getInstance();
+          localStorage.setString(LOCAL_STORAGE_USER_KEY, json.encode(data));
+
+          this.setState(() {
+            _user = data;
+          });
+        } else {
+          isShowMessage = true;
+        }
+      } catch (error) {
+        isShowMessage = true;
+      }
+
+      this.setState(() {
+        _isLoading = false;
+      });
+
+      if (isShowMessage)
+        _showMessage("Ocorreu um erro na atualização do perfil");
     }
   }
 
