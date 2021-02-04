@@ -177,6 +177,20 @@ class _MealsFragmentState extends State<MealsFragment> {
   Widget build(BuildContext context) {
     return Scaffold(
       key: _scaffoldKey,
+      floatingActionButtonLocation: FloatingActionButtonLocation.endTop,
+      floatingActionButton: _daysFromInitialMeal <= 3
+          ? FloatingActionButton(
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => MealCreateFragment()),
+                ).then((value) => {_loadMealsList()});
+              },
+              child: Icon(Icons.add),
+              backgroundColor: Color(0xFF60B2A3),
+              elevation: 50,
+            )
+          : SizedBox(),
       body: Container(
         constraints: BoxConstraints.expand(),
         decoration: BoxDecoration(
@@ -193,69 +207,41 @@ class _MealsFragmentState extends State<MealsFragment> {
                   color: Color(0xFFFFBCBC),
                 ),
               )
-            : Stack(
-                children: [
-                  Positioned(
-                    top: 40,
-                    left: 0,
-                    right: 0,
-                    child: _data == null ||
-                            _data.mealsTypeByDate == null ||
-                            _data.mealsTypeByDate.isEmpty
-                        ? Card(
-                            elevation: 4.0,
-                            color: Colors.white,
-                            margin: EdgeInsets.only(left: 20, right: 20),
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(15),
-                            ),
-                            child: Padding(
-                              padding: EdgeInsets.all(20),
-                              child: Column(
-                                children: [
-                                  Text(
-                                    "Nenhum alimento adicionado.",
-                                    style: TextStyle(color: Colors.black),
-                                  ),
-                                  SizedBox(
-                                    height: 16,
-                                  ),
-                                  Text(
-                                    "Começa já a registar o teu Diário Alimentar com tudo o que compõe as tuas refeições.",
-                                    textAlign: TextAlign.center,
-                                    style: TextStyle(color: Colors.grey),
-                                  ),
-                                ],
-                              ),
-                            ),
-                          )
-                        : SingleChildScrollView(
-                            scrollDirection: Axis.vertical,
-                            padding: EdgeInsets.all(4),
-                            child: Column(children: data()),
+            : _data == null ||
+                    _data.mealsTypeByDate == null ||
+                    _data.mealsTypeByDate.isEmpty
+                ? Card(
+                    elevation: 4.0,
+                    color: Colors.white,
+                    margin: EdgeInsets.only(left: 20, right: 20),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(15),
+                    ),
+                    child: Padding(
+                      padding: EdgeInsets.all(20),
+                      child: Column(
+                        children: [
+                          Text(
+                            "Nenhum alimento adicionado.",
+                            style: TextStyle(color: Colors.black),
                           ),
+                          SizedBox(
+                            height: 16,
+                          ),
+                          Text(
+                            "Começa já a registar o teu Diário Alimentar com tudo o que compõe as tuas refeições.",
+                            textAlign: TextAlign.center,
+                            style: TextStyle(color: Colors.grey),
+                          ),
+                        ],
+                      ),
+                    ),
+                  )
+                : SingleChildScrollView(
+                    scrollDirection: Axis.vertical,
+                    padding: EdgeInsets.all(4),
+                    child: Column(children: data()),
                   ),
-                  _daysFromInitialMeal == null || _daysFromInitialMeal <= 3
-                      ? Positioned(
-                          top: 10,
-                          right: 20,
-                          child: FloatingActionButton(
-                            onPressed: () {
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) => MealCreateFragment()),
-                              ).then((value) => {_loadMealsList()});
-                            },
-                            child: Icon(Icons.add),
-                            backgroundColor: Color(0xFF60B2A3),
-                            elevation: 50,
-                          ),
-                        )
-                      : Text(""),
-                ],
-              ),
-        /*child: */
       ),
     );
   }

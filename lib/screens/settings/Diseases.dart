@@ -34,6 +34,15 @@ class _DiseasesState extends State<Diseases> {
   Widget build(BuildContext context) {
     return Scaffold(
       key: _scaffoldKey,
+      floatingActionButtonLocation: FloatingActionButtonLocation.endTop,
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          _addNewDisease();
+        },
+        child: Icon(Icons.add),
+        backgroundColor: Color(0xFF60B2A3),
+        elevation: 50,
+      ),
       appBar: AppBar(
         title: Text(
           "Doenças / Alergias",
@@ -58,41 +67,22 @@ class _DiseasesState extends State<Diseases> {
                     size: 50.0,
                     color: Color(0xFFFFBCBC)),
               )
-            : Stack(
-                children: [
-                  Positioned(
-                    top: 35,
-                    left: 0,
-                    right: 0,
-                    child: _userDiseases == null || _userDiseases.length == 0
-                        ? _renderNoDiseases()
-                        : SingleChildScrollView(
-                            scrollDirection: Axis.vertical,
-                            padding: EdgeInsets.all(4),
-                            child: Column(children: _renderDiseases()),
-                          ),
-                  ),
-                  Positioned(
-                    top: 10,
-                    right: 20,
-                    child: FloatingActionButton(
-                      onPressed: () {
-                        _addNewDisease();
-                      },
-                      child: Icon(Icons.add),
-                      backgroundColor: Color(0xFF60B2A3),
-                      elevation: 50,
+            : _userDiseases.length == 0
+                ? _renderNoDiseases()
+                : SingleChildScrollView(
+                    scrollDirection: Axis.vertical,
+                    child: Padding(
+                      padding: EdgeInsets.symmetric(vertical: 8, horizontal: 8),
+                      child: Column(children: _renderDiseases()),
                     ),
-                  )
-                ],
-              ),
+                  ),
       ),
     );
   }
 
   List<Widget> _renderDiseases() {
     List<Widget> list = List();
-    _userDiseases.forEach((element) {
+    _userDiseases.asMap().forEach((i, element) {
       list.add(
         SizedBox(
           width: double.infinity,
@@ -135,20 +125,22 @@ class _DiseasesState extends State<Diseases> {
                         SizedBox(
                           height: 40,
                           child: FloatingActionButton(
-                            heroTag: "edit$element",
+                            heroTag: "edit$element$i",
                             child: Icon(
                               Icons.edit,
                               size: 15,
                               color: Colors.white,
                             ),
                             backgroundColor: Colors.blue,
-                            onPressed: () {},
+                            onPressed: () {
+                              this._showUpdateModal(i);
+                            },
                           ),
                         ),
                         SizedBox(
                           height: 40,
                           child: FloatingActionButton(
-                            heroTag: "delete$element",
+                            heroTag: "delete$element$i",
                             child: Icon(
                               Icons.delete,
                               size: 15,
@@ -156,7 +148,7 @@ class _DiseasesState extends State<Diseases> {
                             ),
                             backgroundColor: Colors.redAccent,
                             onPressed: () {
-                              // this._showDeleteMealConfirmation(element);
+                              this._showDeleteConfirmation(i);
                             },
                           ),
                         ),
@@ -173,89 +165,115 @@ class _DiseasesState extends State<Diseases> {
     return list;
   }
 
-  /*
-  meals.forEach((element) {
-      list.add(
-        Stack(
-          children: [
-            Positioned(
-              child: Container(
-                height: 100,
-                decoration: BoxDecoration(
-                  border: Border(
-                    left: BorderSide(color: Color(0xFFE6A9A9), width: 10.0),
+  Future<void> _showUpdateModal(int index) async {
+    if (_isLoading) return;
+    return showDialog<void>(
+      context: context,
+      builder: (BuildContext context) {
+        return StatefulBuilder(
+            builder: (BuildContext context, StateSetter setState) {
+              return AlertDialog(
+                title: Text(
+                  'Editar Doença / Alergia',
+                  textAlign: TextAlign.center,
+                  style: TextStyle(color: Color(0xFFA3E1CB)),
+                ),
+                content: SingleChildScrollView(
+                  child: ListBody(
+                    children: <Widget>[
+                      TextFormField(
+                        onChanged: (value) => {
+                          this.setState(() {
+                            _userDiseases[index] = value;
+                          }),
+                        },
+                        initialValue: _userDiseases[index],
+                        style: TextStyle(color: Color(0xFF000000)),
+                        cursorColor: Color(0xFF9b9b9b),
+                        keyboardType: TextInputType.text,
+                        decoration: InputDecoration(
+                          focusedBorder: UnderlineInputBorder(
+                            borderSide: BorderSide(color: Color(0xFFA3E1CB)),
+                          ),
+                          hintText: "Outra doença",
+                          hintStyle: TextStyle(
+                              color: Color(0xFF9b9b9b),
+                              fontSize: 15,
+                              fontWeight: FontWeight.normal,
+                          ),
+                        ),
+                      ),
+                    ],
                   ),
                 ),
-                child: SizedBox(
-                  width: double.infinity,
-                  child: ClipRect(
-                    child: element.foodPhotoUrl != null
-                        ? Image.network(
-                            "$IMAGE_BASE_URL/food/thumb_${element.foodPhotoUrl}",
-                            fit: BoxFit.cover,
-                            errorBuilder: (BuildContext context,
-                                Object exception, StackTrace stackTrace) {
-                              return _renderImageDefault();
-                            },
-                          )
-                        : _renderImageDefault(),
+                actions: <Widget>[
+                  FlatButton(
+                    child: Text(
+                      'Guardar',
+                      style: TextStyle(color: Color(0xFF60B2A3)),
+                    ),
+                    onPressed: () {
+                      _makeRequest();
+                      Navigator.of(context).pop();
+                    },
                   ),
-                ),
+                ],
+              );
+            });
+      },
+    );
+  }
+
+  Future<void> _showDeleteConfirmation(int index) async {
+    if (_isLoading) return;
+    return showDialog<void>(
+        context: context,
+        barrierDismissible: true,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            title: Text(
+              "Apagar doença / alergia",
+              textAlign: TextAlign.center,
+              style: TextStyle(
+                color: Color(0xFFA3E1CB),
               ),
             ),
-            Positioned(
-              bottom: 8,
-              right: 0,
-              height: 70,
-              child: Column(
-                children: [
-                  Expanded(
-                    flex: 5,
-                    child: FloatingActionButton(
-                      heroTag: "edit${element.id}",
-                      child: Icon(
-                        Icons.edit,
-                        size: 15,
-                        color: Colors.white,
-                      ),
-                      backgroundColor: Colors.blue,
-                      onPressed: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) =>
-                                MealUpdateFragment(meal: element),
-                          ),
-                        ).then((value) => {_loadMealsList()});
-                      },
-                    ),
-                  ),
-                  SizedBox(
-                    height: 8,
-                  ),
-                  Expanded(
-                    flex: 5,
-                    child: FloatingActionButton(
-                      heroTag: "delete${element.id}",
-                      child: Icon(
-                        Icons.delete,
-                        size: 15,
-                        color: Colors.white,
-                      ),
-                      backgroundColor: Colors.redAccent,
-                      onPressed: () {
-                        this._showDeleteMealConfirmation(element);
-                      },
+            content: SingleChildScrollView(
+              child: ListBody(
+                children: <Widget>[
+                  Text(
+                    "Tem a certeza que deseja apagar a doença / alergia selecionada?",
+                    style: TextStyle(
+                      fontSize: 14.0,
+                      color: Colors.grey,
                     ),
                   ),
                 ],
               ),
             ),
-          ],
-        ),
-      );
-    });
-   */
+            actions: <Widget>[
+              FlatButton(
+                child: Text(
+                  'Cancelar',
+                  style: TextStyle(color: Colors.white),
+                ),
+                color: Colors.grey,
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+              ),
+              FlatButton(
+                child: Text('Eliminar'),
+                color: Colors.red,
+                onPressed: () {
+                  Navigator.of(context).pop();
+                  _deleteDisease(index);
+                },
+              ),
+            ],
+          );
+        });
+  }
 
   Widget _renderNoDiseases() {
     return Card(
@@ -278,54 +296,6 @@ class _DiseasesState extends State<Diseases> {
       ),
     );
   }
-
-  /*return DefaultTabController(
-      length: 2,
-      child: Scaffold(
-        key: _scaffoldKey,
-        appBar: AppBar(
-          bottom: TabBar(
-            tabs: [
-              Tab(
-                text: 'Alergias',
-              ),
-              Tab(
-                text: 'Doenças',
-              )
-            ],
-            indicatorColor: Colors.white,
-          ),
-          title: Text(
-            "Doenças / Alergias",
-            style: TextStyle(
-              fontFamily: 'Pacifico',
-            ),
-          ),
-          backgroundColor: Color(0xFFA3E1CB),
-        ),
-        body: TabBarView(children: [
-          _renderAllergies(),
-          _renderDiseases(),
-        ]),
-      ),
-    );*/
-
-  /*
-
-  Widget _renderAllergies() {
-    return Container(
-
-    );
-  }
-
-  Widget _renderDiseases() {
-    return Container(
-
-    );
-  }
-
-
-   */
 
   Future<void> _addNewDisease() async {
     return showDialog<void>(
@@ -427,6 +397,11 @@ class _DiseasesState extends State<Diseases> {
     );
   }
 
+  _deleteDisease(index) {
+    _userDiseases.removeAt(index);
+    _makeRequest();
+  }
+
   _updateDiseaseList() {
     if (_checkDiseaseToAdd(selectedAllergy)) _userDiseases.add(selectedAllergy);
     if (_checkDiseaseToAdd(selectedDisease)) _userDiseases.add(selectedDisease);
@@ -443,6 +418,8 @@ class _DiseasesState extends State<Diseases> {
       _isLoading = true;
     });
 
+    print(_parseUserDiseases());
+
     try {
       var response = await Network().postWithAuth({
         'diseases': _parseUserDiseases(),
@@ -455,7 +432,7 @@ class _DiseasesState extends State<Diseases> {
         localStorage.setString(LOCAL_STORAGE_USER_KEY, json.encode(data));
 
         this.setState(() {
-          _userDiseases = data.diseases.split(',');
+          _userDiseases = _makeDiseasesList(data.diseases);
         });
       } else {
         isShowMessage = true;
@@ -477,10 +454,22 @@ class _DiseasesState extends State<Diseases> {
     });
   }
 
+  _makeDiseasesList(String auxStr) {
+    var tempArray = auxStr.toString().split(',');
+    List<String> list = [];
+
+    tempArray.forEach((element) {
+      if (element.trim().isNotEmpty) list.add(element);
+    });
+
+    print(list);
+    return list;
+  }
+
   _parseUserDiseases() {
     var auxStr = "";
     _userDiseases.forEach((element) {
-      auxStr += "$element,";
+      if (element.trim().isNotEmpty) auxStr += "$element,";
     });
 
     return auxStr;
@@ -533,13 +522,15 @@ class _DiseasesState extends State<Diseases> {
 
       if (storeUser != null) {
         User user = User.fromJson(json.decode(storeUser));
-        if (user.diseases != null && user.diseases.split(',').length > 0) {
+        if (user.diseases != null) {
           this.setState(() {
-            _userDiseases = user.diseases.trim().split(',');
+            _userDiseases = _makeDiseasesList(user.diseases.toString());
           });
         }
       }
-    } catch (error) {}
+    } catch (error) {
+      print(error);
+    }
 
     setState(() {
       _isLoading = false;
