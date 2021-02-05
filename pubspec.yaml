@@ -74,6 +74,7 @@ flutter:
     - assets/sleep/stats.png
     - assets/sleep/tip.png
     - assets/images/bg_chat.jpg
+    - assets/images/bg_home_r.jpg
   fonts:
     - family: Pacifico
       fonts:

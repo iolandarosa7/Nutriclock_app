@@ -288,7 +288,7 @@ class _DiseasesState extends State<Diseases> {
         child: Column(
           children: [
             Text(
-              "Neão existem doenças / alergias registadas.",
+              "Não existem doenças / alergias registadas.",
               style: TextStyle(color: Colors.black),
             ),
           ],

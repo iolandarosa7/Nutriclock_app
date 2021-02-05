@@ -12,6 +12,7 @@ import 'package:nutriclock_app/models/User.dart';
 import 'package:nutriclock_app/models/Usf.dart';
 import 'package:nutriclock_app/network_utils/api.dart';
 import 'package:nutriclock_app/screens/settings/Diseases.dart';
+import 'package:nutriclock_app/screens/settings/Medication.dart';
 import 'package:nutriclock_app/utils/DropMenu.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -67,7 +68,7 @@ class _ProfileState extends State<Profile> {
             icon: const Icon(Icons.healing),
             tooltip: 'Patologias / Alergias',
             onPressed: () {
-              openPage(context);
+              openMedicationList(context);
             },
           ),
         ],
@@ -478,10 +479,10 @@ class _ProfileState extends State<Profile> {
     );
   }
 
-  void openPage(BuildContext context) {
+  void openMedicationList(BuildContext context) {
     Navigator.push(
       context,
-      MaterialPageRoute(builder: (context) => SettingsList()),
+      MaterialPageRoute(builder: (context) => MedicationList()),
     );
   }
 
