@@ -41,7 +41,7 @@ class _MedicationListState extends State<MedicationList> {
           floatingActionButtonLocation: FloatingActionButtonLocation.endTop,
           floatingActionButton: FloatingActionButton(
             onPressed: () {
-              _addNewMedication();
+              _addNewMedication(-1, "");
             },
             child: Icon(Icons.add),
             backgroundColor: Color(0xFF60B2A3),
@@ -69,7 +69,28 @@ class _MedicationListState extends State<MedicationList> {
     );
   }
 
-  Future<void> _addNewMedication() async {
+  Future<void> _addNewMedication(int index, String type) async {
+    Drug drug = Drug("", "", "", "", "");
+    if (index != -1) {
+      _drugType = type;
+      if (type == 'M') {
+        drug = _medications[index];
+      } else {
+        drug = _suplements[index];
+      }
+      _drugTime = drug.timesADay;
+
+      if (drug.timesAWeek.trim() != "") {
+        drug.timesAWeek.split(",").forEach((element) {
+          if (element.trim() != "") {
+            _drugDays.add(element);
+          }
+        });
+      }
+
+      _drugName = drug.name;
+      _drugPosology = drug.posology;
+    }
     return showDialog<void>(
         context: context,
         builder: (BuildContext context) {
@@ -118,6 +139,7 @@ class _MedicationListState extends State<MedicationList> {
                             _drugName = value;
                           }),
                         },
+                        initialValue: drug.name,
                         style: TextStyle(color: Color(0xFF000000)),
                         cursorColor: Color(0xFF9b9b9b),
                         keyboardType: TextInputType.text,
@@ -138,6 +160,7 @@ class _MedicationListState extends State<MedicationList> {
                             _drugPosology = value;
                           }),
                         },
+                        initialValue: drug.posology,
                         style: TextStyle(color: Color(0xFF000000)),
                         cursorColor: Color(0xFF9b9b9b),
                         keyboardType: TextInputType.number,
@@ -255,7 +278,29 @@ class _MedicationListState extends State<MedicationList> {
                         return;
                       }
 
-                      _addRequest();
+                      var days = "";
+
+                      if (_drugDays.contains('ALL'))
+                        days = "1,2,3,4,5,6,7,";
+                      else {
+                        _drugDays.forEach((element) {
+                          days += "$element,";
+                        });
+                      }
+
+                      var data = {
+                        'name': _drugName,
+                        'timesAWeek': days,
+                        'timesADay': _drugTime,
+                        'posology': _drugPosology,
+                        'type': _drugType
+                      };
+
+                      if (index != -1) {
+                        _updateRequest(data, index, type);
+                      } else {
+                        _addRequest(data);
+                      }
 
                       Navigator.of(context).pop();
                     },
@@ -267,40 +312,70 @@ class _MedicationListState extends State<MedicationList> {
         });
   }
 
-  _addRequest() async {
+  _updateRequest(Map<String, dynamic> data, int index, String type) async {
     var isShowMessage = false;
+    List<Drug> suplements = _suplements;
+    List<Drug> medication = _medications;
+    int id = 0;
+    if (_isLoading) return;
+    this.setState(() {
+      _isLoading = true;
+    });
 
-    var days = "";
+    if (type == 'M') id = _medications[index].id;
+    else id = _suplements[index].id;
 
-    if (_drugDays.contains('ALL'))
-      days = "1,2,3,4,5,6,7,";
-    else {
-      _drugDays.forEach((element) {
-        days += "$element,";
-      });
+    try {
+      var response = await Network().putWithAuth(data, MEDICATIONS_URL, id);
+      if (response.statusCode == RESPONSE_SUCCESS) {
+        var data = Drug.fromJson(json.decode(response.body)[JSON_DATA_KEY]);
+        if (type == 'M') {
+          medication.removeAt(index);
+        } else {
+          suplements.removeAt(index);
+        }
+
+        if (data.type == 'M') {
+          medication.add(data);
+        } else {
+          suplements.add(data);
+        }
+
+        this.setState(() {
+          _medications = medication;
+          _suplements = suplements;
+        });
+      } else {
+        isShowMessage = true;
+      }
+    } catch (error) {
+      print(error);
+      isShowMessage = true;
     }
 
-    // request update diseases in user
+    this.setState(() {
+      _isLoading = false;
+      _drugName = null;
+      _drugPosology = null;
+      _drugType = null;
+      _drugTime = null;
+      _drugDays = [];
+    });
+
+    if (isShowMessage) _showMessage("Ocorreu um erro ao editar medicamento / suplemento");
+  }
+
+  _addRequest(Map<String, dynamic> data) async {
+    var isShowMessage = false;
     if (_isLoading) return;
     this.setState(() {
       _isLoading = true;
     });
 
     try {
-      var response = await Network().postWithAuth({
-        'name': _drugName,
-        'timesAWeek': days,
-        'timesADay': _drugTime,
-        'posology': _drugPosology,
-        'type': _drugType
-      }, MEDICATION_AUTH_URL);
-
-      print(response.statusCode);
-
+      var response = await Network().postWithAuth(data, MEDICATION_AUTH_URL);
       if (response.statusCode == RESPONSE_SUCCESS_201) {
         var medication = Drug.fromJson(json.decode(response.body)[JSON_DATA_KEY]);
-
-        print(medication);
         if (medication.type == 'M') {
           var aux = _medications;
           aux.add(medication);
@@ -478,7 +553,7 @@ class _MedicationListState extends State<MedicationList> {
                             ),
                             backgroundColor: Colors.blue,
                             onPressed: () {
-                              // this._showUpdateModal(i);
+                              this._addNewMedication(i, type);
                             },
                           ),
                         ),
@@ -566,8 +641,6 @@ class _MedicationListState extends State<MedicationList> {
     var isShowMessage = false;
     List<Drug> list = [];
 
-    print('delete medication');
-
     if (_isLoading) return;
     this.setState(() {
       _isLoading = true;
@@ -579,9 +652,6 @@ class _MedicationListState extends State<MedicationList> {
 
     try {
       var response = await Network().deletetWithAuth(MEDICATIONS_URL, list[index].id);
-
-      print(response.statusCode);
-
 
       if (response.statusCode == RESPONSE_SUCCESS) {
         list.removeAt(index);
