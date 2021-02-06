@@ -418,8 +418,6 @@ class _DiseasesState extends State<Diseases> {
       _isLoading = true;
     });
 
-    print(_parseUserDiseases());
-
     try {
       var response = await Network().postWithAuth({
         'diseases': _parseUserDiseases(),
@@ -445,7 +443,7 @@ class _DiseasesState extends State<Diseases> {
       _isLoading = false;
     });
 
-    if (isShowMessage) _showMessage("Ocorreu um erro na atualização do perfil");
+    if (isShowMessage) _showMessage("Ocorreu um erro");
 
     this.setState(() {
       diseaseToAdd = null;
@@ -462,7 +460,6 @@ class _DiseasesState extends State<Diseases> {
       if (element.trim().isNotEmpty) list.add(element);
     });
 
-    print(list);
     return list;
   }
 
