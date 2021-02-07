@@ -2,20 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:nutriclock_app/screens/settings/ChangeEmail.dart';
 import 'package:nutriclock_app/screens/settings/ChangePassword.dart';
 import 'package:nutriclock_app/screens/settings/Profile.dart';
+import 'package:nutriclock_app/utils/AppWidget.dart';
 
 class SettingsList extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(
-          title: Text(
-            "Definições",
-            style: TextStyle(
-              fontFamily: 'Pacifico',
-            ),
-          ),
-          backgroundColor: Color(0xFFA3E1CB),
-        ),
+        appBar: AppWidget().getAppbar("Definições"),
         body: ListView(
           children: [
             ListTile(

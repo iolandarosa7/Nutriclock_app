@@ -1,12 +1,11 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
-import 'package:loading/indicator/ball_pulse_indicator.dart';
-import 'package:loading/loading.dart';
 import 'package:multiselect_formfield/multiselect_formfield.dart';
 import 'package:nutriclock_app/constants/constants.dart';
 import 'package:nutriclock_app/models/Drug.dart';
 import 'package:nutriclock_app/network_utils/api.dart';
+import 'package:nutriclock_app/utils/AppWidget.dart';
 import 'package:nutriclock_app/utils/DropMenu.dart';
 
 class MedicationList extends StatefulWidget {
@@ -16,6 +15,7 @@ class MedicationList extends StatefulWidget {
 
 class _MedicationListState extends State<MedicationList> {
   final _scaffoldKey = GlobalKey<ScaffoldState>();
+  var appWidget = AppWidget();
   List<Drug> _medications = [];
   List<Drug> _suplements = [];
   var _isLoading = false;
@@ -274,7 +274,10 @@ class _MedicationListState extends State<MedicationList> {
                           _drugName.trim() == "" ||
                           _drugPosology == null ||
                           _drugPosology.trim() == "") {
-                        _showMessage("Deve preencher o nome e posologia");
+                        appWidget.showSnackbar(
+                            "Deve preencher o nome e posologia",
+                            Colors.red,
+                            _scaffoldKey);
                         return;
                       }
 
@@ -322,8 +325,10 @@ class _MedicationListState extends State<MedicationList> {
       _isLoading = true;
     });
 
-    if (type == 'M') id = _medications[index].id;
-    else id = _suplements[index].id;
+    if (type == 'M')
+      id = _medications[index].id;
+    else
+      id = _suplements[index].id;
 
     try {
       var response = await Network().putWithAuth(data, MEDICATIONS_URL, id);
@@ -362,7 +367,11 @@ class _MedicationListState extends State<MedicationList> {
       _drugDays = [];
     });
 
-    if (isShowMessage) _showMessage("Ocorreu um erro ao editar medicamento / suplemento");
+    if (isShowMessage)
+      appWidget.showSnackbar(
+          "Ocorreu um erro ao editar medicamento / suplemento",
+          Colors.red,
+          _scaffoldKey);
   }
 
   _addRequest(Map<String, dynamic> data) async {
@@ -375,7 +384,8 @@ class _MedicationListState extends State<MedicationList> {
     try {
       var response = await Network().postWithAuth(data, MEDICATION_AUTH_URL);
       if (response.statusCode == RESPONSE_SUCCESS_201) {
-        var medication = Drug.fromJson(json.decode(response.body)[JSON_DATA_KEY]);
+        var medication =
+            Drug.fromJson(json.decode(response.body)[JSON_DATA_KEY]);
         if (medication.type == 'M') {
           var aux = _medications;
           aux.add(medication);
@@ -406,76 +416,43 @@ class _MedicationListState extends State<MedicationList> {
       _drugDays = [];
     });
 
-    if (isShowMessage) _showMessage("Ocorreu um erro na adição de medicamento / suplemento");
+    if (isShowMessage)
+      appWidget.showSnackbar(
+          "Ocorreu um erro na adição de medicamento / suplemento",
+          Colors.red,
+          _scaffoldKey);
   }
 
   Widget _renderMedications() {
-    return Container(
-      constraints: BoxConstraints.expand(),
-      decoration: BoxDecoration(
-        image: DecorationImage(
-          image: AssetImage("assets/images/bg_home.jpg"),
-          fit: BoxFit.fill,
-        ),
-      ),
-      child: _isLoading
-          ? Center(
-              child: Loading(
-                  indicator: BallPulseIndicator(),
-                  size: 50.0,
-                  color: Color(0xFFFFBCBC)),
-            )
-          : _suplements.length == 0
-              ? _renderNoData('Não existem medicamentos registados')
-              : SingleChildScrollView(
-                  scrollDirection: Axis.vertical,
-                  child: Padding(
-                    padding: EdgeInsets.symmetric(vertical: 8, horizontal: 8),
-                    child: Column(children: _renderDrug(_medications, 'M')),
-                  ),
-                ),
+    return appWidget.getImageContainer(
+      "assets/images/bg_home.jpg",
+      _isLoading,
+      _suplements.length == 0
+          ? _renderNoData('Não existem medicamentos registados')
+          : SingleChildScrollView(
+              scrollDirection: Axis.vertical,
+              child: Padding(
+                padding: EdgeInsets.symmetric(vertical: 8, horizontal: 8),
+                child: Column(children: _renderDrug(_medications, 'M')),
+              ),
+            ),
     );
   }
 
   Widget _renderSuplements() {
-    return Container(
-      constraints: BoxConstraints.expand(),
-      decoration: BoxDecoration(
-        image: DecorationImage(
-          image: AssetImage("assets/images/bg_home_r.jpg"),
-          fit: BoxFit.fill,
-        ),
-      ),
-      child: _isLoading
-          ? Center(
-              child: Loading(
-                  indicator: BallPulseIndicator(),
-                  size: 50.0,
-                  color: Color(0xFFFFBCBC)),
-            )
-          : _suplements.length == 0
-              ? _renderNoData('Não existem suplementos registados')
-              : SingleChildScrollView(
-                  scrollDirection: Axis.vertical,
-                  child: Padding(
-                    padding: EdgeInsets.symmetric(vertical: 8, horizontal: 8),
-                    child: Column(children: _renderDrug(_suplements, 'S')),
-                  ),
-                ),
+    return appWidget.getImageContainer(
+      "assets/images/bg_home_r.jpg",
+      _isLoading,
+      _suplements.length == 0
+          ? _renderNoData('Não existem suplementos registados')
+          : SingleChildScrollView(
+              scrollDirection: Axis.vertical,
+              child: Padding(
+                padding: EdgeInsets.symmetric(vertical: 8, horizontal: 8),
+                child: Column(children: _renderDrug(_suplements, 'S')),
+              ),
+            ),
     );
-  }
-
-  _showMessage(String message) {
-    final snackBar = SnackBar(
-      backgroundColor: Colors.red,
-      content: Text(message),
-      action: SnackBarAction(
-        label: 'Fechar',
-        textColor: Colors.white,
-        onPressed: () {},
-      ),
-    );
-    _scaffoldKey.currentState.showSnackBar(snackBar);
   }
 
   Widget _renderNoData(String message) {
@@ -586,7 +563,6 @@ class _MedicationListState extends State<MedicationList> {
   }
 
   Future<void> _showDeleteConfirmation(int index, String type) async {
-    print('delete confirmation modal');
     if (_isLoading) return;
     return showDialog<void>(
         context: context,
@@ -646,12 +622,14 @@ class _MedicationListState extends State<MedicationList> {
       _isLoading = true;
     });
 
-
-    if (type == 'M') list = _medications;
-    else list = _suplements;
+    if (type == 'M')
+      list = _medications;
+    else
+      list = _suplements;
 
     try {
-      var response = await Network().deletetWithAuth(MEDICATIONS_URL, list[index].id);
+      var response =
+          await Network().deletetWithAuth(MEDICATIONS_URL, list[index].id);
 
       if (response.statusCode == RESPONSE_SUCCESS) {
         list.removeAt(index);
@@ -677,10 +655,12 @@ class _MedicationListState extends State<MedicationList> {
       _isLoading = false;
     });
 
-    if (isShowMessage) _showMessage("Ocorreu um erro ao eliminar o medicamento / suplemento");
+    if (isShowMessage)
+      appWidget.showSnackbar(
+          "Ocorreu um erro ao eliminar o medicamento / suplemento",
+          Colors.red,
+          _scaffoldKey);
   }
-
-
 
   void _loadDataFromServer() async {
     List<Drug> medications = [];
@@ -700,7 +680,6 @@ class _MedicationListState extends State<MedicationList> {
 
         data.forEach((element) {
           Drug m = Drug.fromJson(element);
-          print(m);
           if (m.type == 'M')
             medications.add(m);
           else

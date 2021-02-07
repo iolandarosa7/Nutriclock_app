@@ -6,13 +6,12 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_typeahead/flutter_typeahead.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:loading/indicator/ball_pulse_indicator.dart';
-import 'package:loading/loading.dart';
 import 'package:nutriclock_app/constants/constants.dart';
 import 'package:nutriclock_app/models/Meal.dart';
 import 'package:nutriclock_app/models/StaticMealNameResponse.dart';
 import 'package:nutriclock_app/models/User.dart';
 import 'package:nutriclock_app/network_utils/api.dart';
+import 'package:nutriclock_app/utils/AppWidget.dart';
 import 'package:nutriclock_app/utils/DropMenu.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -62,6 +61,7 @@ class _MealDetailFragmentState extends State<MealDetailFragment> {
   var _observations;
   var _showError = false;
   var _userId;
+  var appWidget = AppWidget();
 
   @override
   void initState() {
@@ -110,317 +110,107 @@ class _MealDetailFragmentState extends State<MealDetailFragment> {
   Widget build(BuildContext context) {
     return Scaffold(
       key: _scaffoldKey,
-      appBar: AppBar(
-        title: Text(
-          "Adicionar Alimento",
-          style: TextStyle(
-            fontFamily: 'Pacifico',
-          ),
-        ),
-        backgroundColor: Color(0xFFA3E1CB),
-      ),
-      body: Container(
-        constraints: BoxConstraints.expand(),
-        decoration: BoxDecoration(
-          image: DecorationImage(
-            image: AssetImage("assets/images/bg_login.png"),
-            fit: BoxFit.fill,
-          ),
-        ),
-        child: _isLoading
-            ? Center(
-                child: Loading(
-                  indicator: BallPulseIndicator(),
-                  size: 50.0,
-                  color: Color(0xFFFFBCBC),
-                ),
-              )
-            : SingleChildScrollView(
-                scrollDirection: Axis.vertical,
-                child: Card(
-                  elevation: 4.0,
-                  color: Colors.white,
-                  margin: EdgeInsets.only(left: 20, right: 20, top: 20),
-                  shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(15)),
-                  child: Padding(
-                    padding: const EdgeInsets.only(
-                        top: 10.0, left: 20.0, right: 20.0, bottom: 10.0),
-                    child: Form(
-                      key: _formKey,
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: <Widget>[
-                          _showError
-                              ? Text(
-                                  "Os campos assinalados com * são obrigatórios!",
-                                  style: TextStyle(
-                                      color: Colors.redAccent,
-                                      fontWeight: FontWeight.bold,
-                                      fontSize: 12),
-                                )
-                              : SizedBox(
-                                  height: 0,
-                                ),
-                          TypeAheadFormField(
-                            textFieldConfiguration: TextFieldConfiguration(
-                              controller: _typeAheadController,
-                              decoration: InputDecoration(
-                                focusedBorder: UnderlineInputBorder(
-                                  borderSide:
-                                      BorderSide(color: Color(0xFFA3E1CB)),
-                                ),
-                                prefixIcon: Icon(
-                                  Icons.restaurant,
-                                  color: Color(0xFFA3E1CB),
-                                ),
-                                hintText: "Nome *",
-                                labelText: 'Nome *',
-                                labelStyle: TextStyle(color: Colors.grey),
-                                hintStyle: TextStyle(
-                                    color: Color(0xFF9b9b9b),
-                                    fontSize: 15,
-                                    fontWeight: FontWeight.normal),
-                              ),
-                            ),
-                            itemBuilder: (context, suggestion) {
-                              return ListTile(
-                                title: Text(suggestion),
-                              );
-                            },
-                            transitionBuilder:
-                                (context, suggestionsBox, controller) {
-                              return suggestionsBox;
-                            },
-                            onSuggestionSelected: (suggestion) {
-                              this._typeAheadController.text = suggestion;
-                            },
-                            suggestionsCallback: (pattern) {
-                              var list = [];
-                              var size = 0;
-                              _autocompleteSuggestions.forEach((element) {
-                                if (size <= 20 &&
-                                    element
-                                        .toString()
-                                        .toLowerCase()
-                                        .startsWith(pattern)) {
-                                  list.add(element);
-                                  size++;
-                                }
-                              });
-                              return list;
-                            },
-                            validator: (value) {
-                              _name = value;
-                              return null;
-                            },
+      appBar: appWidget.getAppbar("Adicionar Alimento"),
+      body: appWidget.getImageContainer(
+        "assets/images/bg_login.png",
+        _isLoading,
+        SingleChildScrollView(
+          scrollDirection: Axis.vertical,
+          child: Card(
+            elevation: 4.0,
+            color: Colors.white,
+            margin: EdgeInsets.only(left: 20, right: 20, top: 20),
+            shape:
+                RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
+            child: Padding(
+              padding: const EdgeInsets.only(
+                  top: 10.0, left: 20.0, right: 20.0, bottom: 10.0),
+              child: Form(
+                key: _formKey,
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: <Widget>[
+                    _showError
+                        ? Text(
+                            "Os campos assinalados com * são obrigatórios!",
+                            style: TextStyle(
+                                color: Colors.redAccent,
+                                fontWeight: FontWeight.bold,
+                                fontSize: 12),
+                          )
+                        : SizedBox(
+                            height: 0,
                           ),
-                          Row(
-                            children: [
-                              Expanded(
-                                flex: 3,
-                                child: TextFormField(
-                                  style: TextStyle(color: Color(0xFF000000)),
-                                  cursorColor: Color(0xFF9b9b9b),
-                                  keyboardType: TextInputType.number,
-                                  decoration: InputDecoration(
-                                    focusedBorder: UnderlineInputBorder(
-                                      borderSide:
-                                          BorderSide(color: Color(0xFFA3E1CB)),
-                                    ),
-                                    prefixIcon: Icon(
-                                      Icons.check_circle,
-                                      color: Color(0xFFA3E1CB),
-                                    ),
-                                    hintText: "Quant. *",
-                                    labelText: 'Quant. *',
-                                    labelStyle: TextStyle(color: Colors.grey),
-                                    hintStyle: TextStyle(
-                                        color: Color(0xFF9b9b9b),
-                                        fontSize: 15,
-                                        fontWeight: FontWeight.normal),
-                                  ),
-                                  validator: (value) {
-                                    _quantity = value;
-                                    return null;
-                                  },
-                                ),
-                              ),
-                              Expanded(
-                                flex: 5,
-                                child: Stack(
-                                  children: <Widget>[
-                                    Padding(
-                                      padding: const EdgeInsets.only(
-                                          top: 26, left: 8.0),
-                                      child: DropdownButton(
-                                        value: _selectedUnit,
-                                        hint: Padding(
-                                          padding: EdgeInsets.only(bottom: 20),
-                                          child: Text(
-                                            "Unidade *",
-                                            style: TextStyle(
-                                                color: Color(0xFF9b9b9b),
-                                                fontSize: 15,
-                                                fontWeight: FontWeight.normal),
-                                          ),
-                                        ),
-                                        icon: Icon(Icons.arrow_drop_down, color: Color(0xFFA3E1CB)),
-                                        onChanged: (newValue) {
-                                          setState(() {
-                                            _selectedUnit = newValue;
-                                            _showError = false;
-                                          });
-                                        },
-                                        isExpanded: true,
-                                        items: _units
-                                            .map<DropdownMenuItem<String>>(
-                                                (DropMenu value) {
-                                          return DropdownMenuItem<String>(
-                                            value: value.value,
-                                            child: Padding(
-                                              padding: const EdgeInsets.only(
-                                                  bottom: 16),
-                                              child: Text(value.description),
-                                            ),
-                                          );
-                                        }).toList(),
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            ],
+                    TypeAheadFormField(
+                      textFieldConfiguration: TextFieldConfiguration(
+                        controller: _typeAheadController,
+                        decoration: InputDecoration(
+                          focusedBorder: UnderlineInputBorder(
+                            borderSide: BorderSide(color: Color(0xFFA3E1CB)),
                           ),
-                          Padding(
-                            padding: EdgeInsets.only(top: 24),
-                            child: Row(children: [
-                              Expanded(
-                                flex: 5,
-                                child: GestureDetector(
-                                  onTap: () {
-                                    _showPicker(context, 'FOOD_PHOTO');
-                                  },
-                                  child: _foodPhoto != null
-                                      ? ClipRRect(
-                                          child: Image.file(
-                                            _foodPhoto,
-                                            width: double.infinity,
-                                            height: 150,
-                                            fit: BoxFit.cover,
-                                          ),
-                                        )
-                                      : Container(
-                                          decoration: BoxDecoration(
-                                            color: Colors.grey,
-                                          ),
-                                          width: double.infinity,
-                                          height: 150,
-                                          child: Padding(
-                                            padding: EdgeInsets.only(
-                                                left: 8, right: 8),
-                                            child: Column(
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment.center,
-                                              crossAxisAlignment:
-                                                  CrossAxisAlignment.center,
-                                              children: [
-                                                Icon(
-                                                  Icons.image,
-                                                  color: Colors.grey[800],
-                                                ),
-                                                SizedBox(
-                                                  height: 8,
-                                                ),
-                                                Text(
-                                                  " + Clica para adicionar uma foto da refeição",
-                                                  textAlign: TextAlign.center,
-                                                  style: TextStyle(
-                                                      color: Colors.black38,
-                                                      fontSize: 12),
-                                                )
-                                              ],
-                                            ),
-                                          ),
-                                        ),
-                                ),
-                              ),
-                              Expanded(
-                                flex: 5,
-                                child: GestureDetector(
-                                  onTap: () {
-                                    _showPicker(context, 'NUTRI_INFO_PHOTO');
-                                  },
-                                  child: _nutritionalInfoPhoto != null
-                                      ? ClipRRect(
-                                          child: Image.file(
-                                            _nutritionalInfoPhoto,
-                                            width: double.infinity,
-                                            height: 150,
-                                            fit: BoxFit.cover,
-                                          ),
-                                        )
-                                      : Container(
-                                          decoration: BoxDecoration(
-                                            color: Colors.black12,
-                                          ),
-                                          width: double.infinity,
-                                          height: 150,
-                                          child: Padding(
-                                            padding: EdgeInsets.only(
-                                                left: 8, right: 8),
-                                            child: Column(
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment.center,
-                                              crossAxisAlignment:
-                                                  CrossAxisAlignment.center,
-                                              children: [
-                                                Icon(
-                                                  Icons.image_rounded,
-                                                  color: Colors.grey[800],
-                                                ),
-                                                SizedBox(
-                                                  height: 8,
-                                                ),
-                                                Text(
-                                                  "Se o produto for embalado adiciona foto da Informção Nutricional",
-                                                  textAlign: TextAlign.center,
-                                                  style: TextStyle(
-                                                      color: Colors.black38,
-                                                      fontSize: 12),
-                                                ),
-                                                SizedBox(
-                                                  height: 8,
-                                                ),
-                                                Text(
-                                                  "O fornecimento desta informação é relevante.",
-                                                  textAlign: TextAlign.center,
-                                                  style: TextStyle(
-                                                      color: Colors.black,
-                                                      fontSize: 13,
-                                                      fontWeight:
-                                                          FontWeight.w700),
-                                                )
-                                              ],
-                                            ),
-                                          ),
-                                        ),
-                                ),
-                              ),
-                            ]),
+                          prefixIcon: Icon(
+                            Icons.restaurant,
+                            color: Color(0xFFA3E1CB),
                           ),
-                          TextFormField(
-                            maxLines: 4,
+                          hintText: "Nome *",
+                          labelText: 'Nome *',
+                          labelStyle: TextStyle(color: Colors.grey),
+                          hintStyle: TextStyle(
+                              color: Color(0xFF9b9b9b),
+                              fontSize: 15,
+                              fontWeight: FontWeight.normal),
+                        ),
+                      ),
+                      itemBuilder: (context, suggestion) {
+                        return ListTile(
+                          title: Text(suggestion),
+                        );
+                      },
+                      transitionBuilder: (context, suggestionsBox, controller) {
+                        return suggestionsBox;
+                      },
+                      onSuggestionSelected: (suggestion) {
+                        this._typeAheadController.text = suggestion;
+                      },
+                      suggestionsCallback: (pattern) {
+                        var list = [];
+                        var size = 0;
+                        _autocompleteSuggestions.forEach((element) {
+                          if (size <= 20 &&
+                              element
+                                  .toString()
+                                  .toLowerCase()
+                                  .startsWith(pattern)) {
+                            list.add(element);
+                            size++;
+                          }
+                        });
+                        return list;
+                      },
+                      validator: (value) {
+                        _name = value;
+                        return null;
+                      },
+                    ),
+                    Row(
+                      children: [
+                        Expanded(
+                          flex: 3,
+                          child: TextFormField(
                             style: TextStyle(color: Color(0xFF000000)),
                             cursorColor: Color(0xFF9b9b9b),
-                            keyboardType: TextInputType.text,
+                            keyboardType: TextInputType.number,
                             decoration: InputDecoration(
                               focusedBorder: UnderlineInputBorder(
                                 borderSide:
                                     BorderSide(color: Color(0xFFA3E1CB)),
                               ),
-                              hintText: "Informação Adicional",
-                              labelText: 'Informação Adicional',
+                              prefixIcon: Icon(
+                                Icons.check_circle,
+                                color: Color(0xFFA3E1CB),
+                              ),
+                              hintText: "Quant. *",
+                              labelText: 'Quant. *',
                               labelStyle: TextStyle(color: Colors.grey),
                               hintStyle: TextStyle(
                                   color: Color(0xFF9b9b9b),
@@ -428,65 +218,249 @@ class _MealDetailFragmentState extends State<MealDetailFragment> {
                                   fontWeight: FontWeight.normal),
                             ),
                             validator: (value) {
-                              _observations = value;
+                              _quantity = value;
                               return null;
                             },
                           ),
-                          Padding(
-                            padding: const EdgeInsets.only(top: 16.0),
-                            child: SizedBox(
-                              width: double.infinity,
-                              child: FlatButton(
-                                child: Padding(
-                                  padding: EdgeInsets.only(
-                                      top: 8, bottom: 8, left: 10, right: 10),
-                                  child: Text(
-                                    _isLoading ? 'Aguarde...' : 'Confirmar',
-                                    style: TextStyle(
-                                      color: Colors.white,
-                                      fontSize: 15.0,
-                                      decoration: TextDecoration.none,
-                                      fontWeight: FontWeight.normal,
+                        ),
+                        Expanded(
+                          flex: 5,
+                          child: Stack(
+                            children: <Widget>[
+                              Padding(
+                                padding:
+                                    const EdgeInsets.only(top: 26, left: 8.0),
+                                child: DropdownButton(
+                                  value: _selectedUnit,
+                                  hint: Padding(
+                                    padding: EdgeInsets.only(bottom: 20),
+                                    child: Text(
+                                      "Unidade *",
+                                      style: TextStyle(
+                                          color: Color(0xFF9b9b9b),
+                                          fontSize: 15,
+                                          fontWeight: FontWeight.normal),
                                     ),
                                   ),
-                                ),
-                                color: Color(0xFFA3E1CB),
-                                disabledColor: Colors.grey,
-                                shape: new RoundedRectangleBorder(
-                                    borderRadius:
-                                        new BorderRadius.circular(20.0)),
-                                onPressed: () {
-                                  if (!_formKey.currentState.validate() ||
-                                      _name == null ||
-                                      _name.trim() == "" ||
-                                      _quantity == null ||
-                                      _quantity.trim == "" ||
-                                      _selectedUnit == null ||
-                                      _selectedUnit == "") {
+                                  icon: Icon(Icons.arrow_drop_down,
+                                      color: Color(0xFFA3E1CB)),
+                                  onChanged: (newValue) {
                                     setState(() {
-                                      _showError = true;
+                                      _selectedUnit = newValue;
+                                      _showError = false;
                                     });
-                                    return;
-                                  }
-
-                                  if (_selectedUnit == "Outro" &&
-                                      (_observations == "" ||
-                                          _observations == null)) {
-                                    _showAdditionalInformationDialog();
-                                    return;
-                                  }
-
-                                  _postNewMeal();
-                                },
+                                  },
+                                  isExpanded: true,
+                                  items: _units.map<DropdownMenuItem<String>>(
+                                      (DropMenu value) {
+                                    return DropdownMenuItem<String>(
+                                      value: value.value,
+                                      child: Padding(
+                                        padding:
+                                            const EdgeInsets.only(bottom: 16),
+                                        child: Text(value.description),
+                                      ),
+                                    );
+                                  }).toList(),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ],
+                    ),
+                    Padding(
+                      padding: EdgeInsets.only(top: 24),
+                      child: Row(children: [
+                        Expanded(
+                          flex: 5,
+                          child: GestureDetector(
+                            onTap: () {
+                              _showPicker(context, 'FOOD_PHOTO');
+                            },
+                            child: _foodPhoto != null
+                                ? ClipRRect(
+                                    child: Image.file(
+                                      _foodPhoto,
+                                      width: double.infinity,
+                                      height: 150,
+                                      fit: BoxFit.cover,
+                                    ),
+                                  )
+                                : Container(
+                                    decoration: BoxDecoration(
+                                      color: Colors.grey,
+                                    ),
+                                    width: double.infinity,
+                                    height: 150,
+                                    child: Padding(
+                                      padding:
+                                          EdgeInsets.only(left: 8, right: 8),
+                                      child: Column(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.center,
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.center,
+                                        children: [
+                                          Icon(
+                                            Icons.image,
+                                            color: Colors.grey[800],
+                                          ),
+                                          SizedBox(
+                                            height: 8,
+                                          ),
+                                          Text(
+                                            " + Clica para adicionar uma foto da refeição",
+                                            textAlign: TextAlign.center,
+                                            style: TextStyle(
+                                                color: Colors.black38,
+                                                fontSize: 12),
+                                          )
+                                        ],
+                                      ),
+                                    ),
+                                  ),
+                          ),
+                        ),
+                        Expanded(
+                          flex: 5,
+                          child: GestureDetector(
+                            onTap: () {
+                              _showPicker(context, 'NUTRI_INFO_PHOTO');
+                            },
+                            child: _nutritionalInfoPhoto != null
+                                ? ClipRRect(
+                                    child: Image.file(
+                                      _nutritionalInfoPhoto,
+                                      width: double.infinity,
+                                      height: 150,
+                                      fit: BoxFit.cover,
+                                    ),
+                                  )
+                                : Container(
+                                    decoration: BoxDecoration(
+                                      color: Colors.black12,
+                                    ),
+                                    width: double.infinity,
+                                    height: 150,
+                                    child: Padding(
+                                      padding:
+                                          EdgeInsets.only(left: 8, right: 8),
+                                      child: Column(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.center,
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.center,
+                                        children: [
+                                          Icon(
+                                            Icons.image_rounded,
+                                            color: Colors.grey[800],
+                                          ),
+                                          SizedBox(
+                                            height: 8,
+                                          ),
+                                          Text(
+                                            "Se o produto for embalado adiciona foto da Informção Nutricional",
+                                            textAlign: TextAlign.center,
+                                            style: TextStyle(
+                                                color: Colors.black38,
+                                                fontSize: 12),
+                                          ),
+                                          SizedBox(
+                                            height: 8,
+                                          ),
+                                          Text(
+                                            "O fornecimento desta informação é relevante.",
+                                            textAlign: TextAlign.center,
+                                            style: TextStyle(
+                                                color: Colors.black,
+                                                fontSize: 13,
+                                                fontWeight: FontWeight.w700),
+                                          )
+                                        ],
+                                      ),
+                                    ),
+                                  ),
+                          ),
+                        ),
+                      ]),
+                    ),
+                    TextFormField(
+                      maxLines: 4,
+                      style: TextStyle(color: Color(0xFF000000)),
+                      cursorColor: Color(0xFF9b9b9b),
+                      keyboardType: TextInputType.text,
+                      decoration: InputDecoration(
+                        focusedBorder: UnderlineInputBorder(
+                          borderSide: BorderSide(color: Color(0xFFA3E1CB)),
+                        ),
+                        hintText: "Informação Adicional",
+                        labelText: 'Informação Adicional',
+                        labelStyle: TextStyle(color: Colors.grey),
+                        hintStyle: TextStyle(
+                            color: Color(0xFF9b9b9b),
+                            fontSize: 15,
+                            fontWeight: FontWeight.normal),
+                      ),
+                      validator: (value) {
+                        _observations = value;
+                        return null;
+                      },
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.only(top: 16.0),
+                      child: SizedBox(
+                        width: double.infinity,
+                        child: FlatButton(
+                          child: Padding(
+                            padding: EdgeInsets.only(
+                                top: 8, bottom: 8, left: 10, right: 10),
+                            child: Text(
+                              _isLoading ? 'Aguarde...' : 'Confirmar',
+                              style: TextStyle(
+                                color: Colors.white,
+                                fontSize: 15.0,
+                                decoration: TextDecoration.none,
+                                fontWeight: FontWeight.normal,
                               ),
                             ),
                           ),
-                        ],
+                          color: Color(0xFFA3E1CB),
+                          disabledColor: Colors.grey,
+                          shape: new RoundedRectangleBorder(
+                              borderRadius: new BorderRadius.circular(20.0)),
+                          onPressed: () {
+                            if (!_formKey.currentState.validate() ||
+                                _name == null ||
+                                _name.trim() == "" ||
+                                _quantity == null ||
+                                _quantity.trim == "" ||
+                                _selectedUnit == null ||
+                                _selectedUnit == "") {
+                              setState(() {
+                                _showError = true;
+                              });
+                              return;
+                            }
+
+                            if (_selectedUnit == "Outro" &&
+                                (_observations == "" ||
+                                    _observations == null)) {
+                              _showAdditionalInformationDialog();
+                              return;
+                            }
+
+                            _postNewMeal();
+                          },
+                        ),
                       ),
                     ),
-                  ),
+                  ],
                 ),
               ),
+            ),
+          ),
+        ),
       ),
     );
   }
@@ -562,8 +536,6 @@ class _MealDetailFragmentState extends State<MealDetailFragment> {
           .postMeal(meal, _foodPhoto, _nutritionalInfoPhoto, _userId, MEAL_URL);
 
       var body = json.decode(response.body);
-      print(response.statusCode);
-
       if (response.statusCode == RESPONSE_SUCCESS_201) {
         _typeAheadController.text = '';
 
@@ -582,24 +554,11 @@ class _MealDetailFragmentState extends State<MealDetailFragment> {
     } catch (error) {
       isShowMessage = true;
     }
-    if (isShowMessage) _showMessage(message);
+    if (isShowMessage) appWidget.showSnackbar(message, Colors.red, _scaffoldKey);
 
     setState(() {
       _isLoading = false;
     });
-  }
-
-  _showMessage(String message) {
-    final snackBar = SnackBar(
-      backgroundColor: Colors.red,
-      content: Text(message),
-      action: SnackBarAction(
-        label: 'Fechar',
-        textColor: Colors.white,
-        onPressed: () {},
-      ),
-    );
-    _scaffoldKey.currentState.showSnackBar(snackBar);
   }
 
   // show imagepicker

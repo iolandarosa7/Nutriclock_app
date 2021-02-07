@@ -69,22 +69,17 @@ class _HomeState extends State<Home> {
   onData(event) {
     var parsedArray = event.toString().replaceAll("'", "").split(":");
     var receiverId = parsedArray[6].split(",")[0].trim();
-
-    if (receiverId == _id.toString()) {
+    var senderId = parsedArray[3].split(",")[0].trim();
+    if (receiverId == _id.toString() || senderId == _id.toString()) {
       _getUnreadMessages();
     }
   }
 
   _getUnreadMessages() async {
-    print('get unread messaages');
     try {
       var response = await Network().getWithAuth(MESSAGES_UNREAD_URL);
-
-      print('get unread messaages ${response.statusCode}');
-
       if (response.statusCode == RESPONSE_SUCCESS) {
         var count = json.decode(response.body)[JSON_DATA_KEY];
-        if (count > 0)
         this.setState(() {
           _totalUnread = count;
         });

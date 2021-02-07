@@ -4,6 +4,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/date_symbol_data_local.dart';
 import 'package:intl/intl.dart';
+import 'package:nutriclock_app/utils/AppWidget.dart';
 
 import 'MealDetailFragment.dart';
 
@@ -16,6 +17,7 @@ class _MealCreateFragmentState extends State<MealCreateFragment> {
   final _scaffoldKey = GlobalKey<ScaffoldState>();
   final ptDatesFuture = initializeDateFormatting('pt', null);
   final dateFormat = new DateFormat('dd/MM/yyyy');
+  var appWidget = AppWidget();
   final _types = [
     MealType('P', 'Pequeno-almoço', Icons.breakfast_dining),
     MealType('M', 'Meio da manhã', Icons.local_cafe),
@@ -32,15 +34,7 @@ class _MealCreateFragmentState extends State<MealCreateFragment> {
   Widget build(BuildContext context) {
     return Scaffold(
       key: _scaffoldKey,
-      appBar: AppBar(
-        title: Text(
-          "Nova Refeição",
-          style: TextStyle(
-            fontFamily: 'Pacifico',
-          ),
-        ),
-        backgroundColor: Color(0xFFA3E1CB),
-      ),
+      appBar: appWidget.getAppbar("Nova Refeição"),
       body: Container(
         constraints: BoxConstraints.expand(),
         decoration: BoxDecoration(

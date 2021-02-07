@@ -5,18 +5,15 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
-import 'package:loading/indicator/ball_pulse_indicator.dart';
-import 'package:loading/loading.dart';
 import 'package:nutriclock_app/constants/constants.dart';
 import 'package:nutriclock_app/models/User.dart';
 import 'package:nutriclock_app/models/Usf.dart';
 import 'package:nutriclock_app/network_utils/api.dart';
 import 'package:nutriclock_app/screens/settings/Diseases.dart';
 import 'package:nutriclock_app/screens/settings/Medication.dart';
+import 'package:nutriclock_app/utils/AppWidget.dart';
 import 'package:nutriclock_app/utils/DropMenu.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-
-import 'Settings.dart';
 
 class Profile extends StatefulWidget {
   @override
@@ -37,6 +34,7 @@ class _ProfileState extends State<Profile> {
   List<Usf> _usfs = [];
   bool _isLoading = false;
   User _user;
+  var appWidget = AppWidget();
 
   @override
   void initState() {
@@ -73,408 +71,368 @@ class _ProfileState extends State<Profile> {
           ),
         ],
       ),
-      body: Container(
-        constraints: BoxConstraints.expand(),
-        decoration: BoxDecoration(
-          image: DecorationImage(
-            image: AssetImage("assets/images/bg_home.jpg"),
-            fit: BoxFit.cover,
-          ),
-        ),
-        child: _isLoading
-            ? Center(
-                child: Loading(
-                    indicator: BallPulseIndicator(),
-                    size: 50.0,
-                    color: Color(0xFFFFBCBC)),
-              )
-            : Stack(
-                children: [
-                  Positioned(
-                    top: 30,
-                    left: 0,
-                    right: 0,
-                    child: Card(
-                        elevation: 4.0,
-                        color: Colors.white,
-                        margin: EdgeInsets.only(left: 20, right: 20, top: 40.0),
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(15),
-                        ),
-                        child: SingleChildScrollView(
-                          child: Form(
-                              key: _formKey,
-                              child: Padding(
-                                padding: EdgeInsets.symmetric(
-                                    vertical: 16, horizontal: 24),
-                                child: Column(
-                                  children: [
-                                    TextFormField(
-                                      initialValue: _user.name,
+      body: appWidget.getImageContainer(
+        "assets/images/bg_home.jpg",
+        _isLoading,
+        Stack(
+          children: [
+            Positioned(
+              top: 30,
+              left: 0,
+              right: 0,
+              child: Card(
+                  elevation: 4.0,
+                  color: Colors.white,
+                  margin: EdgeInsets.only(left: 20, right: 20, top: 40.0),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(15),
+                  ),
+                  child: SingleChildScrollView(
+                    child: Form(
+                        key: _formKey,
+                        child: Padding(
+                          padding: EdgeInsets.symmetric(
+                              vertical: 16, horizontal: 24),
+                          child: Column(
+                            children: [
+                              TextFormField(
+                                initialValue: _user.name,
+                                style: TextStyle(color: Color(0xFF000000)),
+                                cursorColor: Color(0xFF9b9b9b),
+                                keyboardType: TextInputType.text,
+                                decoration: InputDecoration(
+                                  focusedBorder: UnderlineInputBorder(
+                                    borderSide:
+                                        BorderSide(color: Color(0xFFA3E1CB)),
+                                  ),
+                                  prefixIcon: Icon(
+                                    Icons.person,
+                                    color: Color(0xFFA3E1CB),
+                                  ),
+                                  labelText: 'Nome',
+                                  labelStyle: TextStyle(color: Colors.grey),
+                                  hintText: "Nome",
+                                  hintStyle: TextStyle(
+                                      color: Color(0xFF9b9b9b),
+                                      fontSize: 15,
+                                      fontWeight: FontWeight.normal),
+                                ),
+                                validator: (nameValue) {
+                                  if (nameValue.isEmpty) {
+                                    return ERROR_MANDATORY_FIELD;
+                                  }
+                                  _user.name = nameValue;
+                                  return null;
+                                },
+                              ),
+                              SizedBox(
+                                height: 8.0,
+                              ),
+                              Stack(
+                                children: <Widget>[
+                                  DropdownButton(
+                                    value: _user.ufc_id,
+                                    hint: Padding(
+                                      padding: const EdgeInsets.only(left: 50),
+                                      child: Text(
+                                        "Unidade Saúde Familiar",
+                                        style: TextStyle(
+                                            color: Color(0xFF9b9b9b),
+                                            fontSize: 15,
+                                            fontWeight: FontWeight.normal),
+                                      ),
+                                    ),
+                                    icon: Icon(Icons.arrow_drop_down,
+                                        color: Color(0xFFA3E1CB)),
+                                    onChanged: (newValue) {
+                                      setState(() {
+                                        _user.ufc_id = newValue;
+                                      });
+                                    },
+                                    isExpanded: true,
+                                    items: _usfs.map<DropdownMenuItem<int>>(
+                                        (Usf value) {
+                                      return DropdownMenuItem<int>(
+                                        value: value.id,
+                                        child: Padding(
+                                          padding:
+                                              const EdgeInsets.only(left: 50),
+                                          child: Text(value.name),
+                                        ),
+                                      );
+                                    }).toList(),
+                                  ),
+                                  Container(
+                                      padding: const EdgeInsets.only(
+                                          left: 10, top: 10),
+                                      child: Icon(
+                                        Icons.home_work_sharp,
+                                        color: Color(0xFFA3E1CB),
+                                      )),
+                                ],
+                              ),
+                              Stack(
+                                children: <Widget>[
+                                  DropdownButton(
+                                    value: _user.gender,
+                                    hint: Padding(
+                                      padding: const EdgeInsets.only(left: 50),
+                                      child: Text(
+                                        "Género",
+                                        style: TextStyle(
+                                            color: Color(0xFF9b9b9b),
+                                            fontSize: 15,
+                                            fontWeight: FontWeight.normal),
+                                      ),
+                                    ),
+                                    icon: Icon(Icons.arrow_drop_down,
+                                        color: Color(0xFFA3E1CB)),
+                                    onChanged: (newValue) {
+                                      setState(() {
+                                        _user.gender = newValue;
+                                      });
+                                    },
+                                    isExpanded: true,
+                                    items: _genderList
+                                        .map<DropdownMenuItem<String>>(
+                                            (DropMenu item) {
+                                      return DropdownMenuItem<String>(
+                                        value: item.value,
+                                        child: Padding(
+                                          padding:
+                                              const EdgeInsets.only(left: 50),
+                                          child: Text(item.description),
+                                        ),
+                                      );
+                                    }).toList(),
+                                  ),
+                                  Container(
+                                      padding: const EdgeInsets.only(
+                                          left: 10, top: 10),
+                                      child: Icon(
+                                        Icons.wc,
+                                        color: Color(0xFFA3E1CB),
+                                      )),
+                                ],
+                              ),
+                              Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Padding(
+                                    padding: const EdgeInsets.only(
+                                        top: 10.0, left: 10.0),
+                                    child: Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.start,
+                                      children: [
+                                        Icon(
+                                          Icons.calendar_today,
+                                          color: Color(0xFFA3E1CB),
+                                        ),
+                                        Padding(
+                                          padding: EdgeInsets.only(left: 16.0),
+                                          child: Text(
+                                            'Data de Nascimento',
+                                            textAlign: TextAlign.left,
+                                            style:
+                                                TextStyle(color: Colors.grey),
+                                          ),
+                                        )
+                                      ],
+                                    ),
+                                  ),
+                                  FlatButton(
+                                    color: Colors.transparent,
+                                    splashColor: Colors.black26,
+                                    onPressed: () => _selectDate(context),
+                                    child: Padding(
+                                        padding: EdgeInsets.only(left: 35.0),
+                                        child: Text(
+                                          dateFormat.format(selectedDate),
+                                          style: TextStyle(
+                                            color: Color(0xFF000000),
+                                            fontSize: 15,
+                                          ),
+                                        )),
+                                  ),
+                                ],
+                              ),
+                              Row(
+                                children: [
+                                  Expanded(
+                                    flex: 1,
+                                    child: TextFormField(
+                                      initialValue: _user.weight.toString(),
                                       style:
                                           TextStyle(color: Color(0xFF000000)),
                                       cursorColor: Color(0xFF9b9b9b),
-                                      keyboardType: TextInputType.text,
+                                      keyboardType: TextInputType.number,
                                       decoration: InputDecoration(
                                         focusedBorder: UnderlineInputBorder(
                                           borderSide: BorderSide(
                                               color: Color(0xFFA3E1CB)),
                                         ),
                                         prefixIcon: Icon(
-                                          Icons.person,
+                                          Icons.accessibility,
                                           color: Color(0xFFA3E1CB),
                                         ),
-                                        labelText: 'Nome',
+                                        suffix: Text(
+                                          'kg',
+                                          style: TextStyle(
+                                              color: Color(0xFF000000)),
+                                        ),
+                                        hintText: "Peso",
+                                        labelText: 'Peso',
                                         labelStyle:
                                             TextStyle(color: Colors.grey),
-                                        hintText: "Nome",
                                         hintStyle: TextStyle(
                                             color: Color(0xFF9b9b9b),
                                             fontSize: 15,
                                             fontWeight: FontWeight.normal),
                                       ),
-                                      validator: (nameValue) {
-                                        if (nameValue.isEmpty) {
-                                          return ERROR_MANDATORY_FIELD;
+                                      validator: (weightValue) {
+                                        if (weightValue.isNotEmpty &&
+                                            double.tryParse(weightValue) ==
+                                                null) {
+                                          return ERROR_INVALID_FORMAT_FIELD;
                                         }
-                                        _user.name = nameValue;
+
+                                        if (weightValue.isNotEmpty &&
+                                            double.tryParse(weightValue) <= 0) {
+                                          return ERROR_NEGATIVE_VALUE;
+                                        }
+                                        _user.weight = weightValue;
                                         return null;
                                       },
                                     ),
-                                    SizedBox(
-                                      height: 8.0,
-                                    ),
-                                    Stack(
-                                      children: <Widget>[
-                                        DropdownButton(
-                                          value: _user.ufc_id,
-                                          hint: Padding(
-                                            padding:
-                                                const EdgeInsets.only(left: 50),
-                                            child: Text(
-                                              "Unidade Saúde Familiar",
-                                              style: TextStyle(
-                                                  color: Color(0xFF9b9b9b),
-                                                  fontSize: 15,
-                                                  fontWeight:
-                                                      FontWeight.normal),
-                                            ),
-                                          ),
-                                          icon: Icon(Icons.arrow_drop_down,
+                                  ),
+                                  SizedBox(
+                                    width: 16,
+                                  ),
+                                  Expanded(
+                                    flex: 1,
+                                    child: TextFormField(
+                                      initialValue: _user.height.toString(),
+                                      style:
+                                          TextStyle(color: Color(0xFF000000)),
+                                      cursorColor: Color(0xFF9b9b9b),
+                                      keyboardType: TextInputType.number,
+                                      decoration: InputDecoration(
+                                        focusedBorder: UnderlineInputBorder(
+                                          borderSide: BorderSide(
                                               color: Color(0xFFA3E1CB)),
-                                          onChanged: (newValue) {
-                                            setState(() {
-                                              _user.ufc_id = newValue;
-                                            });
-                                          },
-                                          isExpanded: true,
-                                          items: _usfs
-                                              .map<DropdownMenuItem<int>>(
-                                                  (Usf value) {
-                                            return DropdownMenuItem<int>(
-                                              value: value.id,
-                                              child: Padding(
-                                                padding: const EdgeInsets.only(
-                                                    left: 50),
-                                                child: Text(value.name),
-                                              ),
-                                            );
-                                          }).toList(),
                                         ),
-                                        Container(
-                                            padding: const EdgeInsets.only(
-                                                left: 10, top: 10),
-                                            child: Icon(
-                                              Icons.home_work_sharp,
-                                              color: Color(0xFFA3E1CB),
-                                            )),
-                                      ],
-                                    ),
-                                    Stack(
-                                      children: <Widget>[
-                                        DropdownButton(
-                                          value: _user.gender,
-                                          hint: Padding(
-                                            padding:
-                                                const EdgeInsets.only(left: 50),
-                                            child: Text(
-                                              "Género",
-                                              style: TextStyle(
-                                                  color: Color(0xFF9b9b9b),
-                                                  fontSize: 15,
-                                                  fontWeight:
-                                                      FontWeight.normal),
-                                            ),
-                                          ),
-                                          icon: Icon(Icons.arrow_drop_down,
-                                              color: Color(0xFFA3E1CB)),
-                                          onChanged: (newValue) {
-                                            setState(() {
-                                              _user.gender = newValue;
-                                            });
-                                          },
-                                          isExpanded: true,
-                                          items: _genderList
-                                              .map<DropdownMenuItem<String>>(
-                                                  (DropMenu item) {
-                                            return DropdownMenuItem<String>(
-                                              value: item.value,
-                                              child: Padding(
-                                                padding: const EdgeInsets.only(
-                                                    left: 50),
-                                                child: Text(item.description),
-                                              ),
-                                            );
-                                          }).toList(),
-                                        ),
-                                        Container(
-                                            padding: const EdgeInsets.only(
-                                                left: 10, top: 10),
-                                            child: Icon(
-                                              Icons.wc,
-                                              color: Color(0xFFA3E1CB),
-                                            )),
-                                      ],
-                                    ),
-                                    Column(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      children: [
-                                        Padding(
-                                          padding: const EdgeInsets.only(
-                                              top: 10.0, left: 10.0),
-                                          child: Row(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.start,
-                                            children: [
-                                              Icon(
-                                                Icons.calendar_today,
-                                                color: Color(0xFFA3E1CB),
-                                              ),
-                                              Padding(
-                                                padding:
-                                                    EdgeInsets.only(left: 16.0),
-                                                child: Text(
-                                                  'Data de Nascimento',
-                                                  textAlign: TextAlign.left,
-                                                  style: TextStyle(
-                                                      color: Colors.grey),
-                                                ),
-                                              )
-                                            ],
-                                          ),
-                                        ),
-                                        FlatButton(
-                                          color: Colors.transparent,
-                                          splashColor: Colors.black26,
-                                          onPressed: () => _selectDate(context),
-                                          child: Padding(
-                                              padding:
-                                                  EdgeInsets.only(left: 35.0),
-                                              child: Text(
-                                                dateFormat.format(selectedDate),
-                                                style: TextStyle(
-                                                  color: Color(0xFF000000),
-                                                  fontSize: 15,
-                                                ),
-                                              )),
-                                        ),
-                                      ],
-                                    ),
-                                    Row(
-                                      children: [
-                                        Expanded(
-                                          flex: 1,
-                                          child: TextFormField(
-                                            initialValue:
-                                                _user.weight.toString(),
-                                            style: TextStyle(
-                                                color: Color(0xFF000000)),
-                                            cursorColor: Color(0xFF9b9b9b),
-                                            keyboardType: TextInputType.number,
-                                            decoration: InputDecoration(
-                                              focusedBorder:
-                                                  UnderlineInputBorder(
-                                                borderSide: BorderSide(
-                                                    color: Color(0xFFA3E1CB)),
-                                              ),
-                                              prefixIcon: Icon(
-                                                Icons.accessibility,
-                                                color: Color(0xFFA3E1CB),
-                                              ),
-                                              suffix: Text(
-                                                'kg',
-                                                style: TextStyle(
-                                                    color: Color(0xFF000000)),
-                                              ),
-                                              hintText: "Peso",
-                                              labelText: 'Peso',
-                                              labelStyle:
-                                                  TextStyle(color: Colors.grey),
-                                              hintStyle: TextStyle(
-                                                  color: Color(0xFF9b9b9b),
-                                                  fontSize: 15,
-                                                  fontWeight:
-                                                      FontWeight.normal),
-                                            ),
-                                            validator: (weightValue) {
-                                              if (weightValue.isNotEmpty &&
-                                                  double.tryParse(
-                                                          weightValue) ==
-                                                      null) {
-                                                return ERROR_INVALID_FORMAT_FIELD;
-                                              }
-
-                                              if (weightValue.isNotEmpty &&
-                                                  double.tryParse(
-                                                          weightValue) <=
-                                                      0) {
-                                                return ERROR_NEGATIVE_VALUE;
-                                              }
-                                              _user.weight = weightValue;
-                                              return null;
-                                            },
-                                          ),
-                                        ),
-                                        SizedBox(
-                                          width: 16,
-                                        ),
-                                        Expanded(
-                                          flex: 1,
-                                          child: TextFormField(
-                                            initialValue:
-                                                _user.height.toString(),
-                                            style: TextStyle(
-                                                color: Color(0xFF000000)),
-                                            cursorColor: Color(0xFF9b9b9b),
-                                            keyboardType: TextInputType.number,
-                                            decoration: InputDecoration(
-                                              focusedBorder:
-                                                  UnderlineInputBorder(
-                                                borderSide: BorderSide(
-                                                    color: Color(0xFFA3E1CB)),
-                                              ),
-                                              prefixIcon: Icon(
-                                                Icons.swap_vert,
-                                                color: Color(0xFFA3E1CB),
-                                              ),
-                                              suffix: Text(
-                                                'cm',
-                                                style: TextStyle(
-                                                    color: Color(0xFF000000)),
-                                              ),
-                                              hintText: "Altura",
-                                              labelText: 'Altura',
-                                              labelStyle:
-                                                  TextStyle(color: Colors.grey),
-                                              hintStyle: TextStyle(
-                                                  color: Color(0xFF9b9b9b),
-                                                  fontSize: 15,
-                                                  fontWeight:
-                                                      FontWeight.normal),
-                                            ),
-                                            validator: (heightValue) {
-                                              if (heightValue.isNotEmpty &&
-                                                  double.tryParse(
-                                                          heightValue) ==
-                                                      null) {
-                                                return ERROR_INVALID_FORMAT_FIELD;
-                                              }
-
-                                              if (heightValue.isNotEmpty &&
-                                                  double.tryParse(
-                                                          heightValue) <=
-                                                      0) {
-                                                return ERROR_NEGATIVE_VALUE;
-                                              }
-
-                                              _user.height = heightValue;
-                                              return null;
-                                            },
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                    SizedBox(
-                                      height: 24.0,
-                                    ),
-                                    Padding(
-                                      padding: const EdgeInsets.only(top: 16.0),
-                                      child: SizedBox(
-                                        width: double.infinity,
-                                        child: FlatButton(
-                                          child: Padding(
-                                            padding: EdgeInsets.only(
-                                                top: 8,
-                                                bottom: 8,
-                                                left: 10,
-                                                right: 10),
-                                            child: Text(
-                                              _isLoading
-                                                  ? 'Aguarde...'
-                                                  : 'Guardar Perfil',
-                                              style: TextStyle(
-                                                color: Colors.white,
-                                                fontSize: 15.0,
-                                                decoration: TextDecoration.none,
-                                                fontWeight: FontWeight.normal,
-                                              ),
-                                            ),
-                                          ),
+                                        prefixIcon: Icon(
+                                          Icons.swap_vert,
                                           color: Color(0xFFA3E1CB),
-                                          disabledColor: Colors.grey,
-                                          shape: new RoundedRectangleBorder(
-                                              borderRadius:
-                                                  new BorderRadius.circular(
-                                                      20.0)),
-                                          onPressed: () {
-                                            if (_formKey.currentState
-                                                .validate()) {
-                                              _updateUser();
-                                            } else {
-                                              _showMessage(
-                                                  "Corrija os erros no formulário!");
-                                            }
-                                          },
+                                        ),
+                                        suffix: Text(
+                                          'cm',
+                                          style: TextStyle(
+                                              color: Color(0xFF000000)),
+                                        ),
+                                        hintText: "Altura",
+                                        labelText: 'Altura',
+                                        labelStyle:
+                                            TextStyle(color: Colors.grey),
+                                        hintStyle: TextStyle(
+                                            color: Color(0xFF9b9b9b),
+                                            fontSize: 15,
+                                            fontWeight: FontWeight.normal),
+                                      ),
+                                      validator: (heightValue) {
+                                        if (heightValue.isNotEmpty &&
+                                            double.tryParse(heightValue) ==
+                                                null) {
+                                          return ERROR_INVALID_FORMAT_FIELD;
+                                        }
+
+                                        if (heightValue.isNotEmpty &&
+                                            double.tryParse(heightValue) <= 0) {
+                                          return ERROR_NEGATIVE_VALUE;
+                                        }
+
+                                        _user.height = heightValue;
+                                        return null;
+                                      },
+                                    ),
+                                  ),
+                                ],
+                              ),
+                              SizedBox(
+                                height: 24.0,
+                              ),
+                              Padding(
+                                padding: const EdgeInsets.only(top: 16.0),
+                                child: SizedBox(
+                                  width: double.infinity,
+                                  child: FlatButton(
+                                    child: Padding(
+                                      padding: EdgeInsets.only(
+                                          top: 8,
+                                          bottom: 8,
+                                          left: 10,
+                                          right: 10),
+                                      child: Text(
+                                        _isLoading
+                                            ? 'Aguarde...'
+                                            : 'Guardar Perfil',
+                                        style: TextStyle(
+                                          color: Colors.white,
+                                          fontSize: 15.0,
+                                          decoration: TextDecoration.none,
+                                          fontWeight: FontWeight.normal,
                                         ),
                                       ),
                                     ),
-                                  ],
-                                ),
-                              )),
-                        )),
-                  ),
-                  Positioned(
-                    top: 8,
-                    right: 24,
-                    child: _user != null
-                        ? Center(
-                            child: GestureDetector(
-                              onTap: () {
-                                _showPicker(context);
-                              },
-                              child: SizedBox(
-                                height: 100,
-                                width: 100,
-                                child: ClipRRect(
-                                  borderRadius: BorderRadius.circular(50.0),
-                                  child: Image.network(
-                                    "$IMAGE_BASE_URL/avatars/${_user.avatarUrl}",
-                                    fit: BoxFit.fill,
-                                    errorBuilder: (BuildContext context,
-                                        Object exception,
-                                        StackTrace stackTrace) {
-                                      return _renderImageDefault();
+                                    color: Color(0xFFA3E1CB),
+                                    disabledColor: Colors.grey,
+                                    shape: new RoundedRectangleBorder(
+                                        borderRadius:
+                                            new BorderRadius.circular(20.0)),
+                                    onPressed: () {
+                                      if (_formKey.currentState.validate()) {
+                                        _updateUser();
+                                      }
                                     },
                                   ),
                                 ),
                               ),
+                            ],
+                          ),
+                        )),
+                  )),
+            ),
+            Positioned(
+              top: 8,
+              right: 24,
+              child: _user != null
+                  ? Center(
+                      child: GestureDetector(
+                        onTap: () {
+                          _showPicker(context);
+                        },
+                        child: SizedBox(
+                          height: 100,
+                          width: 100,
+                          child: ClipRRect(
+                            borderRadius: BorderRadius.circular(50.0),
+                            child: Image.network(
+                              "$IMAGE_BASE_URL/avatars/${_user.avatarUrl}",
+                              fit: BoxFit.fill,
+                              errorBuilder: (BuildContext context,
+                                  Object exception, StackTrace stackTrace) {
+                                return _renderImageDefault();
+                              },
                             ),
-                          )
-                        : SizedBox(),
-                  ),
-                ],
-              ),
+                          ),
+                        ),
+                      ),
+                    )
+                  : SizedBox(),
+            ),
+          ],
+        ),
       ),
     );
   }
@@ -614,7 +572,9 @@ class _ProfileState extends State<Profile> {
           _isLoading = false;
         });
 
-        if (isShowMessage) _showMessage("Ocorreu um erro no upload");
+        if (isShowMessage)
+          appWidget.showSnackbar(
+              "Ocorreu um erro no upload", Colors.red, _scaffoldKey);
       }
     }
   }
@@ -658,21 +618,9 @@ class _ProfileState extends State<Profile> {
       });
 
       if (isShowMessage)
-        _showMessage("Ocorreu um erro na atualização do perfil");
+        appWidget.showSnackbar("Ocorreu um erro na atualização do perfil",
+            Colors.red, _scaffoldKey);
     }
-  }
-
-  _showMessage(String message) {
-    final snackBar = SnackBar(
-      backgroundColor: Colors.red,
-      content: Text(message),
-      action: SnackBarAction(
-        label: 'Fechar',
-        textColor: Colors.white,
-        onPressed: () {},
-      ),
-    );
-    _scaffoldKey.currentState.showSnackBar(snackBar);
   }
 
   void _selectDate(BuildContext context) async {

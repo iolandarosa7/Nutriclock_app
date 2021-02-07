@@ -7,8 +7,6 @@ import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:intl/date_symbol_data_local.dart';
 import 'package:intl/intl.dart';
-import 'package:loading/indicator/ball_pulse_indicator.dart';
-import 'package:loading/loading.dart';
 import 'package:nutriclock_app/constants/constants.dart';
 import 'package:nutriclock_app/models/AcceptanceTerms.dart';
 import 'package:nutriclock_app/models/Disease.dart';
@@ -17,6 +15,7 @@ import 'package:nutriclock_app/models/User.dart';
 import 'package:nutriclock_app/models/Usf.dart';
 import 'package:nutriclock_app/network_utils/api.dart';
 import 'package:nutriclock_app/screens/home.dart';
+import 'package:nutriclock_app/utils/AppWidget.dart';
 import 'package:nutriclock_app/utils/DropMenu.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -68,6 +67,7 @@ class _RegisterState extends State<Register> {
   final picker = ImagePicker();
   final _formKey = GlobalKey<FormState>();
   final _scaffoldKey = GlobalKey<ScaffoldState>();
+  var appWidget = AppWidget();
 
   @override
   void initState() {
@@ -79,697 +79,603 @@ class _RegisterState extends State<Register> {
   Widget build(BuildContext context) {
     return Scaffold(
       key: _scaffoldKey,
-      body: Container(
-          constraints: BoxConstraints.expand(),
-          decoration: BoxDecoration(
-            image: DecorationImage(
-              image: AssetImage("assets/images/bg_login.png"),
-              fit: BoxFit.cover,
-            ),
-          ),
-          child: _isLoading
-              ? Center(
-                  child: Loading(
-                      indicator: BallPulseIndicator(),
-                      size: 50.0,
-                      color: Color(0xFFFFBCBC)),
-                )
-              : SingleChildScrollView(
-                  scrollDirection: Axis.vertical,
-                  child: Stack(
-                    children: <Widget>[
-                      Positioned(
-                        child: Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: <Widget>[
-                              Card(
-                                  elevation: 4.0,
-                                  color: Colors.white,
-                                  margin: EdgeInsets.only(
-                                      left: 20, right: 20, top: 40.0),
-                                  shape: RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(15)),
-                                  child: Column(
-                                    children: [
-                                      Padding(
-                                        padding: const EdgeInsets.all(10.0),
-                                        child: Form(
-                                          key: _formKey,
-                                          child: Column(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.center,
-                                            children: <Widget>[
-                                              ClipRect(
-                                                child: Image.asset(
-                                                  "assets/images/logo.png",
-                                                  height: 40,
-                                                  fit: BoxFit.fill,
-                                                ),
-                                              ),
-                                              SizedBox(
-                                                height: 16,
-                                              ),
-                                              Center(
-                                                child: GestureDetector(
-                                                  onTap: () {
-                                                    _showPicker(context);
-                                                  },
-                                                  child: CircleAvatar(
-                                                    radius: 55,
-                                                    backgroundColor:
-                                                        Color(0xFFd7d7d7),
-                                                    child: _image != null
-                                                        ? ClipRRect(
-                                                            borderRadius:
-                                                                BorderRadius
-                                                                    .circular(
-                                                                        50),
-                                                            child: Image.file(
-                                                              _image,
-                                                              width: 100,
-                                                              height: 100,
-                                                              fit: BoxFit.cover,
-                                                            ),
-                                                          )
-                                                        : Container(
-                                                            decoration: BoxDecoration(
-                                                                color: Color(
-                                                                    0xFFd7d7d7),
-                                                                borderRadius:
-                                                                    BorderRadius
-                                                                        .circular(
-                                                                            50)),
-                                                            width: 100,
-                                                            height: 100,
-                                                            child: Icon(
-                                                              Icons.camera_alt,
-                                                              color: Colors
-                                                                  .grey[800],
-                                                            ),
-                                                          ),
-                                                  ),
-                                                ),
-                                              ),
-                                              TextFormField(
-                                                style: TextStyle(
-                                                    color: Color(0xFF000000)),
-                                                cursorColor: Color(0xFF9b9b9b),
-                                                keyboardType:
-                                                    TextInputType.text,
-                                                decoration: InputDecoration(
-                                                  focusedBorder:
-                                                      UnderlineInputBorder(
-                                                    borderSide: BorderSide(
-                                                        color:
-                                                            Color(0xFFA3E1CB)),
-                                                  ),
-                                                  prefixIcon: Icon(
-                                                    Icons.person,
-                                                    color: Color(0xFFA3E1CB),
-                                                  ),
-                                                  labelText: 'Nome',
-                                                  labelStyle: TextStyle(
-                                                      color: Colors.grey),
-                                                  hintText: "Nome",
-                                                  hintStyle: TextStyle(
+      body: appWidget.getImageContainer(
+          "assets/images/bg_login.png",
+          _isLoading,
+          SingleChildScrollView(
+            scrollDirection: Axis.vertical,
+            child: Stack(
+              children: <Widget>[
+                Positioned(
+                  child: Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: <Widget>[
+                        Card(
+                            elevation: 4.0,
+                            color: Colors.white,
+                            margin:
+                                EdgeInsets.only(left: 20, right: 20, top: 40.0),
+                            shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(15)),
+                            child: Column(
+                              children: [
+                                Padding(
+                                  padding: const EdgeInsets.all(10.0),
+                                  child: Form(
+                                    key: _formKey,
+                                    child: Column(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
+                                      children: <Widget>[
+                                        ClipRect(
+                                          child: Image.asset(
+                                            "assets/images/logo.png",
+                                            height: 40,
+                                            fit: BoxFit.fill,
+                                          ),
+                                        ),
+                                        SizedBox(
+                                          height: 16,
+                                        ),
+                                        Center(
+                                          child: GestureDetector(
+                                            onTap: () {
+                                              _showPicker(context);
+                                            },
+                                            child: CircleAvatar(
+                                              radius: 55,
+                                              backgroundColor:
+                                                  Color(0xFFd7d7d7),
+                                              child: _image != null
+                                                  ? ClipRRect(
+                                                      borderRadius:
+                                                          BorderRadius.circular(
+                                                              50),
+                                                      child: Image.file(
+                                                        _image,
+                                                        width: 100,
+                                                        height: 100,
+                                                        fit: BoxFit.cover,
+                                                      ),
+                                                    )
+                                                  : Container(
+                                                      decoration: BoxDecoration(
+                                                          color:
+                                                              Color(0xFFd7d7d7),
+                                                          borderRadius:
+                                                              BorderRadius
+                                                                  .circular(
+                                                                      50)),
+                                                      width: 100,
+                                                      height: 100,
+                                                      child: Icon(
+                                                        Icons.camera_alt,
+                                                        color: Colors.grey[800],
+                                                      ),
+                                                    ),
+                                            ),
+                                          ),
+                                        ),
+                                        TextFormField(
+                                          style: TextStyle(
+                                              color: Color(0xFF000000)),
+                                          cursorColor: Color(0xFF9b9b9b),
+                                          keyboardType: TextInputType.text,
+                                          decoration: InputDecoration(
+                                            focusedBorder: UnderlineInputBorder(
+                                              borderSide: BorderSide(
+                                                  color: Color(0xFFA3E1CB)),
+                                            ),
+                                            prefixIcon: Icon(
+                                              Icons.person,
+                                              color: Color(0xFFA3E1CB),
+                                            ),
+                                            labelText: 'Nome',
+                                            labelStyle:
+                                                TextStyle(color: Colors.grey),
+                                            hintText: "Nome",
+                                            hintStyle: TextStyle(
+                                                color: Color(0xFF9b9b9b),
+                                                fontSize: 15,
+                                                fontWeight: FontWeight.normal),
+                                          ),
+                                          validator: (nameValue) {
+                                            if (nameValue.isEmpty) {
+                                              return ERROR_MANDATORY_FIELD;
+                                            }
+                                            name = nameValue;
+                                            return null;
+                                          },
+                                        ),
+                                        SizedBox(
+                                          height: 8.0,
+                                        ),
+                                        Stack(
+                                          children: <Widget>[
+                                            DropdownButton(
+                                              value: usfId,
+                                              hint: Padding(
+                                                padding: const EdgeInsets.only(
+                                                    left: 50),
+                                                child: Text(
+                                                  "Unidade Saúde Familiar",
+                                                  style: TextStyle(
                                                       color: Color(0xFF9b9b9b),
                                                       fontSize: 15,
                                                       fontWeight:
                                                           FontWeight.normal),
                                                 ),
-                                                validator: (nameValue) {
-                                                  if (nameValue.isEmpty) {
-                                                    return ERROR_MANDATORY_FIELD;
-                                                  }
-                                                  name = nameValue;
-                                                  return null;
-                                                },
                                               ),
-                                              SizedBox(
-                                                height: 8.0,
-                                              ),
-                                              Stack(
-                                                children: <Widget>[
-                                                  DropdownButton(
-                                                    value: usfId,
-                                                    hint: Padding(
-                                                      padding:
-                                                          const EdgeInsets.only(
-                                                              left: 50),
-                                                      child: Text(
-                                                        "Unidade Saúde Familiar",
-                                                        style: TextStyle(
-                                                            color: Color(
-                                                                0xFF9b9b9b),
-                                                            fontSize: 15,
-                                                            fontWeight:
-                                                                FontWeight
-                                                                    .normal),
-                                                      ),
-                                                    ),
-                                                    icon: Icon(
-                                                        Icons.arrow_drop_down,
-                                                        color:
-                                                            Color(0xFFA3E1CB)),
-                                                    onChanged: (newValue) {
-                                                      setState(() {
-                                                        usfId = newValue;
-                                                      });
-                                                    },
-                                                    isExpanded: true,
-                                                    items: usfs.map<
-                                                        DropdownMenuItem<
-                                                            int>>((Usf value) {
-                                                      return DropdownMenuItem<
-                                                          int>(
-                                                        value: value.id,
-                                                        child: Padding(
-                                                          padding:
-                                                              const EdgeInsets
-                                                                      .only(
-                                                                  left: 50),
-                                                          child:
-                                                              Text(value.name),
-                                                        ),
-                                                      );
-                                                    }).toList(),
-                                                  ),
-                                                  Container(
-                                                      padding:
-                                                          const EdgeInsets.only(
-                                                              left: 10,
-                                                              top: 10),
-                                                      child: Icon(
-                                                        Icons.home_work_sharp,
-                                                        color:
-                                                            Color(0xFFA3E1CB),
-                                                      )),
-                                                ],
-                                              ),
-                                              Stack(
-                                                children: <Widget>[
-                                                  DropdownButton(
-                                                    value: gender,
-                                                    hint: Padding(
-                                                      padding:
-                                                          const EdgeInsets.only(
-                                                              left: 50),
-                                                      child: Text(
-                                                        "Género",
-                                                        style: TextStyle(
-                                                            color: Color(
-                                                                0xFF9b9b9b),
-                                                            fontSize: 15,
-                                                            fontWeight:
-                                                                FontWeight
-                                                                    .normal),
-                                                      ),
-                                                    ),
-                                                    icon: Icon(
-                                                        Icons.arrow_drop_down,
-                                                        color:
-                                                            Color(0xFFA3E1CB)),
-                                                    onChanged: (newValue) {
-                                                      setState(() {
-                                                        gender = newValue;
-                                                      });
-                                                    },
-                                                    isExpanded: true,
-                                                    items: gendersList.map<
-                                                            DropdownMenuItem<
-                                                                String>>(
-                                                        (DropMenu item) {
-                                                      return DropdownMenuItem<
-                                                          String>(
-                                                        value: item.value,
-                                                        child: Padding(
-                                                          padding:
-                                                              const EdgeInsets
-                                                                      .only(
-                                                                  left: 50),
-                                                          child: Text(
-                                                              item.description),
-                                                        ),
-                                                      );
-                                                    }).toList(),
-                                                  ),
-                                                  Container(
-                                                      padding:
-                                                          const EdgeInsets.only(
-                                                              left: 10,
-                                                              top: 10),
-                                                      child: Icon(
-                                                        Icons.wc,
-                                                        color:
-                                                            Color(0xFFA3E1CB),
-                                                      )),
-                                                ],
-                                              ),
-                                              Column(
-                                                crossAxisAlignment:
-                                                    CrossAxisAlignment.start,
-                                                children: [
-                                                  Padding(
+                                              icon: Icon(Icons.arrow_drop_down,
+                                                  color: Color(0xFFA3E1CB)),
+                                              onChanged: (newValue) {
+                                                setState(() {
+                                                  usfId = newValue;
+                                                });
+                                              },
+                                              isExpanded: true,
+                                              items: usfs
+                                                  .map<DropdownMenuItem<int>>(
+                                                      (Usf value) {
+                                                return DropdownMenuItem<int>(
+                                                  value: value.id,
+                                                  child: Padding(
                                                     padding:
                                                         const EdgeInsets.only(
-                                                            top: 10.0,
-                                                            left: 10.0),
-                                                    child: Row(
-                                                      mainAxisAlignment:
-                                                          MainAxisAlignment
-                                                              .start,
-                                                      children: [
-                                                        Icon(
-                                                          Icons.calendar_today,
-                                                          color:
-                                                              Color(0xFFA3E1CB),
-                                                        ),
-                                                        Padding(
-                                                          padding:
-                                                              EdgeInsets.only(
-                                                                  left: 16.0),
-                                                          child: Text(
-                                                            'Data de Nascimento',
-                                                            textAlign:
-                                                                TextAlign.left,
-                                                            style: TextStyle(
-                                                                color: Colors
-                                                                    .grey),
-                                                          ),
-                                                        )
-                                                      ],
+                                                            left: 50),
+                                                    child: Text(value.name),
+                                                  ),
+                                                );
+                                              }).toList(),
+                                            ),
+                                            Container(
+                                                padding: const EdgeInsets.only(
+                                                    left: 10, top: 10),
+                                                child: Icon(
+                                                  Icons.home_work_sharp,
+                                                  color: Color(0xFFA3E1CB),
+                                                )),
+                                          ],
+                                        ),
+                                        Stack(
+                                          children: <Widget>[
+                                            DropdownButton(
+                                              value: gender,
+                                              hint: Padding(
+                                                padding: const EdgeInsets.only(
+                                                    left: 50),
+                                                child: Text(
+                                                  "Género",
+                                                  style: TextStyle(
+                                                      color: Color(0xFF9b9b9b),
+                                                      fontSize: 15,
+                                                      fontWeight:
+                                                          FontWeight.normal),
+                                                ),
+                                              ),
+                                              icon: Icon(Icons.arrow_drop_down,
+                                                  color: Color(0xFFA3E1CB)),
+                                              onChanged: (newValue) {
+                                                setState(() {
+                                                  gender = newValue;
+                                                });
+                                              },
+                                              isExpanded: true,
+                                              items: gendersList.map<
+                                                      DropdownMenuItem<String>>(
+                                                  (DropMenu item) {
+                                                return DropdownMenuItem<String>(
+                                                  value: item.value,
+                                                  child: Padding(
+                                                    padding:
+                                                        const EdgeInsets.only(
+                                                            left: 50),
+                                                    child:
+                                                        Text(item.description),
+                                                  ),
+                                                );
+                                              }).toList(),
+                                            ),
+                                            Container(
+                                                padding: const EdgeInsets.only(
+                                                    left: 10, top: 10),
+                                                child: Icon(
+                                                  Icons.wc,
+                                                  color: Color(0xFFA3E1CB),
+                                                )),
+                                          ],
+                                        ),
+                                        Column(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          children: [
+                                            Padding(
+                                              padding: const EdgeInsets.only(
+                                                  top: 10.0, left: 10.0),
+                                              child: Row(
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment.start,
+                                                children: [
+                                                  Icon(
+                                                    Icons.calendar_today,
+                                                    color: Color(0xFFA3E1CB),
+                                                  ),
+                                                  Padding(
+                                                    padding: EdgeInsets.only(
+                                                        left: 16.0),
+                                                    child: Text(
+                                                      'Data de Nascimento',
+                                                      textAlign: TextAlign.left,
+                                                      style: TextStyle(
+                                                          color: Colors.grey),
                                                     ),
-                                                  ),
-                                                  FlatButton(
-                                                    color: Colors.transparent,
-                                                    splashColor: Colors.black26,
-                                                    onPressed: () =>
-                                                        _selectDate(context),
-                                                    child: Padding(
-                                                        padding:
-                                                            EdgeInsets.only(
-                                                                left: 35.0),
-                                                        child: Text(
-                                                          dateFormat.format(
-                                                              selectedDate),
-                                                          style: TextStyle(
-                                                            color: Color(
-                                                                0xFF000000),
-                                                            fontSize: 15,
-                                                          ),
-                                                        )),
-                                                  ),
+                                                  )
                                                 ],
                                               ),
-                                              TextFormField(
-                                                style: TextStyle(
-                                                    color: Color(0xFF000000)),
-                                                cursorColor: Color(0xFF9b9b9b),
-                                                keyboardType:
-                                                    TextInputType.number,
-                                                decoration: InputDecoration(
-                                                  focusedBorder:
-                                                      UnderlineInputBorder(
-                                                    borderSide: BorderSide(
-                                                        color:
-                                                            Color(0xFFA3E1CB)),
-                                                  ),
-                                                  prefixIcon: Icon(
-                                                    Icons.accessibility,
-                                                    color: Color(0xFFA3E1CB),
-                                                  ),
-                                                  suffix: Text(
-                                                    'kg',
+                                            ),
+                                            FlatButton(
+                                              color: Colors.transparent,
+                                              splashColor: Colors.black26,
+                                              onPressed: () =>
+                                                  _selectDate(context),
+                                              child: Padding(
+                                                  padding: EdgeInsets.only(
+                                                      left: 35.0),
+                                                  child: Text(
+                                                    dateFormat
+                                                        .format(selectedDate),
                                                     style: TextStyle(
-                                                        color:
-                                                            Color(0xFF000000)),
-                                                  ),
-                                                  hintText: "Peso",
-                                                  labelText: 'Peso',
-                                                  labelStyle: TextStyle(
-                                                      color: Colors.grey),
-                                                  hintStyle: TextStyle(
-                                                      color: Color(0xFF9b9b9b),
+                                                      color: Color(0xFF000000),
                                                       fontSize: 15,
-                                                      fontWeight:
-                                                          FontWeight.normal),
-                                                ),
-                                                validator: (weightValue) {
-                                                  if (weightValue.isNotEmpty &&
-                                                      double.tryParse(
-                                                              weightValue) ==
-                                                          null) {
-                                                    return ERROR_INVALID_FORMAT_FIELD;
-                                                  }
+                                                    ),
+                                                  )),
+                                            ),
+                                          ],
+                                        ),
+                                        TextFormField(
+                                          style: TextStyle(
+                                              color: Color(0xFF000000)),
+                                          cursorColor: Color(0xFF9b9b9b),
+                                          keyboardType: TextInputType.number,
+                                          decoration: InputDecoration(
+                                            focusedBorder: UnderlineInputBorder(
+                                              borderSide: BorderSide(
+                                                  color: Color(0xFFA3E1CB)),
+                                            ),
+                                            prefixIcon: Icon(
+                                              Icons.accessibility,
+                                              color: Color(0xFFA3E1CB),
+                                            ),
+                                            suffix: Text(
+                                              'kg',
+                                              style: TextStyle(
+                                                  color: Color(0xFF000000)),
+                                            ),
+                                            hintText: "Peso",
+                                            labelText: 'Peso',
+                                            labelStyle:
+                                                TextStyle(color: Colors.grey),
+                                            hintStyle: TextStyle(
+                                                color: Color(0xFF9b9b9b),
+                                                fontSize: 15,
+                                                fontWeight: FontWeight.normal),
+                                          ),
+                                          validator: (weightValue) {
+                                            if (weightValue.isNotEmpty &&
+                                                double.tryParse(weightValue) ==
+                                                    null) {
+                                              return ERROR_INVALID_FORMAT_FIELD;
+                                            }
 
-                                                  if (weightValue.isNotEmpty &&
-                                                      double.tryParse(
-                                                              weightValue) <=
-                                                          0) {
-                                                    return ERROR_NEGATIVE_VALUE;
-                                                  }
-                                                  weight = weightValue;
-                                                  return null;
-                                                },
+                                            if (weightValue.isNotEmpty &&
+                                                double.tryParse(weightValue) <=
+                                                    0) {
+                                              return ERROR_NEGATIVE_VALUE;
+                                            }
+                                            weight = weightValue;
+                                            return null;
+                                          },
+                                        ),
+                                        TextFormField(
+                                          style: TextStyle(
+                                              color: Color(0xFF000000)),
+                                          cursorColor: Color(0xFF9b9b9b),
+                                          keyboardType: TextInputType.number,
+                                          decoration: InputDecoration(
+                                            focusedBorder: UnderlineInputBorder(
+                                              borderSide: BorderSide(
+                                                  color: Color(0xFFA3E1CB)),
+                                            ),
+                                            prefixIcon: Icon(
+                                              Icons.swap_vert,
+                                              color: Color(0xFFA3E1CB),
+                                            ),
+                                            suffix: Text(
+                                              'cm',
+                                              style: TextStyle(
+                                                  color: Color(0xFF000000)),
+                                            ),
+                                            hintText: "Altura",
+                                            labelText: 'Altura',
+                                            labelStyle:
+                                                TextStyle(color: Colors.grey),
+                                            hintStyle: TextStyle(
+                                                color: Color(0xFF9b9b9b),
+                                                fontSize: 15,
+                                                fontWeight: FontWeight.normal),
+                                          ),
+                                          validator: (heightValue) {
+                                            if (heightValue.isNotEmpty &&
+                                                double.tryParse(heightValue) ==
+                                                    null) {
+                                              return ERROR_INVALID_FORMAT_FIELD;
+                                            }
+
+                                            if (heightValue.isNotEmpty &&
+                                                double.tryParse(heightValue) <=
+                                                    0) {
+                                              return ERROR_NEGATIVE_VALUE;
+                                            }
+
+                                            height = heightValue;
+                                            return null;
+                                          },
+                                        ),
+                                        SizedBox(
+                                          height: 24.0,
+                                        ),
+                                        TextFormField(
+                                          style: TextStyle(
+                                              color: Color(0xFF000000)),
+                                          cursorColor: Color(0xFF9b9b9b),
+                                          keyboardType:
+                                              TextInputType.emailAddress,
+                                          decoration: InputDecoration(
+                                            focusedBorder: UnderlineInputBorder(
+                                              borderSide: BorderSide(
+                                                  color: Color(0xFFA3E1CB)),
+                                            ),
+                                            prefixIcon: Icon(
+                                              Icons.email,
+                                              color: Color(0xFFA3E1CB),
+                                            ),
+                                            hintText: "Email",
+                                            labelText: 'Email',
+                                            labelStyle:
+                                                TextStyle(color: Colors.grey),
+                                            hintStyle: TextStyle(
+                                                color: Color(0xFF9b9b9b),
+                                                fontSize: 15,
+                                                fontWeight: FontWeight.normal),
+                                          ),
+                                          validator: (emailValue) {
+                                            if (emailValue.isEmpty) {
+                                              return ERROR_MANDATORY_FIELD;
+                                            }
+                                            if (!RegExp(
+                                                    r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
+                                                .hasMatch(emailValue)) {
+                                              return ERROR_INVALID_FORMAT_FIELD;
+                                            }
+                                            email = emailValue;
+                                            return null;
+                                          },
+                                        ),
+                                        TextFormField(
+                                          style: TextStyle(
+                                              color: Color(0xFF000000)),
+                                          cursorColor: Color(0xFF9b9b9b),
+                                          keyboardType: TextInputType.text,
+                                          obscureText: true,
+                                          decoration: InputDecoration(
+                                            focusedBorder: UnderlineInputBorder(
+                                              borderSide: BorderSide(
+                                                  color: Color(0xFFA3E1CB)),
+                                            ),
+                                            prefixIcon: Icon(
+                                              Icons.vpn_key,
+                                              color: Color(0xFFA3E1CB),
+                                            ),
+                                            hintText: "Password",
+                                            labelText: 'Password',
+                                            labelStyle:
+                                                TextStyle(color: Colors.grey),
+                                            hintStyle: TextStyle(
+                                                color: Color(0xFF9b9b9b),
+                                                fontSize: 15,
+                                                fontWeight: FontWeight.normal),
+                                          ),
+                                          validator: (passwordValue) {
+                                            if (passwordValue.isEmpty) {
+                                              return ERROR_MANDATORY_FIELD;
+                                            }
+                                            password = passwordValue;
+                                            return null;
+                                          },
+                                        ),
+                                        TextFormField(
+                                          style: TextStyle(
+                                              color: Color(0xFF000000)),
+                                          cursorColor: Color(0xFF9b9b9b),
+                                          keyboardType: TextInputType.text,
+                                          obscureText: true,
+                                          decoration: InputDecoration(
+                                            focusedBorder: UnderlineInputBorder(
+                                              borderSide: BorderSide(
+                                                  color: Color(0xFFA3E1CB)),
+                                            ),
+                                            prefixIcon: Icon(
+                                              Icons.vpn_key,
+                                              color: Color(0xFFA3E1CB),
+                                            ),
+                                            hintText: "Confirmação de password",
+                                            labelText:
+                                                'Confirmação de password',
+                                            labelStyle:
+                                                TextStyle(color: Colors.grey),
+                                            hintStyle: TextStyle(
+                                                color: Color(0xFF9b9b9b),
+                                                fontSize: 15,
+                                                fontWeight: FontWeight.normal),
+                                          ),
+                                          validator: (passwordValue) {
+                                            if (passwordValue.isEmpty) {
+                                              return ERROR_MANDATORY_FIELD;
+                                            }
+
+                                            if (passwordValue.isNotEmpty &&
+                                                passwordValue != password) {
+                                              return ERROR_CONFIRMATION_PASS_MUST_BE_EQUAL;
+                                            }
+                                            confirmationPassword =
+                                                passwordValue;
+                                            return null;
+                                          },
+                                        ),
+                                        SizedBox(
+                                          height: 16.0,
+                                        ),
+                                        Padding(
+                                          padding: const EdgeInsets.only(
+                                              top: 10.0, left: 10.0),
+                                          child: Row(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.start,
+                                            children: [
+                                              Icon(
+                                                Icons.healing,
+                                                color: Color(0xFFA3E1CB),
                                               ),
-                                              TextFormField(
-                                                style: TextStyle(
-                                                    color: Color(0xFF000000)),
-                                                cursorColor: Color(0xFF9b9b9b),
-                                                keyboardType:
-                                                    TextInputType.number,
-                                                decoration: InputDecoration(
-                                                  focusedBorder:
-                                                      UnderlineInputBorder(
-                                                    borderSide: BorderSide(
-                                                        color:
-                                                            Color(0xFFA3E1CB)),
-                                                  ),
-                                                  prefixIcon: Icon(
-                                                    Icons.swap_vert,
-                                                    color: Color(0xFFA3E1CB),
-                                                  ),
-                                                  suffix: Text(
-                                                    'cm',
+                                              Expanded(
+                                                child: Padding(
+                                                  padding: EdgeInsets.only(
+                                                      left: 16.0),
+                                                  child: Text(
+                                                    'Problemas de Saúde',
+                                                    textAlign: TextAlign.left,
                                                     style: TextStyle(
-                                                        color:
-                                                            Color(0xFF000000)),
+                                                        color: Colors.grey),
                                                   ),
-                                                  hintText: "Altura",
-                                                  labelText: 'Altura',
-                                                  labelStyle: TextStyle(
-                                                      color: Colors.grey),
-                                                  hintStyle: TextStyle(
-                                                      color: Color(0xFF9b9b9b),
-                                                      fontSize: 15,
-                                                      fontWeight:
-                                                          FontWeight.normal),
                                                 ),
-                                                validator: (heightValue) {
-                                                  if (heightValue.isNotEmpty &&
-                                                      double.tryParse(
-                                                              heightValue) ==
-                                                          null) {
-                                                    return ERROR_INVALID_FORMAT_FIELD;
-                                                  }
-
-                                                  if (heightValue.isNotEmpty &&
-                                                      double.tryParse(
-                                                              heightValue) <=
-                                                          0) {
-                                                    return ERROR_NEGATIVE_VALUE;
-                                                  }
-
-                                                  height = heightValue;
-                                                  return null;
-                                                },
                                               ),
                                               SizedBox(
-                                                height: 24.0,
-                                              ),
-                                              TextFormField(
-                                                style: TextStyle(
-                                                    color: Color(0xFF000000)),
-                                                cursorColor: Color(0xFF9b9b9b),
-                                                keyboardType:
-                                                    TextInputType.emailAddress,
-                                                decoration: InputDecoration(
-                                                  focusedBorder:
-                                                      UnderlineInputBorder(
-                                                    borderSide: BorderSide(
-                                                        color:
-                                                            Color(0xFFA3E1CB)),
-                                                  ),
-                                                  prefixIcon: Icon(
-                                                    Icons.email,
-                                                    color: Color(0xFFA3E1CB),
-                                                  ),
-                                                  hintText: "Email",
-                                                  labelText: 'Email',
-                                                  labelStyle: TextStyle(
-                                                      color: Colors.grey),
-                                                  hintStyle: TextStyle(
-                                                      color: Color(0xFF9b9b9b),
-                                                      fontSize: 15,
-                                                      fontWeight:
-                                                          FontWeight.normal),
+                                                width: 40,
+                                                child: FlatButton(
+                                                  color: Colors.transparent,
+                                                  splashColor:
+                                                      Colors.transparent,
+                                                  onPressed: () =>
+                                                      {_showAddDiseaseModal()},
+                                                  child: Icon(Icons.add_circle,
+                                                      color: Color(0xFFA3E1CB)),
+                                                  highlightColor:
+                                                      Color(0xFF60B2A3),
                                                 ),
-                                                validator: (emailValue) {
-                                                  if (emailValue.isEmpty) {
-                                                    return ERROR_MANDATORY_FIELD;
-                                                  }
-                                                  if (!RegExp(
-                                                          r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
-                                                      .hasMatch(emailValue)) {
-                                                    return ERROR_INVALID_FORMAT_FIELD;
-                                                  }
-                                                  email = emailValue;
-                                                  return null;
-                                                },
-                                              ),
-                                              TextFormField(
-                                                style: TextStyle(
-                                                    color: Color(0xFF000000)),
-                                                cursorColor: Color(0xFF9b9b9b),
-                                                keyboardType:
-                                                    TextInputType.text,
-                                                obscureText: true,
-                                                decoration: InputDecoration(
-                                                  focusedBorder:
-                                                      UnderlineInputBorder(
-                                                    borderSide: BorderSide(
-                                                        color:
-                                                            Color(0xFFA3E1CB)),
-                                                  ),
-                                                  prefixIcon: Icon(
-                                                    Icons.vpn_key,
-                                                    color: Color(0xFFA3E1CB),
-                                                  ),
-                                                  hintText: "Password",
-                                                  labelText: 'Password',
-                                                  labelStyle: TextStyle(
-                                                      color: Colors.grey),
-                                                  hintStyle: TextStyle(
-                                                      color: Color(0xFF9b9b9b),
-                                                      fontSize: 15,
-                                                      fontWeight:
-                                                          FontWeight.normal),
-                                                ),
-                                                validator: (passwordValue) {
-                                                  if (passwordValue.isEmpty) {
-                                                    return ERROR_MANDATORY_FIELD;
-                                                  }
-                                                  password = passwordValue;
-                                                  return null;
-                                                },
-                                              ),
-                                              TextFormField(
-                                                style: TextStyle(
-                                                    color: Color(0xFF000000)),
-                                                cursorColor: Color(0xFF9b9b9b),
-                                                keyboardType:
-                                                    TextInputType.text,
-                                                obscureText: true,
-                                                decoration: InputDecoration(
-                                                  focusedBorder:
-                                                      UnderlineInputBorder(
-                                                    borderSide: BorderSide(
-                                                        color:
-                                                            Color(0xFFA3E1CB)),
-                                                  ),
-                                                  prefixIcon: Icon(
-                                                    Icons.vpn_key,
-                                                    color: Color(0xFFA3E1CB),
-                                                  ),
-                                                  hintText:
-                                                      "Confirmação de password",
-                                                  labelText:
-                                                      'Confirmação de password',
-                                                  labelStyle: TextStyle(
-                                                      color: Colors.grey),
-                                                  hintStyle: TextStyle(
-                                                      color: Color(0xFF9b9b9b),
-                                                      fontSize: 15,
-                                                      fontWeight:
-                                                          FontWeight.normal),
-                                                ),
-                                                validator: (passwordValue) {
-                                                  if (passwordValue.isEmpty) {
-                                                    return ERROR_MANDATORY_FIELD;
-                                                  }
-
-                                                  if (passwordValue
-                                                          .isNotEmpty &&
-                                                      passwordValue !=
-                                                          password) {
-                                                    return ERROR_CONFIRMATION_PASS_MUST_BE_EQUAL;
-                                                  }
-                                                  confirmationPassword =
-                                                      passwordValue;
-                                                  return null;
-                                                },
-                                              ),
-                                              SizedBox(
-                                                height: 16.0,
-                                              ),
-                                              Padding(
-                                                padding: const EdgeInsets.only(
-                                                    top: 10.0, left: 10.0),
-                                                child: Row(
-                                                  mainAxisAlignment:
-                                                      MainAxisAlignment.start,
-                                                  children: [
-                                                    Icon(
-                                                      Icons.healing,
-                                                      color: Color(0xFFA3E1CB),
-                                                    ),
-                                                    Expanded(
-                                                      child: Padding(
-                                                        padding:
-                                                            EdgeInsets.only(
-                                                                left: 16.0),
-                                                        child: Text(
-                                                          'Problemas de Saúde',
-                                                          textAlign:
-                                                              TextAlign.left,
-                                                          style: TextStyle(
-                                                              color:
-                                                                  Colors.grey),
-                                                        ),
-                                                      ),
-                                                    ),
-                                                    SizedBox(
-                                                      width: 40,
-                                                      child: FlatButton(
-                                                        color:
-                                                            Colors.transparent,
-                                                        splashColor:
-                                                            Colors.transparent,
-                                                        onPressed: () => {
-                                                          _showAddDiseaseModal()
-                                                        },
-                                                        child: Icon(
-                                                            Icons.add_circle,
-                                                            color: Color(
-                                                                0xFFA3E1CB)),
-                                                        highlightColor:
-                                                            Color(0xFF60B2A3),
-                                                      ),
-                                                    )
-                                                  ],
-                                                ),
-                                              ),
-                                              ..._getDiseases(),
-                                              Padding(
-                                                padding: const EdgeInsets.only(
-                                                    top: 10.0, left: 10.0),
-                                                child: Row(
-                                                  mainAxisAlignment:
-                                                      MainAxisAlignment.start,
-                                                  children: [
-                                                    Icon(
-                                                      Icons.receipt,
-                                                      color: Color(0xFFA3E1CB),
-                                                    ),
-                                                    Expanded(
-                                                      child: Padding(
-                                                        padding:
-                                                            EdgeInsets.only(
-                                                                left: 16.0),
-                                                        child: Text(
-                                                          'Medicamentos / Suplementos Habituais',
-                                                          textAlign:
-                                                              TextAlign.left,
-                                                          style: TextStyle(
-                                                              color:
-                                                                  Colors.grey),
-                                                        ),
-                                                      ),
-                                                    ),
-                                                    SizedBox(
-                                                      width: 40,
-                                                      child: FlatButton(
-                                                        color:
-                                                            Colors.transparent,
-                                                        splashColor:
-                                                            Colors.transparent,
-                                                        onPressed: () => {
-                                                          _showAddDrugModal()
-                                                        },
-                                                        child: Icon(
-                                                            Icons.add_circle,
-                                                            color: Color(
-                                                                0xFFA3E1CB)),
-                                                        highlightColor:
-                                                            Color(0xFF60B2A3),
-                                                      ),
-                                                    )
-                                                  ],
-                                                ),
-                                              ),
-                                              ..._getDrugs(),
-                                              Padding(
-                                                padding: const EdgeInsets.only(
-                                                    top: 16.0),
-                                                child: SizedBox(
-                                                  width: double.infinity,
-                                                  child: FlatButton(
-                                                    child: Padding(
-                                                      padding: EdgeInsets.only(
-                                                          top: 8,
-                                                          bottom: 8,
-                                                          left: 10,
-                                                          right: 10),
-                                                      child: Text(
-                                                        _isLoading
-                                                            ? 'Aguarde...'
-                                                            : 'Registar',
-                                                        style: TextStyle(
-                                                          color: Colors.white,
-                                                          fontSize: 15.0,
-                                                          decoration:
-                                                              TextDecoration
-                                                                  .none,
-                                                          fontWeight:
-                                                              FontWeight.normal,
-                                                        ),
-                                                      ),
-                                                    ),
-                                                    color: Color(0xFFA3E1CB),
-                                                    disabledColor: Colors.grey,
-                                                    shape:
-                                                        new RoundedRectangleBorder(
-                                                            borderRadius:
-                                                                new BorderRadius
-                                                                        .circular(
-                                                                    20.0)),
-                                                    onPressed: () {
-                                                      if (_formKey.currentState
-                                                          .validate()) {
-                                                        _showAcceptanceTermsModal();
-                                                      } else {
-                                                        _showMessage(
-                                                            "Corrija os erros no formulário!");
-                                                      }
-                                                    },
-                                                  ),
-                                                ),
-                                              ),
+                                              )
                                             ],
                                           ),
                                         ),
-                                      ),
-                                    ],
-                                  )),
-                            ],
-                          ),
-                        ),
-                      )
-                    ],
+                                        ..._getDiseases(),
+                                        Padding(
+                                          padding: const EdgeInsets.only(
+                                              top: 10.0, left: 10.0),
+                                          child: Row(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.start,
+                                            children: [
+                                              Icon(
+                                                Icons.receipt,
+                                                color: Color(0xFFA3E1CB),
+                                              ),
+                                              Expanded(
+                                                child: Padding(
+                                                  padding: EdgeInsets.only(
+                                                      left: 16.0),
+                                                  child: Text(
+                                                    'Medicamentos / Suplementos Habituais',
+                                                    textAlign: TextAlign.left,
+                                                    style: TextStyle(
+                                                        color: Colors.grey),
+                                                  ),
+                                                ),
+                                              ),
+                                              SizedBox(
+                                                width: 40,
+                                                child: FlatButton(
+                                                  color: Colors.transparent,
+                                                  splashColor:
+                                                      Colors.transparent,
+                                                  onPressed: () =>
+                                                      {_showAddDrugModal()},
+                                                  child: Icon(Icons.add_circle,
+                                                      color: Color(0xFFA3E1CB)),
+                                                  highlightColor:
+                                                      Color(0xFF60B2A3),
+                                                ),
+                                              )
+                                            ],
+                                          ),
+                                        ),
+                                        ..._getDrugs(),
+                                        Padding(
+                                          padding:
+                                              const EdgeInsets.only(top: 16.0),
+                                          child: SizedBox(
+                                            width: double.infinity,
+                                            child: FlatButton(
+                                              child: Padding(
+                                                padding: EdgeInsets.only(
+                                                    top: 8,
+                                                    bottom: 8,
+                                                    left: 10,
+                                                    right: 10),
+                                                child: Text(
+                                                  _isLoading
+                                                      ? 'Aguarde...'
+                                                      : 'Registar',
+                                                  style: TextStyle(
+                                                    color: Colors.white,
+                                                    fontSize: 15.0,
+                                                    decoration:
+                                                        TextDecoration.none,
+                                                    fontWeight:
+                                                        FontWeight.normal,
+                                                  ),
+                                                ),
+                                              ),
+                                              color: Color(0xFFA3E1CB),
+                                              disabledColor: Colors.grey,
+                                              shape: new RoundedRectangleBorder(
+                                                  borderRadius:
+                                                      new BorderRadius.circular(
+                                                          20.0)),
+                                              onPressed: () {
+                                                if (_formKey.currentState
+                                                    .validate()) {
+                                                  _showAcceptanceTermsModal();
+                                                } else {
+                                                  appWidget.showSnackbar(
+                                                      "Corrija os erros no formulário!", Colors.red, _scaffoldKey);
+                                                }
+                                              },
+                                            ),
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            )),
+                      ],
+                    ),
                   ),
-                )),
+                )
+              ],
+            ),
+          )),
     );
   }
 
@@ -1046,13 +952,16 @@ class _RegisterState extends State<Register> {
                 ),
                 actions: <Widget>[
                   FlatButton(
-                    child: Text('Adicionar', style: TextStyle(color: Color(0xFF60B2A3)),),
+                    child: Text(
+                      'Adicionar',
+                      style: TextStyle(color: Color(0xFF60B2A3)),
+                    ),
                     onPressed: () {
                       if (drugNameToAdd == null ||
                           drugNameToAdd.trim() == "" ||
                           drugPosologyToAdd == null ||
                           drugPosologyToAdd.trim() == "") {
-                        _showMessage("Deve preencher o nome e posologia");
+                        appWidget.showSnackbar("Deve preencher o nome e posologia", Colors.red, _scaffoldKey);
                         return;
                       }
                       var days = "";
@@ -1107,7 +1016,11 @@ class _RegisterState extends State<Register> {
         return StatefulBuilder(
             builder: (BuildContext context, StateSetter setState) {
           return AlertDialog(
-            title: Text('Adicionar Problema de Saúde', textAlign: TextAlign.center ,style: TextStyle(color: Color(0xFFA3E1CB)),),
+            title: Text(
+              'Adicionar Problema de Saúde',
+              textAlign: TextAlign.center,
+              style: TextStyle(color: Color(0xFFA3E1CB)),
+            ),
             content: SingleChildScrollView(
               child: ListBody(
                 children: <Widget>[
@@ -1180,7 +1093,10 @@ class _RegisterState extends State<Register> {
             ),
             actions: <Widget>[
               FlatButton(
-                child: Text('Adicionar', style: TextStyle(color: Color(0xFF60B2A3)),),
+                child: Text(
+                  'Adicionar',
+                  style: TextStyle(color: Color(0xFF60B2A3)),
+                ),
                 onPressed: () {
                   _addDisease();
                   Navigator.of(context).pop();
@@ -1357,7 +1273,7 @@ class _RegisterState extends State<Register> {
     if (_isLoading) return;
 
     if (usfId == null) {
-      _showMessage("Selecione uma Unidade de Saúde Familiar");
+      appWidget.showSnackbar("Selecione uma Unidade de Saúde Familiar", Colors.red, _scaffoldKey);
       return;
     }
 
@@ -1464,7 +1380,7 @@ class _RegisterState extends State<Register> {
       isShowMessage = true;
     }
 
-    if (isShowMessage) _showMessage(message);
+    if (isShowMessage) appWidget.showSnackbar(message, Colors.red, _scaffoldKey);
 
     setState(() {
       _isLoading = false;
@@ -1539,24 +1455,11 @@ class _RegisterState extends State<Register> {
       isShowMessage = true;
     }
 
-    if (isShowMessage) _showMessage(message);
+    if (isShowMessage) appWidget.showSnackbar(message, Colors.red, _scaffoldKey);
 
     setState(() {
       _isLoading = false;
     });
-  }
-
-  _showMessage(String message) {
-    final snackBar = SnackBar(
-      backgroundColor: Colors.red,
-      content: Text(message),
-      action: SnackBarAction(
-        label: 'Fechar',
-        textColor: Colors.white,
-        onPressed: () {},
-      ),
-    );
-    _scaffoldKey.currentState.showSnackBar(snackBar);
   }
 
   void _showPicker(context) {

@@ -1,12 +1,11 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
-import 'package:loading/indicator/ball_pulse_indicator.dart';
-import 'package:loading/loading.dart';
 import 'package:nutriclock_app/constants/constants.dart';
 import 'package:nutriclock_app/models/Disease.dart';
 import 'package:nutriclock_app/models/User.dart';
 import 'package:nutriclock_app/network_utils/api.dart';
+import 'package:nutriclock_app/utils/AppWidget.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class Diseases extends StatefulWidget {
@@ -23,6 +22,7 @@ class _DiseasesState extends State<Diseases> {
   var selectedDisease;
   var selectedAllergy;
   var diseaseToAdd;
+  var appWidget = AppWidget();
 
   @override
   void initState() {
@@ -43,39 +43,19 @@ class _DiseasesState extends State<Diseases> {
         backgroundColor: Color(0xFF60B2A3),
         elevation: 50,
       ),
-      appBar: AppBar(
-        title: Text(
-          "Doenças / Alergias",
-          style: TextStyle(
-            fontFamily: 'Pacifico',
-          ),
-        ),
-        backgroundColor: Color(0xFFA3E1CB),
-      ),
-      body: Container(
-        constraints: BoxConstraints.expand(),
-        decoration: BoxDecoration(
-          image: DecorationImage(
-            image: AssetImage("assets/images/bg_home.jpg"),
-            fit: BoxFit.fill,
-          ),
-        ),
-        child: _isLoading
-            ? Center(
-                child: Loading(
-                    indicator: BallPulseIndicator(),
-                    size: 50.0,
-                    color: Color(0xFFFFBCBC)),
-              )
-            : _userDiseases.length == 0
-                ? _renderNoDiseases()
-                : SingleChildScrollView(
-                    scrollDirection: Axis.vertical,
-                    child: Padding(
-                      padding: EdgeInsets.symmetric(vertical: 8, horizontal: 8),
-                      child: Column(children: _renderDiseases()),
-                    ),
-                  ),
+      appBar: appWidget.getAppbar("Doenças / Alergias"),
+      body: appWidget.getImageContainer(
+        "assets/images/bg_home.jpg",
+        _isLoading,
+        _userDiseases.length == 0
+            ? _renderNoDiseases()
+            : SingleChildScrollView(
+                scrollDirection: Axis.vertical,
+                child: Padding(
+                  padding: EdgeInsets.symmetric(vertical: 8, horizontal: 8),
+                  child: Column(children: _renderDiseases()),
+                ),
+              ),
       ),
     );
   }
@@ -172,54 +152,54 @@ class _DiseasesState extends State<Diseases> {
       builder: (BuildContext context) {
         return StatefulBuilder(
             builder: (BuildContext context, StateSetter setState) {
-              return AlertDialog(
-                title: Text(
-                  'Editar Doença / Alergia',
-                  textAlign: TextAlign.center,
-                  style: TextStyle(color: Color(0xFFA3E1CB)),
-                ),
-                content: SingleChildScrollView(
-                  child: ListBody(
-                    children: <Widget>[
-                      TextFormField(
-                        onChanged: (value) => {
-                          this.setState(() {
-                            _userDiseases[index] = value;
-                          }),
-                        },
-                        initialValue: _userDiseases[index],
-                        style: TextStyle(color: Color(0xFF000000)),
-                        cursorColor: Color(0xFF9b9b9b),
-                        keyboardType: TextInputType.text,
-                        decoration: InputDecoration(
-                          focusedBorder: UnderlineInputBorder(
-                            borderSide: BorderSide(color: Color(0xFFA3E1CB)),
-                          ),
-                          hintText: "Outra doença",
-                          hintStyle: TextStyle(
-                              color: Color(0xFF9b9b9b),
-                              fontSize: 15,
-                              fontWeight: FontWeight.normal,
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-                actions: <Widget>[
-                  FlatButton(
-                    child: Text(
-                      'Guardar',
-                      style: TextStyle(color: Color(0xFF60B2A3)),
-                    ),
-                    onPressed: () {
-                      _makeRequest();
-                      Navigator.of(context).pop();
+          return AlertDialog(
+            title: Text(
+              'Editar Doença / Alergia',
+              textAlign: TextAlign.center,
+              style: TextStyle(color: Color(0xFFA3E1CB)),
+            ),
+            content: SingleChildScrollView(
+              child: ListBody(
+                children: <Widget>[
+                  TextFormField(
+                    onChanged: (value) => {
+                      this.setState(() {
+                        _userDiseases[index] = value;
+                      }),
                     },
+                    initialValue: _userDiseases[index],
+                    style: TextStyle(color: Color(0xFF000000)),
+                    cursorColor: Color(0xFF9b9b9b),
+                    keyboardType: TextInputType.text,
+                    decoration: InputDecoration(
+                      focusedBorder: UnderlineInputBorder(
+                        borderSide: BorderSide(color: Color(0xFFA3E1CB)),
+                      ),
+                      hintText: "Outra doença",
+                      hintStyle: TextStyle(
+                        color: Color(0xFF9b9b9b),
+                        fontSize: 15,
+                        fontWeight: FontWeight.normal,
+                      ),
+                    ),
                   ),
                 ],
-              );
-            });
+              ),
+            ),
+            actions: <Widget>[
+              FlatButton(
+                child: Text(
+                  'Guardar',
+                  style: TextStyle(color: Color(0xFF60B2A3)),
+                ),
+                onPressed: () {
+                  _makeRequest();
+                  Navigator.of(context).pop();
+                },
+              ),
+            ],
+          );
+        });
       },
     );
   }
@@ -443,7 +423,7 @@ class _DiseasesState extends State<Diseases> {
       _isLoading = false;
     });
 
-    if (isShowMessage) _showMessage("Ocorreu um erro");
+    if (isShowMessage) appWidget.showSnackbar("Ocorreu um erro", Colors.red, _scaffoldKey);
 
     this.setState(() {
       diseaseToAdd = null;
@@ -532,18 +512,5 @@ class _DiseasesState extends State<Diseases> {
     setState(() {
       _isLoading = false;
     });
-  }
-
-  _showMessage(String message) {
-    final snackBar = SnackBar(
-      backgroundColor: Colors.red,
-      content: Text(message),
-      action: SnackBarAction(
-        label: 'Fechar',
-        textColor: Colors.white,
-        onPressed: () {},
-      ),
-    );
-    _scaffoldKey.currentState.showSnackBar(snackBar);
   }
 }

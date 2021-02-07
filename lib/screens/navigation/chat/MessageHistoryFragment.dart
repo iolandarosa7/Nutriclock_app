@@ -1,16 +1,14 @@
-import 'dart:async';
 import 'dart:convert';
 
 import 'package:badges/badges.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:loading/indicator/ball_pulse_indicator.dart';
-import 'package:loading/loading.dart';
 import 'package:nutriclock_app/constants/constants.dart';
 import 'package:nutriclock_app/models/Message.dart';
 import 'package:nutriclock_app/models/User.dart';
 import 'package:nutriclock_app/network_utils/api.dart';
+import 'package:nutriclock_app/utils/AppWidget.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:web_socket_channel/io.dart';
 import 'package:web_socket_channel/web_socket_channel.dart';
@@ -34,17 +32,20 @@ class _MessageHistoryFragmentState extends State<MessageHistoryFragment> {
   var _scrollController = ScrollController();
   var hasMore = true;
   final dateFormat = new DateFormat('dd/MM/yyyy hh:mm');
+  var appWidget = AppWidget();
 
   @override
   void initState() {
     _scrollController.addListener(_scrollListener);
     _loadData();
-    channel.stream.listen(this.onData, onError: this.onError, onDone: this.onDone);
+    channel.stream
+        .listen(this.onData, onError: this.onError, onDone: this.onDone);
     super.initState();
   }
 
   _scrollListener() {
-    if (_scrollController.offset >= _scrollController.position.maxScrollExtent &&
+    if (_scrollController.offset >=
+            _scrollController.position.maxScrollExtent &&
         !_scrollController.position.outOfRange) {
       if (hasMore) _loadData();
     }
@@ -58,7 +59,6 @@ class _MessageHistoryFragmentState extends State<MessageHistoryFragment> {
     var exception = err as WebSocketChannelException;
     print("socket error ${err.runtimeType.toString()} ${exception.message}");
   }
-
 
   @override
   void dispose() {
@@ -77,7 +77,7 @@ class _MessageHistoryFragmentState extends State<MessageHistoryFragment> {
     var senderId = parsedArray[3].split(",")[0].trim();
     var receiverId = parsedArray[6].split(",")[0].trim();
     var message = parsedArray[9].split(",")[0].trim();
-    var id = parsedArray[parsedArray.length-1].split("}")[0].trim();
+    var id = parsedArray[parsedArray.length - 1].split("}")[0].trim();
 
     if (senderId == authUser.id.toString() && type == 'store') return;
 
@@ -88,7 +88,7 @@ class _MessageHistoryFragmentState extends State<MessageHistoryFragment> {
           _messages = [];
         });
         _loadData();
-      } else if (type == 'update'){
+      } else if (type == 'update') {
         var aux = _messages;
         aux.forEach((element) {
           if (element.id == int.parse(id)) {
@@ -99,12 +99,10 @@ class _MessageHistoryFragmentState extends State<MessageHistoryFragment> {
         this.setState(() {
           _messages = aux;
         });
-      } else if(type == 'delete') {
+      } else if (type == 'delete') {
         var selectedMessage;
         var aux = _messages;
         aux.forEach((element) {
-          print(id);
-          print(element.id);
           if (element.id == int.parse(id)) {
             selectedMessage = element;
           }
@@ -122,115 +120,92 @@ class _MessageHistoryFragmentState extends State<MessageHistoryFragment> {
     final _formKey = GlobalKey<FormState>();
 
     return Scaffold(
-      appBar: AppBar(
-        title: Text(
-          "Histórico de Mensagens",
-          style: TextStyle(
-            fontFamily: 'Pacifico',
-          ),
-        ),
-        backgroundColor: Color(0xFFA3E1CB),
-      ),
-      body: Container(
-        constraints: BoxConstraints.expand(),
-        decoration: BoxDecoration(
-          image: DecorationImage(
-            image: AssetImage("assets/images/bg_chat.jpg"),
-            fit: BoxFit.fill,
-          ),
-        ),
-        child: _isLoading
-            ? Center(
-                child: Loading(
-                  indicator: BallPulseIndicator(),
-                  size: 50.0,
-                  color: Color(0xFFFFBCBC),
-                ),
-              )
-            : Stack(
-                children: [
-                  Positioned(
-                    top: 0,
-                    right: 0,
-                    left: 0,
-                    bottom: 110,
-                    child: SingleChildScrollView(
-                      scrollDirection: Axis.vertical,
-                      reverse: true,
-                      controller: _scrollController,
-                      child: _messages == null || _messages.length == 0
-                          ? Center(
-                              child: Padding(
-                                padding: EdgeInsets.only(top: 16),
-                                child: Text(
-                                    "Não existe histórico de mensagens.",
-                                    style: TextStyle(
-                                        fontFamily: 'Neucha',
-                                        fontWeight: FontWeight.bold)),
-                              ),
-                            )
-                          : Column(
-                              crossAxisAlignment: CrossAxisAlignment.end,
-                              children: data(),
-                            ),
-                    ),
-                  ),
-                    Stack(
-                      children: [
-                        Positioned(
-                          bottom: 0,
-                          right: 0,
-                          left: 0,
-                          child: Form(
-                            key: _formKey,
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                TextFormField(
-                                  style: TextStyle(color: Color(0xFF000000)),
-                                  cursorColor: Color(0xFF9b9b9b),
-                                  keyboardType: TextInputType.multiline,
-                                  maxLines: 3,
-                                  decoration: InputDecoration(
-                                    filled: true,
-                                    fillColor: Colors.white,
-                                    labelText: 'Escreva a mensagem a enviar...',
-                                    labelStyle: TextStyle(color: Colors.grey),
-                                    hintStyle: TextStyle(
-                                        color: Color(0xFF9b9b9b),
-                                        fontSize: 15,
-                                        fontWeight: FontWeight.normal),
-                                  ),
-                                  validator: (value) {
-                                    if (value.isEmpty) {
-                                      return ERROR_MANDATORY_FIELD;
-                                    }
-                                    _response = value;
-                                    return null;
-                                  },
-                                ),
-                              ],
-                            ),
-                          ),
+      appBar: appWidget.getAppbar("Histórico de Mensagens"),
+      body: appWidget.getImageContainer(
+        "assets/images/bg_chat.jpg",
+        _isLoading,
+        Stack(
+          children: [
+            Positioned(
+              top: 0,
+              right: 0,
+              left: 0,
+              bottom: 110,
+              child: SingleChildScrollView(
+                scrollDirection: Axis.vertical,
+                reverse: true,
+                controller: _scrollController,
+                child: _messages == null || _messages.length == 0
+                    ? Center(
+                        child: Padding(
+                          padding: EdgeInsets.only(top: 16),
+                          child: Text("Não existe histórico de mensagens.",
+                              style: TextStyle(
+                                  fontFamily: 'Neucha',
+                                  fontWeight: FontWeight.bold)),
                         ),
-                        Positioned(
-                          bottom: 70,
-                          right: 5,
-                          child: FloatingActionButton(
-                            onPressed: () => {
-                              if (_formKey.currentState.validate())
-                                {_postNewMessage()}
-                            },
-                            backgroundColor: Color(0xFFA3E1CB),
-                            child: Icon(
-                              Icons.send,
-                            ),
+                      )
+                    : Column(
+                        crossAxisAlignment: CrossAxisAlignment.end,
+                        children: data(),
+                      ),
+              ),
+            ),
+            Stack(
+              children: [
+                Positioned(
+                  bottom: 0,
+                  right: 0,
+                  left: 0,
+                  child: Form(
+                    key: _formKey,
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        TextFormField(
+                          style: TextStyle(color: Color(0xFF000000)),
+                          cursorColor: Color(0xFF9b9b9b),
+                          keyboardType: TextInputType.multiline,
+                          maxLines: 3,
+                          decoration: InputDecoration(
+                            filled: true,
+                            fillColor: Colors.white,
+                            labelText: 'Escreva a mensagem a enviar...',
+                            labelStyle: TextStyle(color: Colors.grey),
+                            hintStyle: TextStyle(
+                                color: Color(0xFF9b9b9b),
+                                fontSize: 15,
+                                fontWeight: FontWeight.normal),
                           ),
+                          validator: (value) {
+                            if (value.isEmpty) {
+                              return ERROR_MANDATORY_FIELD;
+                            }
+                            _response = value;
+                            return null;
+                          },
                         ),
                       ],
                     ),
-                ],
-              ),
+                  ),
+                ),
+                Positioned(
+                  bottom: 70,
+                  right: 5,
+                  child: FloatingActionButton(
+                    onPressed: () => {
+                      if (_formKey.currentState.validate()) {_postNewMessage()}
+                    },
+                    backgroundColor: Color(0xFFA3E1CB),
+                    child: Icon(
+                      Icons.send,
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ],
+        ),
       ),
     );
   }
@@ -265,7 +240,6 @@ class _MessageHistoryFragmentState extends State<MessageHistoryFragment> {
     };
     try {
       var response = await Network().postWithAuth(messageToSend, "$MESSAGES");
-      print(response.statusCode);
       if (response.statusCode == RESPONSE_SUCCESS_201) {
         this.channel.sink.add("\"{type:\'store\',message:$messageToSend}\"");
         var data = Message.fromJson(json.decode(response.body)[JSON_DATA_KEY]);
@@ -274,7 +248,6 @@ class _MessageHistoryFragmentState extends State<MessageHistoryFragment> {
           _messages = list;
         });
       }
-
     } catch (error) {
       print('error $error');
     }
@@ -298,12 +271,29 @@ class _MessageHistoryFragmentState extends State<MessageHistoryFragment> {
     if (storeUser != null) {
       User user = User.fromJson(json.decode(storeUser));
       try {
-        var response = await Network()
-            .getWithAuth("$MESSAGES_FROM_USER/${widget.user.id}?skip=${_messages.length}");
+        var response = await Network().getWithAuth(
+            "$MESSAGES_FROM_USER/${widget.user.id}?skip=${_messages.length}");
 
         if (response.statusCode == RESPONSE_SUCCESS) {
-
           List<dynamic> data = json.decode(response.body)[JSON_DATA_KEY];
+
+          var messageToSend = {
+            'senderId': user.id,
+            'senderName': user.name,
+            'senderPhotoUrl': user.avatarUrl,
+            'receiverId': this.widget.user.id,
+            'receiverName': this.widget.user.name,
+            'receiverPhotoUrl': this.widget.user.avatarUrl,
+            'message': _response,
+            'read': false,
+            'refMessageId': '',
+            'fromModal': false,
+          };
+
+          this
+              .channel
+              .sink
+              .add("\"{type:\'all_read\',message:$messageToSend}\"");
 
           data.forEach((element) {
             Message m = Message.fromJson(element);
@@ -359,9 +349,9 @@ class _MessageHistoryFragmentState extends State<MessageHistoryFragment> {
                 children: [
                   message.read == 0 || message.read == false
                       ? Badge(
-                    badgeColor: Colors.redAccent,
-                    badgeContent: Text(""),
-                  )
+                          badgeColor: Colors.redAccent,
+                          badgeContent: Text(""),
+                        )
                       : SizedBox(),
                   SizedBox(
                     width: 4,
@@ -369,7 +359,9 @@ class _MessageHistoryFragmentState extends State<MessageHistoryFragment> {
                   Text(
                     "Eu, ${_getStringTime(DateTime.parse(message.created_at))}",
                     style: TextStyle(
-                        fontFamily: 'Neucha', fontSize: 12, color: Color(0xFF6890A7)),
+                        fontFamily: 'Neucha',
+                        fontSize: 12,
+                        color: Color(0xFF6890A7)),
                   ),
                 ],
               ),
@@ -392,8 +384,8 @@ class _MessageHistoryFragmentState extends State<MessageHistoryFragment> {
     return "${_parseTwoDigits(d.day)}/${_parseTwoDigits(d.month)}/${d.year} ${_parseTwoDigits(d.hour)}:${_parseTwoDigits(d.minute)}";
   }
 
-  _parseTwoDigits(int value){
-    return value > 9 ? "$value":"0$value";
+  _parseTwoDigits(int value) {
+    return value > 9 ? "$value" : "0$value";
   }
 
   _renderUserMessage(Message message) {

@@ -2,13 +2,12 @@ import 'dart:convert';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:loading/indicator/ball_pulse_indicator.dart';
-import 'package:loading/loading.dart';
 import 'package:nutriclock_app/constants/constants.dart';
 import 'package:nutriclock_app/models/Meal.dart';
 import 'package:nutriclock_app/models/MealsResponse.dart';
 import 'package:nutriclock_app/network_utils/api.dart';
 import 'package:nutriclock_app/screens/navigation/meals/MealUpdateFragment.dart';
+import 'package:nutriclock_app/utils/AppWidget.dart';
 
 import 'MealCreateFragment.dart';
 
@@ -22,6 +21,7 @@ class _MealsFragmentState extends State<MealsFragment> {
   MealsResponse _data;
   var _daysFromInitialMeal = 4;
   final _scaffoldKey = GlobalKey<ScaffoldState>();
+  var appWidget = AppWidget();
 
   @override
   void initState() {
@@ -40,7 +40,7 @@ class _MealsFragmentState extends State<MealsFragment> {
 
     try {
       var response = await Network().getWithAuth(MEALS_USER_URL);
-      print(response.statusCode);
+
       if (response.statusCode == RESPONSE_SUCCESS) {
         var data = json.decode(response.body);
         var daysFromInitialDate = data["daysFromInitialDate"];
@@ -191,57 +191,44 @@ class _MealsFragmentState extends State<MealsFragment> {
               elevation: 50,
             )
           : SizedBox(),
-      body: Container(
-        constraints: BoxConstraints.expand(),
-        decoration: BoxDecoration(
-          image: DecorationImage(
-            image: AssetImage("assets/images/bg_home.jpg"),
-            fit: BoxFit.fill,
-          ),
-        ),
-        child: _isLoading
-            ? Center(
-                child: Loading(
-                  indicator: BallPulseIndicator(),
-                  size: 50.0,
-                  color: Color(0xFFFFBCBC),
+      body: appWidget.getImageContainer(
+        "assets/images/bg_home.jpg",
+        _isLoading,
+        _data == null ||
+                _data.mealsTypeByDate == null ||
+                _data.mealsTypeByDate.isEmpty
+            ? Card(
+                elevation: 4.0,
+                color: Colors.white,
+                margin: EdgeInsets.only(left: 20, right: 20),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(15),
+                ),
+                child: Padding(
+                  padding: EdgeInsets.all(20),
+                  child: Column(
+                    children: [
+                      Text(
+                        "Nenhum alimento adicionado.",
+                        style: TextStyle(color: Colors.black),
+                      ),
+                      SizedBox(
+                        height: 16,
+                      ),
+                      Text(
+                        "Começa já a registar o teu Diário Alimentar com tudo o que compõe as tuas refeições.",
+                        textAlign: TextAlign.center,
+                        style: TextStyle(color: Colors.grey),
+                      ),
+                    ],
+                  ),
                 ),
               )
-            : _data == null ||
-                    _data.mealsTypeByDate == null ||
-                    _data.mealsTypeByDate.isEmpty
-                ? Card(
-                    elevation: 4.0,
-                    color: Colors.white,
-                    margin: EdgeInsets.only(left: 20, right: 20),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(15),
-                    ),
-                    child: Padding(
-                      padding: EdgeInsets.all(20),
-                      child: Column(
-                        children: [
-                          Text(
-                            "Nenhum alimento adicionado.",
-                            style: TextStyle(color: Colors.black),
-                          ),
-                          SizedBox(
-                            height: 16,
-                          ),
-                          Text(
-                            "Começa já a registar o teu Diário Alimentar com tudo o que compõe as tuas refeições.",
-                            textAlign: TextAlign.center,
-                            style: TextStyle(color: Colors.grey),
-                          ),
-                        ],
-                      ),
-                    ),
-                  )
-                : SingleChildScrollView(
-                    scrollDirection: Axis.vertical,
-                    padding: EdgeInsets.all(4),
-                    child: Column(children: data()),
-                  ),
+            : SingleChildScrollView(
+                scrollDirection: Axis.vertical,
+                padding: EdgeInsets.all(4),
+                child: Column(children: data()),
+              ),
       ),
     );
   }
@@ -402,6 +389,7 @@ class _MealsFragmentState extends State<MealsFragment> {
   }
 
   _deleteMeal(meal) async {
+    var hasError = false;
     if (_isLoading) return;
 
     this.setState(() {
@@ -410,35 +398,23 @@ class _MealsFragmentState extends State<MealsFragment> {
 
     try {
       var response = await Network().deletetWithAuth(MEAL_URL, meal.id);
-      setState(() {
-        _isLoading = false;
-      });
       if (response.statusCode == RESPONSE_SUCCESS) {
-        _showMessage("Eliminado com sucesso", Colors.green);
+        appWidget.showSnackbar(
+            "Eliminado com sucesso", Colors.green, _scaffoldKey);
         _loadMealsList();
       } else {
-        _showMessage(
-            "Não é possivel eliminar o elemento seleccionado", Colors.red);
+        hasError = true;
       }
     } catch (error) {
-      setState(() {
-        _isLoading = false;
-      });
-      _showMessage(
-          "Não é possivel eliminar o elemento seleccionado", Colors.red);
+      hasError = true;
     }
-  }
 
-  _showMessage(String message, Color color) {
-    final snackBar = SnackBar(
-      backgroundColor: color,
-      content: Text(message),
-      action: SnackBarAction(
-        label: 'Fechar',
-        textColor: Colors.white,
-        onPressed: () {},
-      ),
-    );
-    _scaffoldKey.currentState.showSnackBar(snackBar);
+    if (hasError)
+      appWidget.showSnackbar("Não é possivel eliminar o elemento seleccionado",
+          Colors.red, _scaffoldKey);
+
+    setState(() {
+      _isLoading = false;
+    });
   }
 }

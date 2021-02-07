@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:nutriclock_app/constants/constants.dart';
 import 'package:nutriclock_app/network_utils/api.dart';
 import 'package:nutriclock_app/screens/navigation/sleep/SleepRegisterFragment.dart';
+import 'package:nutriclock_app/utils/AppWidget.dart';
 import 'package:syncfusion_flutter_datepicker/datepicker.dart';
 
 class SleepCalendarFragment extends StatefulWidget {
@@ -48,15 +49,7 @@ class _SleepCalendarFragmentState extends State<SleepCalendarFragment> {
   Widget build(BuildContext context) {
     return Scaffold(
       key: _scaffoldKey,
-      appBar: AppBar(
-        title: Text(
-          "Registar Horas de Sono",
-          style: TextStyle(
-            fontFamily: 'Pacifico',
-          ),
-        ),
-        backgroundColor: Color(0xFFA3E1CB),
-      ),
+      appBar: AppWidget().getAppbar("Registar Horas de Sono"),
       body: SfDateRangePicker(
         view: DateRangePickerView.month,
         todayHighlightColor: Color(0xFF60B2A3),
@@ -82,12 +75,10 @@ class _SleepCalendarFragmentState extends State<SleepCalendarFragment> {
                 builder: (context) => SleepRegisterFragment(
                       value: value,
                     )),
-          ).then((value) => {
-            _loadData()
-          });
+          ).then((value) => {_loadData()});
         },
-        monthViewSettings: DateRangePickerMonthViewSettings(
-            blackoutDates: _dates),
+        monthViewSettings:
+            DateRangePickerMonthViewSettings(blackoutDates: _dates),
       ),
     );
   }

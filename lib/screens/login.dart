@@ -1,14 +1,13 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
-import 'package:loading/indicator/ball_pulse_indicator.dart';
-import 'package:loading/loading.dart';
 import 'package:nutriclock_app/constants/constants.dart';
 import 'package:nutriclock_app/models/AcceptanceTerms.dart';
 import 'package:nutriclock_app/network_utils/api.dart';
 import 'package:nutriclock_app/screens/home.dart';
 import 'package:nutriclock_app/screens/recoverPassword.dart';
 import 'package:nutriclock_app/screens/register.dart';
+import 'package:nutriclock_app/utils/AppWidget.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class Login extends StatefulWidget {
@@ -21,6 +20,7 @@ class _LoginState extends State<Login> {
   var email;
   var password;
   AcceptanceTerms terms;
+  var appWidget = AppWidget();
 
   final _formKey = GlobalKey<FormState>();
   final _scaffoldKey = GlobalKey<ScaffoldState>();
@@ -34,251 +34,229 @@ class _LoginState extends State<Login> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      key: _scaffoldKey,
-      body: Container(
-        constraints: BoxConstraints.expand(),
-        decoration: BoxDecoration(
-          image: DecorationImage(
-            image: AssetImage("assets/images/bg_login.png"),
-            fit: BoxFit.cover,
-          ),
-        ),
-        child: _isLoading
-            ? Center(
-                child: Loading(
-                    indicator: BallPulseIndicator(),
-                    size: 50.0,
-                    color: Color(0xFFFFBCBC)),
-              )
-            : Stack(
-                children: <Widget>[
-                  Positioned(
-                    child: Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: <Widget>[
-                          Card(
-                              elevation: 4.0,
-                              color: Colors.white,
-                              margin: EdgeInsets.only(left: 20, right: 20),
-                              shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(15)),
-                              child: Column(
-                                children: [
-                                  Padding(
-                                    padding: const EdgeInsets.all(10.0),
-                                    child: Form(
-                                      key: _formKey,
-                                      child: Column(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.center,
-                                        children: <Widget>[
-                                          ClipRect(
-                                            child: Image.asset(
-                                              "assets/images/logo.png",
-                                              height: 40,
-                                              fit: BoxFit.fill,
-                                            ),
-                                          ),
-                                          SizedBox(
-                                            height: 16,
-                                          ),
-                                          TextFormField(
-                                            style: TextStyle(
-                                                color: Color(0xFF000000)),
-                                            cursorColor: Color(0xFF9b9b9b),
-                                            keyboardType:
-                                                TextInputType.emailAddress,
-                                            decoration: InputDecoration(
-                                              labelText: 'Email',
-                                              labelStyle:
-                                                  TextStyle(color: Colors.grey),
-                                              focusedBorder:
-                                                  UnderlineInputBorder(
-                                                borderSide: BorderSide(
-                                                    color: Color(0xFFA3E1CB)),
-                                              ),
-                                              prefixIcon: Icon(
-                                                Icons.email,
-                                                color: Color(0xFFA3E1CB),
-                                              ),
-                                              hintText: "Email",
-                                              hintStyle: TextStyle(
-                                                  color: Color(0xFF9b9b9b),
-                                                  fontSize: 15,
-                                                  fontWeight:
-                                                      FontWeight.normal),
-                                            ),
-                                            validator: (emailValue) {
-                                              if (emailValue.isEmpty) {
-                                                return ERROR_MANDATORY_FIELD;
-                                              }
-                                              if (!RegExp(
-                                                      r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
-                                                  .hasMatch(emailValue)) {
-                                                return ERROR_INVALID_FORMAT_FIELD;
-                                              }
-                                              email = emailValue;
-                                              return null;
-                                            },
-                                          ),
-                                          TextFormField(
-                                            style: TextStyle(
-                                                color: Color(0xFF000000)),
-                                            cursorColor: Color(0xFF9b9b9b),
-                                            keyboardType: TextInputType.text,
-                                            obscureText: true,
-                                            decoration: InputDecoration(
-                                              labelText: 'Password',
-                                              labelStyle:
-                                                  TextStyle(color: Colors.grey),
-                                              focusedBorder:
-                                                  UnderlineInputBorder(
-                                                borderSide: BorderSide(
-                                                    color: Color(0xFFA3E1CB)),
-                                              ),
-                                              prefixIcon: Icon(
-                                                Icons.vpn_key,
-                                                color: Color(0xFFA3E1CB),
-                                              ),
-                                              hintText: "Password",
-                                              hintStyle: TextStyle(
-                                                  color: Color(0xFF9b9b9b),
-                                                  fontSize: 15,
-                                                  fontWeight:
-                                                      FontWeight.normal),
-                                            ),
-                                            validator: (passwordValue) {
-                                              if (passwordValue.isEmpty) {
-                                                return ERROR_MANDATORY_FIELD;
-                                              }
-                                              password = passwordValue;
-                                              return null;
-                                            },
-                                          ),
-                                          Padding(
-                                            padding: const EdgeInsets.only(
-                                                top: 16.0),
-                                            child: SizedBox(
-                                              width: double.infinity,
-                                              child: FlatButton(
-                                                child: Padding(
-                                                  padding: EdgeInsets.only(
-                                                      top: 8,
-                                                      bottom: 8,
-                                                      left: 10,
-                                                      right: 10),
-                                                  child: Text(
-                                                    _isLoading
-                                                        ? 'Aguarde...'
-                                                        : 'Login',
-                                                    textDirection:
-                                                        TextDirection.ltr,
-                                                    style: TextStyle(
-                                                      color: Colors.white,
-                                                      fontSize: 15.0,
-                                                      decoration:
-                                                          TextDecoration.none,
-                                                      fontWeight:
-                                                          FontWeight.normal,
-                                                    ),
-                                                  ),
-                                                ),
-                                                color: Color(0xFFA3E1CB),
-                                                disabledColor: Colors.grey,
-                                                shape:
-                                                    new RoundedRectangleBorder(
-                                                        borderRadius:
-                                                            new BorderRadius
-                                                                    .circular(
-                                                                20.0)),
-                                                onPressed: () {
-                                                  if (_formKey.currentState
-                                                      .validate()) {
-                                                    _login();
-                                                  }
-                                                },
-                                              ),
-                                            ),
-                                          ),
-                                        ],
-                                      ),
-                                    ),
-                                  ),
-                                  Padding(
-                                    padding: const EdgeInsets.only(
-                                        left: 10.0, right: 10.0),
-                                    child: SizedBox(
-                                      width: double.infinity,
-                                      child: FlatButton(
-                                        child: Padding(
-                                          padding: EdgeInsets.only(
-                                              top: 8,
-                                              bottom: 8,
-                                              left: 10,
-                                              right: 10),
-                                          child: Text(
-                                            _isLoading
-                                                ? 'Aguarde...'
-                                                : 'Nova Conta',
-                                            textDirection: TextDirection.ltr,
-                                            style: TextStyle(
-                                              color: Colors.white,
-                                              fontSize: 15.0,
-                                              decoration: TextDecoration.none,
-                                              fontWeight: FontWeight.normal,
-                                            ),
-                                          ),
+        key: _scaffoldKey,
+        body: appWidget.getImageContainer(
+          "assets/images/bg_login.png",
+          _isLoading,
+          Stack(
+            children: <Widget>[
+              Positioned(
+                child: Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: <Widget>[
+                      Card(
+                          elevation: 4.0,
+                          color: Colors.white,
+                          margin: EdgeInsets.only(left: 20, right: 20),
+                          shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(15)),
+                          child: Column(
+                            children: [
+                              Padding(
+                                padding: const EdgeInsets.all(10.0),
+                                child: Form(
+                                  key: _formKey,
+                                  child: Column(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: <Widget>[
+                                      ClipRect(
+                                        child: Image.asset(
+                                          "assets/images/logo.png",
+                                          height: 40,
+                                          fit: BoxFit.fill,
                                         ),
-                                        color: Color(0xFFA3E1CB),
-                                        disabledColor: Colors.grey,
-                                        shape: new RoundedRectangleBorder(
-                                            borderRadius:
-                                                new BorderRadius.circular(
-                                                    20.0)),
-                                        onPressed: () {
-                                          Navigator.push(
-                                              context,
-                                              new MaterialPageRoute(
-                                                  builder: (context) =>
-                                                      Register()));
+                                      ),
+                                      SizedBox(
+                                        height: 16,
+                                      ),
+                                      TextFormField(
+                                        style:
+                                            TextStyle(color: Color(0xFF000000)),
+                                        cursorColor: Color(0xFF9b9b9b),
+                                        keyboardType:
+                                            TextInputType.emailAddress,
+                                        decoration: InputDecoration(
+                                          labelText: 'Email',
+                                          labelStyle:
+                                              TextStyle(color: Colors.grey),
+                                          focusedBorder: UnderlineInputBorder(
+                                            borderSide: BorderSide(
+                                                color: Color(0xFFA3E1CB)),
+                                          ),
+                                          prefixIcon: Icon(
+                                            Icons.email,
+                                            color: Color(0xFFA3E1CB),
+                                          ),
+                                          hintText: "Email",
+                                          hintStyle: TextStyle(
+                                              color: Color(0xFF9b9b9b),
+                                              fontSize: 15,
+                                              fontWeight: FontWeight.normal),
+                                        ),
+                                        validator: (emailValue) {
+                                          if (emailValue.isEmpty) {
+                                            return ERROR_MANDATORY_FIELD;
+                                          }
+                                          if (!RegExp(
+                                                  r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
+                                              .hasMatch(emailValue)) {
+                                            return ERROR_INVALID_FORMAT_FIELD;
+                                          }
+                                          email = emailValue;
+                                          return null;
                                         },
                                       ),
-                                    ),
+                                      TextFormField(
+                                        style:
+                                            TextStyle(color: Color(0xFF000000)),
+                                        cursorColor: Color(0xFF9b9b9b),
+                                        keyboardType: TextInputType.text,
+                                        obscureText: true,
+                                        decoration: InputDecoration(
+                                          labelText: 'Password',
+                                          labelStyle:
+                                              TextStyle(color: Colors.grey),
+                                          focusedBorder: UnderlineInputBorder(
+                                            borderSide: BorderSide(
+                                                color: Color(0xFFA3E1CB)),
+                                          ),
+                                          prefixIcon: Icon(
+                                            Icons.vpn_key,
+                                            color: Color(0xFFA3E1CB),
+                                          ),
+                                          hintText: "Password",
+                                          hintStyle: TextStyle(
+                                              color: Color(0xFF9b9b9b),
+                                              fontSize: 15,
+                                              fontWeight: FontWeight.normal),
+                                        ),
+                                        validator: (passwordValue) {
+                                          if (passwordValue.isEmpty) {
+                                            return ERROR_MANDATORY_FIELD;
+                                          }
+                                          password = passwordValue;
+                                          return null;
+                                        },
+                                      ),
+                                      Padding(
+                                        padding:
+                                            const EdgeInsets.only(top: 16.0),
+                                        child: SizedBox(
+                                          width: double.infinity,
+                                          child: FlatButton(
+                                            child: Padding(
+                                              padding: EdgeInsets.only(
+                                                  top: 8,
+                                                  bottom: 8,
+                                                  left: 10,
+                                                  right: 10),
+                                              child: Text(
+                                                _isLoading
+                                                    ? 'Aguarde...'
+                                                    : 'Login',
+                                                textDirection:
+                                                    TextDirection.ltr,
+                                                style: TextStyle(
+                                                  color: Colors.white,
+                                                  fontSize: 15.0,
+                                                  decoration:
+                                                      TextDecoration.none,
+                                                  fontWeight: FontWeight.normal,
+                                                ),
+                                              ),
+                                            ),
+                                            color: Color(0xFFA3E1CB),
+                                            disabledColor: Colors.grey,
+                                            shape: new RoundedRectangleBorder(
+                                                borderRadius:
+                                                    new BorderRadius.circular(
+                                                        20.0)),
+                                            onPressed: () {
+                                              if (_formKey.currentState
+                                                  .validate()) {
+                                                _login();
+                                              }
+                                            },
+                                          ),
+                                        ),
+                                      ),
+                                    ],
                                   ),
-                                  Padding(
-                                    padding: const EdgeInsets.only(
-                                        top: 16.0, bottom: 20.0),
-                                    child: InkWell(
-                                      onTap: () {
-                                        Navigator.push(
-                                            context,
-                                            new MaterialPageRoute(
-                                                builder: (context) =>
-                                                    RecoverPassword()));
-                                      },
+                                ),
+                              ),
+                              Padding(
+                                padding: const EdgeInsets.only(
+                                    left: 10.0, right: 10.0),
+                                child: SizedBox(
+                                  width: double.infinity,
+                                  child: FlatButton(
+                                    child: Padding(
+                                      padding: EdgeInsets.only(
+                                          top: 8,
+                                          bottom: 8,
+                                          left: 10,
+                                          right: 10),
                                       child: Text(
-                                        'Recuperar Password',
+                                        _isLoading
+                                            ? 'Aguarde...'
+                                            : 'Nova Conta',
+                                        textDirection: TextDirection.ltr,
                                         style: TextStyle(
-                                          color: Color(0xFF60B2A3),
+                                          color: Colors.white,
                                           fontSize: 15.0,
-                                          decoration: TextDecoration.underline,
-                                          fontWeight: FontWeight.w700,
+                                          decoration: TextDecoration.none,
+                                          fontWeight: FontWeight.normal,
                                         ),
                                       ),
                                     ),
+                                    color: Color(0xFFA3E1CB),
+                                    disabledColor: Colors.grey,
+                                    shape: new RoundedRectangleBorder(
+                                        borderRadius:
+                                            new BorderRadius.circular(20.0)),
+                                    onPressed: () {
+                                      Navigator.push(
+                                          context,
+                                          new MaterialPageRoute(
+                                              builder: (context) =>
+                                                  Register()));
+                                    },
                                   ),
-                                ],
-                              )),
-                        ],
-                      ),
-                    ),
-                  )
-                ],
-              ),
-      ),
-    );
+                                ),
+                              ),
+                              Padding(
+                                padding: const EdgeInsets.only(
+                                    top: 16.0, bottom: 20.0),
+                                child: InkWell(
+                                  onTap: () {
+                                    Navigator.push(
+                                        context,
+                                        new MaterialPageRoute(
+                                            builder: (context) =>
+                                                RecoverPassword()));
+                                  },
+                                  child: Text(
+                                    'Recuperar Password',
+                                    style: TextStyle(
+                                      color: Color(0xFF60B2A3),
+                                      fontSize: 15.0,
+                                      decoration: TextDecoration.underline,
+                                      fontWeight: FontWeight.w700,
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ],
+                          )),
+                    ],
+                  ),
+                ),
+              )
+            ],
+          ),
+        ));
   }
 
   void _login() async {
@@ -333,24 +311,11 @@ class _LoginState extends State<Login> {
       isShowMessage = true;
     }
 
-    if (isShowMessage) _showMessage(message);
+    if (isShowMessage) appWidget.showSnackbar(message, Colors.red, _scaffoldKey);
 
     setState(() {
       _isLoading = false;
     });
-  }
-
-  _showMessage(String message) {
-    final snackBar = SnackBar(
-      backgroundColor: Colors.red,
-      content: Text(message),
-      action: SnackBarAction(
-        label: 'Fechar',
-        textColor: Colors.white,
-        onPressed: () {},
-      ),
-    );
-    _scaffoldKey.currentState.showSnackBar(snackBar);
   }
 
   Future<void> _showAcceptanceTermsModal(int id) async {
@@ -439,7 +404,7 @@ class _LoginState extends State<Login> {
       isShowMessage = true;
     }
 
-    if (isShowMessage) _showMessage(message);
+    if (isShowMessage) appWidget.showSnackbar(message, Colors.red, _scaffoldKey);
 
     setState(() {
       _isLoading = false;

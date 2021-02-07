@@ -201,7 +201,6 @@ class Network {
     var url = Constants.BASE_API_URL + apiUrl;
     await _getToken();
     token = token.replaceAll("\"", "");
-    print(token);
     return await http.get(
       url,
       headers: <String, String>{
