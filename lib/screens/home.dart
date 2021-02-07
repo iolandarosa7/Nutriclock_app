@@ -15,6 +15,8 @@ import 'package:nutriclock_app/screens/navigation/meals/MealsFragment.dart';
 import 'package:nutriclock_app/screens/navigation/sleep/SleepFragment.dart';
 import 'package:nutriclock_app/screens/settings/Settings.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:web_socket_channel/io.dart';
+import 'package:web_socket_channel/web_socket_channel.dart';
 
 import 'file:///C:/Users/landi/AndroidStudioProjects/nutriclock_app/lib/screens/navigation/chat/ChatFragment.dart';
 
@@ -27,14 +29,67 @@ class _HomeState extends State<Home> {
   String _name = '';
   String _email = '';
   String _avatarUrl = '';
+  var _id = -1;
   String _title = '';
   int _selectedIndex = 0;
   int _currentIndex = 0;
+  var channel = IOWebSocketChannel.connect(WEBSOCKET_URL);
+  var _shouldConnect = true;
+  var _totalUnread = 0;
 
   @override
   void initState() {
     _loadUserData();
+    _getUnreadMessages();
+    channel.stream
+        .listen(this.onData, onError: this.onError, onDone: this.onDone);
     super.initState();
+  }
+
+  onDone() {
+    if (_shouldConnect) connectToSocket();
+  }
+
+  onError(err) {
+    var exception = err as WebSocketChannelException;
+    print("socket error ${err.runtimeType.toString()} ${exception.message}");
+  }
+
+  @override
+  void dispose() {
+    _shouldConnect = false;
+    channel.sink.close();
+    super.dispose();
+  }
+
+  connectToSocket() {
+    channel = IOWebSocketChannel.connect(WEBSOCKET_URL);
+  }
+
+  onData(event) {
+    var parsedArray = event.toString().replaceAll("'", "").split(":");
+    var receiverId = parsedArray[6].split(",")[0].trim();
+
+    if (receiverId == _id.toString()) {
+      _getUnreadMessages();
+    }
+  }
+
+  _getUnreadMessages() async {
+    print('get unread messaages');
+    try {
+      var response = await Network().getWithAuth(MESSAGES_UNREAD_URL);
+
+      print('get unread messaages ${response.statusCode}');
+
+      if (response.statusCode == RESPONSE_SUCCESS) {
+        var count = json.decode(response.body)[JSON_DATA_KEY];
+        if (count > 0)
+        this.setState(() {
+          _totalUnread = count;
+        });
+      }
+    } catch (error) {}
   }
 
   _loadUserData() async {
@@ -54,6 +109,7 @@ class _HomeState extends State<Home> {
         _name = user.name;
         _email = user.email;
         _avatarUrl = avatarUrl;
+        _id = user.id;
       });
     }
   }
@@ -151,7 +207,7 @@ class _HomeState extends State<Home> {
           opacity: 0.6,
         ),
         selectedItemColor: Color(0xFF60B2A3),
-        items: const <BottomNavigationBarItem>[
+        items: [
           BottomNavigationBarItem(
             icon: Icon(Icons.home),
             label: 'Home',
@@ -168,10 +224,17 @@ class _HomeState extends State<Home> {
             icon: Icon(Icons.directions_run),
             label: 'Exercício',
           ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.chat_bubble),
-            label: 'Chat',
-          ),
+          _totalUnread > 0
+              ? BottomNavigationBarItem(
+                  icon: Icon(
+                    Icons.mark_chat_unread,
+                  ),
+                  label: 'Chat',
+                )
+              : BottomNavigationBarItem(
+                  icon: Icon(Icons.chat_bubble),
+                  label: 'Chat',
+                ),
         ],
         currentIndex: _selectedIndex,
         onTap: _onItemTapped,
