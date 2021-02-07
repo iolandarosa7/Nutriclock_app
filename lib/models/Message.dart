@@ -9,7 +9,7 @@ class Message {
   String receiverPhotoUrl;
   String message;
   dynamic refMessageId;
-  int read;
+  dynamic read;
 
   Message();
 

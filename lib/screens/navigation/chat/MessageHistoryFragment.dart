@@ -51,7 +51,6 @@ class _MessageHistoryFragmentState extends State<MessageHistoryFragment> {
   }
 
   onDone() {
-    debugPrint("Socket is closed");
     if (_shouldConnect) connectToSocket();
   }
 
@@ -70,7 +69,6 @@ class _MessageHistoryFragmentState extends State<MessageHistoryFragment> {
 
   connectToSocket() {
     channel = IOWebSocketChannel.connect(WEBSOCKET_URL);
-    print('socket connect');
   }
 
   onData(event) {
@@ -80,6 +78,8 @@ class _MessageHistoryFragmentState extends State<MessageHistoryFragment> {
     var receiverId = parsedArray[6].split(",")[0].trim();
     var message = parsedArray[9].split(",")[0].trim();
     var id = parsedArray[parsedArray.length-1].split("}")[0].trim();
+
+    if (senderId == authUser.id.toString() && type == 'store') return;
 
     if (receiverId == authUser.id.toString() ||
         senderId == authUser.id.toString()) {
@@ -243,6 +243,7 @@ class _MessageHistoryFragmentState extends State<MessageHistoryFragment> {
   }
 
   _postNewMessage() async {
+    List<Message> list = _messages;
     if (_isLoading) return;
     this.setState(() {
       _isLoading = true;
@@ -264,17 +265,23 @@ class _MessageHistoryFragmentState extends State<MessageHistoryFragment> {
     };
     try {
       var response = await Network().postWithAuth(messageToSend, "$MESSAGES");
+      print(response.statusCode);
       if (response.statusCode == RESPONSE_SUCCESS_201) {
         this.channel.sink.add("\"{type:\'store\',message:$messageToSend}\"");
+        var data = Message.fromJson(json.decode(response.body)[JSON_DATA_KEY]);
+        list.add(data);
+        this.setState(() {
+          _messages = list;
+        });
       }
-      this.setState(() {
-        _isLoading = false;
-      });
+
     } catch (error) {
-      this.setState(() {
-        _isLoading = false;
-      });
+      print('error $error');
     }
+
+    this.setState(() {
+      _isLoading = false;
+    });
   }
 
   _loadData() async {
@@ -295,6 +302,7 @@ class _MessageHistoryFragmentState extends State<MessageHistoryFragment> {
             .getWithAuth("$MESSAGES_FROM_USER/${widget.user.id}?skip=${_messages.length}");
 
         if (response.statusCode == RESPONSE_SUCCESS) {
+
           List<dynamic> data = json.decode(response.body)[JSON_DATA_KEY];
 
           data.forEach((element) {
