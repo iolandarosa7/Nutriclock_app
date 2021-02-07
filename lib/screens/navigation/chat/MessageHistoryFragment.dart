@@ -308,7 +308,9 @@ class _MessageHistoryFragmentState extends State<MessageHistoryFragment> {
             hasMore = data.length > 0;
           });
         } else {}
-      } catch (error) {}
+      } catch (error) {
+        print('error $error');
+      }
 
       this.setState(() {
         _isLoading = false;

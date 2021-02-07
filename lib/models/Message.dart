@@ -10,7 +10,6 @@ class Message {
   String message;
   dynamic refMessageId;
   int read;
-  // bool read;
 
   Message();
 
