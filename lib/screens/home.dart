@@ -10,7 +10,8 @@ import 'package:nutriclock_app/screens/drawer/FoodPlanFragment.dart';
 import 'package:nutriclock_app/screens/drawer/HomeFragment.dart';
 import 'package:nutriclock_app/screens/drawer/ReportsFragment.dart';
 import 'package:nutriclock_app/screens/login.dart';
-import 'package:nutriclock_app/screens/navigation/ExerciseFragment.dart';
+import 'package:nutriclock_app/screens/navigation/exercise/ExerciseCalendarFragment.dart';
+import 'file:///C:/Users/landi/AndroidStudioProjects/nutriclock_app/lib/screens/navigation/exercise/ExerciseFragment.dart';
 import 'package:nutriclock_app/screens/navigation/meals/MealsFragment.dart';
 import 'package:nutriclock_app/screens/navigation/sleep/SleepFragment.dart';
 import 'package:nutriclock_app/screens/settings/Settings.dart';
@@ -156,7 +157,7 @@ class _HomeState extends State<Home> {
     HomeFragment(),
     MealsFragment(),
     SleepFragment(),
-    ExerciseFragment(),
+    ExerciseCalendarFragment(),
     ChatFragment(),
     ReportsFragment(),
     FoodPlanFragment(),
