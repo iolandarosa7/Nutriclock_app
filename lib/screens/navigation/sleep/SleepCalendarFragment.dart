@@ -41,7 +41,6 @@ class _SleepCalendarFragmentState extends State<SleepCalendarFragment> {
         });
       }
     } catch (error) {
-      print(error.toString());
     }
   }
 

@@ -211,6 +211,20 @@ class Network {
     );
   }
 
+  Future<http.Response> getWithAuthParam(String apiUrl, dynamic id) async {
+    var url = Constants.BASE_API_URL + apiUrl;
+    await _getToken();
+    token = token.replaceAll("\"", "");
+    return await http.get(
+      "$url/$id",
+      headers: <String, String>{
+        'Content-type': 'application/json',
+        'Accept': 'application/json',
+        'Authorization': 'Bearer $token'
+      },
+    );
+  }
+
   Future<http.Response> putWithAuth(
       Map<String, dynamic> data, String apiUrl, dynamic param) async {
     var url = Constants.BASE_API_URL + apiUrl;
