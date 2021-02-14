@@ -25,6 +25,7 @@ class _HomeFragmentState extends State<HomeFragment> {
   var _averageBurnedCals = 0;
   var _averageSleepHours = 0.0;
   var _isLoading = false;
+  var _totalSportDays = 0;
 
   // total cals 8*7*400 = 22400
   // total exercicio minutos = 1200
@@ -44,15 +45,11 @@ class _HomeFragmentState extends State<HomeFragment> {
     try {
       var response = await Network().getWithAuth(STATS_URL);
 
-      print(json.decode(response.body).toString());
-
       if (response.statusCode == RESPONSE_SUCCESS) {
         var data = Statistics.fromJson(json.decode(response.body));
 
         var daysRegistered = 0;
         var sleeps = 0;
-
-        print(data);
 
         if (data.totalDaysRegistered != null)
           daysRegistered = data.totalDaysRegistered;
@@ -66,11 +63,11 @@ class _HomeFragmentState extends State<HomeFragment> {
           _averageExerciseHours = double.parse(data.averageDuration);
           _totalBurnedCals = data.totalBurnedCals;
           _averageBurnedCals = data.averageBurnedCals;
+          _totalSportDays = data.totalSportDays;
           _isLoading = false;
         });
       }
     } catch (error) {
-      print(error);
       this.setState(() {
         _isLoading = false;
       });
@@ -116,7 +113,8 @@ class _HomeFragmentState extends State<HomeFragment> {
                       CircularPercentIndicator(
                         radius: 100.0,
                         lineWidth: 10.0,
-                        percent: _mealDaysRegistered / 3,
+                        percent:
+                            _computeProgress(_mealDaysRegistered.toDouble(), 3),
                         center: Column(children: [
                           SizedBox(
                             height: 20,
@@ -137,7 +135,8 @@ class _HomeFragmentState extends State<HomeFragment> {
                         footer: Text(
                           "Total de Alimentos / Refeições: $_totalMeals",
                           textAlign: TextAlign.center,
-                          style: TextStyle(color: Color(0xFF797979), fontSize: 12),
+                          style:
+                              TextStyle(color: Color(0xFF797979), fontSize: 12),
                         ),
                       ),
                       SizedBox(
@@ -153,7 +152,8 @@ class _HomeFragmentState extends State<HomeFragment> {
                       CircularPercentIndicator(
                         radius: 100.0,
                         lineWidth: 10.0,
-                        percent: _totalSleeps / EIGHT_WEEK_DAYS,
+                        percent: _computeProgress(
+                            _totalSleeps.toDouble(), EIGHT_WEEK_DAYS),
                         center: Column(children: [
                           SizedBox(
                             height: 20,
@@ -174,7 +174,8 @@ class _HomeFragmentState extends State<HomeFragment> {
                         footer: Text(
                           "Média de Horas de Sono: $_averageSleepHours",
                           textAlign: TextAlign.center,
-                          style: TextStyle(color: Color(0xFF797979), fontSize: 12),
+                          style:
+                              TextStyle(color: Color(0xFF797979), fontSize: 12),
                         ),
                       ),
                       SizedBox(
@@ -190,7 +191,8 @@ class _HomeFragmentState extends State<HomeFragment> {
                       CircularPercentIndicator(
                         radius: 100.0,
                         lineWidth: 10.0,
-                        percent: _totalExerciseHours.toDouble(),
+                        percent:
+                            _totalSportDays.toDouble() / EIGHT_WEEK_FIVE_DAYS,
                         center: Column(children: [
                           SizedBox(
                             height: 20,
@@ -201,45 +203,43 @@ class _HomeFragmentState extends State<HomeFragment> {
                             color: Color(0xFFF4D481),
                           ),
                           Text(
-                            "$_totalBurnedCals cals",
+                            "$_totalSportDays dias",
                             textAlign: TextAlign.center,
                             style: TextStyle(color: Colors.grey, fontSize: 12),
                           ),
                         ]),
                         backgroundColor: Color(0xFFFFF4D6),
                         progressColor: Color(0xFFF4D481),
-                        footer: Text(
-                          "Média Calorias Queimadas: ${_averageBurnedCals}",
-                          textAlign: TextAlign.center,
-                          style: TextStyle(color: Color(0xFF797979), fontSize: 12),
-                        ),
-                      ),
-                      SizedBox(height: 16,),
-                      CircularPercentIndicator(
-                        radius: 100.0,
-                        lineWidth: 10.0,
-                        percent: _totalExerciseHours.toDouble(),
-                        center: Column(children: [
-                          SizedBox(
-                            height: 20,
-                          ),
-                          new Icon(
-                            Icons.timer,
-                            size: 50.0,
-                            color: Color(0xFFA3E1CB),
-                          ),
-                          Text(
-                            "$_totalExerciseHours horas",
-                            textAlign: TextAlign.center,
-                            style: TextStyle(color: Colors.grey, fontSize: 12),
-                          ),
-                        ]),
-                        backgroundColor: Color(0x40A3E1CB),
-                        progressColor: Color(0xFFA3E1CB),
-                        footer: Text(
-                          "Média de Horas de Exercicio: ${_averageExerciseHours}",
-                          textAlign: TextAlign.center,
-                          style: TextStyle(color: Color(0xFF797979), fontSize: 12),
+                        footer: Column(
+                          children: [
+                            Text(
+                              "Duração total: ${_totalExerciseHours} horas",
+                              textAlign: TextAlign.center,
+                              style: TextStyle(
+                                  color: Color(0xFF797979), fontSize: 12),
+                            ),
+                            Text(
+                              "Duração média: ${_averageExerciseHours}",
+                              textAlign: TextAlign.center,
+                              style: TextStyle(
+                                  color: Color(0xFF797979), fontSize: 12),
+                            ),
+                            SizedBox(
+                              height: 8,
+                            ),
+                            Text(
+                              "Total calorias queimadas: ${_totalBurnedCals}",
+                              textAlign: TextAlign.center,
+                              style: TextStyle(
+                                  color: Color(0xFF797979), fontSize: 12),
+                            ),
+                            Text(
+                              "Média de calorias queimadas: ${_averageBurnedCals}",
+                              textAlign: TextAlign.center,
+                              style: TextStyle(
+                                  color: Color(0xFF797979), fontSize: 12),
+                            ),
+                          ],
                         ),
                       ),
                     ],
@@ -248,5 +248,13 @@ class _HomeFragmentState extends State<HomeFragment> {
               ),
       ),
     );
+  }
+
+  _computeProgress(double value, int max) {
+    var aux = value / max;
+
+    if (aux < 0.0) return 0.0;
+    if (aux > 1.0) return 1.0;
+    return aux;
   }
 }

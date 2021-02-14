@@ -13,6 +13,7 @@ const String JSON_ID_KEY = 'id';
 const int RESPONSE_SUCCESS = 200;
 const int RESPONSE_SUCCESS_201 = 201;
 const int EIGHT_WEEK_DAYS = 8 * 7;
+const int EIGHT_WEEK_FIVE_DAYS = 8 * 5;
 
 const String ERROR_MANDATORY_FIELD = 'O campo não pode estar vazio';
 const String ERROR_INVALID_FORMAT_FIELD = 'Formato inválido';
@@ -32,7 +33,7 @@ const String ERROR_USER_NOT_FOUND_API = 'O utilizador não existe!';
 // const BASE_URL = 'https://nutriclock.herokuapp.com';
 const IMAGE_BASE_URL = 'https://nutriclock.s3-eu-west-1.amazonaws.com';
 // const IMAGE_BASE_URL = 'https://ea25c14250e0.ngrok.io/storage';
-const BASE_URL = 'https://2135499e41c6.ngrok.io';
+const BASE_URL = 'https://84d7a9de24dc.ngrok.io';
 const BASE_API_URL = '$BASE_URL/api';
 // wss://nutriclock-websocket.herokuapp.com
 const WEBSOCKET_URL = 'wss://nutriclock-websocket.herokuapp.com';

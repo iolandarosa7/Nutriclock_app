@@ -1,5 +1,3 @@
-import 'dart:ffi';
-
 class Statistics {
   int daysFromInitialDate;
   int totalDaysRegistered;
@@ -10,6 +8,7 @@ class Statistics {
   int totalBurnedCals;
   String averageDuration;
   int averageBurnedCals;
+  int totalSportDays;
 
   Statistics();
 
@@ -22,7 +21,8 @@ class Statistics {
         'totalDuration': totalDuration,
         'totalBurnedCals': totalBurnedCals,
         'averageDuration': averageDuration,
-        'averageBurnedCals': averageBurnedCals
+        'averageBurnedCals': averageBurnedCals,
+        'totalSportDays': totalSportDays
       };
 
   Statistics.fromJson(Map<String, dynamic> json)
@@ -34,5 +34,6 @@ class Statistics {
         totalDuration = json['totalDuration'],
         totalBurnedCals = json['totalBurnedCals'],
         averageDuration = json['averageDuration'],
-        averageBurnedCals = json['averageBurnedCals'];
+        averageBurnedCals = json['averageBurnedCals'],
+        totalSportDays = json['totalSportDays'];
 }

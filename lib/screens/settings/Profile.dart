@@ -33,7 +33,7 @@ class _ProfileState extends State<Profile> {
   DateTime selectedDate = DateTime.now();
   List<Usf> _usfs = [];
   bool _isLoading = false;
-  User _user;
+  User _user = User();
   var appWidget = AppWidget();
 
   @override
