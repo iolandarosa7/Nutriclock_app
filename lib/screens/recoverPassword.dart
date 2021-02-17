@@ -147,6 +147,7 @@ class _RecoverPasswordState extends State<RecoverPassword> {
   }
 
   void _forgotPassword() async {
+    var hasError = false;
     if (_isLoading) return;
 
     setState(() {
@@ -158,13 +159,19 @@ class _RecoverPasswordState extends State<RecoverPassword> {
           await Network().postWithoutAuth({'email': email}, PASSWORD_URL);
 
       if (response.statusCode == RESPONSE_SUCCESS_201) {
-        appWidget.showSnackbar('Foi enviado um email para recuperação de password', Colors.green, _scaffoldKey);
+        appWidget.showSnackbar(
+            'Foi enviado um email para recuperação de password',
+            Colors.green,
+            _scaffoldKey);
       } else {
+        hasError = true;
         message = ERROR_USER_NOT_FOUND_API;
       }
-    } catch (error) {}
+    } catch (error) {
+      hasError = true;
+    }
 
-    appWidget.showSnackbar(message, Colors.red, _scaffoldKey);
+    if (hasError) appWidget.showSnackbar(message, Colors.red, _scaffoldKey);
 
     setState(() {
       _isLoading = false;

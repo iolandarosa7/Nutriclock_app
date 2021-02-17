@@ -27,9 +27,6 @@ class _HomeFragmentState extends State<HomeFragment> {
   var _isLoading = false;
   var _totalSportDays = 0;
 
-  // total cals 8*7*400 = 22400
-  // total exercicio minutos = 1200
-
   @override
   void initState() {
     _loadData();
