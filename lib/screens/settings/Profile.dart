@@ -465,7 +465,7 @@ class _ProfileState extends State<Profile> {
                         borderRadius: BorderRadius.circular(50.0),
                         child: Image.network(
                           "$IMAGE_BASE_URL/avatars/${_user.avatarUrl}",
-                          fit: BoxFit.fill,
+                          fit: BoxFit.cover,
                           errorBuilder: (BuildContext context,
                               Object exception, StackTrace stackTrace) {
                             return _renderImageDefault();
