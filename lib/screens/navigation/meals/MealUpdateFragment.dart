@@ -38,7 +38,7 @@ class _MealUpdateFragmentState extends State<MealUpdateFragment> {
     DropMenu('L', 'Lanche'),
     DropMenu('J', 'Jantar'),
     DropMenu('S', 'Snack'),
-    DropMenu('O', 'Outro'),
+    DropMenu('O', 'Ceia'),
   ];
   final _units = [
     DropMenu('Gramas', 'Gramas'),
@@ -151,7 +151,8 @@ class _MealUpdateFragmentState extends State<MealUpdateFragment> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      key: appWidget.getAppbar("Editar Alimento / Refeição"),
+      key: _scaffoldKey,
+      appBar: appWidget.getAppbar("Editar Alimento / Refeição"),
       body: appWidget.getImageContainer(
         "assets/images/bg_login.png",
         _isLoading,

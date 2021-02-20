@@ -398,6 +398,9 @@ class _MealsFragmentState extends State<MealsFragment> {
 
     try {
       var response = await Network().deletetWithAuth(MEAL_URL, meal.id);
+      setState(() {
+        _isLoading = false;
+      });
       if (response.statusCode == RESPONSE_SUCCESS) {
         appWidget.showSnackbar(
             "Eliminado com sucesso", Colors.green, _scaffoldKey);
@@ -406,15 +409,14 @@ class _MealsFragmentState extends State<MealsFragment> {
         hasError = true;
       }
     } catch (error) {
+      setState(() {
+        _isLoading = false;
+      });
       hasError = true;
     }
 
     if (hasError)
       appWidget.showSnackbar("Não é possivel eliminar o elemento seleccionado",
           Colors.red, _scaffoldKey);
-
-    setState(() {
-      _isLoading = false;
-    });
   }
 }

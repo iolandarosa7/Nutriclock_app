@@ -105,7 +105,7 @@ class _MealCreateFragmentState extends State<MealCreateFragment> {
       context: context,
       builder: (BuildContext context) {
         return StatefulBuilder(
-            builder: (BuildContext context, StateSetter setState) {
+            builder: (BuildContext context, StateSetter setModalState) {
           return AlertDialog(
             title: Text(
               'Data / Hora da Refeição',
@@ -133,7 +133,7 @@ class _MealCreateFragmentState extends State<MealCreateFragment> {
                       FlatButton(
                         color: Colors.transparent,
                         splashColor: Colors.black26,
-                        onPressed: () => _selectDate(context, 'DATE'),
+                        onPressed: () => _selectDate(context, 'DATE', setModalState),
                         child: Text(
                           dateFormat.format(_date),
                           style: TextStyle(
@@ -162,7 +162,7 @@ class _MealCreateFragmentState extends State<MealCreateFragment> {
                       FlatButton(
                         color: Colors.transparent,
                         splashColor: Colors.black26,
-                        onPressed: () => _selectDate(context, 'TIME'),
+                        onPressed: () => _selectDate(context, 'TIME', setModalState),
                         child: Text(
                           "${_time.hour}:${_time.minute > 9 ? _time.minute : "0${_time.minute}"} horas",
                           style: TextStyle(
@@ -203,7 +203,7 @@ class _MealCreateFragmentState extends State<MealCreateFragment> {
     );
   }
 
-  void _selectDate(BuildContext context, String type) async {
+  void _selectDate(BuildContext context, String type, StateSetter setModalState) async {
     final ThemeData themeData = Theme.of(context);
     assert(themeData.platform != null);
 
@@ -212,20 +212,20 @@ class _MealCreateFragmentState extends State<MealCreateFragment> {
       case TargetPlatform.fuchsia:
       case TargetPlatform.linux:
       case TargetPlatform.windows:
-        return buildMaterialDatePicker(context, type);
+        return buildMaterialDatePicker(context, type, setModalState);
       case TargetPlatform.iOS:
       case TargetPlatform.macOS:
-        return buildCupertinoDatePicker(context, type);
+        return buildCupertinoDatePicker(context, type, setModalState);
     }
   }
 
-  void buildMaterialDatePicker(BuildContext context, String type) async {
+  void buildMaterialDatePicker(BuildContext context, String type, StateSetter setModalState) async {
     if (type == 'TIME') {
       final pickedTime =
           await showTimePicker(context: context, initialTime: _time);
 
       if (pickedTime != null && pickedTime != _time) {
-        setState(() {
+        setModalState(() {
           _time = pickedTime;
         });
       }
@@ -244,13 +244,13 @@ class _MealCreateFragmentState extends State<MealCreateFragment> {
     );
 
     if (picked != null && picked != _date) {
-      setState(() {
+      setModalState(() {
         _date = picked;
       });
     }
   }
 
-  void buildCupertinoDatePicker(BuildContext context, String type) async {
+  void buildCupertinoDatePicker(BuildContext context, String type, StateSetter setModalState) async {
     showModalBottomSheet(
         context: context,
         builder: (BuildContext builder) {
@@ -263,12 +263,12 @@ class _MealCreateFragmentState extends State<MealCreateFragment> {
                   : CupertinoDatePickerMode.date,
               onDateTimeChanged: (picked) {
                 if (type != 'TIME' && picked != null && picked != _date)
-                  setState(() {
+                  setModalState(() {
                     _date = picked;
                   });
 
                 if (type == 'TIME' && picked != null && picked != _time)
-                  setState(() {
+                  setModalState(() {
                     _time = TimeOfDay(hour: picked.hour, minute: picked.minute);
                   });
               },
