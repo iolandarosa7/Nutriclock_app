@@ -272,7 +272,7 @@ class _ExerciseFragmentState extends State<ExerciseFragment> {
                                     element.name
                                         .toString()
                                         .toLowerCase()
-                                        .startsWith(pattern)) {
+                                        .contains(pattern)) {
                                   list.add(element.name);
                                   size++;
                                 }

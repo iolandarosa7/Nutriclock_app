@@ -180,7 +180,7 @@ class _MealDetailFragmentState extends State<MealDetailFragment> {
                               element
                                   .toString()
                                   .toLowerCase()
-                                  .startsWith(pattern)) {
+                                  .contains(pattern)) {
                             list.add(element);
                             size++;
                           }
@@ -554,7 +554,8 @@ class _MealDetailFragmentState extends State<MealDetailFragment> {
     } catch (error) {
       isShowMessage = true;
     }
-    if (isShowMessage) appWidget.showSnackbar(message, Colors.red, _scaffoldKey);
+    if (isShowMessage)
+      appWidget.showSnackbar(message, Colors.red, _scaffoldKey);
 
     setState(() {
       _isLoading = false;
