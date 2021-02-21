@@ -43,7 +43,7 @@ class _DiseasesState extends State<Diseases> {
         backgroundColor: Color(0xFF60B2A3),
         elevation: 50,
       ),
-      appBar: appWidget.getAppbar("Doenças / Alergias"),
+      appBar: appWidget.getAppbar("Doenças / Alergias Alimentares"),
       body: appWidget.getImageContainer(
         "assets/images/bg_home.jpg",
         _isLoading,
@@ -154,7 +154,7 @@ class _DiseasesState extends State<Diseases> {
             builder: (BuildContext context, StateSetter setState) {
           return AlertDialog(
             title: Text(
-              'Editar Doença / Alergia',
+              'Editar Doença / Alergia Alimentar',
               textAlign: TextAlign.center,
               style: TextStyle(color: Color(0xFFA3E1CB)),
             ),
@@ -212,7 +212,7 @@ class _DiseasesState extends State<Diseases> {
         builder: (BuildContext context) {
           return AlertDialog(
             title: Text(
-              "Apagar doença / alergia",
+              "Apagar doença / alergia alimentar",
               textAlign: TextAlign.center,
               style: TextStyle(
                 color: Color(0xFFA3E1CB),
@@ -222,7 +222,7 @@ class _DiseasesState extends State<Diseases> {
               child: ListBody(
                 children: <Widget>[
                   Text(
-                    "Tem a certeza que deseja apagar a doença / alergia selecionada?",
+                    "Tem a certeza que deseja apagar a doença / alergia alimentar selecionada?",
                     style: TextStyle(
                       fontSize: 14.0,
                       color: Colors.grey,
@@ -268,7 +268,7 @@ class _DiseasesState extends State<Diseases> {
         child: Column(
           children: [
             Text(
-              "Não existem doenças / alergias registadas.",
+              "Não existem doenças / alergias alimentares registadas.",
               style: TextStyle(color: Colors.black),
             ),
           ],
@@ -423,7 +423,8 @@ class _DiseasesState extends State<Diseases> {
       _isLoading = false;
     });
 
-    if (isShowMessage) appWidget.showSnackbar("Ocorreu um erro", Colors.red, _scaffoldKey);
+    if (isShowMessage)
+      appWidget.showSnackbar("Ocorreu um erro", Colors.red, _scaffoldKey);
 
     this.setState(() {
       diseaseToAdd = null;
@@ -505,9 +506,7 @@ class _DiseasesState extends State<Diseases> {
           });
         }
       }
-    } catch (error) {
-      print(error);
-    }
+    } catch (error) {}
 
     setState(() {
       _isLoading = false;

@@ -6,6 +6,7 @@ import 'package:nutriclock_app/screens/home.dart';
 import 'package:nutriclock_app/screens/login.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:splashscreen/splashscreen.dart';
+import 'package:syncfusion_localizations/syncfusion_localizations.dart';
 
 import 'constants/constants.dart';
 
@@ -16,12 +17,14 @@ void main() {
       GlobalMaterialLocalizations.delegate,
       GlobalWidgetsLocalizations.delegate,
       GlobalCupertinoLocalizations.delegate,
+      SfGlobalLocalizations.delegate
     ],
     supportedLocales: [
-      const Locale('en', ''),
       const Locale('pt', ''),
+      const Locale('en', ''),
       const Locale('fr', ''),
     ],
+    locale: const Locale('pt'),
     home: MyApp(),
   ));
 }

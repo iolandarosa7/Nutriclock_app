@@ -55,7 +55,7 @@ class Network {
     var stream = http.ByteStream(DelegatingStream.typed(file.openRead()));
     var fileLenght = await file.length();
     var multipartFileSign = http.MultipartFile('avatar', stream, fileLenght,
-          filename: basename(file.path));
+        filename: basename(file.path));
     request.files.add(multipartFileSign);
 
     try {
@@ -65,7 +65,6 @@ class Network {
     } catch (e) {
       rethrow;
     }
-
   }
 
   Future<http.Response> deletetWithAuth(String apiUrl, dynamic id) async {

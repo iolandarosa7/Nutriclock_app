@@ -28,8 +28,6 @@ class _SleepFragmentState extends State<SleepFragment> {
       var response = await Network().getWithAuth(CONFIG_TIP_URL);
       if (response.statusCode == RESPONSE_SUCCESS) {
         var showTips = json.decode(response.body)[JSON_DATA_KEY]['value'];
-        print(showTips);
-
         this.setState(() {
           _showTips = (showTips == "true" || showTips == "1") ? true : false;
         });

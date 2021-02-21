@@ -38,12 +38,8 @@ class _ExerciseReportFragmentState extends State<ExerciseReportFragment> {
 
     try {
       var response = await Network().getWithAuth(EXERCISES_STATS_URL);
-      print(response.statusCode);
-      print(response.body);
-
       if (response.statusCode == RESPONSE_SUCCESS) {
         _data = json.decode(response.body)[JSON_DATA_KEY];
-
         // get the years
         _data.forEach((key, value) {
           _years.add(DropMenu(key, key));
@@ -51,11 +47,8 @@ class _ExerciseReportFragmentState extends State<ExerciseReportFragment> {
       }
 
       this._populateMonthsByYear(_years[0].value);
-
       this._setDataSource(_years[0].value, _monthsByYear[0].value);
-    } catch (error) {
-      print(error);
-    }
+    } catch (error) {}
 
     setState(() {
       _isLoading = false;

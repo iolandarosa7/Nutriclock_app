@@ -54,22 +54,31 @@ class AppWidget {
   getParsedMonths(value) {
     switch (value) {
       case '1':
+      case '01':
         return 'Janeiro';
       case '2':
+      case '02':
         return 'Fevereiro';
       case '3':
+      case '03':
         return 'Março';
       case '4':
+      case '04':
         return 'Abril';
       case '5':
+      case '05':
         return 'Maio';
       case '6':
+      case '06':
         return 'Junho';
       case '7':
+      case '07':
         return 'Julho';
       case '8':
+      case '08':
         return 'Agosto';
       case '9':
+      case '09':
         return 'Setembro';
       case '10':
         return 'Outobro';
@@ -77,6 +86,8 @@ class AppWidget {
         return 'Novembro';
       case '12':
         return 'Dezembro';
+      default:
+        return '';
     }
   }
 }

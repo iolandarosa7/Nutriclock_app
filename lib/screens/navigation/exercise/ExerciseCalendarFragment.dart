@@ -29,14 +29,13 @@ class _ExerciseCalendarFragmentState extends State<ExerciseCalendarFragment> {
   _loadData() async {
     try {
       var response = await Network().getWithAuth(EXERCISES_DATES_URL);
-      print(response.statusCode);
 
       if (response.statusCode == RESPONSE_SUCCESS) {
-        Map<String, dynamic> data = json.decode(response.body)[JSON_DATA_KEY];
+        List<dynamic> data = json.decode(response.body)[JSON_DATA_KEY];
         List<DateTime> dates = [];
 
-        data.entries.forEach((element) {
-          var dateArray = element.value.split("/");
+        data.forEach((element) {
+          var dateArray = element.split("/");
           dates.add(DateTime(int.parse(dateArray[2]), int.parse(dateArray[1]),
               int.parse(dateArray[0])));
         });
@@ -45,9 +44,7 @@ class _ExerciseCalendarFragmentState extends State<ExerciseCalendarFragment> {
           _dates = dates;
         });
       }
-    } catch (error) {
-      print(error);
-    }
+    } catch (error) {}
   }
 
   @override
@@ -161,8 +158,8 @@ class _ExerciseCalendarFragmentState extends State<ExerciseCalendarFragment> {
             context,
             MaterialPageRoute(
                 builder: (context) => ExerciseDetailsFragment(
-                  value: value,
-                )),
+                      value: value,
+                    )),
           );
         }
       });
