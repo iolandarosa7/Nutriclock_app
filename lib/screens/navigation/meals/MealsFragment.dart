@@ -178,7 +178,7 @@ class _MealsFragmentState extends State<MealsFragment> {
     return Scaffold(
       key: _scaffoldKey,
       floatingActionButtonLocation: FloatingActionButtonLocation.endTop,
-      floatingActionButton: _daysFromInitialMeal <= 3
+      floatingActionButton: _daysFromInitialMeal < 3
           ? FloatingActionButton(
               onPressed: () {
                 Navigator.push(
