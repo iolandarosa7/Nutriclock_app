@@ -6,7 +6,7 @@ class MealPlanType {
   int planMealId;
   int portion;
   String hour;
-  List<Ingredient> ingredients;
+  List<dynamic> ingredients;
   bool opened;
 
   MealPlanType();
@@ -25,7 +25,7 @@ class MealPlanType {
         planMealId = json['planMealId'],
         portion = json['portion'],
         hour = json['hour'],
-        ingredients = json['ingredient'],
+        ingredients = json['ingredients'],
         opened = false,
         id = json['id'];
 }

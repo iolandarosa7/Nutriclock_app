@@ -1,17 +1,20 @@
+import 'dart:convert';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:nutriclock_app/constants/constants.dart';
 import 'package:nutriclock_app/models/Ingredient.dart';
 import 'package:nutriclock_app/models/MealPlanType.dart';
 import 'package:nutriclock_app/models/WeekDay.dart';
+import 'package:nutriclock_app/network_utils/api.dart';
 
 class FoodPlanFragment extends StatefulWidget {
   @override
   _FoodPlanFragmentState createState() => _FoodPlanFragmentState();
 }
 
-class _FoodPlanFragmentState extends State<FoodPlanFragment>
-    with SingleTickerProviderStateMixin {
+class _FoodPlanFragmentState extends State<FoodPlanFragment> {
   final _scaffoldKey = GlobalKey<ScaffoldState>();
   var _selectedDayIndex = 0;
   List<WeekDay> _weekDates = [
@@ -23,36 +26,14 @@ class _FoodPlanFragmentState extends State<FoodPlanFragment>
     WeekDay('SAB'),
     WeekDay('DOM'),
   ];
-  List<Ingredient> _ingredients = [];
   List<MealPlanType> _meals = [];
-
-  TabController _controller;
+  var _isLoading = false;
 
   @override
   void initState() {
-    super.initState();
-    _controller = new TabController(length: 2, vsync: this);
     _populateWeek();
     _getMealsByDate(_weekDates[_selectedDayIndex].date);
-    /*var ingredient = Ingredient();
-    ingredient.name = 'Banana';
-    ingredient.quantity = 200;
-    ingredient.unit = 'Gramas';
-    ingredient.description = '1 Banana grande';
-
-    _ingredients.add(ingredient);
-    _ingredients.add(ingredient);
-
-    var mealType = MealPlanType();
-    mealType.type = 'P';
-    mealType.portion = 1;
-    mealType.hour = '08:00';
-    mealType.opened = false;
-    mealType.ingredients = _ingredients;
-
-    _meals.add(mealType);
-    _meals.add(mealType);
-    _meals.add(mealType);*/
+    super.initState();
   }
 
   @override
@@ -107,6 +88,16 @@ class _FoodPlanFragmentState extends State<FoodPlanFragment>
 
   List<Widget> _renderMeals() {
     List<Widget> list = [];
+    if (_meals == null || _meals.length == 0)
+      list.add(Padding(
+        padding: EdgeInsets.only(top: 20),
+        child: Center(
+          child: Text(
+            "Não tem plano"
+          ),
+        ),
+      ));
+
     _meals.forEach((element) {
       list.add(
         Column(
@@ -220,12 +211,11 @@ class _FoodPlanFragmentState extends State<FoodPlanFragment>
             ),
             Column(
               children: [
-                element.opened && element.ingredients != null ?
-                _renderIngredients(element.ingredients):
-                SizedBox()
+                element.opened && element.ingredients != null
+                    ? _renderIngredients(element.ingredients)
+                    : SizedBox()
               ],
             )
-
           ],
         ),
       );
@@ -261,14 +251,18 @@ class _FoodPlanFragmentState extends State<FoodPlanFragment>
                           SizedBox(
                             width: 4,
                           ),
-                          Text(element.name),
+                          Flexible(
+                            child: Text(element.name),
+                          ),
                         ],
                       ),
                       SizedBox(
                         height: 4,
                       ),
                       Text("${element.quantity} ${element.unit}"),
-                      Text(element.description),
+                      Text(element.description == null
+                          ? ""
+                          : element.description),
                     ],
                   ),
                 ),
@@ -376,43 +370,82 @@ class _FoodPlanFragmentState extends State<FoodPlanFragment>
     DateTime date = DateTime.now();
     var auxDate = DateTime(date.year, date.month, date.day + 1);
     int dayIndex = _getSelectedIndexByDay(DateFormat('E').format(date));
-    int auxDayIndex = dayIndex+1;
-    String currentDateString = DateFormat('dd/MM/yyyy').format(date);
+    int auxDayIndex = dayIndex + 1;
+    String currentDateString = DateFormat('dd-MM-yyyy').format(date);
+    String currentAuxDateString = DateFormat('dd-MM-yyyy').format(auxDate);
     setState(() {
       _selectedDayIndex = dayIndex;
     });
 
-    while(dayIndex >= 0) {
+    while (dayIndex >= 0) {
       weeks[dayIndex].date = currentDateString;
-      dayIndex --;
+      dayIndex--;
       date = DateTime(date.year, date.month, date.day - 1);
-      currentDateString = DateFormat('dd/MM/yyyy').format(date);
+      currentDateString = DateFormat('dd-MM-yyyy').format(date);
     }
 
-    while(auxDayIndex <= 6) {
-      weeks[auxDayIndex].date = currentDateString;
-      auxDate = DateTime(auxDate.year, auxDate.month, auxDate.day - 1);
+    while (auxDayIndex <= 6) {
+      weeks[auxDayIndex].date = currentAuxDateString;
+      auxDate = DateTime(auxDate.year, auxDate.month, auxDate.day + 1);
       auxDayIndex++;
-      currentDateString = DateFormat('dd/MM/yyyy').format(auxDate);
+      currentAuxDateString = DateFormat('dd-MM-yyyy').format(auxDate);
     }
 
     setState(() {
       _weekDates = weeks;
     });
   }
-  _getMealsByDate(String date) {
-    print(date);
+
+  _getMealsByDate(String date) async {
+    List<MealPlanType> meals = [];
+
+    if (_isLoading) return;
+
+    this.setState(() {
+      _isLoading = true;
+    });
+
+    try {
+      var response = await Network().getWithAuthParam(MEAL_PLAN_TYPE_URL, date);
+
+      if (response.statusCode == RESPONSE_SUCCESS) {
+        List<dynamic> data = json.decode(response.body)[JSON_DATA_KEY];
+        List<Ingredient> ingredients = [];
+
+        data.forEach((element) {
+          MealPlanType m = MealPlanType.fromJson(element);
+          m.ingredients.forEach((i) {
+            Ingredient ing = Ingredient.fromJson(i);
+            ingredients.add(ing);
+          });
+          m.ingredients = ingredients;
+          meals.add(m);
+        });
+      }
+    } catch (error) {}
+
+    setState(() {
+      _isLoading = false;
+      _meals = meals;
+    });
   }
 
   _getSelectedIndexByDay(day) {
     switch (day) {
-      case 'Mon': return 0;
-      case 'Tue': return 1;
-      case 'Wed': return 2;
-      case 'Thu': return 3;
-      case 'Fri': return 4;
-      case 'Sat': return 5;
-      default: return 6;
+      case 'Mon':
+        return 0;
+      case 'Tue':
+        return 1;
+      case 'Wed':
+        return 2;
+      case 'Thu':
+        return 3;
+      case 'Fri':
+        return 4;
+      case 'Sat':
+        return 5;
+      default:
+        return 6;
     }
   }
 }
