@@ -564,10 +564,10 @@ class _FoodPlanFragmentState extends State<FoodPlanFragment> {
 
       if (response.statusCode == RESPONSE_SUCCESS) {
         List<dynamic> data = json.decode(response.body)[JSON_DATA_KEY];
-        List<Ingredient> ingredients = [];
 
         data.forEach((element) {
           MealPlanType m = MealPlanType.fromJson(element);
+          List<Ingredient> ingredients = [];
           m.ingredients.forEach((i) {
             Ingredient ing = Ingredient.fromJson(i);
             ingredients.add(ing);
@@ -589,8 +589,6 @@ class _FoodPlanFragmentState extends State<FoodPlanFragment> {
 
     try {
       var response = await Network().getWithAuthParam(MEAL_PLAN_HISTORY_URL, date);
-
-      print(response.body);
 
       if (response.statusCode == RESPONSE_SUCCESS) {
         List<dynamic> data = json.decode(response.body)[JSON_DATA_KEY];
@@ -614,9 +612,7 @@ class _FoodPlanFragmentState extends State<FoodPlanFragment> {
           history.add(m);
         });
       }
-    } catch (error) {
-      print(error);
-    }
+    } catch (error) {}
 
     setState(() {
       _history = history;
