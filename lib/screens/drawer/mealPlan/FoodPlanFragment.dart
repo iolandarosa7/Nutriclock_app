@@ -3,8 +3,11 @@ import 'dart:convert';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:loading/indicator/ball_pulse_indicator.dart';
+import 'package:loading/loading.dart';
 import 'package:nutriclock_app/constants/constants.dart';
 import 'package:nutriclock_app/models/Ingredient.dart';
+import 'package:nutriclock_app/models/MealPlan.dart';
 import 'package:nutriclock_app/models/MealPlanType.dart';
 import 'package:nutriclock_app/models/WeekDay.dart';
 import 'package:nutriclock_app/network_utils/api.dart';
@@ -27,12 +30,14 @@ class _FoodPlanFragmentState extends State<FoodPlanFragment> {
     WeekDay('DOM'),
   ];
   List<MealPlanType> _meals = [];
+  List<MealPlan>_history = [];
   var _isLoading = false;
 
   @override
   void initState() {
     _populateWeek();
     _getMealsByDate(_weekDates[_selectedDayIndex].date);
+    _getHistoryFromDate(_weekDates[_selectedDayIndex].date);
     super.initState();
   }
 
@@ -79,16 +84,22 @@ class _FoodPlanFragmentState extends State<FoodPlanFragment> {
                 ),
               ),
             ),
-            ..._renderMeals()
+            _isLoading == true ? Center(
+              child: Loading(
+                  indicator: BallPulseIndicator(),
+                  size: 50.0,
+                  color: Color(0xFFFFBCBC)),
+            ) : SizedBox(),
+            ..._renderMeals(_meals)
           ],
         ),
       ),
     );
   }
 
-  List<Widget> _renderMeals() {
+  List<Widget> _renderMeals(List<MealPlanType> meals) {
     List<Widget> list = [];
-    if (_meals == null || _meals.length == 0)
+    if (meals == null || meals.length == 0)
       list.add(Padding(
         padding: EdgeInsets.only(top: 20),
         child: Center(
@@ -98,7 +109,7 @@ class _FoodPlanFragmentState extends State<FoodPlanFragment> {
         ),
       ));
 
-    _meals.forEach((element) {
+    meals.forEach((element) {
       list.add(
         Column(
           children: [
@@ -180,7 +191,7 @@ class _FoodPlanFragmentState extends State<FoodPlanFragment> {
                       child: element.opened
                           ? IconButton(
                               icon: Icon(
-                                Icons.keyboard_arrow_up,
+                                Icons.close,
                                 color: Color(0xFFA3E1CB),
                               ),
                               tooltip: 'Fechar detalhes',
@@ -196,7 +207,7 @@ class _FoodPlanFragmentState extends State<FoodPlanFragment> {
                                 Icons.keyboard_arrow_down,
                                 color: Color(0xFFA3E1CB),
                               ),
-                              tooltip: 'Fechar detalhes',
+                              tooltip: 'Abrir detalhes',
                               onPressed: () {
                                 element.opened = true;
                                 setState(() {
@@ -327,9 +338,123 @@ class _FoodPlanFragmentState extends State<FoodPlanFragment> {
 
   Widget _renderHistoryPlan() {
     return Container(
-      decoration: BoxDecoration(color: Color(0xFFCECFCF)),
-      child: Text("plano historico"),
+      color: Color(0xFFE2E2E2),
+      padding: EdgeInsets.only(top: 8),
+      child: SingleChildScrollView(
+        scrollDirection: Axis.vertical,
+        child: Column(
+          children: _renderHistory(),
+        ),
+      ),
     );
+  }
+
+  List<Widget> _renderHistory() {
+    List<Widget> list = [];
+    if (_history == null || _history.length == 0)
+      list.add(Padding(
+        padding: EdgeInsets.only(top: 20),
+        child: Center(
+          child: Text(
+              "Não existem dados no histórico"
+          ),
+        ),
+      ));
+
+    _history.forEach((element) {
+      list.add(
+        Column(
+          children: [
+            SizedBox(
+              height: 16,
+            ),
+            Container(
+              color: Colors.white,
+              child: Padding(
+                padding: EdgeInsets.all(16),
+                child: Row(
+                  children: [
+                    Container(
+                      width: 40,
+                      height: 40,
+                      decoration: BoxDecoration(
+                        border: Border.all(
+                          color: Color(0xFFA3E1CB),
+                          width: 2,
+                        ),
+                        borderRadius: BorderRadius.all(
+                          Radius.circular(40),
+                        ),
+                      ),
+                      child: Center(
+                        child:
+                        Icon(
+                          Icons.calendar_today,
+                          color: Color(0xFFA3E1CB),
+                        ),
+                      ),
+                    ),
+                    Expanded(
+                      flex: 7,
+                      child: Padding(
+                        padding: EdgeInsets.symmetric(horizontal: 16),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(_renderDate(element.dayOfWeek,element.date)),
+                            SizedBox(
+                              height: 4,
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                    Expanded(
+                      flex: 1,
+                      child: element.opened
+                          ? IconButton(
+                        icon: Icon(
+                          Icons.close,
+                          color: Color(0xFFA3E1CB),
+                        ),
+                        tooltip: 'Fechar detalhes',
+                        onPressed: () {
+                          element.opened = false;
+                          setState(() {
+                            _meals = _meals;
+                          });
+                        },
+                      )
+                          : IconButton(
+                        icon: Icon(
+                          Icons.keyboard_arrow_down,
+                          color: Color(0xFFA3E1CB),
+                        ),
+                        tooltip: 'Abrir detalhes',
+                        onPressed: () {
+                          element.opened = true;
+                          setState(() {
+                            _meals = _meals;
+                          });
+                        },
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+            Column(
+              children:
+                element.opened && element.mealTypes != null
+                    ? _renderMeals(element.mealTypes)
+                    : [SizedBox()],
+            )
+          ],
+        ),
+      );
+    });
+
+    return list;
   }
 
   _getFirstLetterFromName(type) {
@@ -363,6 +488,35 @@ class _FoodPlanFragmentState extends State<FoodPlanFragment> {
   _renderPortion(portion) {
     if (portion > 1) return "$portion porções";
     return "$portion porção";
+  }
+
+  _renderDate(dayOfWeek, date) {
+    var d = 'Domingo';
+    switch (dayOfWeek) {
+      case 'MON':
+        d = 'Segunda-feira';
+        break;
+      case 'TUE':
+        d = 'Terça-feira';
+        break;
+      case 'WED':
+        d = 'Quarta-feira';
+        break;
+      case 'THU':
+        d = 'Quinta-feira';
+        break;
+      case 'FRI':
+        d = 'Sexta-feira';
+        break;
+      case 'SAT':
+        d = 'Sábado';
+        break;
+      default:
+        d = 'Domingo';
+    }
+
+
+    return "$d, $date";
   }
 
   _populateWeek() {
@@ -427,6 +581,45 @@ class _FoodPlanFragmentState extends State<FoodPlanFragment> {
     setState(() {
       _isLoading = false;
       _meals = meals;
+    });
+  }
+
+  _getHistoryFromDate(String date) async {
+    List<MealPlan> history = [];
+
+    try {
+      var response = await Network().getWithAuthParam(MEAL_PLAN_HISTORY_URL, date);
+
+      print(response.body);
+
+      if (response.statusCode == RESPONSE_SUCCESS) {
+        List<dynamic> data = json.decode(response.body)[JSON_DATA_KEY];
+        List<MealPlanType> mealPlanTypes = [];
+
+        data.forEach((element) {
+          MealPlan m = MealPlan.fromJson(element);
+          m.mealTypes.forEach((elementMealType) {
+            MealPlanType mealPlanType = MealPlanType.fromJson(elementMealType);
+            mealPlanTypes.add(mealPlanType);
+
+            List<Ingredient> ingredients = [];
+            mealPlanType.ingredients.forEach((i) {
+              Ingredient ing = Ingredient.fromJson(i);
+              ingredients.add(ing);
+            });
+
+            mealPlanType.ingredients = ingredients;
+          });
+          m.mealTypes = mealPlanTypes;
+          history.add(m);
+        });
+      }
+    } catch (error) {
+      print(error);
+    }
+
+    setState(() {
+      _history = history;
     });
   }
 

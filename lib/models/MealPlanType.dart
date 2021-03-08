@@ -1,5 +1,3 @@
-import 'package:nutriclock_app/models/Ingredient.dart';
-
 class MealPlanType {
   int id;
   String type;
