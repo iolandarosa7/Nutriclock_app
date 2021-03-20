@@ -883,8 +883,8 @@ class _MealUpdateFragmentState extends State<MealUpdateFragment> {
               initialDateTime: type == 'TIME'
                   ? DateTime(1969, 1, 1, _time.hour, _time.minute)
                   : _date,
-              minimumYear: 2000,
-              maximumYear: 2025,
+              minimumYear: 1900,
+              maximumDate: DateTime.now(),
               use24hFormat: true,
               minuteInterval: 1,
             ),

@@ -769,8 +769,8 @@ class _ProfileState extends State<Profile> {
                   });
               },
               initialDateTime: selectedDate,
-              minimumYear: 2000,
-              maximumYear: 2025,
+              minimumYear: 1900,
+              maximumDate: DateTime.now()
             ),
           );
         });

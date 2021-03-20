@@ -1238,15 +1238,16 @@ class _RegisterState extends State<Register> {
             height: MediaQuery.of(context).copyWith().size.height / 3,
             color: Colors.white,
             child: CupertinoDatePicker(
-              mode: CupertinoDatePickerMode.date,
-              onDateTimeChanged: (picked) {
-                if (picked != null && picked != selectedDate)
-                  setState(() {
-                    selectedDate = picked;
-                  });
-              },
-              initialDateTime: selectedDate,
-              minimumYear: 1900,
+                mode: CupertinoDatePickerMode.date,
+                onDateTimeChanged: (picked) {
+                  if (picked != null && picked != selectedDate)
+                    setState(() {
+                      selectedDate = picked;
+                    });
+                },
+                initialDateTime: selectedDate,
+                minimumYear: 1900,
+                maximumDate: DateTime.now(),
             ),
           );
         });
