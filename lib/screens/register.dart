@@ -1246,8 +1246,7 @@ class _RegisterState extends State<Register> {
                   });
               },
               initialDateTime: selectedDate,
-              minimumYear: 2000,
-              maximumYear: 2025,
+              minimumYear: 1900,
             ),
           );
         });
