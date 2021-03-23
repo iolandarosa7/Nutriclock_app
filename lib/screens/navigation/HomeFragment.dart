@@ -6,6 +6,8 @@ import 'package:flutter/rendering.dart';
 import 'package:loading/indicator/ball_pulse_indicator.dart';
 import 'package:loading/loading.dart';
 import 'package:nutriclock_app/constants/constants.dart';
+import 'package:nutriclock_app/models/Ingredient.dart';
+import 'package:nutriclock_app/models/MealPlanType.dart';
 import 'package:nutriclock_app/models/Statistics.dart';
 import 'package:nutriclock_app/network_utils/api.dart';
 import 'package:percent_indicator/circular_percent_indicator.dart';
@@ -26,6 +28,7 @@ class _HomeFragmentState extends State<HomeFragment> {
   var _averageSleepHours = 0.0;
   var _isLoading = false;
   var _totalSportDays = 0;
+  MealPlanType _mealPlanType;
 
   @override
   void initState() {
@@ -47,6 +50,15 @@ class _HomeFragmentState extends State<HomeFragment> {
 
         var daysRegistered = 0;
         var sleeps = 0;
+        MealPlanType mealPlanType;
+        List<Ingredient> ingredients = [];
+        if (data.mealPlanType != null) {
+          mealPlanType = MealPlanType.fromJson(data.mealPlanType);
+          mealPlanType.ingredients.forEach((element) {
+            ingredients.add(Ingredient.fromJson(element));
+          });
+          mealPlanType.ingredients = ingredients;
+        }
 
         if (data.totalDaysRegistered != null)
           daysRegistered = data.totalDaysRegistered;
@@ -61,14 +73,168 @@ class _HomeFragmentState extends State<HomeFragment> {
           _totalBurnedCals = data.totalBurnedCals;
           _averageBurnedCals = data.averageBurnedCals;
           _totalSportDays = data.totalSportDays;
+          _mealPlanType = mealPlanType;
           _isLoading = false;
         });
       }
     } catch (error) {
+      print(error);
       this.setState(() {
         _isLoading = false;
       });
     }
+  }
+
+  Widget _renderLastMealCard() {
+    return Container(
+      width: double.infinity,
+      child: Card(
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(15.0),
+        ),
+        color: Color(0xFFA3E1CB),
+        child: Column(
+          children: [
+            Padding(
+              padding: EdgeInsets.only(top: 16, left: 16, right: 16),
+              child: Row(
+                children: [
+                  Container(
+                    width: 40,
+                    height: 40,
+                    decoration: BoxDecoration(
+                      border: Border.all(
+                        color: Colors.white,
+                        width: 2,
+                      ),
+                      borderRadius: BorderRadius.all(
+                        Radius.circular(40),
+                      ),
+                    ),
+                    child: Center(
+                      child: Icon(
+                        Icons.restaurant_rounded,
+                        color: Colors.white,
+                      ),
+                    ),
+                  ),
+                  SizedBox(
+                    width: 20,
+                  ),
+                  Expanded(
+                    flex: 7,
+                    child: Text(
+                      "Próxima Refeição",
+                      style: TextStyle(
+                          color: Colors.white,
+                          fontWeight: FontWeight.bold,
+                          fontSize: 20),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            Divider(
+              color: Colors.white,
+              thickness: 3,
+            ),
+            Padding(
+              padding: EdgeInsets.only(left: 16, right: 16, bottom: 16),
+              child: Row(
+                children: [
+                  Expanded(
+                    flex: 7,
+                    child: Text(
+                      _renderType(_mealPlanType.type),
+                      style: TextStyle(color: Colors.white, fontSize: 16),
+                    ),
+                  ),
+                  Icon(
+                    Icons.access_time_rounded,
+                    color: Colors.white,
+                  ),
+                  SizedBox(
+                    width: 8,
+                  ),
+                  Text(
+                    _mealPlanType.hour,
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 16,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            ..._renderIngredient()
+          ],
+        ),
+      ),
+    );
+  }
+
+  _renderType(type) {
+    switch (type) {
+      case 'P':
+        return 'Pequeno-almoço';
+      case 'A':
+        return 'Almoço';
+      case 'J':
+        return 'Jantar';
+      case 'S':
+        return 'Snacks';
+      case 'O':
+        return 'Ceia';
+      case 'L':
+        return 'Lanche';
+      default:
+        return 'Meio da manhã';
+    }
+  }
+
+  List<Widget> _renderIngredient() {
+    List<Widget> list = [];
+
+    _mealPlanType.ingredients.forEach((element) {
+      list.add(
+          Container (
+            decoration: BoxDecoration(
+              color: Colors.white54,
+            ),
+            child: Padding(
+              padding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+              child: Row(
+                children: [
+                  Icon(
+                    Icons.room_service,
+                    color: Colors.black,
+                  ),
+                  SizedBox(
+                    width: 8,
+                  ),
+                  Expanded(
+                    flex: 7,
+                    child: Text(
+                      element.name,
+                      style: TextStyle(
+                        color: Colors.black,
+                      ),
+                    ),
+                  ),
+                  Text(
+                    "${element.quantity} ${element.unit}",
+                    style: TextStyle(
+                      color: Colors.black,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          )
+      );
+    });
+
+    return list;
   }
 
   @override
@@ -97,6 +263,7 @@ class _HomeFragmentState extends State<HomeFragment> {
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
+                      if (_mealPlanType != null) _renderLastMealCard(),
                       SizedBox(
                         height: 30,
                       ),

@@ -1,3 +1,5 @@
+import 'package:nutriclock_app/models/MealPlanType.dart';
+
 class Statistics {
   int daysFromInitialDate;
   int totalDaysRegistered;
@@ -9,6 +11,7 @@ class Statistics {
   String averageDuration;
   int averageBurnedCals;
   int totalSportDays;
+  dynamic mealPlanType;
 
   Statistics();
 
@@ -22,7 +25,8 @@ class Statistics {
         'totalBurnedCals': totalBurnedCals,
         'averageDuration': averageDuration,
         'averageBurnedCals': averageBurnedCals,
-        'totalSportDays': totalSportDays
+        'totalSportDays': totalSportDays,
+        'mealPlanType': mealPlanType
       };
 
   Statistics.fromJson(Map<String, dynamic> json)
@@ -35,5 +39,6 @@ class Statistics {
         totalBurnedCals = json['totalBurnedCals'],
         averageDuration = json['averageDuration'],
         averageBurnedCals = json['averageBurnedCals'],
+        mealPlanType = json['mealPlanType'],
         totalSportDays = json['totalSportDays'];
 }

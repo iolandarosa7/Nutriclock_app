@@ -214,7 +214,6 @@ class Network {
     var url = Constants.BASE_API_URL + apiUrl;
     await _getToken();
     token = token.replaceAll("\"", "");
-    print("$url/$id");
     return await http.get(
       "$url/$id",
       headers: <String, String>{
