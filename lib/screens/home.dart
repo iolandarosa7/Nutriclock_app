@@ -6,12 +6,12 @@ import 'package:nutriclock_app/models/User.dart';
 import 'package:nutriclock_app/network_utils/api.dart';
 import 'package:nutriclock_app/screens/drawer/BioMarkersFragment.dart';
 import 'package:nutriclock_app/screens/drawer/ContactsFragment.dart';
-import 'package:nutriclock_app/screens/drawer/mealPlan/FoodPlanFragment.dart';
-import 'package:nutriclock_app/screens/navigation/HomeFragment.dart';
 import 'package:nutriclock_app/screens/drawer/ReportsFragment.dart';
+import 'package:nutriclock_app/screens/drawer/mealPlan/FoodPlanFragment.dart';
 import 'package:nutriclock_app/screens/login.dart';
-import 'package:nutriclock_app/screens/navigation/exercise/ExerciseCalendarFragment.dart';
+import 'package:nutriclock_app/screens/navigation/HomeFragment.dart';
 import 'package:nutriclock_app/screens/navigation/chat/ChatFragment.dart';
+import 'package:nutriclock_app/screens/navigation/exercise/ExerciseCalendarFragment.dart';
 import 'package:nutriclock_app/screens/navigation/meals/MealsFragment.dart';
 import 'package:nutriclock_app/screens/navigation/sleep/SleepFragment.dart';
 import 'package:nutriclock_app/screens/settings/Settings.dart';
@@ -186,7 +186,7 @@ class _HomeState extends State<Home> {
             icon: const Icon(Icons.input),
             tooltip: 'Logout',
             onPressed: () {
-              _logout();
+              _showLogoutModal();
             },
           ),
         ],
@@ -302,6 +302,47 @@ class _HomeState extends State<Home> {
         child: _widgetOptions.elementAt(_currentIndex),
       ),
     );
+  }
+
+  Future<void> _showLogoutModal() async {
+    return showDialog<void>(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            title: Text(
+              "Tem a certeza que deseja sair da aplicação?",
+              textAlign: TextAlign.center,
+              style: TextStyle(
+                fontFamily: 'Roboto',
+              ),
+            ),
+            actions: <Widget>[
+              TextButton(
+                onPressed: () {
+                  Navigator.of(context).pop();
+                  _logout();
+                },
+                child: Text(
+                  "Sim",
+                  style: TextStyle(
+                    color: Color(0xFF60B2A3),
+                  ),
+                ),
+              ),
+              TextButton(
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+                child: Text(
+                  "Não",
+                  style: TextStyle(
+                    color: Colors.black45,
+                  ),
+                ),
+              ),
+            ],
+          );
+        });
   }
 
   void _logout() async {
