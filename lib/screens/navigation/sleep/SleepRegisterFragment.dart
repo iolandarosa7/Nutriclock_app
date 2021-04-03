@@ -31,26 +31,7 @@ class _SleepRegisterFragmentState extends State<SleepRegisterFragment> {
   var _hasWakeUp = false;
   List<dynamic> _myActivities = [];
   List<dynamic> _myMotives = [];
-  var _userId;
   var appWidget = AppWidget();
-
-  @override
-  void initState() {
-    _loadData();
-    super.initState();
-  }
-
-  _loadData() async {
-    SharedPreferences localStorage = await SharedPreferences.getInstance();
-    var storeUser = localStorage.getString(LOCAL_STORAGE_USER_KEY);
-
-    if (storeUser != null) {
-      User user = User.fromJson(json.decode(storeUser));
-      this.setState(() {
-        _userId = user.id;
-      });
-    }
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -60,144 +41,61 @@ class _SleepRegisterFragmentState extends State<SleepRegisterFragment> {
       body: appWidget.getImageContainer(
         "assets/images/bg_login.png",
         _isLoading,
-        Stack(children: [
-          Positioned(
-            child: Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Column(
-                  children: [
-                    Card(
-                      elevation: 4.0,
-                      color: Colors.white,
-                      margin: EdgeInsets.only(left: 8.0, right: 8.0),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(15),
-                      ),
-                      child: Column(children: [
-                        Padding(
-                          padding: const EdgeInsets.only(
-                              top: 20, bottom: 20, left: 16, right: 8),
-                          child: Form(
-                            key: _formKey,
-                            child: Column(children: <Widget>[
-                              Row(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                crossAxisAlignment: CrossAxisAlignment.end,
-                                children: [
-                                  Image(
-                                    image:
-                                        AssetImage("assets/images/nutri.png"),
-                                    height: 45,
-                                  ),
-                                  Text(
-                                    dateFormat.format(widget.value),
-                                    textAlign: TextAlign.center,
-                                    style: TextStyle(
-                                        color: Color(0xFF60B2A3),
-                                        fontWeight: FontWeight.bold,
-                                        fontSize: 18),
-                                  ),
-                                ],
-                              ),
-                              SizedBox(
-                                height: 20,
-                              ),
-                              Row(
-                                mainAxisAlignment: MainAxisAlignment.start,
-                                children: [
-                                  Icon(
-                                    Icons.access_time,
-                                    color: Color(0xFFA3E1CB),
-                                  ),
-                                  Padding(
-                                    padding: EdgeInsets.only(left: 8.0),
-                                    child: Text(
-                                      'Horários',
-                                      textAlign: TextAlign.left,
+        SingleChildScrollView(
+          scrollDirection: Axis.vertical,
+          child: Stack(children: [
+            Positioned(
+              child: Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Column(
+                    children: [
+                      Card(
+                        elevation: 4.0,
+                        color: Colors.white,
+                        margin: EdgeInsets.only(left: 8.0, right: 8.0),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(15),
+                        ),
+                        child: Column(children: [
+                          Padding(
+                            padding: const EdgeInsets.only(
+                                top: 20, bottom: 20, left: 16, right: 8),
+                            child: Form(
+                              key: _formKey,
+                              child: Column(children: <Widget>[
+                                Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  crossAxisAlignment: CrossAxisAlignment.end,
+                                  children: [
+                                    Image(
+                                      image:
+                                          AssetImage("assets/images/nutri.png"),
+                                      height: 45,
+                                    ),
+                                    Text(
+                                      dateFormat.format(widget.value),
+                                      textAlign: TextAlign.center,
                                       style: TextStyle(
-                                          color: Color(0xFFA3E1CB),
-                                          fontSize: 15),
+                                          color: Color(0xFF60B2A3),
+                                          fontWeight: FontWeight.bold,
+                                          fontSize: 18),
                                     ),
-                                  )
-                                ],
-                              ),
-                              Row(
-                                mainAxisAlignment: MainAxisAlignment.start,
-                                children: [
-                                  Expanded(
-                                    flex: 6,
-                                    child: Padding(
-                                      padding: EdgeInsets.only(left: 32.0),
-                                      child: Text(
-                                        'Hora de deitar da véspera',
-                                        textAlign: TextAlign.left,
-                                        style: TextStyle(color: Colors.black45),
-                                      ),
-                                    ),
-                                  ),
-                                  Expanded(
-                                    flex: 4,
-                                    child: FlatButton(
-                                      color: Colors.transparent,
-                                      splashColor: Colors.black26,
-                                      onPressed: () =>
-                                          _selectDate(context, false),
-                                      child: Text(
-                                        "${_endUpTime.hour}:${_endUpTime.minute > 9 ? _endUpTime.minute : "0${_endUpTime.minute}"}",
-                                        style: TextStyle(
-                                          color: Color(0xFF000000),
-                                          fontSize: 15,
-                                        ),
-                                      ),
-                                    ),
-                                  )
-                                ],
-                              ),
-                              Row(
-                                mainAxisAlignment: MainAxisAlignment.start,
-                                children: [
-                                  Expanded(
-                                    flex: 6,
-                                    child: Padding(
-                                      padding: EdgeInsets.only(left: 32.0),
-                                      child: Text(
-                                        'Hora de levantar de hoje',
-                                        textAlign: TextAlign.left,
-                                        style: TextStyle(color: Colors.black45),
-                                      ),
-                                    ),
-                                  ),
-                                  Expanded(
-                                    flex: 4,
-                                    child: FlatButton(
-                                      color: Colors.transparent,
-                                      splashColor: Colors.black26,
-                                      onPressed: () =>
-                                          _selectDate(context, true),
-                                      child: Text(
-                                        "${_wakeUpTime.hour}:${_wakeUpTime.minute > 9 ? _wakeUpTime.minute : "0${_wakeUpTime.minute}"}",
-                                        style: TextStyle(
-                                          color: Color(0xFF000000),
-                                          fontSize: 15,
-                                        ),
-                                      ),
-                                    ),
-                                  ),
-                                ],
-                              ),
-                              Padding(
-                                padding: EdgeInsets.only(top: 16),
-                                child: Row(
+                                  ],
+                                ),
+                                SizedBox(
+                                  height: 20,
+                                ),
+                                Row(
                                   mainAxisAlignment: MainAxisAlignment.start,
                                   children: [
                                     Icon(
-                                      Icons.bedtime_outlined,
+                                      Icons.access_time,
                                       color: Color(0xFFA3E1CB),
                                     ),
                                     Padding(
                                       padding: EdgeInsets.only(left: 8.0),
                                       child: Text(
-                                        'Acordou durante a noite?',
+                                        'Horários',
                                         textAlign: TextAlign.left,
                                         style: TextStyle(
                                             color: Color(0xFFA3E1CB),
@@ -206,273 +104,369 @@ class _SleepRegisterFragmentState extends State<SleepRegisterFragment> {
                                     )
                                   ],
                                 ),
-                              ),
-                              Row(
-                                children: [
-                                  Padding(
-                                    padding: EdgeInsets.only(left: 32.0),
-                                    child: Text(
-                                      'Sim',
-                                      style: TextStyle(fontSize: 15),
-                                    ),
-                                  ),
-                                  Radio(
-                                    value: true,
-                                    groupValue: _hasWakeUp,
-                                    onChanged: (value) => {
-                                      this.setState(() {
-                                        _hasWakeUp = value;
-                                      }),
-                                    },
-                                    activeColor: Color(0xFFA3E1CB),
-                                  ),
-                                  Text(
-                                    "Não",
-                                    style: TextStyle(fontSize: 15),
-                                  ),
-                                  Radio(
-                                    value: false,
-                                    groupValue: _hasWakeUp,
-                                    onChanged: (value) => {
-                                      this.setState(() {
-                                        _hasWakeUp = value;
-                                      }),
-                                    },
-                                    activeColor: Color(0xFFA3E1CB),
-                                  ),
-                                ],
-                              ),
-                              _hasWakeUp
-                                  ? Column(
-                                      children: [
-                                        Padding(
-                                          padding: EdgeInsets.only(top: 16),
-                                          child: Row(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.start,
-                                            children: [
-                                              Icon(
-                                                Icons.king_bed_outlined,
-                                                color: Color(0xFFA3E1CB),
-                                              ),
-                                              Padding(
-                                                padding:
-                                                    EdgeInsets.only(left: 8.0),
-                                                child: Text(
-                                                  'O que fez antes de se deitar?',
-                                                  textAlign: TextAlign.left,
-                                                  style: TextStyle(
-                                                      color: Color(0xFFA3E1CB),
-                                                      fontSize: 15),
-                                                ),
-                                              )
-                                            ],
-                                          ),
+                                Row(
+                                  mainAxisAlignment: MainAxisAlignment.start,
+                                  children: [
+                                    Expanded(
+                                      flex: 6,
+                                      child: Padding(
+                                        padding: EdgeInsets.only(left: 32.0),
+                                        child: Text(
+                                          'Hora de deitar da véspera',
+                                          textAlign: TextAlign.left,
+                                          style:
+                                              TextStyle(color: Colors.black45),
                                         ),
-                                        MultiSelectFormField(
-                                          autovalidate: false,
-                                          title: Text(
-                                            'Atividades',
-                                            style:
-                                                TextStyle(color: Colors.grey),
-                                          ),
-                                          dataSource: [
-                                            {
-                                              "display":
-                                                  "Beber bebidas alcoólica",
-                                              "value":
-                                                  "Beber bebidas alcoólica",
-                                            },
-                                            {
-                                              "display":
-                                                  "Beber bebidas com cafeína",
-                                              "value":
-                                                  "Beber bebidas com cafeína",
-                                            },
-                                            {
-                                              "display":
-                                                  "Comer refeição pesada",
-                                              "value": "Comer refeição pesada",
-                                            },
-                                            {
-                                              "display":
-                                                  "Comeu doces / açúcares",
-                                              "value": "Comeu doces / açúcares",
-                                            },
-                                            {
-                                              "display": "Estudar / Trabalhar",
-                                              "value": "Estudar / Trabalhar",
-                                            },
-                                            {
-                                              "display":
-                                                  "Praticar exercício físico",
-                                              "value":
-                                                  "Praticar exercício físico",
-                                            },
-                                            {
-                                              "display": "Fumar",
-                                              "value": "Fumar",
-                                            },
-                                            {
-                                              "display":
-                                                  "Olhar para ecrã de smartphone, PC ou similar",
-                                              "value":
-                                                  "Olhar para ecrã de smartphone, PC ou similar",
-                                            },
-                                            {
-                                              "display": "Ver televisão",
-                                              "value": "Ver televisão",
-                                            },
-                                            {
-                                              "display": "Ler",
-                                              "value": "Ler",
-                                            },
-                                            {
-                                              "display": "Outra(s)",
-                                              "value": "Outra(s)",
-                                            },
-                                          ],
-                                          textField: 'display',
-                                          valueField: 'value',
-                                          okButtonLabel: 'Confirmar',
-                                          cancelButtonLabel: 'Cancelar',
-                                          hintWidget: Text(
-                                              'Escolha uma ou mais opções'),
-                                          initialValue: _myActivities,
-                                          onSaved: (value) {
-                                            if (value == null) return;
-                                            setState(() {
-                                              _myActivities = value;
-                                            });
-                                          },
-                                        ),
-                                        Padding(
-                                          padding: EdgeInsets.only(top: 16),
-                                          child: Row(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.start,
-                                            children: [
-                                              Icon(
-                                                Icons.list,
-                                                color: Color(0xFFA3E1CB),
-                                              ),
-                                              Padding(
-                                                padding:
-                                                    EdgeInsets.only(left: 8.0),
-                                                child: Text(
-                                                  'Outros motivos que podem influenciar...',
-                                                  textAlign: TextAlign.left,
-                                                  style: TextStyle(
-                                                      color: Color(0xFFA3E1CB),
-                                                      fontSize: 15),
-                                                ),
-                                              )
-                                            ],
-                                          ),
-                                        ),
-                                        MultiSelectFormField(
-                                          autovalidate: false,
-                                          title: Text(
-                                            'Motivos',
-                                            style:
-                                                TextStyle(color: Colors.grey),
-                                          ),
-                                          dataSource: [
-                                            {
-                                              "display": "Dores",
-                                              "value": "Dores",
-                                            },
-                                            {
-                                              "display": "Medicação",
-                                              "value": "Medicação",
-                                            },
-                                            {
-                                              "display": "Insónia",
-                                              "value": "Insónia",
-                                            },
-                                            {
-                                              "display": "Barulho",
-                                              "value": "Barulho",
-                                            },
-                                            {
-                                              "display": "Pesadelo",
-                                              "value": "Pesadelo",
-                                            },
-                                            {
-                                              "display": "Claridade",
-                                              "value": "Claridade",
-                                            },
-                                            {
-                                              "display": "Stress",
-                                              "value": "Stress",
-                                            },
-                                            {
-                                              "display": "Outra(s)",
-                                              "value": "Outra(s)",
-                                            },
-                                          ],
-                                          textField: 'display',
-                                          valueField: 'value',
-                                          okButtonLabel: 'Confirmar',
-                                          cancelButtonLabel: 'Cancelar',
-                                          hintWidget: Text(
-                                              'Escolha uma ou mais opções'),
-                                          initialValue: _myMotives,
-                                          onSaved: (value) {
-                                            if (value == null) return;
-                                            setState(() {
-                                              _myMotives = value;
-                                            });
-                                          },
-                                        ),
-                                      ],
-                                    )
-                                  : Text(""),
-                              SizedBox(
-                                height: 16,
-                              ),
-                              SizedBox(
-                                width: double.infinity,
-                                child: FlatButton(
-                                  child: Padding(
-                                    padding: EdgeInsets.only(
-                                        top: 8, bottom: 8, left: 10, right: 10),
-                                    child: Text(
-                                      _isLoading ? 'Aguarde...' : 'Confirmar',
-                                      style: TextStyle(
-                                        color: Colors.white,
-                                        fontSize: 15.0,
-                                        decoration: TextDecoration.none,
-                                        fontWeight: FontWeight.normal,
                                       ),
                                     ),
-                                  ),
-                                  color: Color(0xFFA3E1CB),
-                                  disabledColor: Colors.grey,
-                                  shape: new RoundedRectangleBorder(
-                                      borderRadius:
-                                          new BorderRadius.circular(20.0)),
-                                  onPressed: () {
-                                    if (_wakeUpTime == _endUpTime) {
-                                      appWidget.showSnackbar(
-                                          "A hora de deitar e levantar devem ser diferentes",
-                                          Colors.red,
-                                          _scaffoldKey);
-                                      return;
-                                    }
-                                    _registerSleep();
-                                  },
+                                    Expanded(
+                                      flex: 4,
+                                      child: FlatButton(
+                                        color: Colors.transparent,
+                                        splashColor: Colors.black26,
+                                        onPressed: () =>
+                                            _selectDate(context, false),
+                                        child: Text(
+                                          "${_endUpTime.hour}:${_endUpTime.minute > 9 ? _endUpTime.minute : "0${_endUpTime.minute}"}",
+                                          style: TextStyle(
+                                            color: Color(0xFF000000),
+                                            fontSize: 15,
+                                          ),
+                                        ),
+                                      ),
+                                    )
+                                  ],
                                 ),
-                              ),
-                            ]),
+                                Row(
+                                  mainAxisAlignment: MainAxisAlignment.start,
+                                  children: [
+                                    Expanded(
+                                      flex: 6,
+                                      child: Padding(
+                                        padding: EdgeInsets.only(left: 32.0),
+                                        child: Text(
+                                          'Hora de levantar de hoje',
+                                          textAlign: TextAlign.left,
+                                          style:
+                                              TextStyle(color: Colors.black45),
+                                        ),
+                                      ),
+                                    ),
+                                    Expanded(
+                                      flex: 4,
+                                      child: FlatButton(
+                                        color: Colors.transparent,
+                                        splashColor: Colors.black26,
+                                        onPressed: () =>
+                                            _selectDate(context, true),
+                                        child: Text(
+                                          "${_wakeUpTime.hour}:${_wakeUpTime.minute > 9 ? _wakeUpTime.minute : "0${_wakeUpTime.minute}"}",
+                                          style: TextStyle(
+                                            color: Color(0xFF000000),
+                                            fontSize: 15,
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                                Padding(
+                                  padding: EdgeInsets.only(top: 16),
+                                  child: Row(
+                                    mainAxisAlignment: MainAxisAlignment.start,
+                                    children: [
+                                      Icon(
+                                        Icons.bedtime_outlined,
+                                        color: Color(0xFFA3E1CB),
+                                      ),
+                                      Padding(
+                                        padding: EdgeInsets.only(left: 8.0),
+                                        child: Text(
+                                          'Acordou durante a noite?',
+                                          textAlign: TextAlign.left,
+                                          style: TextStyle(
+                                              color: Color(0xFFA3E1CB),
+                                              fontSize: 15),
+                                        ),
+                                      )
+                                    ],
+                                  ),
+                                ),
+                                Row(
+                                  children: [
+                                    Padding(
+                                      padding: EdgeInsets.only(left: 32.0),
+                                      child: Text(
+                                        'Sim',
+                                        style: TextStyle(fontSize: 15),
+                                      ),
+                                    ),
+                                    Radio(
+                                      value: true,
+                                      groupValue: _hasWakeUp,
+                                      onChanged: (value) => {
+                                        this.setState(() {
+                                          _hasWakeUp = value;
+                                        }),
+                                      },
+                                      activeColor: Color(0xFFA3E1CB),
+                                    ),
+                                    Text(
+                                      "Não",
+                                      style: TextStyle(fontSize: 15),
+                                    ),
+                                    Radio(
+                                      value: false,
+                                      groupValue: _hasWakeUp,
+                                      onChanged: (value) => {
+                                        this.setState(() {
+                                          _hasWakeUp = value;
+                                        }),
+                                      },
+                                      activeColor: Color(0xFFA3E1CB),
+                                    ),
+                                  ],
+                                ),
+                                _hasWakeUp
+                                    ? Column(
+                                        children: [
+                                          Padding(
+                                            padding: EdgeInsets.only(top: 16),
+                                            child: Row(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment.start,
+                                              children: [
+                                                Icon(
+                                                  Icons.king_bed_outlined,
+                                                  color: Color(0xFFA3E1CB),
+                                                ),
+                                                Padding(
+                                                  padding: EdgeInsets.only(
+                                                      left: 8.0),
+                                                  child: Text(
+                                                    'O que fez antes de se deitar?',
+                                                    textAlign: TextAlign.left,
+                                                    style: TextStyle(
+                                                        color:
+                                                            Color(0xFFA3E1CB),
+                                                        fontSize: 15),
+                                                  ),
+                                                )
+                                              ],
+                                            ),
+                                          ),
+                                          MultiSelectFormField(
+                                            autovalidate: false,
+                                            title: Text(
+                                              'Atividades',
+                                              style:
+                                                  TextStyle(color: Colors.grey),
+                                            ),
+                                            dataSource: [
+                                              {
+                                                "display":
+                                                    "Beber bebidas alcoólica",
+                                                "value":
+                                                    "Beber bebidas alcoólica",
+                                              },
+                                              {
+                                                "display":
+                                                    "Beber bebidas com cafeína",
+                                                "value":
+                                                    "Beber bebidas com cafeína",
+                                              },
+                                              {
+                                                "display":
+                                                    "Comer refeição pesada",
+                                                "value":
+                                                    "Comer refeição pesada",
+                                              },
+                                              {
+                                                "display":
+                                                    "Comeu doces / açúcares",
+                                                "value":
+                                                    "Comeu doces / açúcares",
+                                              },
+                                              {
+                                                "display":
+                                                    "Estudar / Trabalhar",
+                                                "value": "Estudar / Trabalhar",
+                                              },
+                                              {
+                                                "display":
+                                                    "Praticar exercício físico",
+                                                "value":
+                                                    "Praticar exercício físico",
+                                              },
+                                              {
+                                                "display": "Fumar",
+                                                "value": "Fumar",
+                                              },
+                                              {
+                                                "display":
+                                                    "Olhar para ecrã de smartphone, PC ou similar",
+                                                "value":
+                                                    "Olhar para ecrã de smartphone, PC ou similar",
+                                              },
+                                              {
+                                                "display": "Ver televisão",
+                                                "value": "Ver televisão",
+                                              },
+                                              {
+                                                "display": "Ler",
+                                                "value": "Ler",
+                                              },
+                                              {
+                                                "display": "Outra(s)",
+                                                "value": "Outra(s)",
+                                              },
+                                            ],
+                                            textField: 'display',
+                                            valueField: 'value',
+                                            okButtonLabel: 'Confirmar',
+                                            cancelButtonLabel: 'Cancelar',
+                                            hintWidget: Text(
+                                                'Escolha uma ou mais opções'),
+                                            initialValue: _myActivities,
+                                            onSaved: (value) {
+                                              if (value == null) return;
+                                              setState(() {
+                                                _myActivities = value;
+                                              });
+                                            },
+                                          ),
+                                          Padding(
+                                            padding: EdgeInsets.only(top: 16),
+                                            child: Row(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment.start,
+                                              children: [
+                                                Icon(
+                                                  Icons.list,
+                                                  color: Color(0xFFA3E1CB),
+                                                ),
+                                                Padding(
+                                                  padding: EdgeInsets.only(
+                                                      left: 8.0),
+                                                  child: Text(
+                                                    'Outros motivos que podem influenciar...',
+                                                    textAlign: TextAlign.left,
+                                                    style: TextStyle(
+                                                        color:
+                                                            Color(0xFFA3E1CB),
+                                                        fontSize: 15),
+                                                  ),
+                                                )
+                                              ],
+                                            ),
+                                          ),
+                                          MultiSelectFormField(
+                                            autovalidate: false,
+                                            title: Text(
+                                              'Motivos',
+                                              style:
+                                                  TextStyle(color: Colors.grey),
+                                            ),
+                                            dataSource: [
+                                              {
+                                                "display": "Dores",
+                                                "value": "Dores",
+                                              },
+                                              {
+                                                "display": "Medicação",
+                                                "value": "Medicação",
+                                              },
+                                              {
+                                                "display": "Insónia",
+                                                "value": "Insónia",
+                                              },
+                                              {
+                                                "display": "Barulho",
+                                                "value": "Barulho",
+                                              },
+                                              {
+                                                "display": "Pesadelo",
+                                                "value": "Pesadelo",
+                                              },
+                                              {
+                                                "display": "Claridade",
+                                                "value": "Claridade",
+                                              },
+                                              {
+                                                "display": "Stress",
+                                                "value": "Stress",
+                                              },
+                                              {
+                                                "display": "Outra(s)",
+                                                "value": "Outra(s)",
+                                              },
+                                            ],
+                                            textField: 'display',
+                                            valueField: 'value',
+                                            okButtonLabel: 'Confirmar',
+                                            cancelButtonLabel: 'Cancelar',
+                                            hintWidget: Text(
+                                                'Escolha uma ou mais opções'),
+                                            initialValue: _myMotives,
+                                            onSaved: (value) {
+                                              if (value == null) return;
+                                              setState(() {
+                                                _myMotives = value;
+                                              });
+                                            },
+                                          ),
+                                        ],
+                                      )
+                                    : Text(""),
+                                SizedBox(
+                                  height: 16,
+                                ),
+                                SizedBox(
+                                  width: double.infinity,
+                                  child: FlatButton(
+                                    child: Padding(
+                                      padding: EdgeInsets.only(
+                                          top: 8,
+                                          bottom: 8,
+                                          left: 10,
+                                          right: 10),
+                                      child: Text(
+                                        _isLoading ? 'Aguarde...' : 'Confirmar',
+                                        style: TextStyle(
+                                          color: Colors.white,
+                                          fontSize: 15.0,
+                                          decoration: TextDecoration.none,
+                                          fontWeight: FontWeight.normal,
+                                        ),
+                                      ),
+                                    ),
+                                    color: Color(0xFFA3E1CB),
+                                    disabledColor: Colors.grey,
+                                    shape: new RoundedRectangleBorder(
+                                        borderRadius:
+                                            new BorderRadius.circular(20.0)),
+                                    onPressed: () {
+                                      if (_wakeUpTime == _endUpTime) {
+                                        appWidget.showSnackbar(
+                                            "A hora de deitar e levantar devem ser diferentes",
+                                            Colors.red,
+                                            _scaffoldKey);
+                                        return;
+                                      }
+                                      _registerSleep();
+                                    },
+                                  ),
+                                ),
+                              ]),
+                            ),
                           ),
-                        ),
-                      ]),
-                    ),
-                  ],
-                )),
-          ),
-        ]),
+                        ]),
+                      ),
+                    ],
+                  )),
+            ),
+          ]),
+        ),
       ),
     );
   }
@@ -488,15 +482,25 @@ class _SleepRegisterFragmentState extends State<SleepRegisterFragment> {
     try {
       var response = await Network().postWithAuth({
         'date': dateFormat.format(widget.value),
-        'userId': _userId,
         'wakeUpTime':
-            "${_wakeUpTime.hour}:${_wakeUpTime.minute > 9 ? _wakeUpTime.minute : "0${_wakeUpTime.minute}"}",
+        "${_parseTwoNumber(_wakeUpTime.hour)}:${_parseTwoNumber(_wakeUpTime.minute)}",
         'sleepTime':
-            "${_endUpTime.hour}:${_endUpTime.minute > 9 ? _endUpTime.minute : "0${_endUpTime.minute}"}",
+        "${_parseTwoNumber(_endUpTime.hour)}:${_parseTwoNumber(_endUpTime.minute)}",
         'hasWakeUp': _hasWakeUp,
         'activities': _myActivities,
         'motives': _myMotives
       }, SLEEP_URL);
+
+      print({
+        'date': dateFormat.format(widget.value),
+        'wakeUpTime':
+        "${_parseTwoNumber(_wakeUpTime.hour)}:${_parseTwoNumber(_wakeUpTime.minute)}",
+        'sleepTime':
+        "${_parseTwoNumber(_endUpTime.hour)}:${_parseTwoNumber(_endUpTime.minute)}",
+        'hasWakeUp': _hasWakeUp,
+        'activities': _myActivities,
+        'motives': _myMotives
+      });
 
       var body = json.decode(response.body);
 
@@ -518,6 +522,10 @@ class _SleepRegisterFragmentState extends State<SleepRegisterFragment> {
     setState(() {
       _isLoading = false;
     });
+  }
+
+  _parseTwoNumber(value) {
+    if (value > 9) return "$value"; else return "0$value";
   }
 
   // show datepicker
