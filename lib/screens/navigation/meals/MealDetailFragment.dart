@@ -78,15 +78,6 @@ class _MealDetailFragmentState extends State<MealDetailFragment> {
     SharedPreferences localStorage = await SharedPreferences.getInstance();
     List list = [];
 
-    var storeUser = localStorage.getString(LOCAL_STORAGE_USER_KEY);
-
-    if (storeUser != null) {
-      User user = User.fromJson(json.decode(storeUser));
-      this.setState(() {
-        _userId = user.id;
-      });
-    }
-
     try {
       var response = await Network().getWithoutAuth(MEALS_NAMES_URL);
 
@@ -103,7 +94,12 @@ class _MealDetailFragmentState extends State<MealDetailFragment> {
         _isLoading = false;
         _autocompleteSuggestions = list;
       });
-    } catch (error) {}
+    } catch (error) {
+      print(error);
+      this.setState(() {
+        _isLoading = false;
+      });
+    }
   }
 
   @override
@@ -434,7 +430,7 @@ class _MealDetailFragmentState extends State<MealDetailFragment> {
                                 _name == null ||
                                 _name.trim() == "" ||
                                 _quantity == null ||
-                                _quantity.trim == "" ||
+                                _quantity.trim() == "" ||
                                 _selectedUnit == null ||
                                 _selectedUnit == "") {
                               setState(() {
@@ -533,9 +529,10 @@ class _MealDetailFragmentState extends State<MealDetailFragment> {
 
     try {
       var response = await Network()
-          .postMeal(meal, _foodPhoto, _nutritionalInfoPhoto, _userId, MEAL_URL);
+          .postMeal(meal, _foodPhoto, _nutritionalInfoPhoto, MEAL_URL);
 
       var body = json.decode(response.body);
+
       if (response.statusCode == RESPONSE_SUCCESS_201) {
         _typeAheadController.text = '';
 

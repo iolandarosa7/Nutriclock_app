@@ -148,13 +148,13 @@ class Network {
   }
 
   Future<http.Response> postMeal(Meal meal, File foodPhoto,
-      File nutritionalInfoPhoto, int userId, String apiUrl) async {
+      File nutritionalInfoPhoto, String apiUrl) async {
     var url = Constants.BASE_API_URL + apiUrl;
 
     await _getToken();
     token = token.replaceAll("\"", "");
 
-    var request = http.MultipartRequest("POST", Uri.parse("$url/$userId"));
+    var request = http.MultipartRequest("POST", Uri.parse("$url"));
     request.fields['name'] = meal.name;
     request.fields['quantity'] = meal.quantity;
     request.fields['relativeUnit'] = meal.relativeUnit;
