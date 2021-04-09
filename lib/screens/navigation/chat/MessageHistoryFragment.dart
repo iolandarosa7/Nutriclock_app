@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:badges/badges.dart';
+import 'package:bubble/bubble.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
@@ -122,7 +123,7 @@ class _MessageHistoryFragmentState extends State<MessageHistoryFragment> {
     return Scaffold(
       appBar: appWidget.getAppbar("Histórico de Mensagens"),
       body: appWidget.getImageContainer(
-        "assets/images/bg_chat.jpg",
+        "assets/images/bg_chat.png",
         _isLoading,
         Stack(
           children: [
@@ -206,6 +207,7 @@ class _MessageHistoryFragmentState extends State<MessageHistoryFragment> {
             ),
           ],
         ),
+        Color(0xFF45C393),
       ),
     );
   }
@@ -332,51 +334,41 @@ class _MessageHistoryFragmentState extends State<MessageHistoryFragment> {
   }
 
   _renderMyMessage(Message message) {
-    return Padding(
-      padding: EdgeInsets.only(right: 50),
-      child: Card(
-        color: Color(0xFFF4FFFD),
-        shape: new RoundedRectangleBorder(
-          borderRadius: new BorderRadius.circular(10.0),
+    return Column(
+      children: [
+        Row(
+          mainAxisAlignment: MainAxisAlignment.end,
+          children: [
+            message.read == 0 || message.read == false
+                ? Badge(
+                    badgeColor: Colors.redAccent,
+                    badgeContent: Text(""),
+                  )
+                : SizedBox(),
+            SizedBox(
+              width: 4,
+            ),
+            Text(
+              "Eu, ${_getStringTime(DateTime.parse(message.created_at))}",
+              style: TextStyle(
+                  fontFamily: 'PatrickHand', fontSize: 12, color: Colors.black),
+            ),
+            SizedBox(
+              width: 16,
+            ),
+          ],
         ),
-        shadowColor: Color(0xFFA0DDFF),
-        child: Padding(
-          padding: EdgeInsets.all(10),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: [
-              Row(
-                children: [
-                  message.read == 0 || message.read == false
-                      ? Badge(
-                          badgeColor: Colors.redAccent,
-                          badgeContent: Text(""),
-                        )
-                      : SizedBox(),
-                  SizedBox(
-                    width: 4,
-                  ),
-                  Text(
-                    "Eu, ${_getStringTime(DateTime.parse(message.created_at))}",
-                    style: TextStyle(
-                        fontFamily: 'Neucha',
-                        fontSize: 12,
-                        color: Color(0xFF6890A7)),
-                  ),
-                ],
-              ),
-              SizedBox(
-                height: 8,
-              ),
-              Text(
-                message.message,
-                style: TextStyle(
-                    fontFamily: 'Neucha', fontWeight: FontWeight.bold),
-              )
-            ],
+        Bubble(
+          style: BubbleStyle(
+            nip: BubbleNip.rightTop,
+            elevation: 0,
+            padding: BubbleEdges.all(10),
+            margin: BubbleEdges.only(top: 4, left: 50),
+            alignment: Alignment.topRight,
           ),
+          child: Text(message.message,),
         ),
-      ),
+      ],
     );
   }
 
@@ -389,53 +381,38 @@ class _MessageHistoryFragmentState extends State<MessageHistoryFragment> {
   }
 
   _renderUserMessage(Message message) {
-    return Padding(
-      padding: EdgeInsets.only(left: 50),
-      child: Card(
-        color: Color(0xFFFFF6F6),
-        shadowColor: Color(0xFFFFBCBC),
-        shape: new RoundedRectangleBorder(
-          borderRadius: new BorderRadius.circular(10.0),
+    return Column(
+      children: [
+        Row(
+          children: [
+            message.read == 0 || message.read == false
+                ? Badge(
+                    badgeColor: Colors.redAccent,
+                    badgeContent: Text(""),
+                  )
+                : SizedBox(),
+            SizedBox(
+              width: 4,
+            ),
+            Text(
+              "${message.senderName}, ${_getStringTime(DateTime.parse(message.created_at))}",
+              style: TextStyle(
+                  fontFamily: 'PatrickHand', fontSize: 12, color: Colors.black),
+            ),
+          ],
         ),
-        child: Padding(
-          padding: EdgeInsets.all(10),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: [
-              Row(
-                children: [
-                  message.read == 0 || message.read == false
-                      ? Badge(
-                          badgeColor: Colors.redAccent,
-                          badgeContent: Text(""),
-                        )
-                      : SizedBox(),
-                  SizedBox(
-                    width: 4,
-                  ),
-                  Text(
-                    "${message.senderName}, ${_getStringTime(DateTime.parse(message.created_at))}",
-                    style: TextStyle(
-                        fontFamily: 'PatrickHand',
-                        fontSize: 12,
-                        color: Color(0xFFC18C8C)),
-                  ),
-                ],
-              ),
-              SizedBox(
-                height: 8,
-              ),
-              Text(
-                message.message,
-                style: TextStyle(
-                    fontFamily: 'PatrickHand',
-                    fontWeight: FontWeight.bold,
-                    fontSize: 16),
-              )
-            ],
+        Bubble(
+          style: BubbleStyle(
+            nip: BubbleNip.leftTop,
+            color: Color.fromRGBO(163, 225, 202, 1.0),
+            elevation: 0,
+            padding: BubbleEdges.all(10),
+            margin: BubbleEdges.only(top: 4, right: 50),
+            alignment: Alignment.topLeft,
           ),
+          child: Text(message.message),
         ),
-      ),
+      ],
     );
   }
 }

@@ -45,6 +45,7 @@ dependencies:
   badges: ^1.1.6
   web_socket_channel: ^1.1.0
   syncfusion_localizations: ^18.1.36
+  bubble: ^1.2.1
 
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
@@ -80,7 +81,7 @@ flutter:
     - assets/sleep/sleep.png
     - assets/sleep/stats.png
     - assets/sleep/tip.png
-    - assets/images/bg_chat.jpg
+    - assets/images/bg_chat.png
     - assets/images/bg_home_r.jpg
     - assets/images/bg_run.jpg
     - assets/images/bg_exercise.jpg

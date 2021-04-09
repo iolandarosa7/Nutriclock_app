@@ -71,7 +71,7 @@ class _ChatFragmentState extends State<ChatFragment> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: appWidget.getImageContainer(
-        "assets/images/bg_chat.jpg",
+        "assets/images/bg_chat.png",
         _isLoading,
         ListView.builder(
             padding:
@@ -119,6 +119,7 @@ class _ChatFragmentState extends State<ChatFragment> {
                 ),
               );
             }),
+       Color(0xFF45C393),
       ),
     );
   }

@@ -26,7 +26,7 @@ class _SettingsListState extends State<SettingsList> {
       key: _scaffoldKey,
       appBar: _appWidget.getAppbar("Definições"),
       body: _isLoading
-          ? _appWidget.getLoading()
+          ? _appWidget.getLoading(Color(0xFFFFBCBC))
           : ListView(
               children: [
                 ListTile(

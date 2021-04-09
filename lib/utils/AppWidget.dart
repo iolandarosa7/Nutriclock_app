@@ -3,16 +3,17 @@ import 'package:loading/indicator/ball_pulse_indicator.dart';
 import 'package:loading/loading.dart';
 
 class AppWidget {
-  getLoading() {
+  getLoading(Color color) {
     return Center(
       child: Loading(
           indicator: BallPulseIndicator(),
           size: 50.0,
-          color: Color(0xFFFFBCBC)),
+          color: color),
     );
   }
 
-  getImageContainer(String src, bool isLoading, Widget child) {
+  getImageContainer(String src, bool isLoading, Widget child, [ Color color ]) {
+    color ??= Color(0xFFFFBCBC);
     return Container(
       constraints: BoxConstraints.expand(),
       decoration: BoxDecoration(
@@ -21,7 +22,7 @@ class AppWidget {
           fit: BoxFit.cover,
         ),
       ),
-      child: isLoading ? getLoading() : child,
+      child: isLoading ? getLoading(color) : child,
     );
   }
 
