@@ -39,7 +39,7 @@ class _SleepRegisterFragmentState extends State<SleepRegisterFragment> {
       key: _scaffoldKey,
       appBar: appWidget.getAppbar("Horas de Sono"),
       body: appWidget.getImageContainer(
-        "assets/images/bg_login.png",
+        "assets/images/bg_sleep.jpg",
         _isLoading,
         SingleChildScrollView(
           scrollDirection: Axis.vertical,

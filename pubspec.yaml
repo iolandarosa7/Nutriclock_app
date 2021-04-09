@@ -71,13 +71,10 @@ flutter:
     - assets/images/nutri.png
     - assets/images/logo.png
     - assets/images/logo_horizontal.png
-    - assets/images/header.png
-    - assets/images/tips.png
-    - assets/images/stats.png
-    - assets/images/pillow.png
     - assets/images/bg_drawer.jpg
     - assets/images/bg_home.jpg
     - assets/images/bg_sleep.jpg
+    - assets/images/bg_sleep_calendar.png
     - assets/sleep/sleep.png
     - assets/sleep/stats.png
     - assets/sleep/tip.png

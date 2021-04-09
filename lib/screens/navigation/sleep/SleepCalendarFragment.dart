@@ -40,8 +40,7 @@ class _SleepCalendarFragmentState extends State<SleepCalendarFragment> {
           _dates = dates;
         });
       }
-    } catch (error) {
-    }
+    } catch (error) {}
   }
 
   @override
@@ -49,35 +48,42 @@ class _SleepCalendarFragmentState extends State<SleepCalendarFragment> {
     return Scaffold(
       key: _scaffoldKey,
       appBar: AppWidget().getAppbar("Registar Horas de Sono"),
-      body: SfDateRangePicker(
-        view: DateRangePickerView.month,
-        todayHighlightColor: Color(0xFF60B2A3),
-        selectionColor: Color(0xFFA3E1CB),
-        monthCellStyle: DateRangePickerMonthCellStyle(
-          todayTextStyle: TextStyle(
-            color: Color(0xFF60B2A3),
+      body: AppWidget().getImageContainer(
+        "assets/images/bg_sleep_calendar.png",
+        false,
+        Padding(
+          padding: EdgeInsets.only(bottom: 150),
+          child: SfDateRangePicker(
+            view: DateRangePickerView.month,
+            todayHighlightColor: Color(0xFF60B2A3),
+            selectionColor: Color(0xFFA3E1CB),
+            monthCellStyle: DateRangePickerMonthCellStyle(
+              todayTextStyle: TextStyle(
+                color: Color(0xFF60B2A3),
+              ),
+              blackoutDatesDecoration: BoxDecoration(
+                  color: const Color(0xFFDFDFDF),
+                  border: Border.all(color: const Color(0xFFDFDFDF), width: 1),
+                  shape: BoxShape.circle),
+              blackoutDateTextStyle: TextStyle(
+                  color: Colors.white, decoration: TextDecoration.lineThrough),
+            ),
+            maxDate: new DateTime.now(),
+            minDate: new DateTime.now().subtract(new Duration(days: 2)),
+            onSelectionChanged: (DateRangePickerSelectionChangedArgs args) {
+              final dynamic value = args.value;
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (context) => SleepRegisterFragment(
+                          value: value,
+                        )),
+              ).then((value) => {_loadData()});
+            },
+            monthViewSettings:
+                DateRangePickerMonthViewSettings(blackoutDates: _dates),
           ),
-          blackoutDatesDecoration: BoxDecoration(
-              color: const Color(0xFFDFDFDF),
-              border: Border.all(color: const Color(0xFFDFDFDF), width: 1),
-              shape: BoxShape.circle),
-          blackoutDateTextStyle: TextStyle(
-              color: Colors.white, decoration: TextDecoration.lineThrough),
         ),
-        maxDate: new DateTime.now(),
-        minDate: new DateTime.now().subtract(new Duration(days: 2)),
-        onSelectionChanged: (DateRangePickerSelectionChangedArgs args) {
-          final dynamic value = args.value;
-          Navigator.push(
-            context,
-            MaterialPageRoute(
-                builder: (context) => SleepRegisterFragment(
-                      value: value,
-                    )),
-          ).then((value) => {_loadData()});
-        },
-        monthViewSettings:
-            DateRangePickerMonthViewSettings(blackoutDates: _dates),
       ),
     );
   }

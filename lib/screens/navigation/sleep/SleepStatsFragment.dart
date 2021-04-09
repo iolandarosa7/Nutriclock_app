@@ -192,7 +192,7 @@ class _SleepStatsFragmentState extends State<SleepStatsFragment> {
                         dataSource: _dataSource,
                         xValueMapper: (_ChartData sales, _) => sales.day,
                         yValueMapper: (_ChartData sales, _) => sales.hours,
-                        color: Color(0xFFC18C8C),
+                        color: Color(0xFF45C393),
                         opacity: 0.6,
                         // Enable data label
                         dataLabelSettings: DataLabelSettings(isVisible: true)),
