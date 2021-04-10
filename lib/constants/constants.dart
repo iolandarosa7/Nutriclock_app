@@ -2,6 +2,7 @@ library constants;
 
 const String LOCAL_STORAGE_TOKEN_KEY = 'token';
 const String LOCAL_STORAGE_USER_KEY = 'user';
+const String FCM_TOKEN = 'fcmToken';
 
 const String JSON_ACCESS_TOKEN_KEY = 'access_token';
 const String JSON_DATA_KEY = 'data';
@@ -33,11 +34,12 @@ const String ERROR_USER_NOT_FOUND_API = 'O utilizador não existe!';
 // const BASE_URL = 'https://nutriclock.herokuapp.com';
 const IMAGE_BASE_URL = 'https://nutriclock.s3-eu-west-1.amazonaws.com';
 // const IMAGE_BASE_URL = 'https://ea25c14250e0.ngrok.io/storage';
-const BASE_URL = 'https://9d99f0676c4e.ngrok.io';
+const BASE_URL = 'https://1b8e33edde33.ngrok.io';
 const BASE_API_URL = '$BASE_URL/api';
 // wss://nutriclock-websocket.herokuapp.com
 const WEBSOCKET_URL = 'wss://nutriclock-websocket.herokuapp.com';
 
+const FCM_URL = '/fcm';
 const LOGIN_URL = '/login';
 const LOGOUT_URL = '/logout';
 const PASSWORD_URL = '/password';

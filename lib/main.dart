@@ -1,7 +1,10 @@
+import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:nutriclock_app/constants/constants.dart' as Constants;
 import 'package:nutriclock_app/network_utils/api.dart';
+import 'package:nutriclock_app/notifications/NotificationsService.dart';
 import 'package:nutriclock_app/screens/home.dart';
 import 'package:nutriclock_app/screens/login.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -36,6 +39,17 @@ class MyApp extends StatefulWidget {
 
 class _MyAppState extends State<MyApp> {
   @override
+  void initState() {
+    initFirebase();
+    super.initState();
+  }
+
+  initFirebase () async {
+    await Firebase.initializeApp();
+    NotificationsService(FirebaseMessaging.instance).initialize();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return new SplashScreen(
         seconds: 2,
@@ -63,7 +77,6 @@ class CheckAuth extends StatefulWidget {
 
 class _CheckAuthState extends State<CheckAuth> {
   bool isAuth = false;
-
   @override
   void initState() {
     _checkIfLoggedIn();

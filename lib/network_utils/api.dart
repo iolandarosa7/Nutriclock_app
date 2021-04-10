@@ -21,7 +21,7 @@ class Network {
   Future<http.Response> postWithoutAuth(
       Map<String, String> data, String apiUrl) {
     var url = Constants.BASE_API_URL + apiUrl;
-    return http.post(url,
+    return http.post(Uri.parse(url),
         headers: <String, String>{
           'Content-Type': 'application/json; charset=UTF-8',
           'Accept': 'application/json',
@@ -34,7 +34,7 @@ class Network {
     var url = Constants.BASE_API_URL + apiUrl;
     await _getToken();
     token = token.replaceAll("\"", "");
-    return http.post(url,
+    return http.post(Uri.parse(url),
         headers: <String, String>{
           'Content-Type': 'application/json; charset=UTF-8',
           'Accept': 'application/json',
@@ -72,7 +72,7 @@ class Network {
     await _getToken();
     token = token.replaceAll("\"", "");
     return http.delete(
-      url,
+        Uri.parse(url),
       headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8',
         'Accept': 'application/json',
@@ -201,7 +201,7 @@ class Network {
     await _getToken();
     token = token.replaceAll("\"", "");
     return await http.get(
-      url,
+        Uri.parse(url),
       headers: <String, String>{
         'Content-type': 'application/json',
         'Accept': 'application/json',
@@ -215,7 +215,7 @@ class Network {
     await _getToken();
     token = token.replaceAll("\"", "");
     return await http.get(
-      "$url/$id",
+        Uri.parse("$url/$id"),
       headers: <String, String>{
         'Content-type': 'application/json',
         'Accept': 'application/json',
@@ -231,7 +231,7 @@ class Network {
     if (param != null) url += "/$param";
     await _getToken();
     token = token.replaceAll("\"", "");
-    return http.put(url,
+    return http.put(Uri.parse(url),
         headers: <String, String>{
           'Content-type': 'application/json',
           'Accept': 'application/json',
@@ -243,7 +243,7 @@ class Network {
   Future<http.Response> getWithoutAuth(String apiUrl) async {
     var url = Constants.BASE_API_URL + apiUrl;
     return await http.get(
-      url,
+        Uri.parse(url),
       headers: <String, String>{
         'Content-type': 'application/json',
       },

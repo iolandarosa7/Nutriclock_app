@@ -90,6 +90,14 @@ class _HomeState extends State<Home> {
     SharedPreferences localStorage = await SharedPreferences.getInstance();
 
     var storeUser = localStorage.getString(LOCAL_STORAGE_USER_KEY);
+    var fcmToken = localStorage.getString(FCM_TOKEN);
+
+    print(fcmToken);
+
+    if (fcmToken != null) {
+      var response = await Network().postWithAuth({'fcmToken': fcmToken }, FCM_URL);
+      print(response.statusCode);
+    }
 
     if (storeUser != null) {
       User user = User.fromJson(json.decode(storeUser));
