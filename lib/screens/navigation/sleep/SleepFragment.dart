@@ -39,66 +39,78 @@ class _SleepFragmentState extends State<SleepFragment> {
   Widget build(BuildContext context) {
     return Container(
       width: double.infinity,
+      height: double.infinity,
       decoration: BoxDecoration(
         image: DecorationImage(
           image: AssetImage("assets/images/bg_sleep.jpg"),
           fit: BoxFit.cover,
         ),
       ),
-      child: SingleChildScrollView(
-        child: Padding(
-          padding: EdgeInsets.only(left: 30, right: 16),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              GestureDetector(
-                onTap: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => SleepCalendarFragment()),
-                  );
-                },
-                child: Image(
-                  image: AssetImage('assets/sleep/sleep.png'),
-                  width: 210,
-                ),
-              ),
-              SizedBox(
-                height: 80,
-              ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.end,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  GestureDetector(
-                    onTap: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(builder: (context) => SleepStatsFragment()),
-                      );
-                    },
-                    child: Image(image: AssetImage('assets/sleep/stats.png'), width: 210,),
+      child: Center(
+        child: SingleChildScrollView(
+          child: Padding(
+            padding: EdgeInsets.only(left: 30, right: 16),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                GestureDetector(
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => SleepCalendarFragment()),
+                    );
+                  },
+                  child: Image(
+                    image: AssetImage('assets/sleep/sleep.png'),
+                    width: 210,
                   ),
-                ],
-              ),
-              SizedBox(
-                height: 20,
-              ),
-              _showTips
-                  ? GestureDetector(
-                onTap: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => SleepTipFragment()),
-                  );
-                },
-                child: Image(image: AssetImage('assets/sleep/tip.png'), width: 210,),
-              )
-                  : SizedBox(height: 100,),
-            ],
+                ),
+                SizedBox(
+                  height: 80,
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    GestureDetector(
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => SleepStatsFragment()),
+                        );
+                      },
+                      child: Image(
+                        image: AssetImage('assets/sleep/stats.png'),
+                        width: 210,
+                      ),
+                    ),
+                  ],
+                ),
+                SizedBox(
+                  height: 20,
+                ),
+                _showTips
+                    ? GestureDetector(
+                        onTap: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => SleepTipFragment()),
+                          );
+                        },
+                        child: Image(
+                          image: AssetImage('assets/sleep/tip.png'),
+                          width: 210,
+                        ),
+                      )
+                    : SizedBox(
+                        height: 100,
+                      ),
+              ],
+            ),
           ),
         ),
       ),
