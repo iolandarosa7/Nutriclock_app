@@ -45,59 +45,61 @@ class _SleepFragmentState extends State<SleepFragment> {
           fit: BoxFit.cover,
         ),
       ),
-      child: Padding(
-        padding: EdgeInsets.only(left: 30, right: 16),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            GestureDetector(
-              onTap: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                      builder: (context) => SleepCalendarFragment()),
-                );
-              },
-              child: Image(
-                image: AssetImage('assets/sleep/sleep.png'),
-                width: 210,
-              ),
-            ),
-            SizedBox(
-              height: 80,
-            ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.end,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                GestureDetector(
-                  onTap: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(builder: (context) => SleepStatsFragment()),
-                    );
-                  },
-                  child: Image(image: AssetImage('assets/sleep/stats.png'), width: 210,),
+      child: SingleChildScrollView(
+        child: Padding(
+          padding: EdgeInsets.only(left: 30, right: 16),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              GestureDetector(
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => SleepCalendarFragment()),
+                  );
+                },
+                child: Image(
+                  image: AssetImage('assets/sleep/sleep.png'),
+                  width: 210,
                 ),
-              ],
-            ),
-            SizedBox(
-              height: 20,
-            ),
-            _showTips
-                ? GestureDetector(
+              ),
+              SizedBox(
+                height: 80,
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.end,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  GestureDetector(
                     onTap: () {
                       Navigator.push(
                         context,
-                        MaterialPageRoute(
-                            builder: (context) => SleepTipFragment()),
+                        MaterialPageRoute(builder: (context) => SleepStatsFragment()),
                       );
                     },
-                    child: Image(image: AssetImage('assets/sleep/tip.png'), width: 210,),
-                  )
-                : SizedBox(height: 100,),
-          ],
+                    child: Image(image: AssetImage('assets/sleep/stats.png'), width: 210,),
+                  ),
+                ],
+              ),
+              SizedBox(
+                height: 20,
+              ),
+              _showTips
+                  ? GestureDetector(
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => SleepTipFragment()),
+                  );
+                },
+                child: Image(image: AssetImage('assets/sleep/tip.png'), width: 210,),
+              )
+                  : SizedBox(height: 100,),
+            ],
+          ),
         ),
       ),
     );

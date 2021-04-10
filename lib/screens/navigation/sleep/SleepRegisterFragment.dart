@@ -6,10 +6,8 @@ import 'package:intl/date_symbol_data_local.dart';
 import 'package:intl/intl.dart';
 import 'package:multiselect_formfield/multiselect_formfield.dart';
 import 'package:nutriclock_app/constants/constants.dart';
-import 'package:nutriclock_app/models/User.dart';
 import 'package:nutriclock_app/network_utils/api.dart';
 import 'package:nutriclock_app/utils/AppWidget.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 class SleepRegisterFragment extends StatefulWidget {
   final dynamic value;
@@ -349,7 +347,7 @@ class _SleepRegisterFragmentState extends State<SleepRegisterFragment> {
                                                   padding: EdgeInsets.only(
                                                       left: 8.0),
                                                   child: Text(
-                                                    'Outros motivos que podem influenciar...',
+                                                    'Outros motivos',
                                                     textAlign: TextAlign.left,
                                                     style: TextStyle(
                                                         color:
@@ -483,9 +481,9 @@ class _SleepRegisterFragmentState extends State<SleepRegisterFragment> {
       var response = await Network().postWithAuth({
         'date': dateFormat.format(widget.value),
         'wakeUpTime':
-        "${_parseTwoNumber(_wakeUpTime.hour)}:${_parseTwoNumber(_wakeUpTime.minute)}",
+            "${_parseTwoNumber(_wakeUpTime.hour)}:${_parseTwoNumber(_wakeUpTime.minute)}",
         'sleepTime':
-        "${_parseTwoNumber(_endUpTime.hour)}:${_parseTwoNumber(_endUpTime.minute)}",
+            "${_parseTwoNumber(_endUpTime.hour)}:${_parseTwoNumber(_endUpTime.minute)}",
         'hasWakeUp': _hasWakeUp,
         'activities': _myActivities,
         'motives': _myMotives
@@ -494,9 +492,9 @@ class _SleepRegisterFragmentState extends State<SleepRegisterFragment> {
       print({
         'date': dateFormat.format(widget.value),
         'wakeUpTime':
-        "${_parseTwoNumber(_wakeUpTime.hour)}:${_parseTwoNumber(_wakeUpTime.minute)}",
+            "${_parseTwoNumber(_wakeUpTime.hour)}:${_parseTwoNumber(_wakeUpTime.minute)}",
         'sleepTime':
-        "${_parseTwoNumber(_endUpTime.hour)}:${_parseTwoNumber(_endUpTime.minute)}",
+            "${_parseTwoNumber(_endUpTime.hour)}:${_parseTwoNumber(_endUpTime.minute)}",
         'hasWakeUp': _hasWakeUp,
         'activities': _myActivities,
         'motives': _myMotives
@@ -525,7 +523,10 @@ class _SleepRegisterFragmentState extends State<SleepRegisterFragment> {
   }
 
   _parseTwoNumber(value) {
-    if (value > 9) return "$value"; else return "0$value";
+    if (value > 9)
+      return "$value";
+    else
+      return "0$value";
   }
 
   // show datepicker
