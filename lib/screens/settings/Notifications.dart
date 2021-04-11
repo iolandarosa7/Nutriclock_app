@@ -206,11 +206,11 @@ class _NotificationsFragmentState extends State<NotificationsFragment> {
         var data = NotificationModel.fromJson(
             json.decode(response.body)[JSON_DATA_KEY]);
         this.setState(() {
-          _sleepNotification = data.notificationsSleep == 0 ? false : true;
+          _sleepNotification = data.notificationsSleep ? true : false;
           _exerciseNotification =
-              data.notificationsExercise == 0 ? false : true;
+              data.notificationsExercise ? true : false;
           _mealDiaryNotification =
-              data.notificationsMealDiary == 0 ? false : true;
+              data.notificationsMealDiary ? true : false;
         });
       }
     } catch (error) {} finally {

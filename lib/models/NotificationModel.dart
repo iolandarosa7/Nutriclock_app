@@ -1,8 +1,8 @@
 class NotificationModel {
   int userId;
-  int notificationsSleep;
-  int notificationsExercise;
-  int notificationsMealDiary;
+  bool notificationsSleep;
+  bool notificationsExercise;
+  bool notificationsMealDiary;
 
   NotificationModel();
 
