@@ -25,6 +25,7 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
+  bool _nutriclockGroup = false;
   String _name = '';
   String _email = '';
   String _avatarUrl = '';
@@ -108,6 +109,7 @@ class _HomeState extends State<Home> {
       }
 
       setState(() {
+        _nutriclockGroup = user.nutriclockGroup;
         _name = user.name;
         _email = user.email;
         _avatarUrl = avatarUrl;
@@ -275,7 +277,7 @@ class _HomeState extends State<Home> {
                 ),
                 onTap: () => _onSelectItem(5, "Relatórios"),
               ),
-              ListTile(
+              if(_nutriclockGroup)ListTile(
                 leading: Icon(
                   Icons.restaurant,
                   color: Color(0xFFA3E1CB),

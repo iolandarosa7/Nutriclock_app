@@ -15,6 +15,7 @@ class User {
   bool terms_accepted;
   // int terms_accepted;
   int unreadMessages;
+  bool nutriclockGroup;
 
   User();
 
@@ -33,6 +34,7 @@ class User {
         'ufc_id': ufc_id,
         'terms_accepted': terms_accepted,
         'unreadMessages': unreadMessages,
+        'nutriclockGroup': nutriclockGroup,
       };
 
   User.fromJson(Map<String, dynamic> json)
@@ -49,5 +51,6 @@ class User {
         diseases = json['diseases'],
         ufc_id = json['ufc_id'],
         unreadMessages = json['unreadMessages'],
+        nutriclockGroup = json['nutriclockGroup'],
         terms_accepted = json['terms_accepted'];
 }
