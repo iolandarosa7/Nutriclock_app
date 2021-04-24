@@ -5,7 +5,6 @@ import 'package:nutriclock_app/constants/constants.dart';
 import 'package:nutriclock_app/models/User.dart';
 import 'package:nutriclock_app/network_utils/api.dart';
 import 'package:nutriclock_app/screens/drawer/BioMarkersFragment.dart';
-import 'package:nutriclock_app/screens/drawer/ContactsFragment.dart';
 import 'package:nutriclock_app/screens/drawer/ReportsFragment.dart';
 import 'package:nutriclock_app/screens/drawer/mealPlan/FoodPlanFragment.dart';
 import 'package:nutriclock_app/screens/login.dart';
@@ -16,6 +15,7 @@ import 'package:nutriclock_app/screens/navigation/meals/MealsFragment.dart';
 import 'package:nutriclock_app/screens/navigation/sleep/SleepFragment.dart';
 import 'package:nutriclock_app/screens/settings/Settings.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:url_launcher/url_launcher.dart';
 import 'package:web_socket_channel/io.dart';
 import 'package:web_socket_channel/web_socket_channel.dart';
 
@@ -36,6 +36,8 @@ class _HomeState extends State<Home> {
   var channel = IOWebSocketChannel.connect(WEBSOCKET_URL);
   var _shouldConnect = true;
   var _totalUnread = 0;
+  var _phone = '';
+  var _emailContact = '';
 
   @override
   void initState() {
@@ -78,13 +80,27 @@ class _HomeState extends State<Home> {
   _getUnreadMessages() async {
     try {
       var response = await Network().getWithAuth(MESSAGES_UNREAD_URL);
+      var responseContacts = await Network().getWithAuth(CONFIG_CONTACTS_URL);
+
       if (response.statusCode == RESPONSE_SUCCESS) {
         var count = json.decode(response.body)[JSON_DATA_KEY];
         this.setState(() {
           _totalUnread = count;
         });
       }
-    } catch (error) {}
+
+      if (responseContacts.statusCode == RESPONSE_SUCCESS) {
+        var emailC = json.decode(responseContacts.body)['email'];
+        var phone = json.decode(responseContacts.body)['phone'];
+
+        this.setState(() {
+          _emailContact = emailC;
+          _phone = phone;
+        });
+      }
+    } catch (error) {
+      print(error);
+    }
   }
 
   _loadUserData() async {
@@ -170,7 +186,6 @@ class _HomeState extends State<Home> {
     ChatFragment(),
     ReportsFragment(),
     FoodPlanFragment(),
-    ContactsFragment(),
     BioMarkersFragment(),
   ];
 
@@ -266,47 +281,77 @@ class _HomeState extends State<Home> {
                 ),
               ),
             ),
-            new Column(children: [
-              ListTile(
-                leading: Icon(
-                  Icons.insert_chart,
-                  color: Color(0xFFA3E1CB),
-                ),
-                title: Text(
-                  'Relatórios',
-                  style: TextStyle(color: Color(0xFF60B2A3)),
-                ),
-                onTap: () => _onSelectItem(5, "Relatórios"),
-              ),
-              if (_nutriclockGroup)
+            new Column(
+              children: [
                 ListTile(
                   leading: Icon(
-                    Icons.restaurant,
+                    Icons.insert_chart,
                     color: Color(0xFFA3E1CB),
                   ),
-                  title: Text('Plano Alimentar',
+                  title: Text(
+                    'Relatórios',
+                    style: TextStyle(color: Color(0xFF60B2A3)),
+                  ),
+                  onTap: () => _onSelectItem(5, "Relatórios"),
+                ),
+                if (_nutriclockGroup)
+                  ListTile(
+                    leading: Icon(
+                      Icons.restaurant,
+                      color: Color(0xFFA3E1CB),
+                    ),
+                    title: Text('Plano Alimentar',
+                        style: TextStyle(color: Color(0xFF60B2A3))),
+                    onTap: () => _onSelectItem(6, "Plano Alimentar"),
+                  ),
+                ListTile(
+                  leading: Icon(
+                    Icons.accessibility,
+                    color: Color(0xFFA3E1CB),
+                  ),
+                  title: Text('Biomarcadores',
                       style: TextStyle(color: Color(0xFF60B2A3))),
-                  onTap: () => _onSelectItem(6, "Plano Alimentar"),
+                  onTap: () => _onSelectItem(7, "Biomarcadores"),
                 ),
-              ListTile(
-                leading: Icon(
-                  Icons.email,
-                  color: Color(0xFFA3E1CB),
+                Divider(),
+                ListTile(
+                  title: Text(
+                    "Contactos",
+                    style: TextStyle(
+                      color: Colors.black45,
+                    ),
+                  ),
                 ),
-                title: Text('Contactos',
-                    style: TextStyle(color: Color(0xFF60B2A3))),
-                onTap: () => _onSelectItem(7, "Contactos"),
-              ),
-              ListTile(
-                leading: Icon(
-                  Icons.accessibility,
-                  color: Color(0xFFA3E1CB),
+                ListTile(
+                  leading: Icon(
+                    Icons.email,
+                    color: Colors.grey,
+                  ),
+                  title: Text(
+                    _emailContact,
+                    style: TextStyle(
+                      color: Colors.grey,
+                      fontSize: 12,
+                    ),
+                  ),
+                  onTap: () => _onPhoneEmailClick('mailto:$_phone'),
                 ),
-                title: Text('Biomarcadores',
-                    style: TextStyle(color: Color(0xFF60B2A3))),
-                onTap: () => _onSelectItem(8, "Biomarcadores"),
-              ),
-            ])
+                ListTile(
+                  leading: Icon(
+                    Icons.phone,
+                    color: Colors.grey,
+                  ),
+                  title: Text(
+                    _phone,
+                    style: TextStyle(
+                      color: Colors.grey,
+                      fontSize: 12,
+                    ),
+                  ),
+                  onTap: () => _onPhoneEmailClick('tel:$_phone'),
+                ),
+              ],
+            )
           ],
         ),
       ),
@@ -314,6 +359,13 @@ class _HomeState extends State<Home> {
         child: _widgetOptions.elementAt(_currentIndex),
       ),
     );
+  }
+  Future<void> _onPhoneEmailClick(String url) async {
+    if (await canLaunch(url)) {
+      await launch(url);
+    } else {
+      print("can't launch");
+    }
   }
 
   Future<void> _showLogoutModal() async {
