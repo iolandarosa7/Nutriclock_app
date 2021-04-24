@@ -96,7 +96,8 @@ class _HomeState extends State<Home> {
     print(fcmToken);
 
     if (fcmToken != null) {
-      var response = await Network().postWithAuth({'fcmToken': fcmToken }, FCM_URL);
+      var response =
+          await Network().postWithAuth({'fcmToken': fcmToken}, FCM_URL);
       print(response.statusCode);
     }
 
@@ -277,15 +278,16 @@ class _HomeState extends State<Home> {
                 ),
                 onTap: () => _onSelectItem(5, "Relatórios"),
               ),
-              if(_nutriclockGroup)ListTile(
-                leading: Icon(
-                  Icons.restaurant,
-                  color: Color(0xFFA3E1CB),
+              if (_nutriclockGroup)
+                ListTile(
+                  leading: Icon(
+                    Icons.restaurant,
+                    color: Color(0xFFA3E1CB),
+                  ),
+                  title: Text('Plano Alimentar',
+                      style: TextStyle(color: Color(0xFF60B2A3))),
+                  onTap: () => _onSelectItem(6, "Plano Alimentar"),
                 ),
-                title: Text('Plano Alimentar',
-                    style: TextStyle(color: Color(0xFF60B2A3))),
-                onTap: () => _onSelectItem(6, "Plano Alimentar"),
-              ),
               ListTile(
                 leading: Icon(
                   Icons.email,

@@ -1,7 +1,9 @@
 import 'dart:convert';
+import 'dart:io';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
 import 'package:loading/indicator/ball_pulse_indicator.dart';
 import 'package:loading/loading.dart';
@@ -20,6 +22,8 @@ class FoodPlanFragment extends StatefulWidget {
 class _FoodPlanFragmentState extends State<FoodPlanFragment> {
   final _scaffoldKey = GlobalKey<ScaffoldState>();
   var _selectedDayIndex = 0;
+  final picker = ImagePicker();
+  File _photo;
   List<WeekDay> _weekDates = [
     WeekDay('SEG'),
     WeekDay('TER'),
@@ -30,14 +34,15 @@ class _FoodPlanFragmentState extends State<FoodPlanFragment> {
     WeekDay('DOM'),
   ];
   List<MealPlanType> _meals = [];
-  List<MealPlan>_history = [];
+  List<MealPlan> _history = [];
   var _isLoading = false;
+  TimeOfDay _time = TimeOfDay.now();
 
   @override
   void initState() {
     _populateWeek();
     _getMealsByDate(_weekDates[_selectedDayIndex].date);
-    _getHistoryFromDate(_weekDates[_selectedDayIndex].date);
+    _getHistoryFromDate(_weekDates[0].date);
     super.initState();
   }
 
@@ -84,28 +89,28 @@ class _FoodPlanFragmentState extends State<FoodPlanFragment> {
                 ),
               ),
             ),
-            _isLoading == true ? Center(
-              child: Loading(
-                  indicator: BallPulseIndicator(),
-                  size: 50.0,
-                  color: Color(0xFFFFBCBC)),
-            ) : SizedBox(),
-            ..._renderMeals(_meals)
+            _isLoading == true
+                ? Center(
+                    child: Loading(
+                        indicator: BallPulseIndicator(),
+                        size: 50.0,
+                        color: Color(0xFFFFBCBC)),
+                  )
+                : SizedBox(),
+            ..._renderMeals(_meals, false)
           ],
         ),
       ),
     );
   }
 
-  List<Widget> _renderMeals(List<MealPlanType> meals) {
+  List<Widget> _renderMeals(List<MealPlanType> meals, bool isHistory) {
     List<Widget> list = [];
     if (meals == null || meals.length == 0)
       list.add(Padding(
         padding: EdgeInsets.only(top: 20),
         child: Center(
-          child: Text(
-            "Não tem plano"
-          ),
+          child: Text("Não tem plano"),
         ),
       ));
 
@@ -119,106 +124,136 @@ class _FoodPlanFragmentState extends State<FoodPlanFragment> {
             Container(
               color: Colors.white,
               child: Padding(
-                padding: EdgeInsets.all(16),
-                child: Row(
-                  children: [
-                    Container(
-                      width: 40,
-                      height: 40,
-                      decoration: BoxDecoration(
-                        border: Border.all(
-                          color: Color(0xFFA3E1CB),
-                          width: 2,
-                        ),
-                        borderRadius: BorderRadius.all(
-                          Radius.circular(40),
-                        ),
+                  padding:
+                      EdgeInsets.only(top: 16, left: 16, right: 16, bottom: 4),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Row(
+                        children: [
+                          Container(
+                            width: 40,
+                            height: 40,
+                            decoration: BoxDecoration(
+                              border: Border.all(
+                                color: Color(0xFFA3E1CB),
+                                width: 2,
+                              ),
+                              borderRadius: BorderRadius.all(
+                                Radius.circular(40),
+                              ),
+                            ),
+                            child: Center(
+                              child: Text(
+                                _getFirstLetterFromName(element.type),
+                                style: TextStyle(
+                                    color: Color(0xFFA3E1CB),
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 16),
+                              ),
+                            ),
+                          ),
+                          Expanded(
+                            flex: 7,
+                            child: Padding(
+                              padding: EdgeInsets.symmetric(horizontal: 16),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(_renderType(element.type)),
+                                  SizedBox(
+                                    height: 4,
+                                  ),
+                                  Row(
+                                    children: [
+                                      Icon(
+                                        Icons.schedule,
+                                        color: Color(0xFFCFCECE),
+                                      ),
+                                      Text(
+                                        element.hour,
+                                        style: TextStyle(
+                                          color: Color(0xFFCFCECE),
+                                        ),
+                                      ),
+                                      SizedBox(
+                                        width: 16,
+                                      ),
+                                      Icon(
+                                        Icons.people,
+                                        color: Color(0xFFCFCECE),
+                                      ),
+                                      Text(
+                                        _renderPortion(element.portion),
+                                        style: TextStyle(
+                                          color: Color(0xFFCFCECE),
+                                        ),
+                                      )
+                                    ],
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ),
+                          Expanded(
+                            flex: 1,
+                            child: element.opened
+                                ? IconButton(
+                                    icon: Icon(
+                                      Icons.close,
+                                      color: Color(0xFFA3E1CB),
+                                    ),
+                                    tooltip: 'Fechar detalhes',
+                                    onPressed: () {
+                                      element.opened = false;
+                                      setState(() {
+                                        _meals = _meals;
+                                      });
+                                    },
+                                  )
+                                : IconButton(
+                                    icon: Icon(
+                                      Icons.keyboard_arrow_down,
+                                      color: Color(0xFFA3E1CB),
+                                    ),
+                                    tooltip: 'Abrir detalhes',
+                                    onPressed: () {
+                                      element.opened = true;
+                                      setState(() {
+                                        _meals = _meals;
+                                      });
+                                    },
+                                  ),
+                          ),
+                        ],
                       ),
-                      child: Center(
-                        child: Text(
-                          _getFirstLetterFromName(element.type),
-                          style: TextStyle(
+                      if (!isHistory)
+                        TextButton.icon(
+                          label: Text(
+                            element.confirmed ? 'Confirmar' : 'Confirmado',
+                            style: TextStyle(
                               color: Color(0xFFA3E1CB),
-                              fontWeight: FontWeight.bold,
-                              fontSize: 16),
+                              fontSize: 15.0,
+                              decoration: TextDecoration.none,
+                              fontWeight: FontWeight.normal,
+                            ),
+                          ),
+                          icon: Icon(
+                            Icons.check,
+                            color: Color(0xFFA3E1CB),
+                          ),
+                          style: TextButton.styleFrom(
+                            side: BorderSide(
+                              color: Color(0xFFA3E1CB),
+                              width: 1,
+                            ),
+                          ),
+                          onPressed: () {
+                            _showPhotoTimeModal(element);
+                          },
                         ),
-                      ),
-                    ),
-                    Expanded(
-                      flex: 7,
-                      child: Padding(
-                        padding: EdgeInsets.symmetric(horizontal: 16),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(_renderType(element.type)),
-                            SizedBox(
-                              height: 4,
-                            ),
-                            Row(
-                              children: [
-                                Icon(
-                                  Icons.schedule,
-                                  color: Color(0xFFCFCECE),
-                                ),
-                                Text(
-                                  element.hour,
-                                  style: TextStyle(
-                                    color: Color(0xFFCFCECE),
-                                  ),
-                                ),
-                                SizedBox(
-                                  width: 16,
-                                ),
-                                Icon(
-                                  Icons.people,
-                                  color: Color(0xFFCFCECE),
-                                ),
-                                Text(
-                                  _renderPortion(element.portion),
-                                  style: TextStyle(
-                                    color: Color(0xFFCFCECE),
-                                  ),
-                                )
-                              ],
-                            ),
-                          ],
-                        ),
-                      ),
-                    ),
-                    Expanded(
-                      flex: 1,
-                      child: element.opened
-                          ? IconButton(
-                              icon: Icon(
-                                Icons.close,
-                                color: Color(0xFFA3E1CB),
-                              ),
-                              tooltip: 'Fechar detalhes',
-                              onPressed: () {
-                                element.opened = false;
-                                setState(() {
-                                  _meals = _meals;
-                                });
-                              },
-                            )
-                          : IconButton(
-                              icon: Icon(
-                                Icons.keyboard_arrow_down,
-                                color: Color(0xFFA3E1CB),
-                              ),
-                              tooltip: 'Abrir detalhes',
-                              onPressed: () {
-                                element.opened = true;
-                                setState(() {
-                                  _meals = _meals;
-                                });
-                              },
-                            ),
-                    ),
-                  ],
-                ),
-              ),
+                    ],
+                  )),
             ),
             Column(
               children: [
@@ -231,7 +266,6 @@ class _FoodPlanFragmentState extends State<FoodPlanFragment> {
         ),
       );
     });
-
     return list;
   }
 
@@ -247,12 +281,18 @@ class _FoodPlanFragmentState extends State<FoodPlanFragment> {
                 width: double.infinity,
                 decoration: BoxDecoration(
                   border: Border(
-                    left: BorderSide(color: Color(0xFFA3E1CB), width: 8),
+                    left: BorderSide(
+                      color: Color(0xFFA3E1CB),
+                      width: 8,
+                    ),
                   ),
                   color: Color(0xFFECECEC),
                 ),
                 child: Padding(
-                  padding: EdgeInsets.symmetric(vertical: 8, horizontal: 16),
+                  padding: EdgeInsets.symmetric(
+                    vertical: 8,
+                    horizontal: 16,
+                  ),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
@@ -355,9 +395,7 @@ class _FoodPlanFragmentState extends State<FoodPlanFragment> {
       list.add(Padding(
         padding: EdgeInsets.only(top: 20),
         child: Center(
-          child: Text(
-              "Não existem dados no histórico"
-          ),
+          child: Text("Não existem dados no histórico"),
         ),
       ));
 
@@ -387,8 +425,7 @@ class _FoodPlanFragmentState extends State<FoodPlanFragment> {
                         ),
                       ),
                       child: Center(
-                        child:
-                        Icon(
+                        child: Icon(
                           Icons.calendar_today,
                           color: Color(0xFFA3E1CB),
                         ),
@@ -401,7 +438,7 @@ class _FoodPlanFragmentState extends State<FoodPlanFragment> {
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            Text(_renderDate(element.dayOfWeek,element.date)),
+                            Text(_renderDate(element.dayOfWeek, element.date)),
                             SizedBox(
                               height: 4,
                             ),
@@ -413,41 +450,40 @@ class _FoodPlanFragmentState extends State<FoodPlanFragment> {
                       flex: 1,
                       child: element.opened
                           ? IconButton(
-                        icon: Icon(
-                          Icons.close,
-                          color: Color(0xFFA3E1CB),
-                        ),
-                        tooltip: 'Fechar detalhes',
-                        onPressed: () {
-                          element.opened = false;
-                          setState(() {
-                            _meals = _meals;
-                          });
-                        },
-                      )
+                              icon: Icon(
+                                Icons.close,
+                                color: Color(0xFFA3E1CB),
+                              ),
+                              tooltip: 'Fechar detalhes',
+                              onPressed: () {
+                                element.opened = false;
+                                setState(() {
+                                  _meals = _meals;
+                                });
+                              },
+                            )
                           : IconButton(
-                        icon: Icon(
-                          Icons.keyboard_arrow_down,
-                          color: Color(0xFFA3E1CB),
-                        ),
-                        tooltip: 'Abrir detalhes',
-                        onPressed: () {
-                          element.opened = true;
-                          setState(() {
-                            _meals = _meals;
-                          });
-                        },
-                      ),
+                              icon: Icon(
+                                Icons.keyboard_arrow_down,
+                                color: Color(0xFFA3E1CB),
+                              ),
+                              tooltip: 'Abrir detalhes',
+                              onPressed: () {
+                                element.opened = true;
+                                setState(() {
+                                  _meals = _meals;
+                                });
+                              },
+                            ),
                     ),
                   ],
                 ),
               ),
             ),
             Column(
-              children:
-                element.opened && element.mealTypes != null
-                    ? _renderMeals(element.mealTypes)
-                    : [SizedBox()],
+              children: element.opened && element.mealTypes != null
+                  ? _renderMeals(element.mealTypes, true)
+                  : [SizedBox()],
             )
           ],
         ),
@@ -515,7 +551,6 @@ class _FoodPlanFragmentState extends State<FoodPlanFragment> {
         d = 'Domingo';
     }
 
-
     return "$d, $date";
   }
 
@@ -576,7 +611,9 @@ class _FoodPlanFragmentState extends State<FoodPlanFragment> {
           meals.add(m);
         });
       }
-    } catch (error) {}
+    } catch (error) {
+      print(error);
+    }
 
     setState(() {
       _isLoading = false;
@@ -588,12 +625,12 @@ class _FoodPlanFragmentState extends State<FoodPlanFragment> {
     List<MealPlan> history = [];
 
     try {
-      var response = await Network().getWithAuthParam(MEAL_PLAN_HISTORY_URL, date);
+      var response =
+          await Network().getWithAuthParam(MEAL_PLAN_HISTORY_URL, date);
 
       if (response.statusCode == RESPONSE_SUCCESS) {
         List<dynamic> data = json.decode(response.body)[JSON_DATA_KEY];
         List<MealPlanType> mealPlanTypes = [];
-
         data.forEach((element) {
           MealPlan m = MealPlan.fromJson(element);
           m.mealTypes.forEach((elementMealType) {
@@ -612,7 +649,9 @@ class _FoodPlanFragmentState extends State<FoodPlanFragment> {
           history.add(m);
         });
       }
-    } catch (error) {}
+    } catch (error) {
+      print(error);
+    }
 
     setState(() {
       _history = history;
@@ -636,5 +675,206 @@ class _FoodPlanFragmentState extends State<FoodPlanFragment> {
       default:
         return 6;
     }
+  }
+
+  Future<void> _showPhotoTimeModal(MealPlanType mealPlanType) async {
+    return showDialog<void>(
+      context: context,
+      builder: (BuildContext context) {
+        return StatefulBuilder(
+            builder: (BuildContext context, StateSetter setModalState) {
+          return AlertDialog(
+            title: Text(
+              'Hora e Foto da Refeição',
+              textAlign: TextAlign.center,
+              style: TextStyle(color: Color(0xFFA3E1CB)),
+            ),
+            content: SingleChildScrollView(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: [
+                      Padding(
+                        padding: EdgeInsets.only(bottom: 4, right: 4),
+                        child: Icon(
+                          Icons.access_time,
+                          color: Color(0xFFA3E1CB),
+                        ),
+                      ),
+                      Text(
+                        'Hora',
+                        textAlign: TextAlign.left,
+                        style: TextStyle(
+                          color: Color(0xFFA3E1CB),
+                        ),
+                      ),
+                      FlatButton(
+                        color: Colors.transparent,
+                        splashColor: Colors.black26,
+                        onPressed: () => _selectTime(context, setModalState),
+                        child: Text(
+                          "${_time.hour}:${_time.minute > 9 ? _time.minute : "0${_time.minute}"} horas",
+                          style: TextStyle(
+                            color: Color(0xFF000000),
+                            fontSize: 15,
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                  TextButton.icon(
+                    onPressed: () => {_showPicker(context)},
+                    label: Text(
+                      "Adicionar / Alterar Fotografia",
+                      style: TextStyle(color: Color(0xFFA3E1CB)),
+                    ),
+                    icon: Icon(
+                      Icons.restaurant,
+                      color: Color(0xFFA3E1CB),
+                    ),
+                    style: TextButton.styleFrom(
+                      side: BorderSide(
+                        color: Color(0xFFA3E1CB),
+                        width: 1,
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            actions: <Widget>[
+              FlatButton(
+                child: Text(
+                  'Ok',
+                  style: TextStyle(color: Color(0xFF60B2A3)),
+                ),
+                onPressed: () {
+                  Navigator.of(context).pop();
+                  _updateMealPlan(mealPlanType);
+                },
+              ),
+            ],
+          );
+        });
+      },
+    );
+  }
+
+  Future<void> _updateMealPlan(MealPlanType mealPlanType) async {
+    if (_isLoading) return;
+    this.setState(() {
+      _isLoading = true;
+    });
+
+    try {
+      var t =
+          "${_time.hour > 9 ? _time.hour : '0${_time.hour}'}:${_time.minute > 9 ? _time.minute : '0${_time.minute}'}";
+      var response =
+          await Network().postMealTypeConfirmation(t, _photo, mealPlanType.id);
+      print(response.statusCode);
+      setState(() {
+        _isLoading = false;
+      });
+    } catch (error) {
+      print(error);
+      this.setState(() {
+        _isLoading = false;
+      });
+    }
+  }
+
+  void _selectTime(BuildContext context, StateSetter setModalState) async {
+    final ThemeData themeData = Theme.of(context);
+    assert(themeData.platform != null);
+
+    switch (themeData.platform) {
+      case TargetPlatform.android:
+      case TargetPlatform.fuchsia:
+      case TargetPlatform.linux:
+      case TargetPlatform.windows:
+        return buildMaterialDatePicker(context, setModalState);
+      case TargetPlatform.iOS:
+      case TargetPlatform.macOS:
+        return buildCupertinoDatePicker(context, setModalState);
+    }
+  }
+
+  void buildMaterialDatePicker(
+      BuildContext context, StateSetter setModalState) async {
+    final pickedTime =
+        await showTimePicker(context: context, initialTime: _time);
+
+    if (pickedTime != null && pickedTime != _time) {
+      setModalState(() {
+        _time = pickedTime;
+      });
+    }
+  }
+
+  void buildCupertinoDatePicker(
+      BuildContext context, StateSetter setModalState) async {
+    showModalBottomSheet(
+        context: context,
+        builder: (BuildContext builder) {
+          return Container(
+            height: MediaQuery.of(context).copyWith().size.height / 3,
+            color: Colors.white,
+            child: CupertinoDatePicker(
+              mode: CupertinoDatePickerMode.time,
+              onDateTimeChanged: (picked) {
+                setModalState(() {
+                  _time = TimeOfDay(hour: picked.hour, minute: picked.minute);
+                });
+              },
+              initialDateTime: DateTime(1969, 1, 1, _time.hour, _time.minute),
+              minimumYear: 1900,
+              maximumDate: DateTime.now(),
+              use24hFormat: true,
+              minuteInterval: 1,
+            ),
+          );
+        });
+  }
+
+  // show image picker
+  void _showPicker(context) {
+    showModalBottomSheet(
+        context: context,
+        builder: (BuildContext bc) {
+          return SafeArea(
+            child: Container(
+              child: new Wrap(
+                children: <Widget>[
+                  new ListTile(
+                      leading: new Icon(Icons.photo_library),
+                      title: new Text('Galeria de Imagens'),
+                      onTap: () {
+                        getImage(ImageSource.gallery);
+                        Navigator.pop(context);
+                      }),
+                  new ListTile(
+                    leading: new Icon(Icons.photo_camera),
+                    title: new Text('Câmara'),
+                    onTap: () {
+                      getImage(ImageSource.camera);
+                      Navigator.pop(context);
+                    },
+                  ),
+                ],
+              ),
+            ),
+          );
+        });
+  }
+
+  Future getImage(ImageSource source) async {
+    final pickedFile = await picker.getImage(source: source, imageQuality: 50);
+    setState(() {
+      if (pickedFile != null) {
+        _photo = File(pickedFile.path);
+      }
+    });
   }
 }

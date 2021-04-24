@@ -6,6 +6,10 @@ class MealPlanType {
   String hour;
   List<dynamic> ingredients;
   bool opened;
+  bool confirmed;
+  // int confirmed;
+  String confirmedHours;
+  String photoUrl;
 
   MealPlanType();
 
@@ -15,7 +19,10 @@ class MealPlanType {
         'planMealId': planMealId,
         'portion': portion,
         'hour': hour,
-        'ingredients': ingredients
+        'ingredients': ingredients,
+        'confirmed': confirmed,
+        'confirmedHours': confirmedHours,
+        'photoUrl': photoUrl,
       };
 
   MealPlanType.fromJson(Map<String, dynamic> json)
@@ -25,5 +32,8 @@ class MealPlanType {
         hour = json['hour'],
         ingredients = json['ingredients'],
         opened = false,
+        confirmed = json['confirmed'],
+        confirmedHours = json['confirmedHours'],
+        photoUrl = json['photoUrl'],
         id = json['id'];
 }

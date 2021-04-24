@@ -72,7 +72,7 @@ class Network {
     await _getToken();
     token = token.replaceAll("\"", "");
     return http.delete(
-        Uri.parse(url),
+      Uri.parse(url),
       headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8',
         'Accept': 'application/json',
@@ -201,7 +201,7 @@ class Network {
     await _getToken();
     token = token.replaceAll("\"", "");
     return await http.get(
-        Uri.parse(url),
+      Uri.parse(url),
       headers: <String, String>{
         'Content-type': 'application/json',
         'Accept': 'application/json',
@@ -215,7 +215,7 @@ class Network {
     await _getToken();
     token = token.replaceAll("\"", "");
     return await http.get(
-        Uri.parse("$url/$id"),
+      Uri.parse("$url/$id"),
       headers: <String, String>{
         'Content-type': 'application/json',
         'Accept': 'application/json',
@@ -243,10 +243,41 @@ class Network {
   Future<http.Response> getWithoutAuth(String apiUrl) async {
     var url = Constants.BASE_API_URL + apiUrl;
     return await http.get(
-        Uri.parse(url),
+      Uri.parse(url),
       headers: <String, String>{
         'Content-type': 'application/json',
       },
     );
+  }
+
+  Future<http.Response> postMealTypeConfirmation(
+      String hours, File foodPhoto, int id) async {
+    var url = Constants.BASE_API_URL + Constants.MEAL_PLAN_TYPE_CONFIRM;
+
+    await _getToken();
+    token = token.replaceAll("\"", "");
+
+    var request = http.MultipartRequest("POST", Uri.parse("$url/$id"));
+    request.fields['confirmedHours'] = hours;
+    request.headers['Accept'] = 'application/json';
+    request.headers['Content-type'] = 'application/json';
+    request.headers['Authorization'] = 'Bearer $token';
+
+    if (foodPhoto != null) {
+      var stream =
+          http.ByteStream(DelegatingStream.typed(foodPhoto.openRead()));
+      var fileLenght = await foodPhoto.length();
+      var multipartFileSign = http.MultipartFile('photo', stream, fileLenght,
+          filename: basename(foodPhoto.path));
+      request.files.add(multipartFileSign);
+    }
+
+    try {
+      var streamedResponse = await request.send();
+      var response = http.Response.fromStream(streamedResponse);
+      return response;
+    } catch (e) {
+      rethrow;
+    }
   }
 }

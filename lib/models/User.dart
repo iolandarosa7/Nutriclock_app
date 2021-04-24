@@ -7,6 +7,7 @@ class User {
   String email;
   String role;
   bool active;
+
   // int active;
   String avatarUrl;
   String birthday;
@@ -16,6 +17,7 @@ class User {
   // int terms_accepted;
   int unreadMessages;
   bool nutriclockGroup;
+  // int nutriclockGroup;
 
   User();
 
