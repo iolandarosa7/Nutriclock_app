@@ -113,7 +113,7 @@ class _HomeState extends State<Home> {
 
     if (fcmToken != null) {
       var response =
-          await Network().postWithAuth({'fcmToken': fcmToken}, FCM_URL);
+      await Network().postWithAuth({'fcmToken': fcmToken}, FCM_URL);
       print(response.statusCode);
     }
 
@@ -154,9 +154,10 @@ class _HomeState extends State<Home> {
       default:
         title = "";
     }
-    setState(() => {
-          _currentIndex = index,
-        });
+    setState(() =>
+    {
+      _currentIndex = index,
+    });
     setState(() => {_selectedIndex = index, _title = title});
   }
 
@@ -246,15 +247,15 @@ class _HomeState extends State<Home> {
           ),
           _totalUnread > 0
               ? BottomNavigationBarItem(
-                  icon: Icon(
-                    Icons.mark_chat_unread,
-                  ),
-                  label: 'Chat',
-                )
+            icon: Icon(
+              Icons.mark_chat_unread,
+            ),
+            label: 'Chat',
+          )
               : BottomNavigationBarItem(
-                  icon: Icon(Icons.chat_bubble),
-                  label: 'Chat',
-                ),
+            icon: Icon(Icons.chat_bubble),
+            label: 'Chat',
+          ),
         ],
         currentIndex: _selectedIndex,
         onTap: _onItemTapped,
@@ -360,6 +361,7 @@ class _HomeState extends State<Home> {
       ),
     );
   }
+
   Future<void> _onPhoneEmailClick(String url) async {
     if (await canLaunch(url)) {
       await launch(url);

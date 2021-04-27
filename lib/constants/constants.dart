@@ -92,3 +92,6 @@ const MEAL_PLAN_TYPE_CONFIRM = '/meal-plan-type-confirm';
 const FORGOT_ME = '/forgot-me';
 
 const NOTIFICATION_URL = '/notifications';
+
+const BIOMETRIC_SAMPLES_URL = '/biometric-collection';
+const BIOMETRIC_PROCEDURES_URL = '/biometric-procedure';
