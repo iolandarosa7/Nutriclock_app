@@ -19,6 +19,7 @@ class _NotificationsFragmentState extends State<NotificationsFragment> {
   var _sleepNotification = true;
   var _exerciseNotification = true;
   var _mealDiaryNotification = true;
+  var _biometricNotification = true;
 
   @override
   void initState() {
@@ -131,7 +132,34 @@ class _NotificationsFragmentState extends State<NotificationsFragment> {
                             setState(() {
                               _mealDiaryNotification = value;
                             });
-                            _toggleNotifications('MEAL', value);
+                            _toggleNotifications('MEAL_DIARY', value);
+                          },
+                          activeColor: Color(0xFFA3E1CB),
+                        ),
+                      ],
+                    ),
+                    Row(
+                      children: [
+                        Icon(
+                          Icons.sanitizer,
+                        ),
+                        SizedBox(
+                          width: 16,
+                        ),
+                        Expanded(
+                          flex: 1,
+                          child: Text(
+                            "Notificações de Biomarcadores",
+                            style: TextStyle(fontSize: 18),
+                          ),
+                        ),
+                        Switch(
+                          value: _biometricNotification,
+                          onChanged: (value) {
+                            setState(() {
+                              _biometricNotification = value;
+                            });
+                            _toggleNotifications('BIO_MARKER', value);
                           },
                           activeColor: Color(0xFFA3E1CB),
                         ),
@@ -151,6 +179,7 @@ class _NotificationsFragmentState extends State<NotificationsFragment> {
     var sleep = _sleepNotification;
     var exercise = _exerciseNotification;
     var mealDiary = _mealDiaryNotification;
+    var biomarker = _biometricNotification;
 
     switch (type) {
       case 'SLEEP':
@@ -161,6 +190,9 @@ class _NotificationsFragmentState extends State<NotificationsFragment> {
         break;
       case 'MEAL_DIARY':
         mealDiary = value;
+        break;
+      case 'BIO_MARKER':
+        biomarker = value;
         break;
       default:
         return;
@@ -176,6 +208,7 @@ class _NotificationsFragmentState extends State<NotificationsFragment> {
         'notificationsSleep': sleep,
         'notificationsExercise': exercise,
         'notificationsMealDiary': mealDiary,
+        'notificationsBiometric': biomarker,
       }, NOTIFICATION_URL);
 
       if (response.statusCode == RESPONSE_SUCCESS_201 ||
@@ -211,6 +244,7 @@ class _NotificationsFragmentState extends State<NotificationsFragment> {
               data.notificationsExercise ? true : false;
           _mealDiaryNotification =
               data.notificationsMealDiary ? true : false;
+          _biometricNotification = data.notificationsBiometric ? true : false;
         });
       }
     } catch (error) {} finally {

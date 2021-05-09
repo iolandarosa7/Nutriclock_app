@@ -3,6 +3,7 @@ class NotificationModel {
   bool notificationsSleep;
   bool notificationsExercise;
   bool notificationsMealDiary;
+  bool notificationsBiometric;
 
   NotificationModel();
 
@@ -10,12 +11,14 @@ class NotificationModel {
     'userId': userId,
     'notificationsSleep': notificationsSleep,
     'notificationsExercise': notificationsExercise,
-    'notificationsMealDiary': notificationsMealDiary
+    'notificationsMealDiary': notificationsMealDiary,
+    'notificationsBiometric': notificationsBiometric
   };
 
   NotificationModel.fromJson(Map<String, dynamic> json)
       : userId = json['userId'],
         notificationsSleep = json['notificationsSleep'],
         notificationsExercise = json['notificationsExercise'],
-        notificationsMealDiary = json['notificationsMealDiary'];
+        notificationsMealDiary = json['notificationsMealDiary'],
+        notificationsBiometric = json['notificationsBiometric'];
 }
