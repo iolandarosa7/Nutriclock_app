@@ -95,3 +95,5 @@ const NOTIFICATION_URL = '/notifications';
 
 const BIOMETRIC_SAMPLES_URL = '/biometric-collection';
 const BIOMETRIC_PROCEDURES_URL = '/biometric-procedure';
+
+const REPORT_URL = '/reports';

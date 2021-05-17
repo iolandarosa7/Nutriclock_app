@@ -72,7 +72,6 @@ class _BioMarkersFragmentState extends State<BioMarkersFragment> {
                 ),
               ),
             ),
-            //..._renderProcedures()
           ],
         ),
       ),
