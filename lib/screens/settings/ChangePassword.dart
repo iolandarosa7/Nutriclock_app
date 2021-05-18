@@ -28,7 +28,7 @@ class _ChangePasswordState extends State<ChangePassword> {
       key: _scaffoldKey,
       appBar: appWidget.getAppbar("Alterar Password"),
       body: appWidget.getImageContainer(
-        "assets/images/bg_login.png",
+        "assets/images/bg_password.png",
         _isLoading,
         SingleChildScrollView(
           scrollDirection: Axis.vertical,
@@ -40,6 +40,9 @@ class _ChangePasswordState extends State<ChangePassword> {
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
+                      SizedBox(
+                        height: 20,
+                      ),
                       Card(
                         elevation: 4.0,
                         color: Colors.white,

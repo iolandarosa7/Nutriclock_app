@@ -33,7 +33,7 @@ class _NotificationsFragmentState extends State<NotificationsFragment> {
       key: _scaffoldKey,
       appBar: _appWidget.getAppbar("Notificações"),
       body: _appWidget.getImageContainer(
-        "assets/images/bg_login.png",
+        "assets/images/bg_notifications.png",
         _isLoading,
         SingleChildScrollView(
           scrollDirection: Axis.vertical,

@@ -425,7 +425,7 @@ class _MedicationListState extends State<MedicationList> {
 
   Widget _renderMedications() {
     return appWidget.getImageContainer(
-      "assets/images/bg_home.jpg",
+      "assets/images/bg_medication.png",
       _isLoading,
       _suplements.length == 0
           ? _renderNoData('Não existem medicamentos registados')
@@ -433,7 +433,14 @@ class _MedicationListState extends State<MedicationList> {
               scrollDirection: Axis.vertical,
               child: Padding(
                 padding: EdgeInsets.symmetric(vertical: 8, horizontal: 8),
-                child: Column(children: _renderDrug(_medications, 'M')),
+                child: Column(
+                  children: [
+                    SizedBox(
+                      height: 20,
+                    ),
+                    ..._renderDrug(_medications, 'M'),
+                  ],
+                ),
               ),
             ),
     );
@@ -441,7 +448,7 @@ class _MedicationListState extends State<MedicationList> {
 
   Widget _renderSuplements() {
     return appWidget.getImageContainer(
-      "assets/images/bg_home_r.jpg",
+      "assets/images/bg_medication.png",
       _isLoading,
       _suplements.length == 0
           ? _renderNoData('Não existem suplementos registados')
@@ -449,7 +456,14 @@ class _MedicationListState extends State<MedicationList> {
               scrollDirection: Axis.vertical,
               child: Padding(
                 padding: EdgeInsets.symmetric(vertical: 8, horizontal: 8),
-                child: Column(children: _renderDrug(_suplements, 'S')),
+                child: Column(
+                  children: [
+                    SizedBox(
+                      height: 20,
+                    ),
+                    ..._renderDrug(_suplements, 'S'),
+                  ],
+                ),
               ),
             ),
     );

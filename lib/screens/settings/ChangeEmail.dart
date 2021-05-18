@@ -27,7 +27,7 @@ class _ChangeEmailState extends State<ChangeEmail> {
       key: _scaffoldKey,
       appBar: appWidget.getAppbar("Alterar Email"),
       body: appWidget.getImageContainer(
-        "assets/images/bg_login.png",
+        "assets/images/bg_change_email.png",
         _isLoading,
         SingleChildScrollView(
           scrollDirection: Axis.vertical,
@@ -39,6 +39,9 @@ class _ChangeEmailState extends State<ChangeEmail> {
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
+                      SizedBox(
+                        height: 20,
+                      ),
                       Card(
                         elevation: 4.0,
                         color: Colors.white,

@@ -72,7 +72,7 @@ class _ProfileState extends State<Profile> {
         ],
       ),
       body: appWidget.getImageContainer(
-        "assets/images/bg_home.jpg",
+        "assets/images/bg_profile.png",
         _isLoading,
         SingleChildScrollView(
           scrollDirection: Axis.vertical,
@@ -481,55 +481,6 @@ class _ProfileState extends State<Profile> {
           ),
         ),
       ),
-      /* Stack(
-          children: [
-            Positioned(
-              top: 30,
-              left: 0,
-              right: 0,
-              child: Card(
-                elevation: 4.0,
-                color: Colors.white,
-                margin: EdgeInsets.only(left: 20, right: 20, top: 40.0),
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(15),
-                ),
-                child: SingleChildScrollView(
-
-                ),
-              ),
-            ),
-            Positioned(
-              top: 8,
-              right: 24,
-              child: _user != null
-                  ? Center(
-                      child: GestureDetector(
-                        onTap: () {
-                          _showPicker(context);
-                        },
-                        child: SizedBox(
-                          height: 100,
-                          width: 100,
-                          child: ClipRRect(
-                            borderRadius: BorderRadius.circular(50.0),
-                            child: Image.network(
-                              "$IMAGE_BASE_URL/avatars/${_user.avatarUrl}",
-                              fit: BoxFit.fill,
-                              errorBuilder: (BuildContext context,
-                                  Object exception, StackTrace stackTrace) {
-                                return _renderImageDefault();
-                              },
-                            ),
-                          ),
-                        ),
-                      ),
-                    )
-                  : SizedBox(),
-            ),
-          ],
-        ),
-      ),*/
     );
   }
 

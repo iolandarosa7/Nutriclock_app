@@ -45,7 +45,7 @@ class _DiseasesState extends State<Diseases> {
       ),
       appBar: appWidget.getAppbar("Doenças / Alergias Alimentares"),
       body: appWidget.getImageContainer(
-        "assets/images/bg_home.jpg",
+        "assets/images/bg_disease.png",
         _isLoading,
         _userDiseases.length == 0
             ? _renderNoDiseases()
@@ -53,7 +53,14 @@ class _DiseasesState extends State<Diseases> {
                 scrollDirection: Axis.vertical,
                 child: Padding(
                   padding: EdgeInsets.symmetric(vertical: 8, horizontal: 8),
-                  child: Column(children: _renderDiseases()),
+                  child: Column(
+                    children: [
+                      SizedBox(
+                        height: 20,
+                      ),
+                      ..._renderDiseases(),
+                    ],
+                  ),
                 ),
               ),
       ),

@@ -83,11 +83,16 @@ flutter:
     - assets/sleep/stats.png
     - assets/sleep/tip.png
     - assets/images/bg_chat.png
-    - assets/images/bg_home_r.jpg
     - assets/images/bg_run.jpg
     - assets/images/bg_exercise.jpg
     - assets/images/bg_dance.jpg
     - assets/images/bg_sport_detail.jpg
+    - assets/images/bg_change_email.png
+    - assets/images/bg_password.png
+    - assets/images/bg_notifications.png
+    - assets/images/bg_profile.png
+    - assets/images/bg_disease.png
+    - assets/images/bg_medication.png
   fonts:
     - family: Pacifico
       fonts:
