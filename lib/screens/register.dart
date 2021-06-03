@@ -80,7 +80,7 @@ class _RegisterState extends State<Register> {
     return Scaffold(
       key: _scaffoldKey,
       body: appWidget.getImageContainer(
-        "assets/images/bg_login.png",
+        "assets/images/bg_green.png",
         _isLoading,
         SingleChildScrollView(
           scrollDirection: Axis.vertical,

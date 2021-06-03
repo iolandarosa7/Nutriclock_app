@@ -75,7 +75,6 @@ class _MealDetailFragmentState extends State<MealDetailFragment> {
     this.setState(() {
       _isLoading = true;
     });
-    SharedPreferences localStorage = await SharedPreferences.getInstance();
     List list = [];
 
     try {
@@ -108,7 +107,7 @@ class _MealDetailFragmentState extends State<MealDetailFragment> {
       key: _scaffoldKey,
       appBar: appWidget.getAppbar("Adicionar Alimento"),
       body: appWidget.getImageContainer(
-        "assets/images/bg_login.png",
+        "assets/images/bg_green.png",
         _isLoading,
         SingleChildScrollView(
           scrollDirection: Axis.vertical,

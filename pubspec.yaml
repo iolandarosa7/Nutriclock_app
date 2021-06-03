@@ -83,9 +83,6 @@ flutter:
     - assets/sleep/stats.png
     - assets/sleep/tip.png
     - assets/images/bg_chat.png
-    - assets/images/bg_run.jpg
-    - assets/images/bg_exercise.jpg
-    - assets/images/bg_dance.jpg
     - assets/images/bg_sport_detail.jpg
     - assets/images/bg_change_email.png
     - assets/images/bg_password.png
@@ -93,6 +90,20 @@ flutter:
     - assets/images/bg_profile.png
     - assets/images/bg_disease.png
     - assets/images/bg_medication.png
+    - assets/images/bg_sport_calendar.png
+    - assets/images/bg_sport.png
+    - assets/images/bg_green_gradient.png
+    - assets/images/bg_green.png
+    - assets/images/likert1.png
+    - assets/images/likert2.png
+    - assets/images/likert3.png
+    - assets/images/likert4.png
+    - assets/images/likert5.png
+    - assets/images/likert1_selected.png
+    - assets/images/likert2_selected.png
+    - assets/images/likert3_selected.png
+    - assets/images/likert4_selected.png
+    - assets/images/likert5_selected.png
   fonts:
     - family: Pacifico
       fonts:

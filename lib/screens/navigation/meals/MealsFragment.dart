@@ -192,7 +192,7 @@ class _MealsFragmentState extends State<MealsFragment> {
             )
           : SizedBox(),
       body: appWidget.getImageContainer(
-        "assets/images/bg_home.jpg",
+        "assets/images/bg_green.png",
         _isLoading,
         _data == null ||
                 _data.mealsTypeByDate == null ||
@@ -227,7 +227,12 @@ class _MealsFragmentState extends State<MealsFragment> {
             : SingleChildScrollView(
                 scrollDirection: Axis.vertical,
                 padding: EdgeInsets.all(4),
-                child: Column(children: data()),
+                child: Column(children: [
+                  SizedBox(
+                    height: 20,
+                  ),
+                  ...data()
+                ]),
               ),
       ),
     );

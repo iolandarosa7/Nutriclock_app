@@ -205,7 +205,7 @@ class _ExerciseDetailsFragmentState extends State<ExerciseDetailsFragment> {
                         width: 4,
                       ),
                       Text(
-                        "calorias queimadas",
+                        "calorias gastas",
                         style: TextStyle(fontSize: 10, color: Colors.black87),
                       ),
                     ],

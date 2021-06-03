@@ -145,13 +145,16 @@ class _MedicationListState extends State<MedicationList> {
                         keyboardType: TextInputType.text,
                         decoration: InputDecoration(
                           focusedBorder: UnderlineInputBorder(
-                            borderSide: BorderSide(color: Color(0xFFA3E1CB)),
+                            borderSide: BorderSide(
+                              color: Color(0xFFA3E1CB),
+                            ),
                           ),
                           hintText: "Nome",
                           hintStyle: TextStyle(
-                              color: Color(0xFF9b9b9b),
-                              fontSize: 15,
-                              fontWeight: FontWeight.normal),
+                            color: Color(0xFF9b9b9b),
+                            fontSize: 15,
+                            fontWeight: FontWeight.normal,
+                          ),
                         ),
                       ),
                       TextFormField(
@@ -166,14 +169,17 @@ class _MedicationListState extends State<MedicationList> {
                         keyboardType: TextInputType.number,
                         decoration: InputDecoration(
                           focusedBorder: UnderlineInputBorder(
-                            borderSide: BorderSide(color: Color(0xFFA3E1CB)),
+                            borderSide: BorderSide(
+                              color: Color(0xFFA3E1CB),
+                            ),
                           ),
                           suffix: Text('mg/ml'),
                           hintText: "Posologia",
                           hintStyle: TextStyle(
-                              color: Color(0xFF9b9b9b),
-                              fontSize: 15,
-                              fontWeight: FontWeight.normal),
+                            color: Color(0xFF9b9b9b),
+                            fontSize: 15,
+                            fontWeight: FontWeight.normal,
+                          ),
                         ),
                       ),
                       DropdownButton(
@@ -209,7 +215,9 @@ class _MedicationListState extends State<MedicationList> {
                             autovalidate: false,
                             title: Text(
                               'Dias de Toma',
-                              style: TextStyle(color: Colors.grey),
+                              style: TextStyle(
+                                color: Colors.grey,
+                              ),
                             ),
                             dataSource: [
                               {

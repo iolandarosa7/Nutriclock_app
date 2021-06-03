@@ -39,7 +39,7 @@ class _MealCreateFragmentState extends State<MealCreateFragment> {
         constraints: BoxConstraints.expand(),
         decoration: BoxDecoration(
           image: DecorationImage(
-            image: AssetImage("assets/images/bg_home.jpg"),
+            image: AssetImage("assets/images/bg_green.png"),
             fit: BoxFit.fill,
           ),
         ),

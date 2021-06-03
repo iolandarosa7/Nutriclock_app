@@ -21,7 +21,7 @@ class _RecoverPasswordState extends State<RecoverPassword> {
     return Scaffold(
       key: _scaffoldKey,
       body: appWidget.getImageContainer(
-        "assets/images/bg_login.png",
+        "assets/images/bg_green.png",
         _isLoading,
         Stack(
           children: <Widget>[
@@ -36,7 +36,7 @@ class _RecoverPasswordState extends State<RecoverPassword> {
                       color: Colors.white,
                       margin: EdgeInsets.only(left: 20, right: 20),
                       shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(5.0)),
+                          borderRadius: BorderRadius.circular(15.0)),
                       child: Column(
                         children: <Widget>[
                           Padding(

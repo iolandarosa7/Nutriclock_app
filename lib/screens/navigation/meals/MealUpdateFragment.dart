@@ -154,7 +154,7 @@ class _MealUpdateFragmentState extends State<MealUpdateFragment> {
       key: _scaffoldKey,
       appBar: appWidget.getAppbar("Editar Alimento / Refeição"),
       body: appWidget.getImageContainer(
-        "assets/images/bg_login.png",
+        "assets/images/bg_green.png",
         _isLoading,
         SingleChildScrollView(
           scrollDirection: Axis.vertical,

@@ -40,7 +40,6 @@ class _ExerciseReportFragmentState extends State<ExerciseReportFragment> {
       var response = await Network().getWithAuth(EXERCISES_STATS_URL);
       if (response.statusCode == RESPONSE_SUCCESS) {
         _data = json.decode(response.body)[JSON_DATA_KEY];
-        // get the years
         _data.forEach((key, value) {
           _years.add(DropMenu(key, key));
         });
@@ -96,7 +95,7 @@ class _ExerciseReportFragmentState extends State<ExerciseReportFragment> {
     return Scaffold(
       appBar: appWidget.getAppbar("Relatório Gráfico"),
       body: appWidget.getImageContainer(
-        "assets/images/bg_dance.jpg",
+        "assets/images/bg_green_gradient.png",
         _isLoading,
         Column(
           children: [
@@ -211,7 +210,7 @@ class _ExerciseReportFragmentState extends State<ExerciseReportFragment> {
             Padding(
               padding: EdgeInsets.only(top: 4),
               child: Text(
-                'Calorias queimadas por dia',
+                'Calorias gastas por dia',
                 style: TextStyle(
                   color: Color(0xFF60B2A3),
                   fontSize: 12.0,
@@ -230,7 +229,7 @@ class _ExerciseReportFragmentState extends State<ExerciseReportFragment> {
                   tooltipBehavior: TooltipBehavior(enable: true),
                   series: <ChartSeries<_ChartData, String>>[
                     LineSeries<_ChartData, String>(
-                      name: 'Calorias Queimadas',
+                      name: 'Calorias gastas',
                       dataSource: _dataSourceCalories,
                       xValueMapper: (_ChartData sales, _) => sales.day,
                       yValueMapper: (_ChartData sales, _) => sales.hours,

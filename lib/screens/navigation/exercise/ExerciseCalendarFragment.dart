@@ -52,7 +52,7 @@ class _ExerciseCalendarFragmentState extends State<ExerciseCalendarFragment> {
     return Scaffold(
       key: _scaffoldKey,
       body: AppWidget().getImageContainer(
-        "assets/images/bg_run.jpg",
+        "assets/images/bg_sport_calendar.png",
         false,
         Column(
           children: [

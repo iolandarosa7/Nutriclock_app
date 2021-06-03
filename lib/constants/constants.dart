@@ -50,6 +50,7 @@ const MEALS_USER_URL = '/meals-user';
 const MEALS_NAMES_URL = '/meal-names';
 const MEALS_UPDATE_URL = '/meals-update';
 const PHOTOS_URL = 'photo';
+const EVALUATION_URL = '/evaluation';
 
 const USERS_ME_URL = '/users/me';
 const USERS_AVATAR_URL = '/users/avatar';

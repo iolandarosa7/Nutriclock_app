@@ -29,7 +29,7 @@ class _BioMarkersFragmentState extends State<BioMarkersFragment> {
   @override
   Widget build(BuildContext context) {
     return AppWidget().getImageContainer(
-      "assets/images/bg_login.png",
+      "assets/images/bg_green.png",
       _isLoading,
       SingleChildScrollView(
         child: Column(

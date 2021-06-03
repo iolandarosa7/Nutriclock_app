@@ -95,7 +95,7 @@ class _ExerciseFragmentState extends State<ExerciseFragment> {
       key: _scaffoldKey,
       appBar: appWidget.getAppbar("Exercício Física"),
       body: appWidget.getImageContainer(
-        "assets/images/bg_exercise.jpg",
+        "assets/images/bg_sport.png",
         _isLoading,
         SingleChildScrollView(
           scrollDirection: Axis.vertical,

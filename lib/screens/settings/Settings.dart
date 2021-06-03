@@ -5,6 +5,7 @@ import 'package:nutriclock_app/network_utils/api.dart';
 import 'package:nutriclock_app/screens/login.dart';
 import 'package:nutriclock_app/screens/settings/ChangeEmail.dart';
 import 'package:nutriclock_app/screens/settings/ChangePassword.dart';
+import 'package:nutriclock_app/screens/settings/EvaluationFragment.dart';
 import 'package:nutriclock_app/screens/settings/Notifications.dart';
 import 'package:nutriclock_app/screens/settings/Profile.dart';
 import 'package:nutriclock_app/utils/AppWidget.dart';
@@ -95,6 +96,23 @@ class _SettingsListState extends State<SettingsList> {
                   onTap: () {
                     Navigator.of(context).push(MaterialPageRoute(
                         builder: (context) => NotificationsFragment()));
+                  },
+                ),
+                ListTile(
+                  leading: Icon(Icons.help,
+                      color: Color(0xFF60B2A3)),
+                  title: Text(
+                    "Avaliação",
+                    style: TextStyle(
+                      color: Color(0xFF60B2A3),
+                      fontFamily: 'Roboto',
+                    ),
+                  ),
+                  trailing: Icon(Icons.keyboard_arrow_right,
+                      color: Color(0xFF60B2A3)),
+                  onTap: () {
+                    Navigator.of(context).push(MaterialPageRoute(
+                        builder: (context) => EvaluationFragment()));
                   },
                 ),
                 ListTile(

@@ -392,13 +392,13 @@ class _HomeFragmentState extends State<HomeFragment> {
                               height: 8,
                             ),
                             Text(
-                              "Total calorias queimadas: ${_totalBurnedCals}",
+                              "Total calorias gastas: ${_totalBurnedCals}",
                               textAlign: TextAlign.center,
                               style: TextStyle(
                                   color: Color(0xFF797979), fontSize: 12),
                             ),
                             Text(
-                              "Média de calorias queimadas: ${_averageBurnedCals}",
+                              "Média de calorias gastas: ${_averageBurnedCals}",
                               textAlign: TextAlign.center,
                               style: TextStyle(
                                   color: Color(0xFF797979), fontSize: 12),

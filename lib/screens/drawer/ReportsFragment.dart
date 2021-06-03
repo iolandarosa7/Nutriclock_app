@@ -45,7 +45,7 @@ class _ReportsFragmentState extends State<ReportsFragment> {
   @override
   Widget build(BuildContext context) {
     return AppWidget().getImageContainer(
-      "assets/images/bg_login.png",
+      "assets/images/bg_green.png",
       _isLoading,
       SingleChildScrollView(
         child: Column(
@@ -72,9 +72,9 @@ class _ReportsFragmentState extends State<ReportsFragment> {
                         "Média de horas sono", "$_averageSleepTime h"),
                     _renderDoubleRowWithDivider("Máximo de horas sono",
                         "$_maximumSleepHour h", _maximumSleepDate),
-                    _renderDoubleRowWithDivider("Mínimo de Horas Sono",
+                    _renderDoubleRowWithDivider("Mínimo de horas Sono",
                         "$_minimumSleepHour h", _minimumSleepDate),
-                    _renderWeekAverage("Média horas sono / semana",
+                    _renderWeekAverage("Média horas sono / dia de semana",
                         _averageSleepArray, _percentageSleepArray, null, null),
                   ],
                 ),
@@ -100,14 +100,14 @@ class _ReportsFragmentState extends State<ReportsFragment> {
                         "Total de registos", _totalExercises),
                     _renderSingleRowWithDivider("Duração média do exercício",
                         "$_averageExerciseTime min"),
-                    _renderSingleRowWithDivider("Calorias médias queimadass",
+                    _renderSingleRowWithDivider("Calorias médias gastas",
                         "$_averageExerciseCalories kcal"),
                     _renderMaxMinExercise("Máximo", "$_maximumExercise min",
                         "$_maximumCalories kcal"),
                     _renderMaxMinExercise("Mínimo", "$_minimumExercise min",
                         "$_minimumCalories kcal"),
                     _renderWeekAverage(
-                        "Média horas sono / semana",
+                        "Duração e calorias médias  / dia de semana",
                         _averageExerciseArray,
                         _percentageExerciseArray,
                         _averageCaloriesArray,
@@ -249,7 +249,7 @@ class _ReportsFragmentState extends State<ReportsFragment> {
             ),
           ),
           _renderMaxMinRow("Duração", time),
-          _renderMaxMinRow("Calorias Queimadas", calories),
+          _renderMaxMinRow("Calorias gastas", calories),
           Divider(height: 10, thickness: 2),
         ],
       ),

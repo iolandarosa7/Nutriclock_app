@@ -36,7 +36,7 @@ class _LoginState extends State<Login> {
     return Scaffold(
       key: _scaffoldKey,
       body: appWidget.getImageContainer(
-        "assets/images/bg_login.png",
+        "assets/images/bg_green.png",
         _isLoading,
         Center(
           child: SingleChildScrollView(
