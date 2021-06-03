@@ -10,6 +10,7 @@ const String JSON_ERROR_KEY = 'error';
 const String JSON_ROLE_KEY = 'role';
 const String JSON_ACCEPT_TERMS_KEY = 'terms_accepted';
 const String JSON_ID_KEY = 'id';
+const String HAS_EVALUATION_KEY = "hasEvaluation";
 
 const int RESPONSE_SUCCESS = 200;
 const int RESPONSE_SUCCESS_201 = 201;
@@ -31,10 +32,10 @@ const String ERROR_INVALID_FRAGMENT = 'Index inválido';
 const String ERROR_GENERAL_API = 'Woops! Algo correu mal';
 const String ERROR_USER_NOT_FOUND_API = 'O utilizador não existe!';
 
-// const BASE_URL = 'https://68127d7aaf7f.ngrok.io';
+const BASE_URL = 'https://8376b1321510.ngrok.io';
 const IMAGE_BASE_URL = 'https://nutriclock.s3-eu-west-1.amazonaws.com';
 // const IMAGE_BASE_URL = 'https://ea25c14250e0.ngrok.io/storage';
-const BASE_URL = 'https://nutriclock.herokuapp.com';
+// const BASE_URL = 'https://nutriclock.herokuapp.com';
 const BASE_API_URL = '$BASE_URL/api';
 // wss://nutriclock-websocket.herokuapp.com
 const WEBSOCKET_URL = 'wss://nutriclock-websocket.herokuapp.com';
@@ -51,6 +52,7 @@ const MEALS_NAMES_URL = '/meal-names';
 const MEALS_UPDATE_URL = '/meals-update';
 const PHOTOS_URL = 'photo';
 const EVALUATION_URL = '/evaluation';
+const HAS_EVALUATION_URL = '/has-evaluation';
 
 const USERS_ME_URL = '/users/me';
 const USERS_AVATAR_URL = '/users/avatar';

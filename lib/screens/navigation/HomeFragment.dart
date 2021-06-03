@@ -76,6 +76,10 @@ class _HomeFragmentState extends State<HomeFragment> {
           _mealPlanType = mealPlanType;
           _isLoading = false;
         });
+      } else {
+        this.setState(() {
+          _isLoading = false;
+        });
       }
     } catch (error) {
       print(error);

@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:nutriclock_app/constants/constants.dart';
@@ -20,6 +22,40 @@ class _SettingsListState extends State<SettingsList> {
   final _scaffoldKey = GlobalKey<ScaffoldState>();
   final _appWidget = AppWidget();
   bool _isLoading = false;
+  bool _hasEvalution = false;
+
+  @override
+  void initState() {
+    _loadData();
+    super.initState();
+  }
+
+  _loadData() async {
+    if (_isLoading) return;
+
+    this.setState(() {
+      _isLoading = true;
+    });
+    try {
+      var response = await Network().getWithAuth(HAS_EVALUATION_URL);
+
+      if (response.statusCode == RESPONSE_SUCCESS) {
+        var hasEvaluation = json.decode(response.body)[HAS_EVALUATION_KEY];
+        this.setState(() {
+          _hasEvalution = hasEvaluation;
+          _isLoading = false;
+        });
+      } else {
+        this.setState(() {
+          _isLoading = false;
+        });
+      }
+    } catch (error) {
+      this.setState(() {
+        _isLoading = false;
+      });
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -98,23 +134,23 @@ class _SettingsListState extends State<SettingsList> {
                         builder: (context) => NotificationsFragment()));
                   },
                 ),
-                ListTile(
-                  leading: Icon(Icons.help,
-                      color: Color(0xFF60B2A3)),
-                  title: Text(
-                    "Avaliação",
-                    style: TextStyle(
-                      color: Color(0xFF60B2A3),
-                      fontFamily: 'Roboto',
+                if (!_hasEvalution)
+                  ListTile(
+                    leading: Icon(Icons.help, color: Color(0xFF60B2A3)),
+                    title: Text(
+                      "Avaliação",
+                      style: TextStyle(
+                        color: Color(0xFF60B2A3),
+                        fontFamily: 'Roboto',
+                      ),
                     ),
+                    trailing: Icon(Icons.keyboard_arrow_right,
+                        color: Color(0xFF60B2A3)),
+                    onTap: () {
+                      Navigator.of(context).push(MaterialPageRoute(
+                          builder: (context) => EvaluationFragment()));
+                    },
                   ),
-                  trailing: Icon(Icons.keyboard_arrow_right,
-                      color: Color(0xFF60B2A3)),
-                  onTap: () {
-                    Navigator.of(context).push(MaterialPageRoute(
-                        builder: (context) => EvaluationFragment()));
-                  },
-                ),
                 ListTile(
                   leading: Icon(Icons.do_disturb_on_rounded,
                       color: Color(0xFFADADAD)),

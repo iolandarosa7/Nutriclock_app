@@ -292,7 +292,6 @@ class _LoginState extends State<Login> {
 
           if (data[JSON_ROLE_KEY] == 'PATIENT') {
             if (data[JSON_ACCEPT_TERMS_KEY] == 0) {
-              print(data[JSON_ID_KEY]);
               _showAcceptanceTermsModal(data[JSON_ID_KEY]);
             } else {
               Navigator.pushReplacement(

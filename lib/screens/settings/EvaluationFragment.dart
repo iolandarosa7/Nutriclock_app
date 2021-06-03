@@ -409,9 +409,8 @@ class _EvaluationFragmentState extends State<EvaluationFragment> {
 
   void _submitForm() async {
     if (_isLoading) return;
-
-    var message = ERROR_GENERAL_API;
-    var isShowMessage = false;
+    var message = "Ocorreu um erro na submissão. Por favor tente novamente.";
+    var hasError = false;
 
     setState(() {
       _isLoading = true;
@@ -431,7 +430,9 @@ class _EvaluationFragmentState extends State<EvaluationFragment> {
         'question10': _question10,
       }, EVALUATION_URL);
 
-      if (response.statusCode == RESPONSE_SUCCESS) {
+      var body = json.decode(response.body);
+
+      if (response.statusCode == RESPONSE_SUCCESS_201) {
         Navigator.pushReplacement(
           context,
           new MaterialPageRoute(
@@ -439,21 +440,18 @@ class _EvaluationFragmentState extends State<EvaluationFragment> {
           ),
         );
       } else {
-        appWidget.showSnackbar(
-            "Ocorreu um erro na submissão. Por favor tente novamente.",
-            Colors.red,
-            _scaffoldKey);
+        if (body[JSON_ERROR_KEY] != null) message = body[JSON_ERROR_KEY];
+        hasError = true;
       }
     } catch (error) {
-      appWidget.showSnackbar(
-          "Ocorreu um erro na submissão. Por favor tente novamente.",
-          Colors.red,
-          _scaffoldKey);
+      hasError = true;
     }
 
     setState(() {
       _isLoading = false;
     });
+
+    if (hasError) appWidget.showSnackbar(message, Colors.red, _scaffoldKey);
   }
 
   Future<void> _onInfoClick() async {
