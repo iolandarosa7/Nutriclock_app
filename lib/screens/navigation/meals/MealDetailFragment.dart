@@ -305,7 +305,7 @@ class _MealDetailFragmentState extends State<MealDetailFragment> {
                                             height: 8,
                                           ),
                                           Text(
-                                            " + Clica para adicionar uma foto da refeição",
+                                            " + Clique para adicionar uma foto da refeição",
                                             textAlign: TextAlign.center,
                                             style: TextStyle(
                                                 color: Colors.black38,
@@ -355,7 +355,7 @@ class _MealDetailFragmentState extends State<MealDetailFragment> {
                                             height: 8,
                                           ),
                                           Text(
-                                            "Se o produto for embalado adiciona foto da Informção Nutricional",
+                                            "Se o produto for embalado adicione foto da Informção Nutricional",
                                             textAlign: TextAlign.center,
                                             style: TextStyle(
                                                 color: Colors.black38,
