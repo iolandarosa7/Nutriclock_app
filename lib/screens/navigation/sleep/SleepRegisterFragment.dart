@@ -315,12 +315,8 @@ class _SleepRegisterFragmentState extends State<SleepRegisterFragment> {
                                                 "value": "Ler",
                                               },
                                               {
-                                                "display": "Outros motivos para ter acordado",
-                                                "value": "Outros motivos para ter acordado",
-                                              },
-                                              {
-                                                "display": "Nenhum",
-                                                "value": "Nenhum",
+                                                "display": "Outra(s)",
+                                                "value": "Outra(s)",
                                               },
                                             ],
                                             textField: 'display',
@@ -351,7 +347,7 @@ class _SleepRegisterFragmentState extends State<SleepRegisterFragment> {
                                                   padding: EdgeInsets.only(
                                                       left: 8.0),
                                                   child: Text(
-                                                    'Outros motivos',
+                                                    'Outros motivos para ter acordado',
                                                     textAlign: TextAlign.left,
                                                     style: TextStyle(
                                                         color:
@@ -401,6 +397,10 @@ class _SleepRegisterFragmentState extends State<SleepRegisterFragment> {
                                               {
                                                 "display": "Outra(s)",
                                                 "value": "Outra(s)",
+                                              },
+                                              {
+                                                "display": "Nenhum",
+                                                "value": "Nenhum",
                                               },
                                             ],
                                             textField: 'display',
