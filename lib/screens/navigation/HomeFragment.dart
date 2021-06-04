@@ -350,7 +350,7 @@ class _HomeFragmentState extends State<HomeFragment> {
                         height: 30,
                       ),
                       Text(
-                        "Exercicio",
+                        "Exercício",
                         style: TextStyle(
                             color: Color(0xFF60B2A3),
                             fontFamily: 'Pacifico',

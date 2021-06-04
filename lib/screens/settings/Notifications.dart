@@ -68,7 +68,7 @@ class _NotificationsFragmentState extends State<NotificationsFragment> {
                         Expanded(
                           flex: 1,
                           child: Text(
-                            "Notificações do Sono",
+                            "Notificações do sono",
                             style: TextStyle(fontSize: 18),
                           ),
                         ),
@@ -95,7 +95,7 @@ class _NotificationsFragmentState extends State<NotificationsFragment> {
                         Expanded(
                           flex: 1,
                           child: Text(
-                            "Notificações do Exercício",
+                            "Notificações de atividade física",
                             style: TextStyle(fontSize: 18),
                           ),
                         ),
@@ -122,7 +122,7 @@ class _NotificationsFragmentState extends State<NotificationsFragment> {
                         Expanded(
                           flex: 1,
                           child: Text(
-                            "Notificações do Diário Alimentar",
+                            "Notificações do diário alimentar",
                             style: TextStyle(fontSize: 18),
                           ),
                         ),
@@ -149,7 +149,7 @@ class _NotificationsFragmentState extends State<NotificationsFragment> {
                         Expanded(
                           flex: 1,
                           child: Text(
-                            "Notificações de Biomarcadores",
+                            "Notificações de biomarcadores",
                             style: TextStyle(fontSize: 18),
                           ),
                         ),

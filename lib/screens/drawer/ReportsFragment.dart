@@ -94,11 +94,11 @@ class _ReportsFragmentState extends State<ReportsFragment> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: [
-                    _renderTitle("Exercício Físico"),
+                    _renderTitle("Atividade Física"),
                     _renderIcon(Icons.fitness_center_rounded),
                     _renderSingleRowWithDivider(
                         "Total de registos", _totalExercises),
-                    _renderSingleRowWithDivider("Duração média do exercício",
+                    _renderSingleRowWithDivider("Duração média da atividade",
                         "$_averageExerciseTime min"),
                     _renderSingleRowWithDivider("Calorias médias gastas",
                         "$_averageExerciseCalories kcal"),

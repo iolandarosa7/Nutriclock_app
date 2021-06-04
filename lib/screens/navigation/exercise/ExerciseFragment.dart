@@ -93,7 +93,7 @@ class _ExerciseFragmentState extends State<ExerciseFragment> {
   Widget build(BuildContext context) {
     return Scaffold(
       key: _scaffoldKey,
-      appBar: appWidget.getAppbar("Exercício Física"),
+      appBar: appWidget.getAppbar("Atividade Física"),
       body: appWidget.getImageContainer(
         "assets/images/bg_sport.png",
         _isLoading,

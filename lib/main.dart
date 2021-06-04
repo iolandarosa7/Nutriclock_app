@@ -15,19 +15,6 @@ import 'constants/constants.dart';
 
 void main() {
   runApp(new MaterialApp(
-    debugShowCheckedModeBanner: false,
-    localizationsDelegates: [
-      GlobalMaterialLocalizations.delegate,
-      GlobalWidgetsLocalizations.delegate,
-      GlobalCupertinoLocalizations.delegate,
-      SfGlobalLocalizations.delegate
-    ],
-    supportedLocales: [
-      const Locale('pt', ''),
-      const Locale('en', ''),
-      const Locale('fr', ''),
-    ],
-    locale: const Locale('pt'),
     home: MyApp(),
   ));
 }
@@ -65,6 +52,18 @@ class AfterSplash extends StatelessWidget {
     return MaterialApp(
       title: 'Nutriclock',
       debugShowCheckedModeBanner: false,
+      localizationsDelegates: [
+        GlobalMaterialLocalizations.delegate,
+        GlobalWidgetsLocalizations.delegate,
+        GlobalCupertinoLocalizations.delegate,
+        SfGlobalLocalizations.delegate
+      ],
+      supportedLocales: [
+        const Locale('pt', ''),
+        const Locale('en', ''),
+        const Locale('fr', ''),
+      ],
+      locale: const Locale('pt'),
       home: CheckAuth(),
     );
   }
