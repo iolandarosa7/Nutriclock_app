@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:nutriclock_app/constants/constants.dart';
 import 'package:nutriclock_app/network_utils/api.dart';
 import 'package:nutriclock_app/screens/navigation/exercise/ExerciseDetailsFragment.dart';
@@ -52,97 +53,115 @@ class _ExerciseCalendarFragmentState extends State<ExerciseCalendarFragment> {
     return Scaffold(
       key: _scaffoldKey,
       body: AppWidget().getImageContainer(
-        "assets/images/bg_sport_calendar.png",
+        "assets/images/bg_green_gradient.png",
         false,
-        Column(
+        Stack(
           children: [
-            GestureDetector(
-              onTap: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => ExerciseReportFragment(),
-                  ),
-                );
-              },
-              child: Card(
-                color: Color(0xFFA3E1CB),
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.only(
-                    topRight: Radius.circular(50),
-                    bottomRight: Radius.circular(50),
-                  ),
-                ),
-                margin: EdgeInsets.only(top: 20, right: 40, bottom: 20),
-                shadowColor: Color(0xFFA3E1CB),
-                elevation: 10,
-                child: SizedBox(
-                  width: double.infinity,
-                  height: 50,
-                  child: Padding(
-                    padding: EdgeInsets.only(top: 8, bottom: 8, left: 20),
-                    child: Row(
-                      children: [
-                        Text(
-                          "Relatório Gráfico",
-                          style: TextStyle(
-                            color: Colors.white,
-                            fontFamily: 'PatrickHand',
-                            fontSize: 30,
-                            decoration: TextDecoration.none,
-                            fontWeight: FontWeight.normal,
-                          ),
-                        ),
-                        Expanded(
-                          child: Align(
-                            alignment: Alignment.center,
-                            child: Icon(
-                              Icons.insights_rounded,
-                              size: 40,
-                              color: Colors.white,
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
+            Positioned(
+              bottom: 0,
+              right: 0,
+              child: Padding(
+                padding: EdgeInsets.all(16),
+                child: Image.asset(
+                  'assets/images/sport_woman.png',
+                  height: MediaQuery.of(context).size.height / 4,
                 ),
               ),
             ),
-            SfDateRangePicker(
-              view: DateRangePickerView.month,
-              todayHighlightColor: Color(0xFF60B2A3),
-              selectionColor: Color(0xFFA3E1CB),
-              monthCellStyle: DateRangePickerMonthCellStyle(
-                todayTextStyle: TextStyle(
-                  color: Color(0xFF60B2A3),
-                ),
-                specialDatesDecoration: BoxDecoration(
-                    color: const Color(0xFFDFDFDF),
-                    border:
-                        Border.all(color: const Color(0xFFDFDFDF), width: 1),
-                    shape: BoxShape.circle),
-                specialDatesTextStyle: TextStyle(color: Colors.white),
+            Positioned.fill(
+              child: Column(
+                children: [
+                  GestureDetector(
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => ExerciseReportFragment(),
+                        ),
+                      );
+                    },
+                    child: Card(
+                      color: Color(0xFFA3E1CB),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.only(
+                          topRight: Radius.circular(50),
+                          bottomRight: Radius.circular(50),
+                        ),
+                      ),
+                      margin: EdgeInsets.only(top: 20, right: 40, bottom: 20),
+                      shadowColor: Color(0xFFA3E1CB),
+                      elevation: 10,
+                      child: SizedBox(
+                        width: double.infinity,
+                        height: 50,
+                        child: Padding(
+                          padding: EdgeInsets.only(top: 8, bottom: 8, left: 20),
+                          child: Row(
+                            children: [
+                              Text(
+                                "Relatório Gráfico",
+                                style: TextStyle(
+                                  color: Colors.white,
+                                  fontFamily: 'PatrickHand',
+                                  fontSize: 30,
+                                  decoration: TextDecoration.none,
+                                  fontWeight: FontWeight.normal,
+                                ),
+                              ),
+                              Expanded(
+                                child: Align(
+                                  alignment: Alignment.center,
+                                  child: Icon(
+                                    Icons.insights_rounded,
+                                    size: 40,
+                                    color: Colors.white,
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                  SfDateRangePicker(
+                    view: DateRangePickerView.month,
+                    todayHighlightColor: Color(0xFF60B2A3),
+                    selectionColor: Color(0xFFA3E1CB),
+                    monthCellStyle: DateRangePickerMonthCellStyle(
+                      todayTextStyle: TextStyle(
+                        color: Color(0xFF60B2A3),
+                      ),
+                      specialDatesDecoration: BoxDecoration(
+                          color: const Color(0xFFDFDFDF),
+                          border: Border.all(
+                              color: const Color(0xFFDFDFDF), width: 1),
+                          shape: BoxShape.circle),
+                      specialDatesTextStyle: TextStyle(color: Colors.white),
+                    ),
+                    maxDate: new DateTime.now(),
+                    onSelectionChanged:
+                        (DateRangePickerSelectionChangedArgs args) {
+                      final DateTime value = args.value;
+                      if (value.compareTo(new DateTime.now()
+                              .subtract(new Duration(days: 3))) <
+                          0) {
+                        _showExerciseDetails(value);
+                      } else {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => ExerciseFragment(
+                                    value: value,
+                                  )),
+                        ).then((value) => {_loadData()});
+                      }
+                    },
+                    monthViewSettings:
+                        DateRangePickerMonthViewSettings(specialDates: _dates),
+                  ),
+                ],
               ),
-              maxDate: new DateTime.now(),
-              onSelectionChanged: (DateRangePickerSelectionChangedArgs args) {
-                final DateTime value = args.value;
-                if (value.compareTo(
-                        new DateTime.now().subtract(new Duration(days: 3))) <
-                    0) {
-                  _showExerciseDetails(value);
-                } else {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => ExerciseFragment(
-                              value: value,
-                            )),
-                  ).then((value) => {_loadData()});
-                }
-              },
-              monthViewSettings:
-                  DateRangePickerMonthViewSettings(specialDates: _dates),
             ),
           ],
         ),

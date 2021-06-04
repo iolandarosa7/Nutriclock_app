@@ -6,7 +6,6 @@ import 'package:nutriclock_app/network_utils/api.dart';
 import 'package:nutriclock_app/screens/navigation/sleep/SleepRegisterFragment.dart';
 import 'package:nutriclock_app/utils/AppWidget.dart';
 import 'package:syncfusion_flutter_datepicker/datepicker.dart';
-import 'dart:ui' as ui;
 
 class SleepCalendarFragment extends StatefulWidget {
   @override
@@ -50,40 +49,60 @@ class _SleepCalendarFragmentState extends State<SleepCalendarFragment> {
       key: _scaffoldKey,
       appBar: AppWidget().getAppbar("Registar Horas de Sono"),
       body: AppWidget().getImageContainer(
-        "assets/images/bg_sleep_calendar.png",
+        "assets/images/bg_green_gradient.png",
         false,
-        Padding(
-          padding: EdgeInsets.only(bottom: 150),
-          child: SfDateRangePicker(
-            view: DateRangePickerView.month,
-            todayHighlightColor: Color(0xFF60B2A3),
-            selectionColor: Color(0xFFA3E1CB),
-            monthCellStyle: DateRangePickerMonthCellStyle(
-              todayTextStyle: TextStyle(
-                color: Color(0xFF60B2A3),
+        Stack(
+          children: [
+            Positioned(
+              bottom: 0,
+              right: 0,
+              child: Padding(
+                padding: EdgeInsets.all(16),
+                child: Image.asset(
+                  'assets/images/sleep_man.png',
+                  height: MediaQuery.of(context).size.height / 4,
+                ),
               ),
-              blackoutDatesDecoration: BoxDecoration(
-                  color: const Color(0xFFDFDFDF),
-                  border: Border.all(color: const Color(0xFFDFDFDF), width: 1),
-                  shape: BoxShape.circle),
-              blackoutDateTextStyle: TextStyle(
-                  color: Colors.white, decoration: TextDecoration.lineThrough),
             ),
-            maxDate: new DateTime.now(),
-            minDate: new DateTime.now().subtract(new Duration(days: 2)),
-            onSelectionChanged: (DateRangePickerSelectionChangedArgs args) {
-              final dynamic value = args.value;
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                    builder: (context) => SleepRegisterFragment(
-                          value: value,
-                        )),
-              ).then((value) => {_loadData()});
-            },
-            monthViewSettings:
-                DateRangePickerMonthViewSettings(blackoutDates: _dates),
-          ),
+            Positioned.fill(
+              child: Padding(
+                padding: EdgeInsets.only(bottom: 150),
+                child: SfDateRangePicker(
+                  view: DateRangePickerView.month,
+                  todayHighlightColor: Color(0xFF60B2A3),
+                  selectionColor: Color(0xFFA3E1CB),
+                  monthCellStyle: DateRangePickerMonthCellStyle(
+                    todayTextStyle: TextStyle(
+                      color: Color(0xFF60B2A3),
+                    ),
+                    blackoutDatesDecoration: BoxDecoration(
+                        color: const Color(0xFFDFDFDF),
+                        border: Border.all(
+                            color: const Color(0xFFDFDFDF), width: 1),
+                        shape: BoxShape.circle),
+                    blackoutDateTextStyle: TextStyle(
+                        color: Colors.white,
+                        decoration: TextDecoration.lineThrough),
+                  ),
+                  maxDate: new DateTime.now(),
+                  minDate: new DateTime.now().subtract(new Duration(days: 2)),
+                  onSelectionChanged:
+                      (DateRangePickerSelectionChangedArgs args) {
+                    final dynamic value = args.value;
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => SleepRegisterFragment(
+                                value: value,
+                              )),
+                    ).then((value) => {_loadData()});
+                  },
+                  monthViewSettings:
+                      DateRangePickerMonthViewSettings(blackoutDates: _dates),
+                ),
+              ),
+            ),
+          ],
         ),
       ),
     );

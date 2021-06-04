@@ -78,19 +78,20 @@ flutter:
     - assets/images/bg_drawer.jpg
     - assets/images/bg_home.jpg
     - assets/images/bg_sleep.jpg
-    - assets/images/bg_sleep_calendar.png
     - assets/sleep/sleep.png
     - assets/sleep/stats.png
     - assets/sleep/tip.png
     - assets/images/bg_chat.png
     - assets/images/bg_sport_detail.jpg
-    - assets/images/bg_change_email.png
-    - assets/images/bg_password.png
-    - assets/images/bg_notifications.png
     - assets/images/bg_profile.png
     - assets/images/bg_disease.png
     - assets/images/bg_medication.png
-    - assets/images/bg_sport_calendar.png
+    - assets/images/sport_woman.png
+    - assets/images/sport_man.png
+    - assets/images/email.png
+    - assets/images/sleep_man.png
+    - assets/images/password.png
+    - assets/images/notifications.png
     - assets/images/bg_sport.png
     - assets/images/bg_green_gradient.png
     - assets/images/bg_green.png
