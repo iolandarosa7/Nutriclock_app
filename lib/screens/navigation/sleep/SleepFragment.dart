@@ -4,10 +4,11 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:nutriclock_app/constants/constants.dart';
 import 'package:nutriclock_app/network_utils/api.dart';
-import 'package:nutriclock_app/screens/navigation/sleep/SleepCalendarFragment.dart';
-import 'package:nutriclock_app/screens/navigation/sleep/SleepTipFragment.dart';
+import 'package:nutriclock_app/utils/AppWidget.dart';
 
+import 'SleepCalendarFragment.dart';
 import 'SleepStatsFragment.dart';
+import 'SleepTipFragment.dart';
 
 class SleepFragment extends StatefulWidget {
   @override
@@ -37,29 +38,23 @@ class _SleepFragmentState extends State<SleepFragment> {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      width: double.infinity,
-      height: double.infinity,
-      decoration: BoxDecoration(
-        image: DecorationImage(
-          image: AssetImage("assets/images/bg_sleep.jpg"),
-          fit: BoxFit.cover,
-        ),
-      ),
-      child: Center(
-        child: SingleChildScrollView(
-          child: Padding(
-            padding: EdgeInsets.only(left: 30, right: 16),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                GestureDetector(
+    return Scaffold(
+      body: AppWidget().getImageContainer(
+        "assets/images/bg_sleep.jpg",
+        false,
+        Stack(
+          children: [
+            Positioned(
+              child: Padding(
+                padding: EdgeInsets.only(
+                    top: MediaQuery.of(context).size.height < 600 ? 0: MediaQuery.of(context).size.height / 12, left: 30),
+                child: GestureDetector(
                   onTap: () {
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                          builder: (context) => SleepCalendarFragment()),
+                        builder: (context) => SleepCalendarFragment(),
+                      ),
                     );
                   },
                   child: Image(
@@ -67,38 +62,42 @@ class _SleepFragmentState extends State<SleepFragment> {
                     width: 210,
                   ),
                 ),
-                SizedBox(
-                  height: 80,
+              ),
+            ),
+            Positioned(
+              right: 0,
+              child: Padding(
+                padding: EdgeInsets.only(
+                    top: MediaQuery.of(context).size.height < 600 ? MediaQuery.of(context).size.height / 4: MediaQuery.of(context).size.height / 3, right: 16),
+                child: GestureDetector(
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => SleepStatsFragment()),
+                    );
+                  },
+                  child: Image(
+                    image: AssetImage('assets/sleep/stats.png'),
+                    width: 210,
+                  ),
                 ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.end,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    GestureDetector(
-                      onTap: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => SleepStatsFragment()),
-                        );
-                      },
-                      child: Image(
-                        image: AssetImage('assets/sleep/stats.png'),
-                        width: 210,
-                      ),
-                    ),
-                  ],
+              ),
+            ),
+            Positioned(
+              bottom: 0,
+              child: Padding(
+                padding: EdgeInsets.only(
+                    bottom: MediaQuery.of(context).size.height < 600 ? 0: MediaQuery.of(context).size.height / 12, left: 16
                 ),
-                SizedBox(
-                  height: 20,
-                ),
-                _showTips
+                child: _showTips
                     ? GestureDetector(
                         onTap: () {
                           Navigator.push(
                             context,
                             MaterialPageRoute(
-                                builder: (context) => SleepTipFragment()),
+                              builder: (context) => SleepTipFragment(),
+                            ),
                           );
                         },
                         child: Image(
@@ -109,9 +108,9 @@ class _SleepFragmentState extends State<SleepFragment> {
                     : SizedBox(
                         height: 100,
                       ),
-              ],
+              ),
             ),
-          ),
+          ],
         ),
       ),
     );
