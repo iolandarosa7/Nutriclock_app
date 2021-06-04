@@ -13,6 +13,7 @@ import 'package:nutriclock_app/screens/navigation/chat/ChatFragment.dart';
 import 'package:nutriclock_app/screens/navigation/exercise/ExerciseCalendarFragment.dart';
 import 'package:nutriclock_app/screens/navigation/meals/MealsFragment.dart';
 import 'package:nutriclock_app/screens/navigation/sleep/SleepFragment.dart';
+import 'package:nutriclock_app/screens/settings/Profile.dart';
 import 'package:nutriclock_app/screens/settings/Settings.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -113,7 +114,7 @@ class _HomeState extends State<Home> {
 
     if (fcmToken != null) {
       var response =
-      await Network().postWithAuth({'fcmToken': fcmToken}, FCM_URL);
+          await Network().postWithAuth({'fcmToken': fcmToken}, FCM_URL);
       print(response.statusCode);
     }
 
@@ -154,10 +155,9 @@ class _HomeState extends State<Home> {
       default:
         title = "";
     }
-    setState(() =>
-    {
-      _currentIndex = index,
-    });
+    setState(() => {
+          _currentIndex = index,
+        });
     setState(() => {_selectedIndex = index, _title = title});
   }
 
@@ -247,15 +247,15 @@ class _HomeState extends State<Home> {
           ),
           _totalUnread > 0
               ? BottomNavigationBarItem(
-            icon: Icon(
-              Icons.mark_chat_unread,
-            ),
-            label: 'Chat',
-          )
+                  icon: Icon(
+                    Icons.mark_chat_unread,
+                  ),
+                  label: 'Chat',
+                )
               : BottomNavigationBarItem(
-            icon: Icon(Icons.chat_bubble),
-            label: 'Chat',
-          ),
+                  icon: Icon(Icons.chat_bubble),
+                  label: 'Chat',
+                ),
         ],
         currentIndex: _selectedIndex,
         onTap: _onItemTapped,
@@ -263,22 +263,33 @@ class _HomeState extends State<Home> {
       drawer: Drawer(
         child: Column(
           children: <Widget>[
-            UserAccountsDrawerHeader(
-              currentAccountPicture: CircleAvatar(
-                backgroundImage: NetworkImage(_avatarUrl),
-                backgroundColor: Color(0xFFC1FECB),
-                onBackgroundImageError: (_, __) {},
-              ),
-              accountName: new Text(
-                this._name,
-                style: TextStyle(color: Color(0xFFA3E1CB)),
-              ),
-              accountEmail: new Text(this._email,
-                  style: TextStyle(color: Color(0xFF60B2A3))),
-              decoration: BoxDecoration(
-                image: DecorationImage(
-                  image: AssetImage("assets/images/bg_drawer.jpg"),
-                  fit: BoxFit.cover,
+            GestureDetector(
+              onTap: () => {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => Profile(),
+                  ),
+                ),
+                Navigator.of(context).pop(),
+              },
+              child: UserAccountsDrawerHeader(
+                currentAccountPicture: CircleAvatar(
+                  backgroundImage: NetworkImage(_avatarUrl),
+                  backgroundColor: Color(0xFFC1FECB),
+                  onBackgroundImageError: (_, __) {},
+                ),
+                accountName: new Text(
+                  this._name,
+                  style: TextStyle(color: Color(0xFFA3E1CB)),
+                ),
+                accountEmail: new Text(this._email,
+                    style: TextStyle(color: Color(0xFF60B2A3))),
+                decoration: BoxDecoration(
+                  image: DecorationImage(
+                    image: AssetImage("assets/images/bg_drawer.jpg"),
+                    fit: BoxFit.cover,
+                  ),
                 ),
               ),
             ),
