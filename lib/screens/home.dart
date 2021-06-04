@@ -265,13 +265,13 @@ class _HomeState extends State<Home> {
           children: <Widget>[
             GestureDetector(
               onTap: () => {
+                Navigator.of(context).pop(),
                 Navigator.push(
                   context,
                   MaterialPageRoute(
                     builder: (context) => Profile(),
                   ),
                 ),
-                Navigator.of(context).pop(),
               },
               child: UserAccountsDrawerHeader(
                 currentAccountPicture: CircleAvatar(
