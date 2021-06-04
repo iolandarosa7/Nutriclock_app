@@ -106,7 +106,6 @@ class _ChangeEmailState extends State<ChangeEmail> {
                                                 Icons.mail,
                                                 color: Color(0xFFA3E1CB),
                                               ),
-                                              hintText: "Email atual",
                                               labelText: 'Email atual',
                                               labelStyle:
                                                   TextStyle(color: Colors.grey),
@@ -148,7 +147,6 @@ class _ChangeEmailState extends State<ChangeEmail> {
                                                 Icons.mail,
                                                 color: Color(0xFFA3E1CB),
                                               ),
-                                              hintText: "Novo email",
                                               labelText: 'Novo email',
                                               labelStyle:
                                                   TextStyle(color: Colors.grey),

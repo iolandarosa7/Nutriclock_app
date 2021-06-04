@@ -107,7 +107,6 @@ class _ChangePasswordState extends State<ChangePassword> {
                                                 Icons.vpn_key,
                                                 color: Color(0xFFA3E1CB),
                                               ),
-                                              hintText: "Password atual",
                                               labelText: 'Password atual',
                                               labelStyle:
                                                   TextStyle(color: Colors.grey),
@@ -144,7 +143,6 @@ class _ChangePasswordState extends State<ChangePassword> {
                                                 Icons.vpn_key,
                                                 color: Color(0xFFA3E1CB),
                                               ),
-                                              hintText: "Nova password",
                                               labelText: 'Nova password',
                                               labelStyle:
                                                   TextStyle(color: Colors.grey),
@@ -186,8 +184,6 @@ class _ChangePasswordState extends State<ChangePassword> {
                                                 Icons.vpn_key,
                                                 color: Color(0xFFA3E1CB),
                                               ),
-                                              hintText:
-                                                  "Confirmação de password",
                                               labelText:
                                                   'Confirmação de password',
                                               labelStyle:

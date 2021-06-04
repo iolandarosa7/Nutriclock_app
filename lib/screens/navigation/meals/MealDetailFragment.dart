@@ -147,7 +147,6 @@ class _MealDetailFragmentState extends State<MealDetailFragment> {
                             Icons.restaurant,
                             color: Color(0xFFA3E1CB),
                           ),
-                          hintText: "Nome *",
                           labelText: 'Nome *',
                           labelStyle: TextStyle(color: Colors.grey),
                           hintStyle: TextStyle(
@@ -204,7 +203,6 @@ class _MealDetailFragmentState extends State<MealDetailFragment> {
                                 Icons.check_circle,
                                 color: Color(0xFFA3E1CB),
                               ),
-                              hintText: "Quant. *",
                               labelText: 'Quant. *',
                               labelStyle: TextStyle(color: Colors.grey),
                               hintStyle: TextStyle(
@@ -389,7 +387,6 @@ class _MealDetailFragmentState extends State<MealDetailFragment> {
                         focusedBorder: UnderlineInputBorder(
                           borderSide: BorderSide(color: Color(0xFFA3E1CB)),
                         ),
-                        hintText: "Informação Adicional",
                         labelText: 'Informação Adicional',
                         labelStyle: TextStyle(color: Colors.grey),
                         hintStyle: TextStyle(
@@ -479,7 +476,6 @@ class _MealDetailFragmentState extends State<MealDetailFragment> {
                 focusedBorder: UnderlineInputBorder(
                   borderSide: BorderSide(color: Color(0xFFA3DC92)),
                 ),
-                hintText: "Informação Adicional",
                 labelText: 'Informação Adicional',
                 labelStyle: TextStyle(color: Colors.grey),
                 hintStyle: TextStyle(

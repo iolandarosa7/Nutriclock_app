@@ -169,7 +169,6 @@ class _RegisterState extends State<Register> {
                                         labelText: 'Nome',
                                         labelStyle:
                                             TextStyle(color: Colors.grey),
-                                        hintText: "Nome",
                                         hintStyle: TextStyle(
                                             color: Color(0xFF9b9b9b),
                                             fontSize: 15,
@@ -342,7 +341,6 @@ class _RegisterState extends State<Register> {
                                           style: TextStyle(
                                               color: Color(0xFF000000)),
                                         ),
-                                        hintText: "Peso",
                                         labelText: 'Peso',
                                         labelStyle:
                                             TextStyle(color: Colors.grey),
@@ -385,7 +383,6 @@ class _RegisterState extends State<Register> {
                                           style: TextStyle(
                                               color: Color(0xFF000000)),
                                         ),
-                                        hintText: "Altura",
                                         labelText: 'Altura',
                                         labelStyle:
                                             TextStyle(color: Colors.grey),
@@ -427,7 +424,6 @@ class _RegisterState extends State<Register> {
                                           Icons.email,
                                           color: Color(0xFFA3E1CB),
                                         ),
-                                        hintText: "Email",
                                         labelText: 'Email',
                                         labelStyle:
                                             TextStyle(color: Colors.grey),
@@ -464,7 +460,6 @@ class _RegisterState extends State<Register> {
                                           Icons.vpn_key,
                                           color: Color(0xFFA3E1CB),
                                         ),
-                                        hintText: "Password",
                                         labelText: 'Password',
                                         labelStyle:
                                             TextStyle(color: Colors.grey),
@@ -496,7 +491,6 @@ class _RegisterState extends State<Register> {
                                           Icons.vpn_key,
                                           color: Color(0xFFA3E1CB),
                                         ),
-                                        hintText: "Confirmação de password",
                                         labelText: 'Confirmação de password',
                                         labelStyle:
                                             TextStyle(color: Colors.grey),

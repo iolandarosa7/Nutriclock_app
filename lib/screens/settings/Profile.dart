@@ -120,7 +120,6 @@ class _ProfileState extends State<Profile> {
                                           labelText: 'Nome',
                                           labelStyle:
                                               TextStyle(color: Colors.grey),
-                                          hintText: "Nome",
                                           hintStyle: TextStyle(
                                               color: Color(0xFF9b9b9b),
                                               fontSize: 15,
@@ -305,7 +304,6 @@ class _ProfileState extends State<Profile> {
                                                   style: TextStyle(
                                                       color: Color(0xFF000000)),
                                                 ),
-                                                hintText: "Peso",
                                                 labelText: 'Peso',
                                                 labelStyle: TextStyle(
                                                     color: Colors.grey),
@@ -362,7 +360,6 @@ class _ProfileState extends State<Profile> {
                                                   style: TextStyle(
                                                       color: Color(0xFF000000)),
                                                 ),
-                                                hintText: "Altura",
                                                 labelText: 'Altura',
                                                 labelStyle: TextStyle(
                                                     color: Colors.grey),

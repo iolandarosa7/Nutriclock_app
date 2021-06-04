@@ -92,7 +92,6 @@ class _LoginState extends State<Login> {
                                             Icons.email,
                                             color: Color(0xFFA3E1CB),
                                           ),
-                                          hintText: "Email",
                                           hintStyle: TextStyle(
                                               color: Color(0xFF9b9b9b),
                                               fontSize: 15,
@@ -129,7 +128,6 @@ class _LoginState extends State<Login> {
                                             Icons.vpn_key,
                                             color: Color(0xFFA3E1CB),
                                           ),
-                                          hintText: "Password",
                                           hintStyle: TextStyle(
                                               color: Color(0xFF9b9b9b),
                                               fontSize: 15,

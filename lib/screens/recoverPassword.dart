@@ -71,7 +71,6 @@ class _RecoverPasswordState extends State<RecoverPassword> {
                                         Icons.email,
                                         color: Color(0xFFA3E1CB),
                                       ),
-                                      hintText: "Preencha o email",
                                       hintStyle: TextStyle(
                                           color: Color(0xFF9b9b9b),
                                           fontSize: 15,
