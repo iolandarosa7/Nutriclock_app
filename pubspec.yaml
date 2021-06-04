@@ -68,6 +68,7 @@ flutter:
     - assets/images/logo.png
     - assets/images/logo_horizontal.png
     - assets/images/bg_drawer.jpg
+    - assets/images/bg_drawer.png
     - assets/images/bg_home.jpg
     - assets/images/bg_sleep.jpg
     - assets/sleep/sleep.png

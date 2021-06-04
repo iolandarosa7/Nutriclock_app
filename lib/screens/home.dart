@@ -287,7 +287,7 @@ class _HomeState extends State<Home> {
                     style: TextStyle(color: Color(0xFF60B2A3))),
                 decoration: BoxDecoration(
                   image: DecorationImage(
-                    image: AssetImage("assets/images/bg_drawer.jpg"),
+                    image: AssetImage("assets/images/bg_drawer.png"),
                     fit: BoxFit.cover,
                   ),
                 ),
