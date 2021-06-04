@@ -134,7 +134,7 @@ class _EvaluationFragmentState extends State<EvaluationFragment> {
                 Padding(
                   padding: EdgeInsets.all(8),
                   child: Text(
-                    "3.Fui capaz de registar a informção necessária através da app Nutriclock?",
+                    "3.Fui capaz de registar a informação necessária através da app Nutriclock?",
                     style: TextStyle(fontSize: 16),
                     textAlign: TextAlign.center,
                   ),
