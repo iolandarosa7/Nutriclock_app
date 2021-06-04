@@ -263,9 +263,9 @@ class _SleepRegisterFragmentState extends State<SleepRegisterFragment> {
                                             dataSource: [
                                               {
                                                 "display":
-                                                    "Beber bebidas alcoólica",
+                                                    "Beber bebidas alcoólicas",
                                                 "value":
-                                                    "Beber bebidas alcoólica",
+                                                    "Beber bebidas alcoólicas",
                                               },
                                               {
                                                 "display":
@@ -281,9 +281,9 @@ class _SleepRegisterFragmentState extends State<SleepRegisterFragment> {
                                               },
                                               {
                                                 "display":
-                                                    "Comeu doces / açúcares",
+                                                    "Comer doces / açúcares",
                                                 "value":
-                                                    "Comeu doces / açúcares",
+                                                    "Comer doces / açúcares",
                                               },
                                               {
                                                 "display":
@@ -315,8 +315,12 @@ class _SleepRegisterFragmentState extends State<SleepRegisterFragment> {
                                                 "value": "Ler",
                                               },
                                               {
-                                                "display": "Outra(s)",
-                                                "value": "Outra(s)",
+                                                "display": "Outros motivos para ter acordado",
+                                                "value": "Outros motivos para ter acordado",
+                                              },
+                                              {
+                                                "display": "Nenhum",
+                                                "value": "Nenhum",
                                               },
                                             ],
                                             textField: 'display',
