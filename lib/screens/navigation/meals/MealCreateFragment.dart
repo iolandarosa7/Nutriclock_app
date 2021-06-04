@@ -22,9 +22,9 @@ class _MealCreateFragmentState extends State<MealCreateFragment> {
     MealType('P', 'Pequeno-almoço', Icons.breakfast_dining),
     MealType('M', 'Meio da manhã', Icons.local_cafe),
     MealType('A', 'Almoço', Icons.dinner_dining),
-    MealType('L', 'Lanche', Icons.bakery_dining),
+    MealType('L', 'Lanche', Icons.local_drink_rounded),
     MealType('J', 'Jantar', Icons.brunch_dining),
-    MealType('O', 'Ceia', Icons.lunch_dining),
+    MealType('O', 'Ceia', Icons.emoji_food_beverage),
     MealType('S', 'Snack', Icons.local_pizza_rounded),
   ];
   DateTime _date = DateTime.now();
