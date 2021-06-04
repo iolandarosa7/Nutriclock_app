@@ -73,9 +73,7 @@ class _NotificationsFragmentState extends State<NotificationsFragment> {
                           ),
                           Row(
                             children: [
-                              Icon(
-                                Icons.nights_stay,
-                              ),
+                              Icon(Icons.nights_stay, color: Colors.black45),
                               SizedBox(
                                 width: 16,
                               ),
@@ -83,7 +81,8 @@ class _NotificationsFragmentState extends State<NotificationsFragment> {
                                 flex: 1,
                                 child: Text(
                                   "Notificações do sono",
-                                  style: TextStyle(fontSize: 18),
+                                  style: TextStyle(
+                                      fontSize: 18, color: Colors.black45),
                                 ),
                               ),
                               Switch(
@@ -100,9 +99,7 @@ class _NotificationsFragmentState extends State<NotificationsFragment> {
                           ),
                           Row(
                             children: [
-                              Icon(
-                                Icons.directions_run,
-                              ),
+                              Icon(Icons.directions_run, color: Colors.black45),
                               SizedBox(
                                 width: 16,
                               ),
@@ -110,7 +107,10 @@ class _NotificationsFragmentState extends State<NotificationsFragment> {
                                 flex: 1,
                                 child: Text(
                                   "Notificações de atividade física",
-                                  style: TextStyle(fontSize: 18),
+                                  style: TextStyle(
+                                    fontSize: 18,
+                                    color: Colors.black45,
+                                  ),
                                 ),
                               ),
                               Switch(
@@ -129,6 +129,7 @@ class _NotificationsFragmentState extends State<NotificationsFragment> {
                             children: [
                               Icon(
                                 Icons.restaurant_menu_rounded,
+                                color: Colors.black45,
                               ),
                               SizedBox(
                                 width: 16,
@@ -137,7 +138,10 @@ class _NotificationsFragmentState extends State<NotificationsFragment> {
                                 flex: 1,
                                 child: Text(
                                   "Notificações do diário alimentar",
-                                  style: TextStyle(fontSize: 18),
+                                  style: TextStyle(
+                                    fontSize: 18,
+                                    color: Colors.black45,
+                                  ),
                                 ),
                               ),
                               Switch(
@@ -156,6 +160,7 @@ class _NotificationsFragmentState extends State<NotificationsFragment> {
                             children: [
                               Icon(
                                 Icons.sanitizer,
+                                color: Colors.black45,
                               ),
                               SizedBox(
                                 width: 16,
@@ -164,7 +169,10 @@ class _NotificationsFragmentState extends State<NotificationsFragment> {
                                 flex: 1,
                                 child: Text(
                                   "Notificações de biomarcadores",
-                                  style: TextStyle(fontSize: 18),
+                                  style: TextStyle(
+                                    fontSize: 18,
+                                    color: Colors.black45,
+                                  ),
                                 ),
                               ),
                               Switch(
