@@ -98,7 +98,7 @@ class _MedicationListState extends State<MedicationList> {
             builder: (BuildContext context, StateSetter setState) {
               return AlertDialog(
                 title: Text(
-                  "Adicionar Medicação / Suplemento",
+                  "Adicionar Medicamento / Suplemento",
                   textAlign: TextAlign.center,
                   style: TextStyle(
                     color: Color(0xFFA3E1CB),
@@ -124,7 +124,7 @@ class _MedicationListState extends State<MedicationList> {
                         },
                         isExpanded: true,
                         items: [
-                          DropMenu('M', 'Medicação'),
+                          DropMenu('M', 'Medicamento'),
                           DropMenu('S', 'Suplemento'),
                         ].map<DropdownMenuItem<String>>((DropMenu item) {
                           return DropdownMenuItem<String>(
