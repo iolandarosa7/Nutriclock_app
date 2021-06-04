@@ -216,7 +216,7 @@ class _MealsFragmentState extends State<MealsFragment> {
                         height: 16,
                       ),
                       Text(
-                        "Começa já a registar o teu Diário Alimentar com tudo o que compõe as tuas refeições.",
+                        "Comece já a registar o seu Diário Alimentar com tudo o que compõe as suas refeições.",
                         textAlign: TextAlign.center,
                         style: TextStyle(color: Colors.grey),
                       ),
