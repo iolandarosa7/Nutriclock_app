@@ -261,110 +261,112 @@ class _HomeState extends State<Home> {
         onTap: _onItemTapped,
       ),
       drawer: Drawer(
-        child: Column(
-          children: <Widget>[
-            GestureDetector(
-              onTap: () => {
-                Navigator.of(context).pop(),
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => Profile(),
+        child: SingleChildScrollView(
+          child: Column(
+            children: <Widget>[
+              GestureDetector(
+                onTap: () => {
+                  Navigator.of(context).pop(),
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => Profile(),
+                    ),
                   ),
-                ),
-              },
-              child: UserAccountsDrawerHeader(
-                currentAccountPicture: CircleAvatar(
-                  backgroundImage: NetworkImage(_avatarUrl),
-                  backgroundColor: Color(0xFFC1FECB),
-                  onBackgroundImageError: (_, __) {},
-                ),
-                accountName: new Text(
-                  this._name,
-                  style: TextStyle(color: Color(0xFFA3E1CB)),
-                ),
-                accountEmail: new Text(this._email,
-                    style: TextStyle(color: Color(0xFF60B2A3))),
-                decoration: BoxDecoration(
-                  image: DecorationImage(
-                    image: AssetImage("assets/images/bg_drawer.png"),
-                    fit: BoxFit.cover,
+                },
+                child: UserAccountsDrawerHeader(
+                  currentAccountPicture: CircleAvatar(
+                    backgroundImage: NetworkImage(_avatarUrl),
+                    backgroundColor: Color(0xFFC1FECB),
+                    onBackgroundImageError: (_, __) {},
+                  ),
+                  accountName: new Text(
+                    this._name,
+                    style: TextStyle(color: Color(0xFFA3E1CB)),
+                  ),
+                  accountEmail: new Text(this._email,
+                      style: TextStyle(color: Color(0xFF60B2A3))),
+                  decoration: BoxDecoration(
+                    image: DecorationImage(
+                      image: AssetImage("assets/images/bg_drawer.png"),
+                      fit: BoxFit.cover,
+                    ),
                   ),
                 ),
               ),
-            ),
-            new Column(
-              children: [
-                ListTile(
-                  leading: Icon(
-                    Icons.insert_chart,
-                    color: Color(0xFFA3E1CB),
-                  ),
-                  title: Text(
-                    'Relatórios',
-                    style: TextStyle(color: Color(0xFF60B2A3)),
-                  ),
-                  onTap: () => _onSelectItem(5, "Relatórios"),
-                ),
-                if (_nutriclockGroup)
+              Column(
+                children: [
                   ListTile(
                     leading: Icon(
-                      Icons.restaurant,
+                      Icons.insert_chart,
                       color: Color(0xFFA3E1CB),
                     ),
-                    title: Text('Plano Alimentar',
+                    title: Text(
+                      'Relatórios',
+                      style: TextStyle(color: Color(0xFF60B2A3)),
+                    ),
+                    onTap: () => _onSelectItem(5, "Relatórios"),
+                  ),
+                  if (_nutriclockGroup)
+                    ListTile(
+                      leading: Icon(
+                        Icons.restaurant,
+                        color: Color(0xFFA3E1CB),
+                      ),
+                      title: Text('Plano Alimentar',
+                          style: TextStyle(color: Color(0xFF60B2A3))),
+                      onTap: () => _onSelectItem(6, "Plano Alimentar"),
+                    ),
+                  ListTile(
+                    leading: Icon(
+                      Icons.accessibility,
+                      color: Color(0xFFA3E1CB),
+                    ),
+                    title: Text('Biomarcadores',
                         style: TextStyle(color: Color(0xFF60B2A3))),
-                    onTap: () => _onSelectItem(6, "Plano Alimentar"),
+                    onTap: () => _onSelectItem(7, "Biomarcadores"),
                   ),
-                ListTile(
-                  leading: Icon(
-                    Icons.accessibility,
-                    color: Color(0xFFA3E1CB),
-                  ),
-                  title: Text('Biomarcadores',
-                      style: TextStyle(color: Color(0xFF60B2A3))),
-                  onTap: () => _onSelectItem(7, "Biomarcadores"),
-                ),
-                Divider(),
-                ListTile(
-                  title: Text(
-                    "Contactos",
-                    style: TextStyle(
-                      color: Colors.black45,
+                  Divider(),
+                  ListTile(
+                    title: Text(
+                      "Contactos",
+                      style: TextStyle(
+                        color: Colors.black45,
+                      ),
                     ),
                   ),
-                ),
-                ListTile(
-                  leading: Icon(
-                    Icons.email,
-                    color: Colors.grey,
-                  ),
-                  title: Text(
-                    _emailContact,
-                    style: TextStyle(
+                  ListTile(
+                    leading: Icon(
+                      Icons.email,
                       color: Colors.grey,
-                      fontSize: 12,
                     ),
+                    title: Text(
+                      _emailContact,
+                      style: TextStyle(
+                        color: Colors.grey,
+                        fontSize: 12,
+                      ),
+                    ),
+                    onTap: () => _onPhoneEmailClick('mailto:$_phone'),
                   ),
-                  onTap: () => _onPhoneEmailClick('mailto:$_phone'),
-                ),
-                ListTile(
-                  leading: Icon(
-                    Icons.phone,
-                    color: Colors.grey,
-                  ),
-                  title: Text(
-                    _phone,
-                    style: TextStyle(
+                  ListTile(
+                    leading: Icon(
+                      Icons.phone,
                       color: Colors.grey,
-                      fontSize: 12,
                     ),
+                    title: Text(
+                      _phone,
+                      style: TextStyle(
+                        color: Colors.grey,
+                        fontSize: 12,
+                      ),
+                    ),
+                    onTap: () => _onPhoneEmailClick('tel:$_phone'),
                   ),
-                  onTap: () => _onPhoneEmailClick('tel:$_phone'),
-                ),
-              ],
-            )
-          ],
+                ],
+              )
+            ],
+          ),
         ),
       ),
       body: Center(
