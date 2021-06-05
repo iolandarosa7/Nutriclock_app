@@ -67,15 +67,13 @@ flutter:
     - assets/images/nutri.png
     - assets/images/logo.png
     - assets/images/logo_horizontal.png
-    - assets/images/bg_drawer.jpg
     - assets/images/bg_drawer.png
-    - assets/images/bg_home.jpg
     - assets/images/bg_sleep.jpg
     - assets/sleep/sleep.png
     - assets/sleep/stats.png
     - assets/sleep/tip.png
     - assets/images/bg_chat.png
-    - assets/images/bg_sport_detail.jpg
+    - assets/images/bg_sport_detail.png
     - assets/images/bg_profile.png
     - assets/images/bg_disease.png
     - assets/images/bg_medication.png

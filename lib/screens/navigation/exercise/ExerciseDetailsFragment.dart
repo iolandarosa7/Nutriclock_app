@@ -63,17 +63,23 @@ class _ExerciseDetailsFragmentState extends State<ExerciseDetailsFragment> {
       appBar:
           appWidget.getAppbar("Exercício ${dateFormat.format(widget.value)}"),
       body: appWidget.getImageContainer(
-        "assets/images/bg_sport_detail.jpg",
+        "assets/images/bg_sport_detail.png",
         _isLoading,
-        SingleChildScrollView(
-          scrollDirection: Axis.vertical,
-          child: Padding(
-            padding: EdgeInsets.only(left: 0),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: _renderData(),
+        Stack(
+          children: [
+            Positioned.fill(
+              child: SingleChildScrollView(
+                scrollDirection: Axis.vertical,
+                child: Padding(
+                  padding: EdgeInsets.only(left: 0),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: _renderData(),
+                  ),
+                ),
+              ),
             ),
-          ),
+          ],
         ),
       ),
     );
@@ -131,7 +137,8 @@ class _ExerciseDetailsFragmentState extends State<ExerciseDetailsFragment> {
                       Expanded(
                         flex: 1,
                         child: Row(
-                          crossAxisAlignment: CrossAxisAlignment.baseline,
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          crossAxisAlignment: CrossAxisAlignment.end,
                           children: [
                             Icon(
                               Icons.star_rounded,
@@ -156,7 +163,8 @@ class _ExerciseDetailsFragmentState extends State<ExerciseDetailsFragment> {
                       Expanded(
                         flex: 1,
                         child: Row(
-                          crossAxisAlignment: CrossAxisAlignment.baseline,
+                          mainAxisAlignment: MainAxisAlignment.end,
+                          crossAxisAlignment: CrossAxisAlignment.end,
                           children: [
                             Icon(
                               Icons.timer,
@@ -184,7 +192,8 @@ class _ExerciseDetailsFragmentState extends State<ExerciseDetailsFragment> {
                     height: 10,
                   ),
                   Row(
-                    crossAxisAlignment: CrossAxisAlignment.baseline,
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    crossAxisAlignment: CrossAxisAlignment.end,
                     children: [
                       Icon(
                         Icons.fitness_center,
