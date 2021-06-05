@@ -15,6 +15,7 @@ class BioMarkersFragment extends StatefulWidget {
 }
 
 class _BioMarkersFragmentState extends State<BioMarkersFragment> {
+  var appWidget = AppWidget();
   var _isLoading = false;
   List<Procedure> _procedures = [];
   List<Sample> _samples = [];
@@ -28,51 +29,54 @@ class _BioMarkersFragmentState extends State<BioMarkersFragment> {
 
   @override
   Widget build(BuildContext context) {
-    return AppWidget().getImageContainer(
-      "assets/images/bg_green.png",
-      _isLoading,
-      SingleChildScrollView(
-        child: Column(
-          children: [
-            SizedBox(
-              height: 16,
-            ),
-            Text(
-              "Recolhas",
-              style: TextStyle(
-                  fontFamily: 'PatrickHand',
-                  fontSize: 24,
-                  fontWeight: FontWeight.bold),
-            ),
-            ..._renderSamples(),
-            SizedBox(
-              height: 30,
-            ),
-            Text(
-              "Procedimento",
-              style: TextStyle(
-                  fontFamily: 'PatrickHand',
-                  fontSize: 24,
-                  fontWeight: FontWeight.bold),
-            ),
-            Card(
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.all(
-                  Radius.circular(8.0),
+    return Scaffold(
+      appBar: appWidget.getAppbar("Biomarcadores"),
+      body: AppWidget().getImageContainer(
+        "assets/images/bg_green.png",
+        _isLoading,
+        SingleChildScrollView(
+          child: Column(
+            children: [
+              SizedBox(
+                height: 16,
+              ),
+              Text(
+                "Recolhas",
+                style: TextStyle(
+                    fontFamily: 'PatrickHand',
+                    fontSize: 24,
+                    fontWeight: FontWeight.bold),
+              ),
+              ..._renderSamples(),
+              SizedBox(
+                height: 30,
+              ),
+              Text(
+                "Procedimento",
+                style: TextStyle(
+                    fontFamily: 'PatrickHand',
+                    fontSize: 24,
+                    fontWeight: FontWeight.bold),
+              ),
+              Card(
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.all(
+                    Radius.circular(8.0),
+                  ),
+                ),
+                margin: EdgeInsets.symmetric(vertical: 10, horizontal: 20),
+                shadowColor: Color(0xFFA3E1CB),
+                elevation: 10,
+                child: Padding(
+                  padding: EdgeInsets.all(20.0),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                    children: [..._renderProcedures()],
+                  ),
                 ),
               ),
-              margin: EdgeInsets.symmetric(vertical: 10, horizontal: 20),
-              shadowColor: Color(0xFFA3E1CB),
-              elevation: 10,
-              child: Padding(
-                padding: EdgeInsets.all(20.0),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.stretch,
-                  children: [..._renderProcedures()],
-                ),
-              ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );
@@ -196,7 +200,7 @@ class _BioMarkersFragmentState extends State<BioMarkersFragment> {
               style: TextStyle(fontSize: 14, color: Colors.black54),
             ),
           ),
-          if (index < _procedures.length -1) Divider(),
+          if (index < _procedures.length - 1) Divider(),
         ],
       );
       widgets.add(widget);

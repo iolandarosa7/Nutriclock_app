@@ -13,6 +13,7 @@ import 'package:nutriclock_app/models/MealPlan.dart';
 import 'package:nutriclock_app/models/MealPlanType.dart';
 import 'package:nutriclock_app/models/WeekDay.dart';
 import 'package:nutriclock_app/network_utils/api.dart';
+import 'package:nutriclock_app/utils/AppWidget.dart';
 
 class FoodPlanFragment extends StatefulWidget {
   @override
@@ -53,21 +54,37 @@ class _FoodPlanFragmentState extends State<FoodPlanFragment> {
       child: Scaffold(
         key: _scaffoldKey,
         backgroundColor: Color(0xFFA3E1CB),
-        appBar: TabBar(
-          indicatorColor: Colors.white,
-          tabs: [
-            Tab(
-              icon: const Icon(Icons.restaurant_menu_rounded),
-              text: 'Semanal',
-            ),
-            Tab(
-              icon: const Icon(Icons.history),
-              text: 'Histórico',
-            ),
-          ],
-        ),
-        body: TabBarView(
-          children: [_renderWeeklyPlan(), _renderHistoryPlan()],
+        appBar: AppWidget().getAppbar("Plano Alimentar"),
+        body: DefaultTabController(
+          length: 2,
+          initialIndex: 0,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              Container(
+                child: TabBar(
+                  indicatorColor: Colors.white,
+                  tabs: [
+                    Tab(
+                      icon: const Icon(Icons.restaurant_menu_rounded),
+                      text: 'Semanal',
+                    ),
+                    Tab(
+                      icon: const Icon(Icons.history),
+                      text: 'Histórico',
+                    ),
+                  ],
+                ),
+              ),
+              Expanded(
+                child: Container(
+                  child: TabBarView(
+                    children: [_renderWeeklyPlan(), _renderHistoryPlan()],
+                  ),
+                ),
+              ),
+            ],
+          ),
         ),
       ),
     );

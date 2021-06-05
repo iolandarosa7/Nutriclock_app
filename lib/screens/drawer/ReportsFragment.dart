@@ -15,6 +15,7 @@ class ReportsFragment extends StatefulWidget {
 }
 
 class _ReportsFragmentState extends State<ReportsFragment> {
+  var appWidget = AppWidget();
   var _isLoading = false;
   var _totalSleeps = '-';
   var _averageSleepTime = '-';
@@ -44,79 +45,83 @@ class _ReportsFragmentState extends State<ReportsFragment> {
 
   @override
   Widget build(BuildContext context) {
-    return AppWidget().getImageContainer(
-      "assets/images/bg_green.png",
-      _isLoading,
-      SingleChildScrollView(
-        child: Column(
-          children: [
-            Card(
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.all(
-                  Radius.circular(8.0),
+    return Scaffold(
+      appBar:
+        appWidget.getAppbar("Relatórios"),
+      body: AppWidget().getImageContainer(
+        "assets/images/bg_green.png",
+        _isLoading,
+        SingleChildScrollView(
+          child: Column(
+            children: [
+              Card(
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.all(
+                    Radius.circular(8.0),
+                  ),
+                ),
+                margin: EdgeInsets.symmetric(vertical: 10, horizontal: 20),
+                shadowColor: Color(0xFFA3E1CB),
+                elevation: 10,
+                child: Padding(
+                  padding: EdgeInsets.all(20.0),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                    children: [
+                      _renderTitle("Diário do Sono"),
+                      _renderIcon(Icons.bedtime_rounded),
+                      _renderSingleRowWithDivider(
+                          "Total de registos", _totalSleeps),
+                      _renderSingleRowWithDivider(
+                          "Média de horas sono", "$_averageSleepTime h"),
+                      _renderDoubleRowWithDivider("Máximo de horas sono",
+                          "$_maximumSleepHour h", _maximumSleepDate),
+                      _renderDoubleRowWithDivider("Mínimo de horas Sono",
+                          "$_minimumSleepHour h", _minimumSleepDate),
+                      _renderWeekAverage("Média horas sono / dia de semana",
+                          _averageSleepArray, _percentageSleepArray, null, null),
+                    ],
+                  ),
                 ),
               ),
-              margin: EdgeInsets.symmetric(vertical: 10, horizontal: 20),
-              shadowColor: Color(0xFFA3E1CB),
-              elevation: 10,
-              child: Padding(
-                padding: EdgeInsets.all(20.0),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.stretch,
-                  children: [
-                    _renderTitle("Diário do Sono"),
-                    _renderIcon(Icons.bedtime_rounded),
-                    _renderSingleRowWithDivider(
-                        "Total de registos", _totalSleeps),
-                    _renderSingleRowWithDivider(
-                        "Média de horas sono", "$_averageSleepTime h"),
-                    _renderDoubleRowWithDivider("Máximo de horas sono",
-                        "$_maximumSleepHour h", _maximumSleepDate),
-                    _renderDoubleRowWithDivider("Mínimo de horas Sono",
-                        "$_minimumSleepHour h", _minimumSleepDate),
-                    _renderWeekAverage("Média horas sono / dia de semana",
-                        _averageSleepArray, _percentageSleepArray, null, null),
-                  ],
+              Card(
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.all(
+                    Radius.circular(8.0),
+                  ),
+                ),
+                margin: EdgeInsets.symmetric(vertical: 10, horizontal: 20),
+                shadowColor: Color(0xFFA3E1CB),
+                elevation: 10,
+                child: Padding(
+                  padding: EdgeInsets.all(20.0),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                    children: [
+                      _renderTitle("Atividade Física"),
+                      _renderIcon(Icons.fitness_center_rounded),
+                      _renderSingleRowWithDivider(
+                          "Total de registos", _totalExercises),
+                      _renderSingleRowWithDivider("Duração média da atividade",
+                          "$_averageExerciseTime min"),
+                      _renderSingleRowWithDivider("Calorias médias gastas",
+                          "$_averageExerciseCalories kcal"),
+                      _renderMaxMinExercise("Máximo", "$_maximumExercise min",
+                          "$_maximumCalories kcal"),
+                      _renderMaxMinExercise("Mínimo", "$_minimumExercise min",
+                          "$_minimumCalories kcal"),
+                      _renderWeekAverage(
+                          "Duração e calorias médias  / dia de semana",
+                          _averageExerciseArray,
+                          _percentageExerciseArray,
+                          _averageCaloriesArray,
+                          _percentageCaloriesArray),
+                    ],
+                  ),
                 ),
               ),
-            ),
-            Card(
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.all(
-                  Radius.circular(8.0),
-                ),
-              ),
-              margin: EdgeInsets.symmetric(vertical: 10, horizontal: 20),
-              shadowColor: Color(0xFFA3E1CB),
-              elevation: 10,
-              child: Padding(
-                padding: EdgeInsets.all(20.0),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.stretch,
-                  children: [
-                    _renderTitle("Atividade Física"),
-                    _renderIcon(Icons.fitness_center_rounded),
-                    _renderSingleRowWithDivider(
-                        "Total de registos", _totalExercises),
-                    _renderSingleRowWithDivider("Duração média da atividade",
-                        "$_averageExerciseTime min"),
-                    _renderSingleRowWithDivider("Calorias médias gastas",
-                        "$_averageExerciseCalories kcal"),
-                    _renderMaxMinExercise("Máximo", "$_maximumExercise min",
-                        "$_maximumCalories kcal"),
-                    _renderMaxMinExercise("Mínimo", "$_minimumExercise min",
-                        "$_minimumCalories kcal"),
-                    _renderWeekAverage(
-                        "Duração e calorias médias  / dia de semana",
-                        _averageExerciseArray,
-                        _percentageExerciseArray,
-                        _averageCaloriesArray,
-                        _percentageCaloriesArray),
-                  ],
-                ),
-              ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );

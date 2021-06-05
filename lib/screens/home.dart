@@ -305,7 +305,7 @@ class _HomeState extends State<Home> {
                       'Relatórios',
                       style: TextStyle(color: Color(0xFF60B2A3)),
                     ),
-                    onTap: () => _onSelectItem(5, "Relatórios"),
+                    onTap: () => _navigate(_widgetOptions[5]),
                   ),
                   if (_nutriclockGroup)
                     ListTile(
@@ -315,7 +315,7 @@ class _HomeState extends State<Home> {
                       ),
                       title: Text('Plano Alimentar',
                           style: TextStyle(color: Color(0xFF60B2A3))),
-                      onTap: () => _onSelectItem(6, "Plano Alimentar"),
+                      onTap: () => _navigate(_widgetOptions[6]),
                     ),
                   ListTile(
                     leading: Icon(
@@ -324,7 +324,7 @@ class _HomeState extends State<Home> {
                     ),
                     title: Text('Biomarcadores',
                         style: TextStyle(color: Color(0xFF60B2A3))),
-                    onTap: () => _onSelectItem(7, "Biomarcadores"),
+                    onTap: () => _navigate(_widgetOptions[7]),
                   ),
                   Divider(),
                   ListTile(
@@ -372,6 +372,14 @@ class _HomeState extends State<Home> {
       body: Center(
         child: _widgetOptions.elementAt(_currentIndex),
       ),
+    );
+  }
+
+  _navigate(destiny) {
+    Navigator.of(context).pop();
+    Navigator.push(
+      context,
+      MaterialPageRoute(builder: (context) => destiny),
     );
   }
 
