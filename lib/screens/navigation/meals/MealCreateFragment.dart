@@ -220,6 +220,8 @@ class _MealCreateFragmentState extends State<MealCreateFragment> {
   }
 
   void buildMaterialDatePicker(BuildContext context, String type, StateSetter setModalState) async {
+    var nowDate = DateTime.now();
+    
     if (type == 'TIME') {
       final pickedTime =
           await showTimePicker(context: context, initialTime: _time);
@@ -236,9 +238,8 @@ class _MealCreateFragmentState extends State<MealCreateFragment> {
     final DateTime picked = await showDatePicker(
       context: context,
       initialDate: _date,
-      firstDate: DateTime(1900),
-      lastDate: DateTime.now(),
-      initialDatePickerMode: DatePickerMode.year,
+      firstDate: nowDate.subtract(Duration(days: 3)),
+      lastDate: nowDate,
       cancelText: 'Cancelar',
       fieldLabelText: 'Data da Refeição',
     );
