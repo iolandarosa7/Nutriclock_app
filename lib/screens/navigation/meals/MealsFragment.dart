@@ -2,6 +2,8 @@ import 'dart:convert';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:loading/indicator/ball_pulse_indicator.dart';
+import 'package:loading/loading.dart';
 import 'package:nutriclock_app/constants/constants.dart';
 import 'package:nutriclock_app/models/Meal.dart';
 import 'package:nutriclock_app/models/MealsResponse.dart';
@@ -113,11 +115,204 @@ class _MealsFragmentState extends State<MealsFragment> {
         : SizedBox());
   }
 
+  _renderMealElement(meals, firstLetter, description) {
+    return meals.length > 0
+        ? ExpansionTile(
+            title: Row(
+              children: [
+                Container(
+                  width: 40,
+                  height: 40,
+                  decoration: BoxDecoration(
+                    border: Border.all(
+                      color: Color(0xFFA3E1CB),
+                      width: 2,
+                    ),
+                    borderRadius: BorderRadius.all(
+                      Radius.circular(40),
+                    ),
+                  ),
+                  child: Center(
+                    child: Text(
+                      firstLetter,
+                      style: TextStyle(
+                          color: Color(0xFFA3E1CB),
+                          fontWeight: FontWeight.bold,
+                          fontSize: 16),
+                    ),
+                  ),
+                ),
+                Padding(
+                    padding: EdgeInsets.symmetric(horizontal: 16),
+                    child: Text(description)),
+              ],
+            ),
+            children: <Widget>[
+              new Column(children: _renderMeals(meals)),
+            ],
+          )
+        : SizedBox();
+  }
+
+  List<Widget> _renderMeals(List<Meal> meals) {
+    List<Widget> list = [];
+    meals.forEach((element) {
+      list.add(
+        Container(
+          color: Colors.white,
+          child: Column(
+            children: [
+              Container(
+                  width: double.infinity,
+                  decoration: BoxDecoration(
+                    border: Border(
+                      left: BorderSide(
+                        color: Color(0xFFA3E1CB),
+                        width: 8,
+                      ),
+                    ),
+                    color: Color(0xFFECECEC),
+                  ),
+                  child: Row(
+                    children: [
+                      SizedBox(
+                        width: 100,
+                        child: ClipRect(
+                          child: element.foodPhotoUrl != null
+                              ? Image.network(
+                                  "$IMAGE_BASE_URL/food/thumb_${element.foodPhotoUrl}",
+                                  fit: BoxFit.cover,
+                                  errorBuilder: (BuildContext context,
+                                      Object exception, StackTrace stackTrace) {
+                                    return _renderImageDefault();
+                                  },
+                                )
+                              : _renderImageDefault(),
+                        ),
+                      ),
+                      Expanded(
+                        child: Padding(
+                          padding: EdgeInsets.symmetric(
+                            vertical: 8,
+                            horizontal: 8,
+                          ),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                element.name,
+                                style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                              SizedBox(
+                                height: 4,
+                              ),
+                              Text(
+                                  "${element.quantity} ${element.relativeUnit}"),
+                              Row(
+                                children: [
+                                  Expanded(
+                                    child: ElevatedButton(
+                                      style: ButtonStyle(
+                                        elevation: MaterialStateProperty
+                                            .resolveWith<double>(
+                                                (Set<MaterialState> states) {
+                                          if (states.contains(
+                                              MaterialState.pressed)) return 16;
+                                          return null;
+                                        }),
+                                      ),
+                                      onPressed: () {
+                                        Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                            builder: (context) =>
+                                                MealUpdateFragment(
+                                                    meal: element),
+                                          ),
+                                        ).then((value) => {_loadMealsList()});
+                                      },
+                                      child: Text('Editar'),
+                                    ),
+                                  ),
+                                  SizedBox(
+                                    width: 20,
+                                  ),
+                                  Expanded(
+                                    child: ElevatedButton(
+                                      style: ButtonStyle(
+                                        backgroundColor: MaterialStateProperty
+                                            .resolveWith<Color>(
+                                                (Set<MaterialState> states) =>
+                                                    Colors.redAccent),
+                                        elevation: MaterialStateProperty
+                                            .resolveWith<double>(
+                                                (Set<MaterialState> states) {
+                                          if (states.contains(
+                                              MaterialState.pressed)) return 16;
+                                          return null;
+                                        }),
+                                      ),
+                                      onPressed: () {
+                                        this._showDeleteMealConfirmation(
+                                            element);
+                                      },
+                                      child: Text('Eliminar'),
+                                    ),
+                                  ),
+                                ],
+                              )
+                            ],
+                          ),
+                        ),
+                      ),
+                    ],
+                  )),
+              SizedBox(
+                height: 4,
+              )
+            ],
+          ),
+        ),
+      );
+    });
+
+    return list;
+  }
+
   List<Widget> data() {
     List<Widget> list = List();
     _data.mealsTypeByDate.forEach((element) {
       list.add(
-        Card(
+        Container(
+          width: double.infinity,
+          color: Colors.white,
+          margin: EdgeInsets.only(top: 16),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Padding(
+                padding: EdgeInsets.all(20),
+                child: Text(
+                  element.date,
+                  style: TextStyle(
+                    fontSize: 16,
+                    fontWeight: FontWeight.bold,
+                    color: Color(0xFF60B2A3),
+                  ),
+                ),
+              ),
+              _renderMealElement(element.breakfasts, "P", "Pequeno-almoço"),
+              _renderMealElement(element.midMorning, "L", "Lanche da manhã"),
+              _renderMealElement(element.lunchs, "A", "Almoço"),
+              _renderMealElement(element.brunchs, "L", "Lanche"),
+              _renderMealElement(element.dinners, "J", "Jantar"),
+              _renderMealElement(element.anothers, "C", "Ceia"),
+              _renderMealElement(element.snacks, "S", "Snack"),
+            ],
+          ),
+        ), /*Card(
           elevation: 4.0,
           color: Colors.white,
           margin: EdgeInsets.only(left: 20, right: 20, bottom: 20),
@@ -167,7 +362,7 @@ class _MealsFragmentState extends State<MealsFragment> {
               ],
             ),
           ),
-        ),
+        ),*/
       );
     });
     return list;
@@ -191,49 +386,59 @@ class _MealsFragmentState extends State<MealsFragment> {
               elevation: 50,
             )
           : SizedBox(),
-      body: appWidget.getImageContainer(
-        "assets/images/bg_green.png",
-        _isLoading,
-        _data == null ||
-                _data.mealsTypeByDate == null ||
-                _data.mealsTypeByDate.isEmpty
-            ? Card(
-                elevation: 4.0,
-                color: Colors.white,
-                margin: EdgeInsets.only(left: 20, right: 20),
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(15),
-                ),
-                child: Padding(
-                  padding: EdgeInsets.all(20),
-                  child: Column(
-                    children: [
-                      Text(
-                        "Nenhum alimento adicionado.",
-                        style: TextStyle(color: Colors.black),
+      body: Container(
+        color: Color(0xFFE2E2E2),
+        width: double.infinity,
+        height: double.infinity,
+        padding: EdgeInsets.only(top: 8),
+        child: SingleChildScrollView(
+          scrollDirection: Axis.vertical,
+          child: Column(
+            children: [
+              _isLoading == true
+                  ? Center(
+                      child: Loading(
+                          indicator: BallPulseIndicator(),
+                          size: 50.0,
+                          color: Color(0xFFFFBCBC)),
+                    )
+                  : SizedBox(),
+              _data == null ||
+                      _data.mealsTypeByDate == null ||
+                      _data.mealsTypeByDate.isEmpty
+                  ? Card(
+                      elevation: 4.0,
+                      color: Colors.white,
+                      margin: EdgeInsets.only(left: 20, right: 20),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(15),
                       ),
-                      SizedBox(
-                        height: 16,
+                      child: Padding(
+                        padding: EdgeInsets.all(20),
+                        child: Column(
+                          children: [
+                            Text(
+                              "Nenhum alimento adicionado.",
+                              style: TextStyle(color: Colors.black),
+                            ),
+                            SizedBox(
+                              height: 16,
+                            ),
+                            Text(
+                              "Comece já a registar o seu Diário Alimentar com tudo o que compõe as suas refeições.",
+                              textAlign: TextAlign.center,
+                              style: TextStyle(color: Colors.grey),
+                            ),
+                          ],
+                        ),
                       ),
-                      Text(
-                        "Comece já a registar o seu Diário Alimentar com tudo o que compõe as suas refeições.",
-                        textAlign: TextAlign.center,
-                        style: TextStyle(color: Colors.grey),
-                      ),
-                    ],
-                  ),
-                ),
-              )
-            : SingleChildScrollView(
-                scrollDirection: Axis.vertical,
-                padding: EdgeInsets.all(4),
-                child: Column(children: [
-                  SizedBox(
-                    height: 20,
-                  ),
-                  ...data()
-                ]),
-              ),
+                    )
+                  : Column(children: [
+                      ...data(),
+                    ]),
+            ],
+          ),
+        ),
       ),
     );
   }
