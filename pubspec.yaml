@@ -98,6 +98,7 @@ flutter:
     - assets/images/likert3_selected.png
     - assets/images/likert4_selected.png
     - assets/images/likert5_selected.png
+    - assets/images/lateral_bar.png
   fonts:
     - family: Pacifico
       fonts:
