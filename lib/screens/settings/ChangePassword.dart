@@ -214,33 +214,29 @@ class _ChangePasswordState extends State<ChangePassword> {
                                           ),
                                           SizedBox(
                                             width: double.infinity,
-                                            child: FlatButton(
-                                              child: Padding(
-                                                padding: EdgeInsets.only(
-                                                    top: 8,
-                                                    bottom: 8,
-                                                    left: 10,
-                                                    right: 10),
-                                                child: Text(
-                                                  _isLoading
-                                                      ? 'Aguarde...'
-                                                      : 'Alterar Password',
-                                                  style: TextStyle(
-                                                    color: Colors.white,
-                                                    fontSize: 15.0,
-                                                    decoration:
-                                                        TextDecoration.none,
-                                                    fontWeight:
-                                                        FontWeight.normal,
-                                                  ),
+                                            child: TextButton(
+                                              child: Text(
+                                                _isLoading
+                                                    ? 'Aguarde...'
+                                                    : 'Alterar Password',
+                                                style: TextStyle(
+                                                  color: Colors.white,
+                                                  fontSize: 15.0,
+                                                  decoration:
+                                                      TextDecoration.none,
+                                                  fontWeight: FontWeight.normal,
                                                 ),
                                               ),
-                                              color: Color(0xFFA3E1CB),
-                                              disabledColor: Colors.grey,
-                                              shape: new RoundedRectangleBorder(
+                                              style: TextButton.styleFrom(
+                                                backgroundColor:
+                                                    Color(0xFFA3E1CB),
+                                                shape:
+                                                    new RoundedRectangleBorder(
                                                   borderRadius:
                                                       new BorderRadius.circular(
-                                                          20.0)),
+                                                          20.0),
+                                                ),
+                                              ),
                                               onPressed: () {
                                                 if (_formKey.currentState
                                                     .validate()) {
