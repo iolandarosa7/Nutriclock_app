@@ -185,7 +185,7 @@ class _SettingsListState extends State<SettingsList> {
               child: ListBody(
                 children: <Widget>[
                   Text(
-                    "A confirmação do esquecimento dos seus dados implica o cancelamento da sua participação no estudo Nutriclock, a remoção da sua conta e a eliminação dos seus dados da base de dados.",
+                    "A confirmação do esquecimento dos seus dados implica o cancelamento da sua participação no estudo Nutriclock, a remoção da sua conta e a eliminação dos todos os seus dados do estudo.",
                     textAlign: TextAlign.justify,
                     style: TextStyle(
                       fontSize: 14.0,
