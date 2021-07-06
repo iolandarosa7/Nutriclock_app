@@ -81,7 +81,7 @@ class _ChangePasswordState extends State<ChangePassword> {
                                       child: Column(
                                         children: [
                                           Text(
-                                            "Esta password será utilizada durante a autenticação. A sua alteração ir-se-á refletir no Login.",
+                                            "Esta password será utilizada durante a autenticação. A sua alteração irá refletir-se no Login.",
                                             textAlign: TextAlign.center,
                                             style: TextStyle(
                                               color: Colors.grey,
