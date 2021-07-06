@@ -238,6 +238,7 @@ class _MealCreateFragmentState extends State<MealCreateFragment> {
     final DateTime picked = await showDatePicker(
       context: context,
       initialDate: _date,
+       locale: Locale('pt', 'PT'),
       firstDate: nowDate.subtract(Duration(days: 3)),
       lastDate: nowDate,
       cancelText: 'Cancelar',

@@ -19,6 +19,7 @@ class _LoginState extends State<Login> {
   bool _isLoading = false;
   var email;
   var password;
+  var _obscured = true;
   AcceptanceTerms terms;
   var appWidget = AppWidget();
 
@@ -54,7 +55,8 @@ class _LoginState extends State<Login> {
                           color: Colors.white,
                           margin: EdgeInsets.only(left: 20, right: 20),
                           shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(15)),
+                            borderRadius: BorderRadius.circular(15),
+                          ),
                           child: Column(
                             children: [
                               Padding(
@@ -93,9 +95,10 @@ class _LoginState extends State<Login> {
                                             color: Color(0xFFA3E1CB),
                                           ),
                                           hintStyle: TextStyle(
-                                              color: Color(0xFF9b9b9b),
-                                              fontSize: 15,
-                                              fontWeight: FontWeight.normal),
+                                            color: Color(0xFF9b9b9b),
+                                            fontSize: 15,
+                                            fontWeight: FontWeight.normal,
+                                          ),
                                         ),
                                         validator: (emailValue) {
                                           if (emailValue.isEmpty) {
@@ -115,8 +118,18 @@ class _LoginState extends State<Login> {
                                             TextStyle(color: Color(0xFF000000)),
                                         cursorColor: Color(0xFF9b9b9b),
                                         keyboardType: TextInputType.text,
-                                        obscureText: true,
+                                        obscureText: _obscured,
                                         decoration: InputDecoration(
+                                          suffixIcon: InkWell(
+                                            onTap: _toggle,
+                                            child: Icon(
+                                              _obscured
+                                                  ? Icons.remove_red_eye
+                                                  : Icons
+                                                      .remove_red_eye_outlined,
+                                              color: Colors.grey,
+                                            ),
+                                          ),
                                           labelText: 'Password',
                                           labelStyle:
                                               TextStyle(color: Colors.grey),
@@ -146,34 +159,28 @@ class _LoginState extends State<Login> {
                                             const EdgeInsets.only(top: 16.0),
                                         child: SizedBox(
                                           width: double.infinity,
-                                          child: FlatButton(
-                                            child: Padding(
-                                              padding: EdgeInsets.only(
-                                                  top: 8,
-                                                  bottom: 8,
-                                                  left: 10,
-                                                  right: 10),
-                                              child: Text(
-                                                _isLoading
-                                                    ? 'Aguarde...'
-                                                    : 'Login',
-                                                textDirection:
-                                                    TextDirection.ltr,
-                                                style: TextStyle(
-                                                  color: Colors.white,
-                                                  fontSize: 15.0,
-                                                  decoration:
-                                                      TextDecoration.none,
-                                                  fontWeight: FontWeight.normal,
-                                                ),
+                                          child: TextButton(
+                                            child: Text(
+                                              _isLoading
+                                                  ? 'Aguarde...'
+                                                  : 'Login',
+                                              textDirection: TextDirection.ltr,
+                                              style: TextStyle(
+                                                color: Colors.white,
+                                                fontSize: 15.0,
+                                                decoration: TextDecoration.none,
+                                                fontWeight: FontWeight.normal,
                                               ),
                                             ),
-                                            color: Color(0xFFA3E1CB),
-                                            disabledColor: Colors.grey,
-                                            shape: new RoundedRectangleBorder(
+                                            style: TextButton.styleFrom(
+                                              backgroundColor:
+                                                  Color(0xFFA3E1CB),
+                                              shape: new RoundedRectangleBorder(
                                                 borderRadius:
                                                     new BorderRadius.circular(
-                                                        20.0)),
+                                                        20.0),
+                                              ),
+                                            ),
                                             onPressed: () {
                                               if (_formKey.currentState
                                                   .validate()) {
@@ -192,31 +199,24 @@ class _LoginState extends State<Login> {
                                     left: 10.0, right: 10.0),
                                 child: SizedBox(
                                   width: double.infinity,
-                                  child: FlatButton(
-                                    child: Padding(
-                                      padding: EdgeInsets.only(
-                                          top: 8,
-                                          bottom: 8,
-                                          left: 10,
-                                          right: 10),
-                                      child: Text(
-                                        _isLoading
-                                            ? 'Aguarde...'
-                                            : 'Nova Conta',
-                                        textDirection: TextDirection.ltr,
-                                        style: TextStyle(
-                                          color: Colors.white,
-                                          fontSize: 15.0,
-                                          decoration: TextDecoration.none,
-                                          fontWeight: FontWeight.normal,
-                                        ),
+                                  child: TextButton(
+                                    child: Text(
+                                      _isLoading ? 'Aguarde...' : 'Nova Conta',
+                                      textDirection: TextDirection.ltr,
+                                      style: TextStyle(
+                                        color: Colors.white,
+                                        fontSize: 15.0,
+                                        decoration: TextDecoration.none,
+                                        fontWeight: FontWeight.normal,
                                       ),
                                     ),
-                                    color: Color(0xFFA3E1CB),
-                                    disabledColor: Colors.grey,
-                                    shape: new RoundedRectangleBorder(
+                                    style: TextButton.styleFrom(
+                                      backgroundColor: Color(0xFFA3E1CB),
+                                      shape: new RoundedRectangleBorder(
                                         borderRadius:
-                                            new BorderRadius.circular(20.0)),
+                                            new BorderRadius.circular(20.0),
+                                      ),
+                                    ),
                                     onPressed: () {
                                       Navigator.push(
                                           context,
@@ -262,6 +262,12 @@ class _LoginState extends State<Login> {
         ),
       ),
     );
+  }
+
+  void _toggle() {
+    setState(() {
+      _obscured = !_obscured;
+    });
   }
 
   void _login() async {
@@ -344,7 +350,7 @@ class _LoginState extends State<Login> {
               ),
             ),
             actions: <Widget>[
-              FlatButton(
+              TextButton(
                 child: Text('Aceito os Termos e Condições'),
                 onPressed: () {
                   Navigator.of(context).pop();
@@ -374,7 +380,6 @@ class _LoginState extends State<Login> {
         ),
       );
     } catch (error) {
-      print('catch $error');
     }
 
     setState(() {

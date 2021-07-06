@@ -55,7 +55,7 @@ class _HomeState extends State<Home> {
 
   onError(err) {
     var exception = err as WebSocketChannelException;
-    print("socket error ${err.runtimeType.toString()} ${exception.message}");
+    print(exception);
   }
 
   @override
@@ -99,9 +99,7 @@ class _HomeState extends State<Home> {
           _phone = phone;
         });
       }
-    } catch (error) {
-      print(error);
-    }
+    } catch (error) {}
   }
 
   _loadUserData() async {
@@ -110,12 +108,8 @@ class _HomeState extends State<Home> {
     var storeUser = localStorage.getString(LOCAL_STORAGE_USER_KEY);
     var fcmToken = localStorage.getString(FCM_TOKEN);
 
-    print(fcmToken);
-
     if (fcmToken != null) {
-      var response =
-          await Network().postWithAuth({'fcmToken': fcmToken}, FCM_URL);
-      print(response.statusCode);
+      await Network().postWithAuth({'fcmToken': fcmToken}, FCM_URL);
     }
 
     if (storeUser != null) {
@@ -159,14 +153,6 @@ class _HomeState extends State<Home> {
           _currentIndex = index,
         });
     setState(() => {_selectedIndex = index, _title = title});
-  }
-
-  _onSelectItem(int i, String title) {
-    setState(() => {_currentIndex = i, _title = title});
-    if (i < 3) {
-      setState(() => _selectedIndex = i);
-    }
-    Navigator.of(context).pop(); // close the drawer
   }
 
   final GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
@@ -386,9 +372,7 @@ class _HomeState extends State<Home> {
   Future<void> _onPhoneEmailClick(String url) async {
     if (await canLaunch(url)) {
       await launch(url);
-    } else {
-      print("can't launch");
-    }
+    } else {}
   }
 
   Future<void> _showLogoutModal() async {

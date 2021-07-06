@@ -51,6 +51,8 @@ class _RegisterState extends State<Register> {
   var _friday = false;
   var _saturday = false;
   var _sunday = false;
+  var _obscuredPassword = true;
+  var _obscuredConfirmationPassword = true;
   List<String> diseases = [];
   List<Drug> drugs = [];
   List<String> diseasesOptions = [];
@@ -193,7 +195,7 @@ class _RegisterState extends State<Register> {
                                             padding:
                                                 const EdgeInsets.only(left: 50),
                                             child: Text(
-                                              "Unidade Saúde Familiar",
+                                              "Instituição",
                                               style: TextStyle(
                                                   color: Color(0xFF9b9b9b),
                                                   fontSize: 15,
@@ -305,20 +307,19 @@ class _RegisterState extends State<Register> {
                                             ],
                                           ),
                                         ),
-                                        FlatButton(
-                                          color: Colors.transparent,
-                                          splashColor: Colors.black26,
+                                        TextButton(
                                           onPressed: () => _selectDate(context),
                                           child: Padding(
-                                              padding:
-                                                  EdgeInsets.only(left: 35.0),
-                                              child: Text(
-                                                dateFormat.format(selectedDate),
-                                                style: TextStyle(
-                                                  color: Color(0xFF000000),
-                                                  fontSize: 15,
-                                                ),
-                                              )),
+                                            padding:
+                                                EdgeInsets.only(left: 35.0),
+                                            child: Text(
+                                              dateFormat.format(selectedDate),
+                                              style: TextStyle(
+                                                color: Color(0xFF000000),
+                                                fontSize: 15,
+                                              ),
+                                            ),
+                                          ),
                                         ),
                                       ],
                                     ),
@@ -450,11 +451,21 @@ class _RegisterState extends State<Register> {
                                           TextStyle(color: Color(0xFF000000)),
                                       cursorColor: Color(0xFF9b9b9b),
                                       keyboardType: TextInputType.text,
-                                      obscureText: true,
+                                      obscureText: _obscuredPassword,
                                       decoration: InputDecoration(
+                                        suffixIcon: InkWell(
+                                          onTap: _togglePassword,
+                                          child: Icon(
+                                            _obscuredPassword
+                                                ? Icons.remove_red_eye
+                                                : Icons.remove_red_eye_outlined,
+                                            color: Colors.grey,
+                                          ),
+                                        ),
                                         focusedBorder: UnderlineInputBorder(
                                           borderSide: BorderSide(
-                                              color: Color(0xFFA3E1CB)),
+                                            color: Color(0xFFA3E1CB),
+                                          ),
                                         ),
                                         prefixIcon: Icon(
                                           Icons.vpn_key,
@@ -464,9 +475,10 @@ class _RegisterState extends State<Register> {
                                         labelStyle:
                                             TextStyle(color: Colors.grey),
                                         hintStyle: TextStyle(
-                                            color: Color(0xFF9b9b9b),
-                                            fontSize: 15,
-                                            fontWeight: FontWeight.normal),
+                                          color: Color(0xFF9b9b9b),
+                                          fontSize: 15,
+                                          fontWeight: FontWeight.normal,
+                                        ),
                                       ),
                                       validator: (passwordValue) {
                                         if (passwordValue.isEmpty) {
@@ -481,8 +493,18 @@ class _RegisterState extends State<Register> {
                                           TextStyle(color: Color(0xFF000000)),
                                       cursorColor: Color(0xFF9b9b9b),
                                       keyboardType: TextInputType.text,
-                                      obscureText: true,
+                                      obscureText:
+                                          _obscuredConfirmationPassword,
                                       decoration: InputDecoration(
+                                        suffixIcon: InkWell(
+                                          onTap: _toggleConfirmationPassword,
+                                          child: Icon(
+                                            _obscuredConfirmationPassword
+                                                ? Icons.remove_red_eye
+                                                : Icons.remove_red_eye_outlined,
+                                            color: Colors.grey,
+                                          ),
+                                        ),
                                         focusedBorder: UnderlineInputBorder(
                                           borderSide: BorderSide(
                                               color: Color(0xFFA3E1CB)),
@@ -540,14 +562,13 @@ class _RegisterState extends State<Register> {
                                           ),
                                           SizedBox(
                                             width: 40,
-                                            child: FlatButton(
-                                              color: Colors.transparent,
-                                              splashColor: Colors.transparent,
+                                            child: TextButton(
                                               onPressed: () =>
                                                   {_showAddDiseaseModal()},
-                                              child: Icon(Icons.add_circle,
-                                                  color: Color(0xFFA3E1CB)),
-                                              highlightColor: Color(0xFF60B2A3),
+                                              child: Icon(
+                                                Icons.add_circle,
+                                                color: Color(0xFFA3E1CB),
+                                              ),
                                             ),
                                           )
                                         ],
@@ -579,14 +600,13 @@ class _RegisterState extends State<Register> {
                                           ),
                                           SizedBox(
                                             width: 40,
-                                            child: FlatButton(
-                                              color: Colors.transparent,
-                                              splashColor: Colors.transparent,
+                                            child: TextButton(
                                               onPressed: () =>
                                                   {_showAddDrugModal()},
-                                              child: Icon(Icons.add_circle,
-                                                  color: Color(0xFFA3E1CB)),
-                                              highlightColor: Color(0xFF60B2A3),
+                                              child: Icon(
+                                                Icons.add_circle,
+                                                color: Color(0xFFA3E1CB),
+                                              ),
                                             ),
                                           )
                                         ],
@@ -597,31 +617,7 @@ class _RegisterState extends State<Register> {
                                       padding: const EdgeInsets.only(top: 16.0),
                                       child: SizedBox(
                                         width: double.infinity,
-                                        child: FlatButton(
-                                          child: Padding(
-                                            padding: EdgeInsets.only(
-                                                top: 8,
-                                                bottom: 8,
-                                                left: 10,
-                                                right: 10),
-                                            child: Text(
-                                              _isLoading
-                                                  ? 'Aguarde...'
-                                                  : 'Registar',
-                                              style: TextStyle(
-                                                color: Colors.white,
-                                                fontSize: 15.0,
-                                                decoration: TextDecoration.none,
-                                                fontWeight: FontWeight.normal,
-                                              ),
-                                            ),
-                                          ),
-                                          color: Color(0xFFA3E1CB),
-                                          disabledColor: Colors.grey,
-                                          shape: new RoundedRectangleBorder(
-                                              borderRadius:
-                                                  new BorderRadius.circular(
-                                                      20.0)),
+                                        child: TextButton(
                                           onPressed: () {
                                             if (_formKey.currentState
                                                 .validate()) {
@@ -633,6 +629,26 @@ class _RegisterState extends State<Register> {
                                                   _scaffoldKey);
                                             }
                                           },
+                                          child: Text(
+                                            _isLoading
+                                                ? 'Aguarde...'
+                                                : 'Registar',
+                                            style: TextStyle(
+                                              color: Colors.white,
+                                              fontSize: 15.0,
+                                              decoration: TextDecoration.none,
+                                              fontWeight: FontWeight.normal,
+                                            ),
+                                          ),
+                                          style: TextButton.styleFrom(
+                                            backgroundColor: Color(0xFFA3E1CB),
+                                            shape: RoundedRectangleBorder(
+                                              borderRadius:
+                                                  BorderRadius.circular(
+                                                20.0,
+                                              ),
+                                            ),
+                                          ),
                                         ),
                                       ),
                                     ),
@@ -662,7 +678,7 @@ class _RegisterState extends State<Register> {
             builder: (BuildContext context, StateSetter setState) {
               return AlertDialog(
                 title: Text(
-                  "Adicionar Medicação / Suplemento",
+                  "Adicionar Medicamento / Suplemento",
                   textAlign: TextAlign.center,
                   style: TextStyle(
                     color: Color(0xFFA3E1CB),
@@ -672,7 +688,7 @@ class _RegisterState extends State<Register> {
                   child: ListBody(
                     children: <Widget>[
                       Text(
-                        "Esta informação poderá posteriormenmte ser confirmada com o seu médico",
+                        "Esta informação poderá posteriormente ser confirmada com o seu médico",
                         textAlign: TextAlign.center,
                         style: TextStyle(
                           color: Colors.grey,
@@ -696,7 +712,7 @@ class _RegisterState extends State<Register> {
                         },
                         isExpanded: true,
                         items: [
-                          DropMenu('M', 'Medicação'),
+                          DropMenu('M', 'Medicamento'),
                           DropMenu('S', 'Suplemento'),
                         ].map<DropdownMenuItem<String>>((DropMenu item) {
                           return DropdownMenuItem<String>(
@@ -926,7 +942,7 @@ class _RegisterState extends State<Register> {
                   ),
                 ),
                 actions: <Widget>[
-                  FlatButton(
+                  TextButton(
                     child: Text(
                       'Adicionar',
                       style: TextStyle(color: Color(0xFF60B2A3)),
@@ -1003,7 +1019,7 @@ class _RegisterState extends State<Register> {
               child: ListBody(
                 children: <Widget>[
                   Text(
-                    "Esta informação poderá posteriormenmte ser confirmada com o seu médico",
+                    "Esta informação poderá posteriormente ser confirmada com o seu médico",
                     textAlign: TextAlign.center,
                     style: TextStyle(
                       color: Colors.grey,
@@ -1070,7 +1086,7 @@ class _RegisterState extends State<Register> {
               ),
             ),
             actions: <Widget>[
-              FlatButton(
+              TextButton(
                 child: Text(
                   'Adicionar',
                   style: TextStyle(color: Color(0xFF60B2A3)),
@@ -1128,9 +1144,7 @@ class _RegisterState extends State<Register> {
             SizedBox(width: 16),
             SizedBox(
               width: 40,
-              child: FlatButton(
-                color: Colors.transparent,
-                splashColor: Colors.transparent,
+              child: TextButton(
                 onPressed: () => {_removeDisease(i)},
                 child: Icon(Icons.delete, color: Colors.grey),
               ),
@@ -1176,9 +1190,7 @@ class _RegisterState extends State<Register> {
             SizedBox(width: 16),
             SizedBox(
               width: 40,
-              child: FlatButton(
-                color: Colors.transparent,
-                splashColor: Colors.transparent,
+              child: TextButton(
                 onPressed: () => {_removeDrug(i)},
                 child: Icon(Icons.delete, color: Colors.grey),
               ),
@@ -1188,6 +1200,18 @@ class _RegisterState extends State<Register> {
       ));
     }
     return drugsWidgets;
+  }
+
+  void _togglePassword() {
+    setState(() {
+      _obscuredPassword = !_obscuredPassword;
+    });
+  }
+
+  void _toggleConfirmationPassword() {
+    setState(() {
+      _obscuredConfirmationPassword = !_obscuredConfirmationPassword;
+    });
   }
 
   void _selectDate(BuildContext context) async {
@@ -1212,6 +1236,7 @@ class _RegisterState extends State<Register> {
       initialDate: this.selectedDate,
       firstDate: DateTime(1900),
       lastDate: DateTime.now(),
+      locale: Locale('pt', 'PT'),
       initialDatePickerMode: DatePickerMode.year,
       cancelText: 'Cancelar',
       fieldLabelText: 'Data de Nascimento',
@@ -1232,16 +1257,16 @@ class _RegisterState extends State<Register> {
             height: MediaQuery.of(context).copyWith().size.height / 3,
             color: Colors.white,
             child: CupertinoDatePicker(
-                mode: CupertinoDatePickerMode.date,
-                onDateTimeChanged: (picked) {
-                  if (picked != null && picked != selectedDate)
-                    setState(() {
-                      selectedDate = picked;
-                    });
-                },
-                initialDateTime: selectedDate,
-                minimumYear: 1900,
-                maximumDate: DateTime.now(),
+              mode: CupertinoDatePickerMode.date,
+              onDateTimeChanged: (picked) {
+                if (picked != null && picked != selectedDate)
+                  setState(() {
+                    selectedDate = picked;
+                  });
+              },
+              initialDateTime: selectedDate,
+              minimumYear: 1900,
+              maximumDate: DateTime.now(),
             ),
           );
         });
@@ -1252,7 +1277,7 @@ class _RegisterState extends State<Register> {
 
     if (usfId == null) {
       appWidget.showSnackbar(
-          "Selecione uma Unidade de Saúde Familiar", Colors.red, _scaffoldKey);
+          "Selecione uma Instituição", Colors.red, _scaffoldKey);
       return;
     }
 
@@ -1276,7 +1301,7 @@ class _RegisterState extends State<Register> {
               ),
             ),
             actions: <Widget>[
-              FlatButton(
+              TextButton(
                 child: Text('Aceito os Termos e Condições'),
                 onPressed: () {
                   Navigator.of(context).pop();

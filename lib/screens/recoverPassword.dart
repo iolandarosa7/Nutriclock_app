@@ -34,9 +34,13 @@ class _RecoverPasswordState extends State<RecoverPassword> {
                     Card(
                       elevation: 4.0,
                       color: Colors.white,
-                      margin: EdgeInsets.only(left: 20, right: 20),
+                      margin: EdgeInsets.only(
+                        left: 20,
+                        right: 20,
+                      ),
                       shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(15.0)),
+                        borderRadius: BorderRadius.circular(15.0),
+                      ),
                       child: Column(
                         children: <Widget>[
                           Padding(
@@ -65,16 +69,18 @@ class _RecoverPasswordState extends State<RecoverPassword> {
                                       labelStyle: TextStyle(color: Colors.grey),
                                       focusedBorder: UnderlineInputBorder(
                                         borderSide: BorderSide(
-                                            color: Color(0xFFA3E1CB)),
+                                          color: Color(0xFFA3E1CB),
+                                        ),
                                       ),
                                       prefixIcon: Icon(
                                         Icons.email,
                                         color: Color(0xFFA3E1CB),
                                       ),
                                       hintStyle: TextStyle(
-                                          color: Color(0xFF9b9b9b),
-                                          fontSize: 15,
-                                          fontWeight: FontWeight.normal),
+                                        color: Color(0xFF9b9b9b),
+                                        fontSize: 15,
+                                        fontWeight: FontWeight.normal,
+                                      ),
                                     ),
                                     validator: (emailValue) {
                                       if (emailValue.isEmpty) {
@@ -93,38 +99,33 @@ class _RecoverPasswordState extends State<RecoverPassword> {
                                     padding: const EdgeInsets.only(top: 16.0),
                                     child: SizedBox(
                                       width: double.infinity,
-                                      child: FlatButton(
-                                        child: Padding(
-                                          padding: EdgeInsets.only(
-                                              top: 8,
-                                              bottom: 8,
-                                              left: 10,
-                                              right: 10),
-                                          child: Text(
-                                            _isLoading
-                                                ? 'Aguarde...'
-                                                : 'Submeter Email',
-                                            textDirection: TextDirection.ltr,
-                                            style: TextStyle(
-                                              color: Colors.white,
-                                              fontSize: 15.0,
-                                              decoration: TextDecoration.none,
-                                              fontWeight: FontWeight.normal,
-                                            ),
-                                          ),
-                                        ),
-                                        color: Color(0xFFA3E1CB),
-                                        disabledColor: Colors.grey,
-                                        shape: new RoundedRectangleBorder(
-                                            borderRadius:
-                                                new BorderRadius.circular(
-                                                    20.0)),
+                                      child: TextButton(
                                         onPressed: () {
                                           if (_formKey.currentState
                                               .validate()) {
                                             _forgotPassword();
                                           }
                                         },
+                                        child: Text(
+                                          _isLoading
+                                              ? 'Aguarde...'
+                                              : 'Submeter Email',
+                                          textDirection: TextDirection.ltr,
+                                          style: TextStyle(
+                                            color: Colors.white,
+                                            fontSize: 15.0,
+                                            decoration: TextDecoration.none,
+                                            fontWeight: FontWeight.normal,
+                                          ),
+                                        ),
+                                        style: TextButton.styleFrom(
+                                          backgroundColor: Color(0xFFA3E1CB),
+                                          shape: RoundedRectangleBorder(
+                                            borderRadius: BorderRadius.circular(
+                                              20.0,
+                                            ),
+                                          ),
+                                        ),
                                       ),
                                     ),
                                   ),
