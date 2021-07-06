@@ -468,14 +468,14 @@ class _ProfileState extends State<Profile> {
                             width: 100,
                             child: ClipRRect(
                               borderRadius: BorderRadius.circular(50.0),
-                              child: Image.network(
+                              child: _user.avatarUrl != null ? Image.network(
                                 "$IMAGE_BASE_URL/avatars/${_user.avatarUrl}",
                                 fit: BoxFit.cover,
                                 errorBuilder: (BuildContext context,
                                     Object exception, StackTrace stackTrace) {
                                   return _renderImageDefault();
                                 },
-                              ),
+                              ): _renderImageDefault(),
                             ),
                           ),
                         ),
