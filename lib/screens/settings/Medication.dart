@@ -40,8 +40,9 @@ class _MedicationListState extends State<MedicationList> {
           key: _scaffoldKey,
           floatingActionButtonLocation: FloatingActionButtonLocation.endTop,
           floatingActionButton: FloatingActionButton(
+            mini: true,
             onPressed: () {
-              _addNewMedication(-1, "");
+              _addNewMedication(-1, "", "Adicionar");
             },
             child: Icon(Icons.add),
             backgroundColor: Color(0xFF60B2A3),
@@ -69,7 +70,7 @@ class _MedicationListState extends State<MedicationList> {
     );
   }
 
-  Future<void> _addNewMedication(int index, String type) async {
+  Future<void> _addNewMedication(int index, String type, String title) async {
     Drug drug = Drug("", "", "", "", "");
     if (index != -1) {
       _drugType = type;
@@ -98,7 +99,7 @@ class _MedicationListState extends State<MedicationList> {
             builder: (BuildContext context, StateSetter setState) {
               return AlertDialog(
                 title: Text(
-                  "Adicionar Medicamento / Suplemento",
+                  "$title Medicamento / Suplemento",
                   textAlign: TextAlign.center,
                   style: TextStyle(
                     color: Color(0xFFA3E1CB),
@@ -272,11 +273,7 @@ class _MedicationListState extends State<MedicationList> {
                   ),
                 ),
                 actions: <Widget>[
-                  FlatButton(
-                    child: Text(
-                      'Adicionar',
-                      style: TextStyle(color: Color(0xFF60B2A3)),
-                    ),
+                  TextButton(
                     onPressed: () {
                       if (_drugName == null ||
                           _drugName.trim() == "" ||
@@ -315,6 +312,10 @@ class _MedicationListState extends State<MedicationList> {
 
                       Navigator.of(context).pop();
                     },
+                    child: Text(
+                      title,
+                      style: TextStyle(color: Color(0xFF60B2A3)),
+                    ),
                   ),
                 ],
               );
@@ -426,16 +427,17 @@ class _MedicationListState extends State<MedicationList> {
 
     if (isShowMessage)
       appWidget.showSnackbar(
-          "Ocorreu um erro na adição de medicamento / suplemento",
-          Colors.red,
-          _scaffoldKey);
+        "Ocorreu um erro na adição de medicamento / suplemento",
+        Colors.red,
+        _scaffoldKey,
+      );
   }
 
   Widget _renderMedications() {
     return appWidget.getImageContainer(
       "assets/images/bg_medication.png",
       _isLoading,
-      _suplements.length == 0
+      _medications.length == 0
           ? _renderNoData('Não existem medicamentos registados')
           : SingleChildScrollView(
               scrollDirection: Axis.vertical,
@@ -478,29 +480,18 @@ class _MedicationListState extends State<MedicationList> {
   }
 
   Widget _renderNoData(String message) {
-    return Card(
-      elevation: 4.0,
-      color: Colors.white,
-      margin: EdgeInsets.only(left: 20, right: 20),
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(15),
-      ),
-      child: Padding(
-        padding: EdgeInsets.all(20),
-        child: Column(
-          children: [
-            Text(
-              message,
-              style: TextStyle(color: Colors.black),
-            ),
-          ],
-        ),
+    return Padding(
+      padding: EdgeInsets.only(top: 32),
+      child: Text(
+        message,
+        style: TextStyle(color: Colors.black),
+        textAlign: TextAlign.center,
       ),
     );
   }
 
   List<Widget> _renderDrug(List<Drug> drugs, String type) {
-    List<Widget> list = List();
+    List<Widget> list = <Widget>[];
     drugs.asMap().forEach((i, element) {
       list.add(
         SizedBox(
@@ -552,7 +543,7 @@ class _MedicationListState extends State<MedicationList> {
                             ),
                             backgroundColor: Colors.blue,
                             onPressed: () {
-                              this._addNewMedication(i, type);
+                              this._addNewMedication(i, type, "Editar");
                             },
                           ),
                         ),
@@ -612,19 +603,26 @@ class _MedicationListState extends State<MedicationList> {
               ),
             ),
             actions: <Widget>[
-              FlatButton(
+              TextButton(
                 child: Text(
                   'Cancelar',
                   style: TextStyle(color: Colors.white),
                 ),
-                color: Colors.grey,
+                style: TextButton.styleFrom(
+                  backgroundColor: Colors.grey,
+                ),
                 onPressed: () {
                   Navigator.of(context).pop();
                 },
               ),
-              FlatButton(
-                child: Text('Eliminar'),
-                color: Colors.red,
+              TextButton(
+                child: Text(
+                  'Eliminar',
+                  style: TextStyle(color: Colors.white),
+                ),
+                style: TextButton.styleFrom(
+                  backgroundColor: Colors.red,
+                ),
                 onPressed: () {
                   Navigator.of(context).pop();
                   _deleteMedication(index, type);
