@@ -43,7 +43,7 @@ class _DiseasesState extends State<Diseases> {
         backgroundColor: Color(0xFF60B2A3),
         elevation: 50,
       ),
-      appBar: appWidget.getAppbar("Doenças / Alergias Alimentares"),
+      appBar: appWidget.getAppbar("Doenças / Alergias"),
       body: appWidget.getImageContainer(
         "assets/images/bg_disease.png",
         _isLoading,
@@ -68,7 +68,7 @@ class _DiseasesState extends State<Diseases> {
   }
 
   List<Widget> _renderDiseases() {
-    List<Widget> list = List();
+    List<Widget> list = [];
     _userDiseases.asMap().forEach((i, element) {
       list.add(
         SizedBox(
@@ -90,7 +90,7 @@ class _DiseasesState extends State<Diseases> {
                 children: [
                   Positioned(
                     bottom: 0,
-                    left: 0,
+                    left:0,
                     top: 0,
                     child: Center(
                       child: Text(
@@ -300,7 +300,7 @@ class _DiseasesState extends State<Diseases> {
               child: ListBody(
                 children: <Widget>[
                   Text(
-                    "Esta informação poderá posteriormenmte ser confirmada com o seu médico",
+                    "Esta informação poderá posteriormente ser confirmada com o seu médico",
                     textAlign: TextAlign.center,
                     style: TextStyle(
                       color: Colors.grey,
