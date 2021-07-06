@@ -83,11 +83,15 @@ class _ProfileState extends State<Profile> {
                   padding: const EdgeInsets.all(8.0),
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
-                    children: <Widget>[
+                    children: [
                       Card(
                         elevation: 4.0,
                         color: Colors.white,
-                        margin: EdgeInsets.only(left: 20, right: 20, top: 40.0),
+                        margin: EdgeInsets.only(
+                          left: 20,
+                          right: 20,
+                          top: 40.0,
+                        ),
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(15),
                         ),
@@ -99,19 +103,23 @@ class _ProfileState extends State<Profile> {
                                 key: _formKey,
                                 child: Padding(
                                   padding: EdgeInsets.symmetric(
-                                      vertical: 16, horizontal: 24),
+                                    vertical: 16,
+                                    horizontal: 24,
+                                  ),
                                   child: Column(
                                     children: [
                                       TextFormField(
                                         initialValue: _user.name,
-                                        style:
-                                            TextStyle(color: Color(0xFF000000)),
+                                        style: TextStyle(
+                                          color: Color(0xFF000000),
+                                        ),
                                         cursorColor: Color(0xFF9b9b9b),
                                         keyboardType: TextInputType.text,
                                         decoration: InputDecoration(
                                           focusedBorder: UnderlineInputBorder(
                                             borderSide: BorderSide(
-                                                color: Color(0xFFA3E1CB)),
+                                              color: Color(0xFFA3E1CB),
+                                            ),
                                           ),
                                           prefixIcon: Icon(
                                             Icons.person,
@@ -121,9 +129,10 @@ class _ProfileState extends State<Profile> {
                                           labelStyle:
                                               TextStyle(color: Colors.grey),
                                           hintStyle: TextStyle(
-                                              color: Color(0xFF9b9b9b),
-                                              fontSize: 15,
-                                              fontWeight: FontWeight.normal),
+                                            color: Color(0xFF9b9b9b),
+                                            fontSize: 15,
+                                            fontWeight: FontWeight.normal,
+                                          ),
                                         ),
                                         validator: (nameValue) {
                                           if (nameValue.isEmpty) {
@@ -146,14 +155,16 @@ class _ProfileState extends State<Profile> {
                                               child: Text(
                                                 "Unidade Saúde Familiar",
                                                 style: TextStyle(
-                                                    color: Color(0xFF9b9b9b),
-                                                    fontSize: 15,
-                                                    fontWeight:
-                                                        FontWeight.normal),
+                                                  color: Color(0xFF9b9b9b),
+                                                  fontSize: 15,
+                                                  fontWeight: FontWeight.normal,
+                                                ),
                                               ),
                                             ),
-                                            icon: Icon(Icons.arrow_drop_down,
-                                                color: Color(0xFFA3E1CB)),
+                                            icon: Icon(
+                                              Icons.arrow_drop_down,
+                                              color: Color(0xFFA3E1CB),
+                                            ),
                                             onChanged: (newValue) {
                                               setState(() {
                                                 _user.ufc_id = newValue;
@@ -193,14 +204,16 @@ class _ProfileState extends State<Profile> {
                                               child: Text(
                                                 "Género",
                                                 style: TextStyle(
-                                                    color: Color(0xFF9b9b9b),
-                                                    fontSize: 15,
-                                                    fontWeight:
-                                                        FontWeight.normal),
+                                                  color: Color(0xFF9b9b9b),
+                                                  fontSize: 15,
+                                                  fontWeight: FontWeight.normal,
+                                                ),
                                               ),
                                             ),
-                                            icon: Icon(Icons.arrow_drop_down,
-                                                color: Color(0xFFA3E1CB)),
+                                            icon: Icon(
+                                              Icons.arrow_drop_down,
+                                              color: Color(0xFFA3E1CB),
+                                            ),
                                             onChanged: (newValue) {
                                               setState(() {
                                                 _user.gender = newValue;
@@ -258,22 +271,21 @@ class _ProfileState extends State<Profile> {
                                               ],
                                             ),
                                           ),
-                                          FlatButton(
-                                            color: Colors.transparent,
-                                            splashColor: Colors.black26,
-                                            onPressed: () =>
-                                                _selectDate(context),
+                                          TextButton(
                                             child: Padding(
-                                                padding:
-                                                    EdgeInsets.only(left: 35.0),
-                                                child: Text(
-                                                  dateFormat
-                                                      .format(selectedDate),
-                                                  style: TextStyle(
-                                                    color: Color(0xFF000000),
-                                                    fontSize: 15,
-                                                  ),
-                                                )),
+                                              padding:
+                                                  EdgeInsets.only(left: 35.0),
+                                              child: Text(
+                                                dateFormat.format(selectedDate),
+                                                style: TextStyle(
+                                                  color: Color(0xFF000000),
+                                                  fontSize: 15,
+                                                ),
+                                              ),
+                                            ),
+                                            onPressed: () {
+                                              _selectDate(context);
+                                            },
                                           ),
                                         ],
                                       ),
@@ -399,32 +411,28 @@ class _ProfileState extends State<Profile> {
                                             const EdgeInsets.only(top: 16.0),
                                         child: SizedBox(
                                           width: double.infinity,
-                                          child: FlatButton(
-                                            child: Padding(
-                                              padding: EdgeInsets.only(
-                                                  top: 8,
-                                                  bottom: 8,
-                                                  left: 10,
-                                                  right: 10),
-                                              child: Text(
-                                                _isLoading
-                                                    ? 'Aguarde...'
-                                                    : 'Guardar Perfil',
-                                                style: TextStyle(
-                                                  color: Colors.white,
-                                                  fontSize: 15.0,
-                                                  decoration:
-                                                      TextDecoration.none,
-                                                  fontWeight: FontWeight.normal,
+                                          child: TextButton(
+                                            child: Text(
+                                              _isLoading
+                                                  ? 'Aguarde...'
+                                                  : 'Guardar Perfil',
+                                              style: TextStyle(
+                                                color: Colors.white,
+                                                fontSize: 15.0,
+                                                decoration: TextDecoration.none,
+                                                fontWeight: FontWeight.normal,
+                                              ),
+                                            ),
+                                            style: TextButton.styleFrom(
+                                              backgroundColor:
+                                                  Color(0xFFA3E1CB),
+                                              shape: new RoundedRectangleBorder(
+                                                borderRadius:
+                                                    new BorderRadius.circular(
+                                                  20.0,
                                                 ),
                                               ),
                                             ),
-                                            color: Color(0xFFA3E1CB),
-                                            disabledColor: Colors.grey,
-                                            shape: new RoundedRectangleBorder(
-                                                borderRadius:
-                                                    new BorderRadius.circular(
-                                                        20.0)),
                                             onPressed: () {
                                               if (_formKey.currentState
                                                   .validate()) {
@@ -451,27 +459,27 @@ class _ProfileState extends State<Profile> {
                 right: 24,
                 child: _user != null
                     ? Center(
-                  child: GestureDetector(
-                    onTap: () {
-                      _showPicker(context);
-                    },
-                    child: SizedBox(
-                      height: 100,
-                      width: 100,
-                      child: ClipRRect(
-                        borderRadius: BorderRadius.circular(50.0),
-                        child: Image.network(
-                          "$IMAGE_BASE_URL/avatars/${_user.avatarUrl}",
-                          fit: BoxFit.cover,
-                          errorBuilder: (BuildContext context,
-                              Object exception, StackTrace stackTrace) {
-                            return _renderImageDefault();
+                        child: GestureDetector(
+                          onTap: () {
+                            _showPicker(context);
                           },
+                          child: SizedBox(
+                            height: 100,
+                            width: 100,
+                            child: ClipRRect(
+                              borderRadius: BorderRadius.circular(50.0),
+                              child: Image.network(
+                                "$IMAGE_BASE_URL/avatars/${_user.avatarUrl}",
+                                fit: BoxFit.cover,
+                                errorBuilder: (BuildContext context,
+                                    Object exception, StackTrace stackTrace) {
+                                  return _renderImageDefault();
+                                },
+                              ),
+                            ),
+                          ),
                         ),
-                      ),
-                    ),
-                  ),
-                )
+                      )
                     : SizedBox(),
               ),
             ],
@@ -484,14 +492,18 @@ class _ProfileState extends State<Profile> {
   void openMedicationList(BuildContext context) {
     Navigator.push(
       context,
-      MaterialPageRoute(builder: (context) => MedicationList()),
+      MaterialPageRoute(
+        builder: (context) => MedicationList(),
+      ),
     );
   }
 
   void openDiseasesList(BuildContext context) {
     Navigator.push(
       context,
-      MaterialPageRoute(builder: (context) => Diseases()),
+      MaterialPageRoute(
+        builder: (context) => Diseases(),
+      ),
     );
   }
 
@@ -718,7 +730,7 @@ class _ProfileState extends State<Profile> {
               },
               initialDateTime: selectedDate,
               minimumYear: 1900,
-              maximumDate: DateTime.now()
+              maximumDate: DateTime.now(),
             ),
           );
         });
