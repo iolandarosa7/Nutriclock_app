@@ -36,6 +36,7 @@ class _DiseasesState extends State<Diseases> {
       key: _scaffoldKey,
       floatingActionButtonLocation: FloatingActionButtonLocation.endTop,
       floatingActionButton: FloatingActionButton(
+        mini: true,
         onPressed: () {
           _addNewDisease();
         },
@@ -90,7 +91,7 @@ class _DiseasesState extends State<Diseases> {
                 children: [
                   Positioned(
                     bottom: 0,
-                    left:0,
+                    left: 0,
                     top: 0,
                     child: Center(
                       child: Text(
@@ -194,7 +195,7 @@ class _DiseasesState extends State<Diseases> {
               ),
             ),
             actions: <Widget>[
-              FlatButton(
+              TextButton(
                 child: Text(
                   'Guardar',
                   style: TextStyle(color: Color(0xFF60B2A3)),
@@ -239,19 +240,26 @@ class _DiseasesState extends State<Diseases> {
               ),
             ),
             actions: <Widget>[
-              FlatButton(
+              TextButton(
                 child: Text(
                   'Cancelar',
                   style: TextStyle(color: Colors.white),
                 ),
-                color: Colors.grey,
+                style: TextButton.styleFrom(
+                  backgroundColor: Colors.grey,
+                ),
                 onPressed: () {
                   Navigator.of(context).pop();
                 },
               ),
-              FlatButton(
-                child: Text('Eliminar'),
-                color: Colors.red,
+              TextButton(
+                child: Text(
+                  'Eliminar',
+                  style: TextStyle(color: Colors.white),
+                ),
+                style: TextButton.styleFrom(
+                  backgroundColor: Colors.red,
+                ),
                 onPressed: () {
                   Navigator.of(context).pop();
                   _deleteDisease(index);
@@ -263,23 +271,12 @@ class _DiseasesState extends State<Diseases> {
   }
 
   Widget _renderNoDiseases() {
-    return Card(
-      elevation: 4.0,
-      color: Colors.white,
-      margin: EdgeInsets.only(left: 20, right: 20),
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(15),
-      ),
-      child: Padding(
-        padding: EdgeInsets.all(20),
-        child: Column(
-          children: [
-            Text(
-              "Não existem doenças / alergias alimentares registadas.",
-              style: TextStyle(color: Colors.black),
-            ),
-          ],
-        ),
+    return Padding(
+      padding: EdgeInsets.all(32),
+      child: Text(
+        "Não existem doenças / alergias alimentares registadas.",
+        style: TextStyle(color: Colors.black),
+        textAlign: TextAlign.center,
       ),
     );
   }
@@ -367,7 +364,7 @@ class _DiseasesState extends State<Diseases> {
               ),
             ),
             actions: <Widget>[
-              FlatButton(
+              TextButton(
                 child: Text(
                   'Adicionar',
                   style: TextStyle(color: Color(0xFF60B2A3)),

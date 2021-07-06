@@ -481,7 +481,7 @@ class _MedicationListState extends State<MedicationList> {
 
   Widget _renderNoData(String message) {
     return Padding(
-      padding: EdgeInsets.only(top: 32),
+      padding: EdgeInsets.all(32),
       child: Text(
         message,
         style: TextStyle(color: Colors.black),
