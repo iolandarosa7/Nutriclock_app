@@ -18,16 +18,16 @@ class _EvaluationFragmentState extends State<EvaluationFragment> {
   var appWidget = AppWidget();
   var _isInfoShow = false;
   var _isLoading = false;
-  var _question1 = 5;
-  var _question2 = 5;
-  var _question3 = 5;
-  var _question4 = 5;
-  var _question5 = 5;
-  var _question6 = 5;
-  var _question7 = 5;
-  var _question8 = 5;
-  var _question9 = 5;
-  var _question10 = 5;
+  var _question1 = 0;
+  var _question2 = 0;
+  var _question3 = 0;
+  var _question4 = 0;
+  var _question5 = 0;
+  var _question6 = 0;
+  var _question7 = 0;
+  var _question8 = 0;
+  var _question9 = 0;
+  var _question10 = 0;
   final _scaffoldKey = GlobalKey<ScaffoldState>();
 
   @override
@@ -81,7 +81,7 @@ class _EvaluationFragmentState extends State<EvaluationFragment> {
                 ),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
-                  children: [1, 2, 3, 4, 5]
+                  children: [0, 1, 2, 3, 4, 5]
                       .map((item) => GestureDetector(
                             child: Padding(
                               padding: EdgeInsets.only(
@@ -90,7 +90,7 @@ class _EvaluationFragmentState extends State<EvaluationFragment> {
                                 _question1 == item
                                     ? 'assets/images/likert${item}_selected.png'
                                     : 'assets/images/likert$item.png',
-                                width: 40,
+                                width: 30,
                               ),
                             ),
                             onTap: () {
@@ -111,7 +111,7 @@ class _EvaluationFragmentState extends State<EvaluationFragment> {
                 ),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
-                  children: [1, 2, 3, 4, 5]
+                  children: [0, 1, 2, 3, 4, 5]
                       .map((item) => GestureDetector(
                             child: Padding(
                               padding: EdgeInsets.only(
@@ -120,7 +120,7 @@ class _EvaluationFragmentState extends State<EvaluationFragment> {
                                 _question2 == item
                                     ? 'assets/images/likert${item}_selected.png'
                                     : 'assets/images/likert$item.png',
-                                width: 40,
+                                width: 30,
                               ),
                             ),
                             onTap: () {
@@ -141,7 +141,7 @@ class _EvaluationFragmentState extends State<EvaluationFragment> {
                 ),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
-                  children: [1, 2, 3, 4, 5]
+                  children: [0, 1, 2, 3, 4, 5]
                       .map((item) => GestureDetector(
                             child: Padding(
                               padding: EdgeInsets.only(
@@ -150,7 +150,7 @@ class _EvaluationFragmentState extends State<EvaluationFragment> {
                                 _question3 == item
                                     ? 'assets/images/likert${item}_selected.png'
                                     : 'assets/images/likert$item.png',
-                                width: 40,
+                                width: 30,
                               ),
                             ),
                             onTap: () {
@@ -171,7 +171,7 @@ class _EvaluationFragmentState extends State<EvaluationFragment> {
                 ),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
-                  children: [1, 2, 3, 4, 5]
+                  children: [0, 1, 2, 3, 4, 5]
                       .map((item) => GestureDetector(
                             child: Padding(
                               padding: EdgeInsets.only(
@@ -180,7 +180,7 @@ class _EvaluationFragmentState extends State<EvaluationFragment> {
                                 _question4 == item
                                     ? 'assets/images/likert${item}_selected.png'
                                     : 'assets/images/likert$item.png',
-                                width: 40,
+                                width: 30,
                               ),
                             ),
                             onTap: () {
@@ -201,7 +201,7 @@ class _EvaluationFragmentState extends State<EvaluationFragment> {
                 ),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
-                  children: [1, 2, 3, 4, 5]
+                  children: [0, 1, 2, 3, 4, 5]
                       .map((item) => GestureDetector(
                             child: Padding(
                               padding: EdgeInsets.only(
@@ -210,7 +210,7 @@ class _EvaluationFragmentState extends State<EvaluationFragment> {
                                 _question5 == item
                                     ? 'assets/images/likert${item}_selected.png'
                                     : 'assets/images/likert$item.png',
-                                width: 40,
+                                width: 30,
                               ),
                             ),
                             onTap: () {
@@ -232,7 +232,7 @@ class _EvaluationFragmentState extends State<EvaluationFragment> {
                 ),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
-                  children: [1, 2, 3, 4, 5]
+                  children: [0, 1, 2, 3, 4, 5]
                       .map((item) => GestureDetector(
                             child: Padding(
                               padding: EdgeInsets.only(
@@ -241,7 +241,7 @@ class _EvaluationFragmentState extends State<EvaluationFragment> {
                                 _question6 == item
                                     ? 'assets/images/likert${item}_selected.png'
                                     : 'assets/images/likert$item.png',
-                                width: 40,
+                                width: 30,
                               ),
                             ),
                             onTap: () {
@@ -262,7 +262,7 @@ class _EvaluationFragmentState extends State<EvaluationFragment> {
                 ),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
-                  children: [1, 2, 3, 4, 5]
+                  children: [0, 1, 2, 3, 4, 5]
                       .map((item) => GestureDetector(
                             child: Padding(
                               padding: EdgeInsets.only(
@@ -271,7 +271,7 @@ class _EvaluationFragmentState extends State<EvaluationFragment> {
                                 _question7 == item
                                     ? 'assets/images/likert${item}_selected.png'
                                     : 'assets/images/likert$item.png',
-                                width: 40,
+                                width: 30,
                               ),
                             ),
                             onTap: () {
@@ -292,7 +292,7 @@ class _EvaluationFragmentState extends State<EvaluationFragment> {
                 ),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
-                  children: [1, 2, 3, 4, 5]
+                  children: [0, 1, 2, 3, 4, 5]
                       .map((item) => GestureDetector(
                             child: Padding(
                               padding: EdgeInsets.only(
@@ -301,7 +301,7 @@ class _EvaluationFragmentState extends State<EvaluationFragment> {
                                 _question8 == item
                                     ? 'assets/images/likert${item}_selected.png'
                                     : 'assets/images/likert$item.png',
-                                width: 40,
+                                width: 30,
                               ),
                             ),
                             onTap: () {
@@ -322,7 +322,7 @@ class _EvaluationFragmentState extends State<EvaluationFragment> {
                 ),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
-                  children: [1, 2, 3, 4, 5]
+                  children: [0, 1, 2, 3, 4, 5]
                       .map((item) => GestureDetector(
                             child: Padding(
                               padding: EdgeInsets.only(
@@ -331,7 +331,7 @@ class _EvaluationFragmentState extends State<EvaluationFragment> {
                                 _question9 == item
                                     ? 'assets/images/likert${item}_selected.png'
                                     : 'assets/images/likert$item.png',
-                                width: 40,
+                                width: 30,
                               ),
                             ),
                             onTap: () {
@@ -352,7 +352,7 @@ class _EvaluationFragmentState extends State<EvaluationFragment> {
                 ),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
-                  children: [1, 2, 3, 4, 5]
+                  children: [0, 1, 2, 3, 4, 5]
                       .map((item) => GestureDetector(
                             child: Padding(
                               padding: EdgeInsets.only(
@@ -361,7 +361,7 @@ class _EvaluationFragmentState extends State<EvaluationFragment> {
                                 _question10 == item
                                     ? 'assets/images/likert${item}_selected.png'
                                     : 'assets/images/likert$item.png',
-                                width: 40,
+                                width: 30,
                               ),
                             ),
                             onTap: () {

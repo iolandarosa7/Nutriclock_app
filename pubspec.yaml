@@ -86,11 +86,13 @@ flutter:
     - assets/images/bg_sport.png
     - assets/images/bg_green_gradient.png
     - assets/images/bg_green.png
+    - assets/images/likert0.png
     - assets/images/likert1.png
     - assets/images/likert2.png
     - assets/images/likert3.png
     - assets/images/likert4.png
     - assets/images/likert5.png
+    - assets/images/likert0_selected.png
     - assets/images/likert1_selected.png
     - assets/images/likert2_selected.png
     - assets/images/likert3_selected.png
