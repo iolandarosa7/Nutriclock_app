@@ -1,4 +1,3 @@
-import 'dart:convert';
 import 'dart:io' show Platform;
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:nutriclock_app/constants/constants.dart';
@@ -21,7 +20,8 @@ class NotificationsService {
         sound: true,
       );
 
-      if (settings.authorizationStatus != AuthorizationStatus.authorized) return;
+      if (settings.authorizationStatus != AuthorizationStatus.authorized)
+        return;
     }
 
     String token = await _fcm.getToken();

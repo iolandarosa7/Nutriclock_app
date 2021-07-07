@@ -468,14 +468,17 @@ class _ProfileState extends State<Profile> {
                             width: 100,
                             child: ClipRRect(
                               borderRadius: BorderRadius.circular(50.0),
-                              child: _user.avatarUrl != null ? Image.network(
-                                "$IMAGE_BASE_URL/avatars/${_user.avatarUrl}",
-                                fit: BoxFit.cover,
-                                errorBuilder: (BuildContext context,
-                                    Object exception, StackTrace stackTrace) {
-                                  return _renderImageDefault();
-                                },
-                              ): _renderImageDefault(),
+                              child: _user.avatarUrl != null
+                                  ? Image.network(
+                                      "$IMAGE_BASE_URL/avatars/${_user.avatarUrl}",
+                                      fit: BoxFit.cover,
+                                      errorBuilder: (BuildContext context,
+                                          Object exception,
+                                          StackTrace stackTrace) {
+                                        return _renderImageDefault();
+                                      },
+                                    )
+                                  : _renderImageDefault(),
                             ),
                           ),
                         ),
@@ -703,6 +706,7 @@ class _ProfileState extends State<Profile> {
       lastDate: DateTime.now(),
       initialDatePickerMode: DatePickerMode.year,
       cancelText: 'Cancelar',
+      locale: Locale('pt', 'PT'),
       fieldLabelText: 'Data de Nascimento',
     );
 

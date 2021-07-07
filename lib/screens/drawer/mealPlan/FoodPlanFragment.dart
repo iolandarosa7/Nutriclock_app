@@ -818,8 +818,11 @@ class _FoodPlanFragmentState extends State<FoodPlanFragment> {
 
   void buildMaterialDatePicker(
       BuildContext context, StateSetter setModalState) async {
-    final pickedTime =
-        await showTimePicker(context: context, initialTime: _time);
+    final pickedTime = await showTimePicker(
+        context: context,
+        initialTime: _time,
+        helpText: "Seleciona a hora:",
+        cancelText: "Cancelar");
 
     if (pickedTime != null && pickedTime != _time) {
       setModalState(() {

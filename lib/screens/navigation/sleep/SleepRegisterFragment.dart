@@ -543,8 +543,11 @@ class _SleepRegisterFragmentState extends State<SleepRegisterFragment> {
 
   void buildMaterialDatePicker(BuildContext context, bool isWakeUp) async {
     var time = isWakeUp ? _wakeUpTime : _endUpTime;
-    final pickedTime =
-        await showTimePicker(context: context, initialTime: time);
+    final pickedTime = await showTimePicker(
+        context: context,
+        initialTime: time,
+        helpText: "Seleciona a hora:",
+        cancelText: "Cancelar");
 
     if (pickedTime != null && pickedTime != time) {
       if (isWakeUp) {

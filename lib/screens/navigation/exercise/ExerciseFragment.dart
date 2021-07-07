@@ -520,8 +520,11 @@ class _ExerciseFragmentState extends State<ExerciseFragment> {
 
   void buildMaterialDatePicker(BuildContext context, bool isWakeUp) async {
     var time = isWakeUp ? _startTime : _endTime;
-    final pickedTime =
-        await showTimePicker(context: context, initialTime: time);
+    final pickedTime = await showTimePicker(
+        context: context,
+        initialTime: time,
+        helpText: "Seleciona a hora:",
+        cancelText: "Cancelar");
 
     if (pickedTime != null && pickedTime != time) {
       if (isWakeUp) {
