@@ -119,7 +119,7 @@ class _ChatFragmentState extends State<ChatFragment> {
                 ),
               );
             }),
-       Color(0xFF45C393),
+        Color(0xFF45C393),
       ),
     );
   }

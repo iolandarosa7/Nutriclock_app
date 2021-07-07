@@ -319,7 +319,7 @@ class _MessageHistoryFragmentState extends State<MessageHistoryFragment> {
   }
 
   List<Widget> data() {
-    List<Widget> list = List();
+    List<Widget> list = <Widget>[];
     _messages.forEach((element) {
       list.add(
         Padding(
@@ -366,7 +366,9 @@ class _MessageHistoryFragmentState extends State<MessageHistoryFragment> {
             margin: BubbleEdges.only(top: 4, left: 50),
             alignment: Alignment.topRight,
           ),
-          child: Text(message.message,),
+          child: Text(
+            message.message,
+          ),
         ),
       ],
     );
