@@ -57,7 +57,7 @@ class _ExerciseFragmentState extends State<ExerciseFragment> {
         List<dynamic> data = json.decode(responseExercises.body)[JSON_DATA_KEY];
         data.forEach((element) {
           StaticExerciseHousehold value =
-          StaticExerciseHousehold.fromJson(element);
+              StaticExerciseHousehold.fromJson(element);
           staticExercises.add(value);
         });
 
@@ -71,10 +71,10 @@ class _ExerciseFragmentState extends State<ExerciseFragment> {
       var responseHouseholds = await Network().getWithAuth(HOUSEHOLDS_URL);
       if (responseHouseholds.statusCode == RESPONSE_SUCCESS) {
         List<dynamic> data =
-        json.decode(responseHouseholds.body)[JSON_DATA_KEY];
+            json.decode(responseHouseholds.body)[JSON_DATA_KEY];
         data.forEach((element) {
           StaticExerciseHousehold value =
-          StaticExerciseHousehold.fromJson(element);
+              StaticExerciseHousehold.fromJson(element);
           staticHouseholds.add(value);
         });
 
@@ -107,10 +107,7 @@ class _ExerciseFragmentState extends State<ExerciseFragment> {
                 padding: EdgeInsets.all(16),
                 child: Image.asset(
                   'assets/images/sport_man.png',
-                  height: MediaQuery
-                      .of(context)
-                      .size
-                      .height / 4,
+                  height: MediaQuery.of(context).size.height / 4,
                 ),
               ),
             ),
@@ -179,15 +176,15 @@ class _ExerciseFragmentState extends State<ExerciseFragment> {
                                   items: _activitiesList
                                       .map<DropdownMenuItem<String>>(
                                           (DropMenu item) {
-                                        return DropdownMenuItem<String>(
-                                          value: item.value,
-                                          child: Padding(
-                                            padding:
+                                    return DropdownMenuItem<String>(
+                                      value: item.value,
+                                      child: Padding(
+                                        padding:
                                             const EdgeInsets.only(left: 50),
-                                            child: Text(item.description),
-                                          ),
-                                        );
-                                      }).toList(),
+                                        child: Text(item.description),
+                                      ),
+                                    );
+                                  }).toList(),
                                 ),
                                 Container(
                                     padding: const EdgeInsets.only(
@@ -200,119 +197,119 @@ class _ExerciseFragmentState extends State<ExerciseFragment> {
                             ),
                             _type == 'E'
                                 ? TypeAheadFormField(
-                              textFieldConfiguration:
-                              TextFieldConfiguration(
-                                controller: _typeAheadController,
-                                decoration: InputDecoration(
-                                  focusedBorder: UnderlineInputBorder(
-                                    borderSide: BorderSide(
-                                        color: Color(0xFFA3E1CB)),
-                                  ),
-                                  prefixIcon: Icon(
-                                    Icons.search_rounded,
-                                    color: Color(0xFFA3E1CB),
-                                  ),
-                                  hintText: "Pesquisar...",
-                                  labelText: 'Nome',
-                                  labelStyle:
-                                  TextStyle(color: Colors.grey),
-                                  hintStyle: TextStyle(
-                                      color: Color(0xFF9b9b9b),
-                                      fontSize: 15,
-                                      fontWeight: FontWeight.normal),
-                                ),
-                              ),
-                              itemBuilder: (context, suggestion) {
-                                return ListTile(
-                                  title: Text(suggestion),
-                                );
-                              },
-                              transitionBuilder:
-                                  (context, suggestionsBox, controller) {
-                                return suggestionsBox;
-                              },
-                              onSuggestionSelected: (suggestion) {
-                                this._typeAheadController.text =
-                                    suggestion;
-                              },
-                              suggestionsCallback: (pattern) {
-                                var list = [];
-                                var size = 0;
-                                _exercises.forEach((element) {
-                                  if (size <= 20 &&
-                                      element.name
-                                          .toString()
-                                          .toLowerCase()
-                                          .startsWith(pattern)) {
-                                    list.add(element.name);
-                                    size++;
-                                  }
-                                });
-                                return list;
-                              },
-                              validator: (value) {
-                                _name = value;
-                                return null;
-                              },
-                            )
+                                    textFieldConfiguration:
+                                        TextFieldConfiguration(
+                                      controller: _typeAheadController,
+                                      decoration: InputDecoration(
+                                        focusedBorder: UnderlineInputBorder(
+                                          borderSide: BorderSide(
+                                              color: Color(0xFFA3E1CB)),
+                                        ),
+                                        prefixIcon: Icon(
+                                          Icons.search_rounded,
+                                          color: Color(0xFFA3E1CB),
+                                        ),
+                                        hintText: "Pesquisar...",
+                                        labelText: 'Nome',
+                                        labelStyle:
+                                            TextStyle(color: Colors.grey),
+                                        hintStyle: TextStyle(
+                                            color: Color(0xFF9b9b9b),
+                                            fontSize: 15,
+                                            fontWeight: FontWeight.normal),
+                                      ),
+                                    ),
+                                    itemBuilder: (context, suggestion) {
+                                      return ListTile(
+                                        title: Text(suggestion),
+                                      );
+                                    },
+                                    transitionBuilder:
+                                        (context, suggestionsBox, controller) {
+                                      return suggestionsBox;
+                                    },
+                                    onSuggestionSelected: (suggestion) {
+                                      this._typeAheadController.text =
+                                          suggestion;
+                                    },
+                                    suggestionsCallback: (pattern) {
+                                      var list = [];
+                                      var size = 0;
+                                      _exercises.forEach((element) {
+                                        if (size <= 20 &&
+                                            element.name
+                                                .toString()
+                                                .toLowerCase()
+                                                .startsWith(pattern)) {
+                                          list.add(element.name);
+                                          size++;
+                                        }
+                                      });
+                                      return list;
+                                    },
+                                    validator: (value) {
+                                      _name = value;
+                                      return null;
+                                    },
+                                  )
                                 : SizedBox(),
                             _type == 'H'
                                 ? TypeAheadFormField(
-                              textFieldConfiguration:
-                              TextFieldConfiguration(
-                                controller: _typeAheadController,
-                                decoration: InputDecoration(
-                                  focusedBorder: UnderlineInputBorder(
-                                    borderSide: BorderSide(
-                                        color: Color(0xFFA3E1CB)),
-                                  ),
-                                  prefixIcon: Icon(
-                                    Icons.search_rounded,
-                                    color: Color(0xFFA3E1CB),
-                                  ),
-                                  hintText: "Pesquisar...",
-                                  labelText: 'Nome',
-                                  labelStyle:
-                                  TextStyle(color: Colors.grey),
-                                  hintStyle: TextStyle(
-                                      color: Color(0xFF9b9b9b),
-                                      fontSize: 15,
-                                      fontWeight: FontWeight.normal),
-                                ),
-                              ),
-                              itemBuilder: (context, suggestion) {
-                                return ListTile(
-                                  title: Text(suggestion),
-                                );
-                              },
-                              transitionBuilder:
-                                  (context, suggestionsBox, controller) {
-                                return suggestionsBox;
-                              },
-                              onSuggestionSelected: (suggestion) {
-                                this._typeAheadController.text =
-                                    suggestion;
-                              },
-                              suggestionsCallback: (pattern) {
-                                var list = [];
-                                var size = 0;
-                                _households.forEach((element) {
-                                  if (size <= 20 &&
-                                      element.name
-                                          .toString()
-                                          .toLowerCase()
-                                          .contains(pattern)) {
-                                    list.add(element.name);
-                                    size++;
-                                  }
-                                });
-                                return list;
-                              },
-                              validator: (value) {
-                                _name = value;
-                                return null;
-                              },
-                            )
+                                    textFieldConfiguration:
+                                        TextFieldConfiguration(
+                                      controller: _typeAheadController,
+                                      decoration: InputDecoration(
+                                        focusedBorder: UnderlineInputBorder(
+                                          borderSide: BorderSide(
+                                              color: Color(0xFFA3E1CB)),
+                                        ),
+                                        prefixIcon: Icon(
+                                          Icons.search_rounded,
+                                          color: Color(0xFFA3E1CB),
+                                        ),
+                                        hintText: "Pesquisar...",
+                                        labelText: 'Nome',
+                                        labelStyle:
+                                            TextStyle(color: Colors.grey),
+                                        hintStyle: TextStyle(
+                                            color: Color(0xFF9b9b9b),
+                                            fontSize: 15,
+                                            fontWeight: FontWeight.normal),
+                                      ),
+                                    ),
+                                    itemBuilder: (context, suggestion) {
+                                      return ListTile(
+                                        title: Text(suggestion),
+                                      );
+                                    },
+                                    transitionBuilder:
+                                        (context, suggestionsBox, controller) {
+                                      return suggestionsBox;
+                                    },
+                                    onSuggestionSelected: (suggestion) {
+                                      this._typeAheadController.text =
+                                          suggestion;
+                                    },
+                                    suggestionsCallback: (pattern) {
+                                      var list = [];
+                                      var size = 0;
+                                      _households.forEach((element) {
+                                        if (size <= 20 &&
+                                            element.name
+                                                .toString()
+                                                .toLowerCase()
+                                                .contains(pattern)) {
+                                          list.add(element.name);
+                                          size++;
+                                        }
+                                      });
+                                      return list;
+                                    },
+                                    validator: (value) {
+                                      _name = value;
+                                      return null;
+                                    },
+                                  )
                                 : SizedBox(),
                             SizedBox(
                               height: 20,
@@ -351,17 +348,12 @@ class _ExerciseFragmentState extends State<ExerciseFragment> {
                                 ),
                                 Expanded(
                                   flex: 4,
-                                  child: FlatButton(
-                                    color: Colors.transparent,
-                                    splashColor: Colors.black26,
+                                  child: TextButton(
                                     onPressed: () => _selectDate(context, true),
                                     child: Align(
                                       alignment: Alignment.bottomRight,
                                       child: Text(
-                                        "${_startTime.hour}:${_startTime
-                                            .minute > 9
-                                            ? _startTime.minute
-                                            : "0${_startTime.minute}"}",
+                                        "${_startTime.hour}:${_startTime.minute > 9 ? _startTime.minute : "0${_startTime.minute}"}",
                                         style: TextStyle(
                                           color: Color(0xFF000000),
                                           fontSize: 15,
@@ -388,17 +380,13 @@ class _ExerciseFragmentState extends State<ExerciseFragment> {
                                 ),
                                 Expanded(
                                   flex: 4,
-                                  child: FlatButton(
-                                    color: Colors.transparent,
-                                    splashColor: Colors.black26,
+                                  child: TextButton(
                                     onPressed: () =>
                                         _selectDate(context, false),
                                     child: Align(
                                       alignment: Alignment.bottomRight,
                                       child: Text(
-                                        "${_endTime.hour}:${_endTime.minute > 9
-                                            ? _endTime.minute
-                                            : "0${_endTime.minute}"}",
+                                        "${_endTime.hour}:${_endTime.minute > 9 ? _endTime.minute : "0${_endTime.minute}"}",
                                         style: TextStyle(
                                           color: Color(0xFF000000),
                                           fontSize: 15,
@@ -414,25 +402,23 @@ class _ExerciseFragmentState extends State<ExerciseFragment> {
                             ),
                             SizedBox(
                               width: double.infinity,
-                              child: FlatButton(
-                                child: Padding(
-                                  padding: EdgeInsets.only(
-                                      top: 8, bottom: 8, left: 10, right: 10),
-                                  child: Text(
-                                    _isLoading ? 'Aguarde...' : 'Guardar',
-                                    style: TextStyle(
-                                      color: Colors.white,
-                                      fontSize: 15.0,
-                                      decoration: TextDecoration.none,
-                                      fontWeight: FontWeight.normal,
-                                    ),
+                              child: TextButton(
+                                child: Text(
+                                  _isLoading ? 'Aguarde...' : 'Guardar',
+                                  style: TextStyle(
+                                    color: Colors.white,
+                                    fontSize: 15.0,
+                                    decoration: TextDecoration.none,
+                                    fontWeight: FontWeight.normal,
                                   ),
                                 ),
-                                color: Color(0xFFA3E1CB),
-                                disabledColor: Colors.grey,
-                                shape: new RoundedRectangleBorder(
+                                style: TextButton.styleFrom(
+                                  backgroundColor: Color(0xFFA3E1CB),
+                                  shape: new RoundedRectangleBorder(
                                     borderRadius:
-                                    new BorderRadius.circular(20.0)),
+                                        new BorderRadius.circular(20.0),
+                                  ),
+                                ),
                                 onPressed: () {
                                   if (!_formKey.currentState.validate() ||
                                       _name == null ||
@@ -535,7 +521,7 @@ class _ExerciseFragmentState extends State<ExerciseFragment> {
   void buildMaterialDatePicker(BuildContext context, bool isWakeUp) async {
     var time = isWakeUp ? _startTime : _endTime;
     final pickedTime =
-    await showTimePicker(context: context, initialTime: time);
+        await showTimePicker(context: context, initialTime: time);
 
     if (pickedTime != null && pickedTime != time) {
       if (isWakeUp) {
@@ -556,11 +542,7 @@ class _ExerciseFragmentState extends State<ExerciseFragment> {
         context: context,
         builder: (BuildContext builder) {
           return Container(
-            height: MediaQuery
-                .of(context)
-                .copyWith()
-                .size
-                .height / 3,
+            height: MediaQuery.of(context).copyWith().size.height / 3,
             color: Colors.white,
             child: CupertinoDatePicker(
               mode: CupertinoDatePickerMode.time,
@@ -578,7 +560,7 @@ class _ExerciseFragmentState extends State<ExerciseFragment> {
                 });
               },
               initialDateTime:
-              DateTime(1969, 1, 1, _startTime.hour, _startTime.minute),
+                  DateTime(1969, 1, 1, _startTime.hour, _startTime.minute),
               use24hFormat: true,
               minuteInterval: 1,
             ),

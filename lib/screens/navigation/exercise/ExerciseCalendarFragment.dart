@@ -96,7 +96,8 @@ class _ExerciseCalendarFragmentState extends State<ExerciseCalendarFragment> {
                           width: double.infinity,
                           height: 50,
                           child: Padding(
-                            padding: EdgeInsets.only(top: 8, bottom: 8, left: 20),
+                            padding:
+                                EdgeInsets.only(top: 8, bottom: 8, left: 20),
                             child: Row(
                               children: [
                                 Text(
@@ -145,7 +146,7 @@ class _ExerciseCalendarFragmentState extends State<ExerciseCalendarFragment> {
                           (DateRangePickerSelectionChangedArgs args) {
                         final DateTime value = args.value;
                         if (value.compareTo(new DateTime.now()
-                            .subtract(new Duration(days: 3))) <
+                                .subtract(new Duration(days: 3))) <
                             0) {
                           _showExerciseDetails(value);
                         } else {
@@ -153,13 +154,13 @@ class _ExerciseCalendarFragmentState extends State<ExerciseCalendarFragment> {
                             context,
                             MaterialPageRoute(
                                 builder: (context) => ExerciseFragment(
-                                  value: value,
-                                )),
+                                      value: value,
+                                    )),
                           ).then((value) => {_loadData()});
                         }
                       },
-                      monthViewSettings:
-                      DateRangePickerMonthViewSettings(specialDates: _dates),
+                      monthViewSettings: DateRangePickerMonthViewSettings(
+                          specialDates: _dates),
                     ),
                   ],
                 ),
