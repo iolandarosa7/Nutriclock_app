@@ -9,11 +9,9 @@ import 'package:image_picker/image_picker.dart';
 import 'package:nutriclock_app/constants/constants.dart';
 import 'package:nutriclock_app/models/Meal.dart';
 import 'package:nutriclock_app/models/StaticMealNameResponse.dart';
-import 'package:nutriclock_app/models/User.dart';
 import 'package:nutriclock_app/network_utils/api.dart';
 import 'package:nutriclock_app/utils/AppWidget.dart';
 import 'package:nutriclock_app/utils/DropMenu.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 class MealDetailFragment extends StatefulWidget {
   final String type;
@@ -60,7 +58,6 @@ class _MealDetailFragmentState extends State<MealDetailFragment> {
   var _selectedUnit;
   var _observations;
   var _showError = false;
-  var _userId;
   var appWidget = AppWidget();
 
   @override
@@ -403,24 +400,22 @@ class _MealDetailFragmentState extends State<MealDetailFragment> {
                       padding: const EdgeInsets.only(top: 16.0),
                       child: SizedBox(
                         width: double.infinity,
-                        child: FlatButton(
-                          child: Padding(
-                            padding: EdgeInsets.only(
-                                top: 8, bottom: 8, left: 10, right: 10),
-                            child: Text(
-                              _isLoading ? 'Aguarde...' : 'Confirmar',
-                              style: TextStyle(
-                                color: Colors.white,
-                                fontSize: 15.0,
-                                decoration: TextDecoration.none,
-                                fontWeight: FontWeight.normal,
-                              ),
+                        child: TextButton(
+                          child: Text(
+                            _isLoading ? 'Aguarde...' : 'Confirmar',
+                            style: TextStyle(
+                              color: Colors.white,
+                              fontSize: 15.0,
+                              decoration: TextDecoration.none,
+                              fontWeight: FontWeight.normal,
                             ),
                           ),
-                          color: Color(0xFFA3E1CB),
-                          disabledColor: Colors.grey,
-                          shape: new RoundedRectangleBorder(
-                              borderRadius: new BorderRadius.circular(20.0)),
+                          style: TextButton.styleFrom(
+                            backgroundColor: Color(0xFFA3E1CB),
+                            shape: new RoundedRectangleBorder(
+                              borderRadius: new BorderRadius.circular(20.0),
+                            ),
+                          ),
                           onPressed: () {
                             if (!_formKey.currentState.validate() ||
                                 _name == null ||
@@ -490,7 +485,7 @@ class _MealDetailFragmentState extends State<MealDetailFragment> {
               },
             ),
             actions: <Widget>[
-              FlatButton(
+              TextButton(
                 child: Text('Ok'),
                 onPressed: () {
                   _postNewMeal();

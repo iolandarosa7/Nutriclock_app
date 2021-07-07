@@ -54,7 +54,7 @@ class _MealCreateFragmentState extends State<MealCreateFragment> {
   }
 
   List<Widget> data() {
-    List<Widget> list = List();
+    List<Widget> list = <Widget>[];
     _types.forEach((element) {
       list.add(GestureDetector(
           onTap: () {
@@ -130,10 +130,9 @@ class _MealCreateFragmentState extends State<MealCreateFragment> {
                         textAlign: TextAlign.left,
                         style: TextStyle(color: Color(0xFFA3E1CB)),
                       ),
-                      FlatButton(
-                        color: Colors.transparent,
-                        splashColor: Colors.black26,
-                        onPressed: () => _selectDate(context, 'DATE', setModalState),
+                      TextButton(
+                        onPressed: () =>
+                            _selectDate(context, 'DATE', setModalState),
                         child: Text(
                           dateFormat.format(_date),
                           style: TextStyle(
@@ -159,10 +158,9 @@ class _MealCreateFragmentState extends State<MealCreateFragment> {
                         textAlign: TextAlign.left,
                         style: TextStyle(color: Color(0xFFA3E1CB)),
                       ),
-                      FlatButton(
-                        color: Colors.transparent,
-                        splashColor: Colors.black26,
-                        onPressed: () => _selectDate(context, 'TIME', setModalState),
+                      TextButton(
+                        onPressed: () =>
+                            _selectDate(context, 'TIME', setModalState),
                         child: Text(
                           "${_time.hour}:${_time.minute > 9 ? _time.minute : "0${_time.minute}"} horas",
                           style: TextStyle(
@@ -177,7 +175,7 @@ class _MealCreateFragmentState extends State<MealCreateFragment> {
               ),
             ),
             actions: <Widget>[
-              FlatButton(
+              TextButton(
                 child: Text(
                   'Ok',
                   style: TextStyle(color: Color(0xFF60B2A3)),
@@ -203,7 +201,8 @@ class _MealCreateFragmentState extends State<MealCreateFragment> {
     );
   }
 
-  void _selectDate(BuildContext context, String type, StateSetter setModalState) async {
+  void _selectDate(
+      BuildContext context, String type, StateSetter setModalState) async {
     final ThemeData themeData = Theme.of(context);
     assert(themeData.platform != null);
 
@@ -212,19 +211,20 @@ class _MealCreateFragmentState extends State<MealCreateFragment> {
       case TargetPlatform.fuchsia:
       case TargetPlatform.linux:
       case TargetPlatform.windows:
-        return buildMaterialDatePicker(context, type, setModalState);
+        return buildMaterialDatePicker(type, setModalState);
       case TargetPlatform.iOS:
       case TargetPlatform.macOS:
-        return buildCupertinoDatePicker(context, type, setModalState);
+        return buildCupertinoDatePicker(type, setModalState);
     }
   }
 
-  void buildMaterialDatePicker(BuildContext context, String type, StateSetter setModalState) async {
+  void buildMaterialDatePicker(
+      String type, StateSetter setModalState) async {
     var nowDate = DateTime.now();
-    
+
     if (type == 'TIME') {
       final pickedTime =
-          await showTimePicker(context: context, initialTime: _time);
+          await showTimePicker(context: context, initialTime: _time, helpText: "Seleciona a hora:", cancelText: "Cancelar");
 
       if (pickedTime != null && pickedTime != _time) {
         setModalState(() {
@@ -238,7 +238,7 @@ class _MealCreateFragmentState extends State<MealCreateFragment> {
     final DateTime picked = await showDatePicker(
       context: context,
       initialDate: _date,
-       locale: Locale('pt', 'PT'),
+      locale: Locale('pt', 'PT'),
       firstDate: nowDate.subtract(Duration(days: 3)),
       lastDate: nowDate,
       cancelText: 'Cancelar',
@@ -252,7 +252,8 @@ class _MealCreateFragmentState extends State<MealCreateFragment> {
     }
   }
 
-  void buildCupertinoDatePicker(BuildContext context, String type, StateSetter setModalState) async {
+  void buildCupertinoDatePicker(
+      String type, StateSetter setModalState) async {
     showModalBottomSheet(
         context: context,
         builder: (BuildContext builder) {

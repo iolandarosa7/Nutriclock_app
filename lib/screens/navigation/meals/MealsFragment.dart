@@ -82,39 +82,6 @@ class _MealsFragmentState extends State<MealsFragment> {
     return meals;
   }
 
-  Widget _renderElement(List<Meal> meals, String description) {
-    return (meals.length > 0
-        ? Container(
-            height: 30,
-            width: double.infinity,
-            alignment: Alignment.centerLeft,
-            padding: EdgeInsets.only(left: 12),
-            decoration: BoxDecoration(
-              gradient: LinearGradient(
-                begin: Alignment.topLeft,
-                end: Alignment.bottomRight,
-                colors: [Color(0xFFE6A9A9), Color(0x10FFFFFF)],
-              ),
-              borderRadius: BorderRadius.only(
-                topLeft: Radius.circular(5),
-              ),
-            ),
-            child: Text(
-              description,
-              style: TextStyle(fontFamily: "Pacifico", color: Colors.white),
-            ),
-          )
-        : SizedBox());
-  }
-
-  Widget _renderSpace(List<Meal> meals) {
-    return (meals.length > 0
-        ? SizedBox(
-            height: 8,
-          )
-        : SizedBox());
-  }
-
   _renderMealElement(meals, firstLetter, description) {
     return meals.length > 0
         ? ExpansionTile(
@@ -282,7 +249,7 @@ class _MealsFragmentState extends State<MealsFragment> {
   }
 
   List<Widget> data() {
-    List<Widget> list = List();
+    List<Widget> list = <Widget>[];
     _data.mealsTypeByDate.forEach((element) {
       list.add(
         Container(
@@ -381,6 +348,7 @@ class _MealsFragmentState extends State<MealsFragment> {
                   MaterialPageRoute(builder: (context) => MealCreateFragment()),
                 ).then((value) => {_loadMealsList()});
               },
+              mini: true,
               child: Icon(Icons.add),
               backgroundColor: Color(0xFF60B2A3),
               elevation: 50,
@@ -406,30 +374,33 @@ class _MealsFragmentState extends State<MealsFragment> {
               _data == null ||
                       _data.mealsTypeByDate == null ||
                       _data.mealsTypeByDate.isEmpty
-                  ? Card(
-                      elevation: 4.0,
-                      color: Colors.white,
-                      margin: EdgeInsets.only(left: 20, right: 20),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(15),
-                      ),
-                      child: Padding(
-                        padding: EdgeInsets.all(20),
-                        child: Column(
-                          children: [
-                            Text(
-                              "Nenhum alimento adicionado.",
-                              style: TextStyle(color: Colors.black),
-                            ),
-                            SizedBox(
-                              height: 16,
-                            ),
-                            Text(
-                              "Comece já a registar o seu Diário Alimentar com tudo o que compõe as suas refeições.",
-                              textAlign: TextAlign.center,
-                              style: TextStyle(color: Colors.grey),
-                            ),
-                          ],
+                  ? Padding(
+                      padding: EdgeInsets.only(top: 16),
+                      child: Card(
+                        elevation: 4.0,
+                        color: Colors.white,
+                        margin: EdgeInsets.only(left: 20, right: 20),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(15),
+                        ),
+                        child: Padding(
+                          padding: EdgeInsets.all(20),
+                          child: Column(
+                            children: [
+                              Text(
+                                "Nenhum alimento adicionado.",
+                                style: TextStyle(color: Colors.black),
+                              ),
+                              SizedBox(
+                                height: 16,
+                              ),
+                              Text(
+                                "Comece já a registar o seu Diário Alimentar com tudo o que compõe as suas refeições.",
+                                textAlign: TextAlign.center,
+                                style: TextStyle(color: Colors.grey),
+                              ),
+                            ],
+                          ),
                         ),
                       ),
                     )
@@ -457,93 +428,6 @@ class _MealsFragmentState extends State<MealsFragment> {
         color: Colors.grey[800],
       ),
     );
-  }
-
-  List<Widget> _renderMealsByType(List<Meal> meals) {
-    List<Widget> list = List();
-
-    meals.forEach((element) {
-      list.add(
-        Stack(
-          children: [
-            Positioned(
-              child: Container(
-                height: 100,
-                decoration: BoxDecoration(
-                  border: Border(
-                    left: BorderSide(color: Color(0xFFE6A9A9), width: 10.0),
-                  ),
-                ),
-                child: SizedBox(
-                  width: double.infinity,
-                  child: ClipRect(
-                    child: element.foodPhotoUrl != null
-                        ? Image.network(
-                            "$IMAGE_BASE_URL/food/thumb_${element.foodPhotoUrl}",
-                            fit: BoxFit.cover,
-                            errorBuilder: (BuildContext context,
-                                Object exception, StackTrace stackTrace) {
-                              return _renderImageDefault();
-                            },
-                          )
-                        : _renderImageDefault(),
-                  ),
-                ),
-              ),
-            ),
-            Positioned(
-              bottom: 8,
-              right: 0,
-              height: 70,
-              child: Column(
-                children: [
-                  Expanded(
-                    flex: 5,
-                    child: FloatingActionButton(
-                      heroTag: "edit${element.id}",
-                      child: Icon(
-                        Icons.edit,
-                        size: 15,
-                        color: Colors.white,
-                      ),
-                      backgroundColor: Colors.blue,
-                      onPressed: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) =>
-                                MealUpdateFragment(meal: element),
-                          ),
-                        ).then((value) => {_loadMealsList()});
-                      },
-                    ),
-                  ),
-                  SizedBox(
-                    height: 8,
-                  ),
-                  Expanded(
-                    flex: 5,
-                    child: FloatingActionButton(
-                      heroTag: "delete${element.id}",
-                      child: Icon(
-                        Icons.delete,
-                        size: 15,
-                        color: Colors.white,
-                      ),
-                      backgroundColor: Colors.redAccent,
-                      onPressed: () {
-                        this._showDeleteMealConfirmation(element);
-                      },
-                    ),
-                  ),
-                ],
-              ),
-            ),
-          ],
-        ),
-      );
-    });
-    return list;
   }
 
   Future<void> _showDeleteMealConfirmation(Meal meal) async {
@@ -575,19 +459,26 @@ class _MealsFragmentState extends State<MealsFragment> {
               ),
             ),
             actions: <Widget>[
-              FlatButton(
+              TextButton(
                 child: Text(
                   'Cancelar',
                   style: TextStyle(color: Colors.white),
                 ),
-                color: Colors.grey,
+                style: TextButton.styleFrom(
+                  backgroundColor: Colors.grey,
+                ),
                 onPressed: () {
                   Navigator.of(context).pop();
                 },
               ),
-              FlatButton(
-                child: Text('Eliminar'),
-                color: Colors.red,
+              TextButton(
+                child: Text(
+                  'Eliminar',
+                  style: TextStyle(color: Colors.white),
+                ),
+                style: TextButton.styleFrom(
+                  backgroundColor: Colors.red,
+                ),
                 onPressed: () {
                   Navigator.of(context).pop();
                   _deleteMeal(meal);

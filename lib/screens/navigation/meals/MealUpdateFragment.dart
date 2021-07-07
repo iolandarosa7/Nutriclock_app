@@ -495,9 +495,7 @@ class _MealUpdateFragmentState extends State<MealUpdateFragment> {
                                       ],
                                     ),
                                   ),
-                                  FlatButton(
-                                    color: Colors.transparent,
-                                    splashColor: Colors.black26,
+                                  TextButton(
                                     onPressed: () =>
                                         _selectDate(context, 'DATE'),
                                     child: Text(
@@ -539,9 +537,7 @@ class _MealUpdateFragmentState extends State<MealUpdateFragment> {
                                       ],
                                     ),
                                   ),
-                                  FlatButton(
-                                    color: Colors.transparent,
-                                    splashColor: Colors.black26,
+                                  TextButton(
                                     onPressed: () =>
                                         _selectDate(context, 'TIME'),
                                     child: Text(
@@ -583,25 +579,22 @@ class _MealUpdateFragmentState extends State<MealUpdateFragment> {
                           padding: const EdgeInsets.only(top: 16.0),
                           child: SizedBox(
                             width: double.infinity,
-                            child: FlatButton(
-                              child: Padding(
-                                padding: EdgeInsets.only(
-                                    top: 8, bottom: 8, left: 10, right: 10),
-                                child: Text(
-                                  _isLoading ? 'Aguarde...' : 'Confirmar',
-                                  style: TextStyle(
-                                    color: Colors.white,
-                                    fontSize: 15.0,
-                                    decoration: TextDecoration.none,
-                                    fontWeight: FontWeight.normal,
-                                  ),
+                            child: TextButton(
+                              child: Text(
+                                _isLoading ? 'Aguarde...' : 'Confirmar',
+                                style: TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 15.0,
+                                  decoration: TextDecoration.none,
+                                  fontWeight: FontWeight.normal,
                                 ),
                               ),
-                              color: Color(0xFFA3E1CB),
-                              disabledColor: Colors.grey,
-                              shape: new RoundedRectangleBorder(
-                                  borderRadius:
-                                      new BorderRadius.circular(20.0)),
+                              style: TextButton.styleFrom(
+                                backgroundColor: Color(0xFFA3E1CB),
+                                shape: new RoundedRectangleBorder(
+                                  borderRadius: new BorderRadius.circular(20.0),
+                                ),
+                              ),
                               onPressed: () {
                                 if (!_formKey.currentState.validate() ||
                                     _name == null ||
@@ -788,7 +781,7 @@ class _MealUpdateFragmentState extends State<MealUpdateFragment> {
               },
             ),
             actions: <Widget>[
-              FlatButton(
+              TextButton(
                 child: Text('Ok'),
                 onPressed: () {
                   _updateMeal();
@@ -821,8 +814,11 @@ class _MealUpdateFragmentState extends State<MealUpdateFragment> {
 
   void buildMaterialDatePicker(BuildContext context, String type) async {
     if (type == 'TIME') {
-      final pickedTime =
-          await showTimePicker(context: context, initialTime: _time);
+      final pickedTime = await showTimePicker(
+          context: context,
+          initialTime: _time,
+          helpText: "Seleciona a hora:",
+          cancelText: "Cancelar");
 
       if (pickedTime != null && pickedTime != _time) {
         setState(() {
@@ -842,6 +838,7 @@ class _MealUpdateFragmentState extends State<MealUpdateFragment> {
       initialDatePickerMode: DatePickerMode.year,
       cancelText: 'Cancelar',
       fieldLabelText: 'Data de Nascimento',
+      locale: Locale('pt', 'PT'),
     );
 
     if (picked != null && picked != _date) {
