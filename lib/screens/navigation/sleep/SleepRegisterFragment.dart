@@ -119,9 +119,7 @@ class _SleepRegisterFragmentState extends State<SleepRegisterFragment> {
                                     ),
                                     Expanded(
                                       flex: 4,
-                                      child: FlatButton(
-                                        color: Colors.transparent,
-                                        splashColor: Colors.black26,
+                                      child: TextButton(
                                         onPressed: () =>
                                             _selectDate(context, false),
                                         child: Text(
@@ -152,9 +150,7 @@ class _SleepRegisterFragmentState extends State<SleepRegisterFragment> {
                                     ),
                                     Expanded(
                                       flex: 4,
-                                      child: FlatButton(
-                                        color: Colors.transparent,
-                                        splashColor: Colors.black26,
+                                      child: TextButton(
                                         onPressed: () =>
                                             _selectDate(context, true),
                                         child: Text(
@@ -425,28 +421,23 @@ class _SleepRegisterFragmentState extends State<SleepRegisterFragment> {
                                 ),
                                 SizedBox(
                                   width: double.infinity,
-                                  child: FlatButton(
-                                    child: Padding(
-                                      padding: EdgeInsets.only(
-                                          top: 8,
-                                          bottom: 8,
-                                          left: 10,
-                                          right: 10),
-                                      child: Text(
-                                        _isLoading ? 'Aguarde...' : 'Confirmar',
-                                        style: TextStyle(
-                                          color: Colors.white,
-                                          fontSize: 15.0,
-                                          decoration: TextDecoration.none,
-                                          fontWeight: FontWeight.normal,
-                                        ),
+                                  child: TextButton(
+                                    child: Text(
+                                      _isLoading ? 'Aguarde...' : 'Confirmar',
+                                      style: TextStyle(
+                                        color: Colors.white,
+                                        fontSize: 15.0,
+                                        decoration: TextDecoration.none,
+                                        fontWeight: FontWeight.normal,
                                       ),
                                     ),
-                                    color: Color(0xFFA3E1CB),
-                                    disabledColor: Colors.grey,
-                                    shape: new RoundedRectangleBorder(
+                                    style: TextButton.styleFrom(
+                                      backgroundColor: Color(0xFFA3E1CB),
+                                      shape: new RoundedRectangleBorder(
                                         borderRadius:
-                                            new BorderRadius.circular(20.0)),
+                                            new BorderRadius.circular(20.0),
+                                      ),
+                                    ),
                                     onPressed: () {
                                       if (_wakeUpTime == _endUpTime) {
                                         appWidget.showSnackbar(

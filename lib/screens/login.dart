@@ -379,8 +379,7 @@ class _LoginState extends State<Login> {
           builder: (context) => Home(),
         ),
       );
-    } catch (error) {
-    }
+    } catch (error) {}
 
     setState(() {
       _isLoading = false;

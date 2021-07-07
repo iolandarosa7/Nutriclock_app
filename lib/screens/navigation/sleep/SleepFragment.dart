@@ -47,7 +47,10 @@ class _SleepFragmentState extends State<SleepFragment> {
             Positioned(
               child: Padding(
                 padding: EdgeInsets.only(
-                    top: MediaQuery.of(context).size.height < 600 ? 0: MediaQuery.of(context).size.height / 12, left: 30),
+                    top: MediaQuery.of(context).size.height < 600
+                        ? 0
+                        : MediaQuery.of(context).size.height / 12,
+                    left: 30),
                 child: GestureDetector(
                   onTap: () {
                     Navigator.push(
@@ -68,7 +71,10 @@ class _SleepFragmentState extends State<SleepFragment> {
               right: 0,
               child: Padding(
                 padding: EdgeInsets.only(
-                    top: MediaQuery.of(context).size.height < 600 ? MediaQuery.of(context).size.height / 4: MediaQuery.of(context).size.height / 3, right: 16),
+                    top: MediaQuery.of(context).size.height < 600
+                        ? MediaQuery.of(context).size.height / 4
+                        : MediaQuery.of(context).size.height / 3,
+                    right: 16),
                 child: GestureDetector(
                   onTap: () {
                     Navigator.push(
@@ -88,8 +94,10 @@ class _SleepFragmentState extends State<SleepFragment> {
               bottom: 0,
               child: Padding(
                 padding: EdgeInsets.only(
-                    bottom: MediaQuery.of(context).size.height < 600 ? 0: MediaQuery.of(context).size.height / 12, left: 16
-                ),
+                    bottom: MediaQuery.of(context).size.height < 600
+                        ? 0
+                        : MediaQuery.of(context).size.height / 12,
+                    left: 16),
                 child: _showTips
                     ? GestureDetector(
                         onTap: () {
