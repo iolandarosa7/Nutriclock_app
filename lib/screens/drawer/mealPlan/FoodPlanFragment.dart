@@ -727,9 +727,7 @@ class _FoodPlanFragmentState extends State<FoodPlanFragment> {
                           color: Color(0xFFA3E1CB),
                         ),
                       ),
-                      FlatButton(
-                        color: Colors.transparent,
-                        splashColor: Colors.black26,
+                      TextButton(
                         onPressed: () => _selectTime(context, setModalState),
                         child: Text(
                           "${_time.hour}:${_time.minute > 9 ? _time.minute : "0${_time.minute}"} horas",
@@ -762,7 +760,7 @@ class _FoodPlanFragmentState extends State<FoodPlanFragment> {
               ),
             ),
             actions: <Widget>[
-              FlatButton(
+              TextButton(
                 child: Text(
                   'Ok',
                   style: TextStyle(color: Color(0xFF60B2A3)),

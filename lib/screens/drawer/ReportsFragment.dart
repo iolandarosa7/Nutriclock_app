@@ -46,8 +46,7 @@ class _ReportsFragmentState extends State<ReportsFragment> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar:
-        appWidget.getAppbar("Relatórios"),
+      appBar: appWidget.getAppbar("Relatórios"),
       body: AppWidget().getImageContainer(
         "assets/images/bg_green.png",
         _isLoading,
@@ -78,8 +77,12 @@ class _ReportsFragmentState extends State<ReportsFragment> {
                           "$_maximumSleepHour h", _maximumSleepDate),
                       _renderDoubleRowWithDivider("Mínimo de horas Sono",
                           "$_minimumSleepHour h", _minimumSleepDate),
-                      _renderWeekAverage("Média horas sono / dia de semana",
-                          _averageSleepArray, _percentageSleepArray, null, null),
+                      _renderWeekAverage(
+                          "Média horas sono / dia de semana",
+                          _averageSleepArray,
+                          _percentageSleepArray,
+                          null,
+                          null),
                     ],
                   ),
                 ),
