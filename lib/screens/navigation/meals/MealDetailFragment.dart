@@ -534,6 +534,7 @@ class _MealDetailFragmentState extends State<MealDetailFragment> {
           _foodPhoto = null;
           _nutritionalInfoPhoto = null;
         });
+        appWidget.showSnackbar("Alimento adicionado à refeição", Colors.green, _scaffoldKey);
       } else {
         isShowMessage = true;
         if (body[JSON_ERROR_KEY] != null) message = (body[JSON_ERROR_KEY]);
