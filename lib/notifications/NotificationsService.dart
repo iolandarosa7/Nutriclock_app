@@ -12,10 +12,10 @@ class NotificationsService {
     if (Platform.isIOS) {
       var settings = await _fcm.requestPermission(
         alert: true,
-        announcement: false,
+        announcement: true,
         badge: true,
         carPlay: false,
-        criticalAlert: false,
+        criticalAlert: true,
         provisional: false,
         sound: true,
       );
