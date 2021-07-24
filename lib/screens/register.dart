@@ -674,6 +674,8 @@ class _RegisterState extends State<Register> {
     return showDialog<void>(
         context: context,
         builder: (BuildContext context) {
+          var contentText = "";
+
           return StatefulBuilder(
             builder: (BuildContext context, StateSetter setState) {
               return AlertDialog(
@@ -692,6 +694,14 @@ class _RegisterState extends State<Register> {
                         textAlign: TextAlign.center,
                         style: TextStyle(
                           color: Colors.grey,
+                          fontSize: 10,
+                        ),
+                      ),
+                      Text(
+                        contentText,
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                          color: Colors.red,
                           fontSize: 10,
                         ),
                       ),
@@ -948,14 +958,18 @@ class _RegisterState extends State<Register> {
                       style: TextStyle(color: Color(0xFF60B2A3)),
                     ),
                     onPressed: () {
+                      setState(() {
+                        contentText = "";
+                      });
+
                       if (drugNameToAdd == null ||
                           drugNameToAdd.trim() == "" ||
                           drugPosologyToAdd == null ||
                           drugPosologyToAdd.trim() == "") {
-                        appWidget.showSnackbar(
-                            "Deve preencher o nome e posologia",
-                            Colors.red,
-                            _scaffoldKey);
+
+                        setState(() {
+                          contentText = "Deve preencher o nome e posologia";
+                        });
                         return;
                       }
                       var days = "";
@@ -1182,7 +1196,7 @@ class _RegisterState extends State<Register> {
           children: [
             Expanded(
                 child: Text(
-              "${drugs[i].name} ${drugs[i].posology} mg",
+              "${drugs[i].name} ${drugs[i].posology} mg/ml",
               style: TextStyle(
                 color: Colors.grey,
               ),
