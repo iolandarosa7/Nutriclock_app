@@ -438,6 +438,14 @@ class _ExerciseFragmentState extends State<ExerciseFragment> {
                                         _scaffoldKey);
                                     return;
                                   }
+
+                                  if (_calculateTime(_startTime) > _calculateTime(_endTime)) {
+                                    appWidget.showSnackbar(
+                                        "A hora de início deve ser inferior à hora de fim",
+                                        Colors.red,
+                                        _scaffoldKey);
+                                    return;
+                                  }
                                   _registerExercise();
                                 },
                               ),
@@ -526,7 +534,7 @@ class _ExerciseFragmentState extends State<ExerciseFragment> {
         helpText: "Seleciona a hora:",
         cancelText: "Cancelar");
 
-    if (pickedTime != null && pickedTime != time) {
+    if (pickedTime != null && pickedTime != time && _calculateTime(pickedTime) < _calculateTime(TimeOfDay.now())) {
       if (isWakeUp) {
         setState(() {
           _startTime = pickedTime;
@@ -538,6 +546,11 @@ class _ExerciseFragmentState extends State<ExerciseFragment> {
         _endTime = pickedTime;
       });
     }
+  }
+  
+  _calculateTime(TimeOfDay time) {
+    return time.hour.toDouble() +
+        (time.minute.toDouble() / 60);
   }
 
   void buildCupertinoDatePicker(BuildContext context, bool isWakeUp) async {
