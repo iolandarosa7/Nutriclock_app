@@ -58,6 +58,7 @@ class _MealDetailFragmentState extends State<MealDetailFragment> {
   var _selectedUnit;
   var _observations;
   var _showError = false;
+  var _showErrorQuantity = false;
   var appWidget = AppWidget();
 
   @override
@@ -125,10 +126,23 @@ class _MealDetailFragmentState extends State<MealDetailFragment> {
                     _showError
                         ? Text(
                             "Os campos assinalados com * são obrigatórios!",
+                            textAlign: TextAlign.center,
                             style: TextStyle(
                                 color: Colors.redAccent,
                                 fontWeight: FontWeight.bold,
-                                fontSize: 12),
+                                fontSize: 14),
+                          )
+                        : SizedBox(
+                            height: 0,
+                          ),
+                    _showErrorQuantity
+                        ? Text(
+                            "A quantidade deve ser um valor positivo!",
+                            textAlign: TextAlign.center,
+                            style: TextStyle(
+                                color: Colors.redAccent,
+                                fontWeight: FontWeight.bold,
+                                fontSize: 14),
                           )
                         : SizedBox(
                             height: 0,
@@ -259,121 +273,102 @@ class _MealDetailFragmentState extends State<MealDetailFragment> {
                         ),
                       ],
                     ),
-                    Padding(
-                      padding: EdgeInsets.only(top: 24),
-                      child: Row(children: [
-                        Expanded(
-                          flex: 5,
-                          child: GestureDetector(
-                            onTap: () {
-                              _showPicker(context, 'FOOD_PHOTO');
-                            },
-                            child: _foodPhoto != null
-                                ? ClipRRect(
-                                    child: Image.file(
-                                      _foodPhoto,
-                                      width: double.infinity,
-                                      height: 150,
-                                      fit: BoxFit.cover,
+                    GestureDetector(
+                      onTap: () {
+                        _showPicker(context, 'FOOD_PHOTO');
+                      },
+                      child: _foodPhoto != null
+                          ? ClipRRect(
+                              child: Image.file(
+                                _foodPhoto,
+                                width: double.infinity,
+                                height: 150,
+                                fit: BoxFit.cover,
+                              ),
+                            )
+                          : Container(
+                              decoration: BoxDecoration(
+                                color: Colors.grey,
+                              ),
+                              width: double.infinity,
+                              height: 150,
+                              child: Padding(
+                                padding: EdgeInsets.only(left: 8, right: 8),
+                                child: Column(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                  children: [
+                                    Icon(
+                                      Icons.image,
+                                      color: Colors.grey[800],
                                     ),
-                                  )
-                                : Container(
-                                    decoration: BoxDecoration(
-                                      color: Colors.grey,
+                                    SizedBox(
+                                      height: 8,
                                     ),
-                                    width: double.infinity,
-                                    height: 150,
-                                    child: Padding(
-                                      padding:
-                                          EdgeInsets.only(left: 8, right: 8),
-                                      child: Column(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.center,
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.center,
-                                        children: [
-                                          Icon(
-                                            Icons.image,
-                                            color: Colors.grey[800],
-                                          ),
-                                          SizedBox(
-                                            height: 8,
-                                          ),
-                                          Text(
-                                            " + Clique para adicionar uma foto da refeição",
-                                            textAlign: TextAlign.center,
-                                            style: TextStyle(
-                                                color: Colors.black38,
-                                                fontSize: 12),
-                                          )
-                                        ],
-                                      ),
+                                    Text(
+                                      " + Clique para adicionar uma foto da refeição",
+                                      textAlign: TextAlign.center,
+                                      style: TextStyle(
+                                          color: Colors.black38, fontSize: 14),
+                                    )
+                                  ],
+                                ),
+                              ),
+                            ),
+                    ),
+                    GestureDetector(
+                      onTap: () {
+                        _showPicker(context, 'NUTRI_INFO_PHOTO');
+                      },
+                      child: _nutritionalInfoPhoto != null
+                          ? ClipRRect(
+                              child: Image.file(
+                                _nutritionalInfoPhoto,
+                                width: double.infinity,
+                                height: 150,
+                                fit: BoxFit.cover,
+                              ),
+                            )
+                          : Container(
+                              decoration: BoxDecoration(
+                                color: Colors.black12,
+                              ),
+                              width: double.infinity,
+                              height: 150,
+                              child: Padding(
+                                padding: EdgeInsets.only(left: 8, right: 8),
+                                child: Column(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                  children: [
+                                    Icon(
+                                      Icons.image_rounded,
+                                      color: Colors.grey[800],
                                     ),
-                                  ),
-                          ),
-                        ),
-                        Expanded(
-                          flex: 5,
-                          child: GestureDetector(
-                            onTap: () {
-                              _showPicker(context, 'NUTRI_INFO_PHOTO');
-                            },
-                            child: _nutritionalInfoPhoto != null
-                                ? ClipRRect(
-                                    child: Image.file(
-                                      _nutritionalInfoPhoto,
-                                      width: double.infinity,
-                                      height: 150,
-                                      fit: BoxFit.cover,
+                                    SizedBox(
+                                      height: 8,
                                     ),
-                                  )
-                                : Container(
-                                    decoration: BoxDecoration(
-                                      color: Colors.black12,
+                                    Text(
+                                      "Se o produto for embalado adicione foto da Informação Nutricional",
+                                      textAlign: TextAlign.center,
+                                      style: TextStyle(
+                                          color: Colors.black38, fontSize: 14),
                                     ),
-                                    width: double.infinity,
-                                    height: 150,
-                                    child: Padding(
-                                      padding:
-                                          EdgeInsets.only(left: 8, right: 8),
-                                      child: Column(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.center,
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.center,
-                                        children: [
-                                          Icon(
-                                            Icons.image_rounded,
-                                            color: Colors.grey[800],
-                                          ),
-                                          SizedBox(
-                                            height: 8,
-                                          ),
-                                          Text(
-                                            "Se o produto for embalado adicione foto da Informção Nutricional",
-                                            textAlign: TextAlign.center,
-                                            style: TextStyle(
-                                                color: Colors.black38,
-                                                fontSize: 12),
-                                          ),
-                                          SizedBox(
-                                            height: 8,
-                                          ),
-                                          Text(
-                                            "O fornecimento desta informação é relevante.",
-                                            textAlign: TextAlign.center,
-                                            style: TextStyle(
-                                                color: Colors.black,
-                                                fontSize: 13,
-                                                fontWeight: FontWeight.w700),
-                                          )
-                                        ],
-                                      ),
+                                    SizedBox(
+                                      height: 8,
                                     ),
-                                  ),
-                          ),
-                        ),
-                      ]),
+                                    Text(
+                                      "O fornecimento desta informação é relevante.",
+                                      textAlign: TextAlign.center,
+                                      style: TextStyle(
+                                          color: Colors.black,
+                                          fontSize: 14,
+                                          fontWeight: FontWeight.w700),
+                                    )
+                                  ],
+                                ),
+                              ),
+                            ),
                     ),
                     TextFormField(
                       maxLines: 4,
@@ -426,6 +421,13 @@ class _MealDetailFragmentState extends State<MealDetailFragment> {
                                 _selectedUnit == "") {
                               setState(() {
                                 _showError = true;
+                              });
+                              return;
+                            }
+
+                            if (double.parse(_quantity) < 0) {
+                              setState(() {
+                                _showErrorQuantity = true;
                               });
                               return;
                             }
@@ -534,7 +536,8 @@ class _MealDetailFragmentState extends State<MealDetailFragment> {
           _foodPhoto = null;
           _nutritionalInfoPhoto = null;
         });
-        appWidget.showSnackbar("Alimento adicionado à refeição", Colors.green, _scaffoldKey);
+        appWidget.showSnackbar(
+            "Alimento adicionado à refeição", Colors.green, _scaffoldKey);
       } else {
         isShowMessage = true;
         if (body[JSON_ERROR_KEY] != null) message = (body[JSON_ERROR_KEY]);
@@ -589,9 +592,11 @@ class _MealDetailFragmentState extends State<MealDetailFragment> {
         if (type == 'FOOD_PHOTO') {
           _foodPhoto = File(pickedFile.path);
           _showError = false;
+          _showErrorQuantity = false;
         } else
           _nutritionalInfoPhoto = File(pickedFile.path);
         _showError = false;
+        _showErrorQuantity = false;
       }
     });
   }

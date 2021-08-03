@@ -181,7 +181,7 @@ class _ExerciseReportFragmentState extends State<ExerciseReportFragment> {
                 'Total minutos por dia',
                 style: TextStyle(
                   color: Color(0xFF60B2A3),
-                  fontSize: 12.0,
+                  fontSize: 14.0,
                 ),
               ),
             ),
@@ -213,7 +213,7 @@ class _ExerciseReportFragmentState extends State<ExerciseReportFragment> {
                 'Calorias gastas por dia',
                 style: TextStyle(
                   color: Color(0xFF60B2A3),
-                  fontSize: 12.0,
+                  fontSize: 14.0,
                 ),
               ),
             ),

@@ -272,7 +272,7 @@ class _HomeFragmentState extends State<HomeFragment> {
                     child: Padding(
                       padding: EdgeInsets.all(16.0),
                       child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
+                        crossAxisAlignment: CrossAxisAlignment.center,
                         children: [
                           if (_mealPlanType != null) _renderLastMealCard(),
                           SizedBox(
@@ -303,7 +303,7 @@ class _HomeFragmentState extends State<HomeFragment> {
                                 "$_mealDaysRegistered dias",
                                 textAlign: TextAlign.center,
                                 style:
-                                    TextStyle(color: Colors.grey, fontSize: 12),
+                                    TextStyle(color: Colors.grey, fontSize: 14),
                               ),
                             ]),
                             backgroundColor: Color(0xFFF6EEEE),
@@ -312,7 +312,10 @@ class _HomeFragmentState extends State<HomeFragment> {
                               "Total de Alimentos / Refeições: $_totalMeals",
                               textAlign: TextAlign.center,
                               style: TextStyle(
-                                  color: Color(0xFF797979), fontSize: 12),
+                                color: Colors.black54,
+                                fontSize: 14,
+                                fontWeight: FontWeight.bold,
+                              ),
                             ),
                           ),
                           SizedBox(
@@ -343,7 +346,7 @@ class _HomeFragmentState extends State<HomeFragment> {
                                 "$_totalSleeps dias",
                                 textAlign: TextAlign.center,
                                 style:
-                                    TextStyle(color: Colors.grey, fontSize: 12),
+                                    TextStyle(color: Colors.grey, fontSize: 14),
                               ),
                             ]),
                             backgroundColor: Color(0xFFDEF3FF),
@@ -352,7 +355,10 @@ class _HomeFragmentState extends State<HomeFragment> {
                               "Média de Horas de Sono: $_averageSleepHours",
                               textAlign: TextAlign.center,
                               style: TextStyle(
-                                  color: Color(0xFF797979), fontSize: 12),
+                                color: Colors.black54,
+                                fontSize: 14,
+                                fontWeight: FontWeight.bold,
+                              ),
                             ),
                           ),
                           SizedBox(
@@ -383,7 +389,7 @@ class _HomeFragmentState extends State<HomeFragment> {
                                 "$_totalSportDays dias",
                                 textAlign: TextAlign.center,
                                 style:
-                                    TextStyle(color: Colors.grey, fontSize: 12),
+                                    TextStyle(color: Colors.grey, fontSize: 14),
                               ),
                             ]),
                             backgroundColor: Color(0xFFFFF4D6),
@@ -394,13 +400,19 @@ class _HomeFragmentState extends State<HomeFragment> {
                                   "Duração total: $_totalExerciseHours horas",
                                   textAlign: TextAlign.center,
                                   style: TextStyle(
-                                      color: Color(0xFF797979), fontSize: 12),
+                                    color: Colors.black54,
+                                    fontSize: 14,
+                                    fontWeight: FontWeight.bold,
+                                  ),
                                 ),
                                 Text(
                                   "Duração média: $_averageExerciseHours",
                                   textAlign: TextAlign.center,
                                   style: TextStyle(
-                                      color: Color(0xFF797979), fontSize: 12),
+                                    color: Colors.black54,
+                                    fontSize: 14,
+                                    fontWeight: FontWeight.bold,
+                                  ),
                                 ),
                                 SizedBox(
                                   height: 8,
@@ -409,13 +421,19 @@ class _HomeFragmentState extends State<HomeFragment> {
                                   "Total calorias gastas: $_totalBurnedCals",
                                   textAlign: TextAlign.center,
                                   style: TextStyle(
-                                      color: Color(0xFF797979), fontSize: 12),
+                                    color: Colors.black54,
+                                    fontSize: 14,
+                                    fontWeight: FontWeight.bold,
+                                  ),
                                 ),
                                 Text(
                                   "Média de calorias gastas: $_averageBurnedCals",
                                   textAlign: TextAlign.center,
                                   style: TextStyle(
-                                      color: Color(0xFF797979), fontSize: 12),
+                                    color: Colors.black54,
+                                    fontSize: 14,
+                                    fontWeight: FontWeight.bold,
+                                  ),
                                 ),
                               ],
                             ),

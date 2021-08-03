@@ -368,45 +368,44 @@ class _MealsFragmentState extends State<MealsFragment> {
                       child: Loading(
                           indicator: BallPulseIndicator(),
                           size: 50.0,
-                          color: Color(0xFFFFBCBC)),
+                          color: Color(0xFF45C393)),
                     )
-                  : SizedBox(),
-              _data == null ||
-                      _data.mealsTypeByDate == null ||
-                      _data.mealsTypeByDate.isEmpty
-                  ? Padding(
-                      padding: EdgeInsets.only(top: 16),
-                      child: Card(
-                        elevation: 4.0,
-                        color: Colors.white,
-                        margin: EdgeInsets.only(left: 20, right: 20),
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(15),
-                        ),
-                        child: Padding(
-                          padding: EdgeInsets.all(20),
-                          child: Column(
-                            children: [
-                              Text(
-                                "Nenhum alimento adicionado.",
-                                style: TextStyle(color: Colors.black),
+                  : _data == null ||
+                          _data.mealsTypeByDate == null ||
+                          _data.mealsTypeByDate.isEmpty
+                      ? Padding(
+                          padding: EdgeInsets.only(top: 16),
+                          child: Card(
+                            elevation: 4.0,
+                            color: Colors.white,
+                            margin: EdgeInsets.only(left: 20, right: 20),
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(15),
+                            ),
+                            child: Padding(
+                              padding: EdgeInsets.all(20),
+                              child: Column(
+                                children: [
+                                  Text(
+                                    "Nenhum alimento adicionado.",
+                                    style: TextStyle(color: Colors.black),
+                                  ),
+                                  SizedBox(
+                                    height: 16,
+                                  ),
+                                  Text(
+                                    "Comece já a registar o seu Diário Alimentar com tudo o que compõe as suas refeições.",
+                                    textAlign: TextAlign.center,
+                                    style: TextStyle(color: Colors.grey),
+                                  ),
+                                ],
                               ),
-                              SizedBox(
-                                height: 16,
-                              ),
-                              Text(
-                                "Comece já a registar o seu Diário Alimentar com tudo o que compõe as suas refeições.",
-                                textAlign: TextAlign.center,
-                                style: TextStyle(color: Colors.grey),
-                              ),
-                            ],
+                            ),
                           ),
-                        ),
-                      ),
-                    )
-                  : Column(children: [
-                      ...data(),
-                    ]),
+                        )
+                      : Column(children: [
+                          ...data(),
+                        ]),
             ],
           ),
         ),

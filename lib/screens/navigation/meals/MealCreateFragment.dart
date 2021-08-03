@@ -86,7 +86,6 @@ class _MealCreateFragmentState extends State<MealCreateFragment> {
                         element.name,
                         style: TextStyle(
                           color: Color(0xFF60B2A3),
-                          fontFamily: 'PatrickHand',
                           fontSize: 20,
                           decoration: TextDecoration.none,
                           fontWeight: FontWeight.normal,

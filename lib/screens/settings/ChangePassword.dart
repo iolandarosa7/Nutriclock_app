@@ -85,7 +85,7 @@ class _ChangePasswordState extends State<ChangePassword> {
                                             textAlign: TextAlign.center,
                                             style: TextStyle(
                                               color: Colors.grey,
-                                              fontSize: 12.0,
+                                              fontSize: 14.0,
                                             ),
                                           ),
                                           SizedBox(

@@ -64,7 +64,7 @@ class _EvaluationFragmentState extends State<EvaluationFragment> {
                           padding: EdgeInsets.only(left: 8),
                           child: Text(
                             "Ver níveis de classificação",
-                            style: TextStyle(color: Colors.grey, fontSize: 12),
+                            style: TextStyle(color: Colors.grey, fontSize: 14),
                           ),
                         ),
                       ],

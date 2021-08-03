@@ -181,7 +181,7 @@ class _MealUpdateFragmentState extends State<MealUpdateFragment> {
                                 style: TextStyle(
                                     color: Colors.redAccent,
                                     fontWeight: FontWeight.bold,
-                                    fontSize: 12),
+                                    fontSize: 14),
                               )
                             : SizedBox(
                                 height: 0,
