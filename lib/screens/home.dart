@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:nutriclock_app/constants/constants.dart';
+import 'package:nutriclock_app/models/NavKey.dart';
 import 'package:nutriclock_app/models/User.dart';
 import 'package:nutriclock_app/network_utils/api.dart';
 import 'package:nutriclock_app/screens/drawer/BioMarkersFragment.dart';
@@ -144,7 +145,7 @@ class _HomeState extends State<Home> {
         title = "Exercício";
         break;
       case 4:
-        title = "Chat";
+        title = "Chat - Profissionais";
         break;
       default:
         title = "";
@@ -205,6 +206,7 @@ class _HomeState extends State<Home> {
         ],
       ),
       bottomNavigationBar: BottomNavigationBar(
+        key: NavKey.navKey,
         selectedIconTheme: IconThemeData(
           color: Color(0xFF60B2A3),
           opacity: 1,
@@ -311,6 +313,19 @@ class _HomeState extends State<Home> {
                     title: Text('Biomarcadores',
                         style: TextStyle(color: Color(0xFF60B2A3))),
                     onTap: () => _navigate(_widgetOptions[7]),
+                  ),
+                  ListTile(
+                    leading: Icon(
+                      Icons.input,
+                      color: Color(0xFFA3E1CB),
+                    ),
+                    title: Text(
+                      'Terminar Sessão',
+                      style: TextStyle(
+                        color: Color(0xFF60B2A3),
+                      ),
+                    ),
+                    onTap: () => {_showLogoutModal()},
                   ),
                   Divider(),
                   ListTile(

@@ -8,6 +8,7 @@ import 'package:loading/loading.dart';
 import 'package:nutriclock_app/constants/constants.dart';
 import 'package:nutriclock_app/models/Ingredient.dart';
 import 'package:nutriclock_app/models/MealPlanType.dart';
+import 'package:nutriclock_app/models/NavKey.dart';
 import 'package:nutriclock_app/models/Statistics.dart';
 import 'package:nutriclock_app/network_utils/api.dart';
 import 'package:percent_indicator/circular_percent_indicator.dart';
@@ -278,126 +279,99 @@ class _HomeFragmentState extends State<HomeFragment> {
                           SizedBox(
                             height: 30,
                           ),
-                          Text(
-                            "Diário Alimentar",
-                            style: TextStyle(
-                                color: Color(0xFF60B2A3),
-                                fontFamily: 'Pacifico',
-                                fontSize: 16),
-                          ),
-                          CircularPercentIndicator(
-                            radius: 100.0,
-                            lineWidth: 10.0,
-                            percent: _computeProgress(
-                                _mealDaysRegistered.toDouble(), 3),
-                            center: Column(children: [
-                              SizedBox(
-                                height: 20,
-                              ),
-                              new Icon(
-                                Icons.ramen_dining,
-                                size: 50.0,
-                                color: Color(0xFFFFBCBC),
-                              ),
-                              Text(
-                                "$_mealDaysRegistered dias",
-                                textAlign: TextAlign.center,
-                                style:
-                                    TextStyle(color: Colors.grey, fontSize: 14),
-                              ),
-                            ]),
-                            backgroundColor: Color(0xFFF6EEEE),
-                            progressColor: Color(0xFFFFBCBC),
-                            footer: Text(
-                              "Total de Alimentos / Refeições: $_totalMeals",
-                              textAlign: TextAlign.center,
-                              style: TextStyle(
-                                color: Colors.black54,
-                                fontSize: 14,
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ),
-                          ),
-                          SizedBox(
-                            height: 30,
-                          ),
-                          Text(
-                            "Sono",
-                            style: TextStyle(
-                                color: Color(0xFF60B2A3),
-                                fontFamily: 'Pacifico',
-                                fontSize: 16),
-                          ),
-                          CircularPercentIndicator(
-                            radius: 100.0,
-                            lineWidth: 10.0,
-                            percent: _computeProgress(
-                                _totalSleeps.toDouble(), EIGHT_WEEK_DAYS),
-                            center: Column(children: [
-                              SizedBox(
-                                height: 20,
-                              ),
-                              new Icon(
-                                Icons.bedtime,
-                                size: 50.0,
-                                color: Color(0xFFA0DDFF),
-                              ),
-                              Text(
-                                "$_totalSleeps dias",
-                                textAlign: TextAlign.center,
-                                style:
-                                    TextStyle(color: Colors.grey, fontSize: 14),
-                              ),
-                            ]),
-                            backgroundColor: Color(0xFFDEF3FF),
-                            progressColor: Color(0xFFA0DDFF),
-                            footer: Text(
-                              "Média de Horas de Sono: $_averageSleepHours",
-                              textAlign: TextAlign.center,
-                              style: TextStyle(
-                                color: Colors.black54,
-                                fontSize: 14,
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ),
-                          ),
-                          SizedBox(
-                            height: 30,
-                          ),
-                          Text(
-                            "Exercício",
-                            style: TextStyle(
-                                color: Color(0xFF60B2A3),
-                                fontFamily: 'Pacifico',
-                                fontSize: 16),
-                          ),
-                          CircularPercentIndicator(
-                            radius: 100.0,
-                            lineWidth: 10.0,
-                            percent: _totalSportDays.toDouble() /
-                                EIGHT_WEEK_FIVE_DAYS,
-                            center: Column(children: [
-                              SizedBox(
-                                height: 20,
-                              ),
-                              new Icon(
-                                Icons.directions_run_rounded,
-                                size: 50.0,
-                                color: Color(0xFFF4D481),
-                              ),
-                              Text(
-                                "$_totalSportDays dias",
-                                textAlign: TextAlign.center,
-                                style:
-                                    TextStyle(color: Colors.grey, fontSize: 14),
-                              ),
-                            ]),
-                            backgroundColor: Color(0xFFFFF4D6),
-                            progressColor: Color(0xFFF4D481),
-                            footer: Column(
+                          GestureDetector(
+                            onTap: () => {
+                              (NavKey.navKey.currentWidget
+                                      as BottomNavigationBar)
+                                  .onTap(1)
+                            },
+                            child: Column(
                               children: [
                                 Text(
-                                  "Duração total: $_totalExerciseHours horas",
+                                  "Diário Alimentar",
+                                  style: TextStyle(
+                                      color: Color(0xFF60B2A3),
+                                      fontFamily: 'Pacifico',
+                                      fontSize: 16),
+                                ),
+                                CircularPercentIndicator(
+                                  radius: 100.0,
+                                  lineWidth: 10.0,
+                                  percent: _computeProgress(
+                                      _mealDaysRegistered.toDouble(), 3),
+                                  center: Column(children: [
+                                    SizedBox(
+                                      height: 20,
+                                    ),
+                                    new Icon(
+                                      Icons.ramen_dining,
+                                      size: 50.0,
+                                      color: Color(0xFFFFBCBC),
+                                    ),
+                                    Text(
+                                      "$_mealDaysRegistered dias",
+                                      textAlign: TextAlign.center,
+                                      style: TextStyle(
+                                          color: Colors.grey, fontSize: 14),
+                                    ),
+                                  ]),
+                                  backgroundColor: Color(0xFFF6EEEE),
+                                  progressColor: Color(0xFFFFBCBC),
+                                  footer: Text(
+                                    "Total de Alimentos / Refeições: $_totalMeals",
+                                    textAlign: TextAlign.center,
+                                    style: TextStyle(
+                                      color: Colors.black54,
+                                      fontSize: 14,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                          SizedBox(
+                            height: 30,
+                          ),
+                          GestureDetector(
+                            onTap: () => {
+                              (NavKey.navKey.currentWidget
+                                      as BottomNavigationBar)
+                                  .onTap(2)
+                            },
+                            child: Column(children: [
+                              Text(
+                                "Sono",
+                                style: TextStyle(
+                                    color: Color(0xFF60B2A3),
+                                    fontFamily: 'Pacifico',
+                                    fontSize: 16),
+                              ),
+                              CircularPercentIndicator(
+                                radius: 100.0,
+                                lineWidth: 10.0,
+                                percent: _computeProgress(
+                                    _totalSleeps.toDouble(), EIGHT_WEEK_DAYS),
+                                center: Column(children: [
+                                  SizedBox(
+                                    height: 20,
+                                  ),
+                                  new Icon(
+                                    Icons.bedtime,
+                                    size: 50.0,
+                                    color: Color(0xFFA0DDFF),
+                                  ),
+                                  Text(
+                                    "$_totalSleeps dias",
+                                    textAlign: TextAlign.center,
+                                    style: TextStyle(
+                                        color: Colors.grey, fontSize: 14),
+                                  ),
+                                ]),
+                                backgroundColor: Color(0xFFDEF3FF),
+                                progressColor: Color(0xFFA0DDFF),
+                                footer: Text(
+                                  "Média de Horas de Sono: $_averageSleepHours",
                                   textAlign: TextAlign.center,
                                   style: TextStyle(
                                     color: Colors.black54,
@@ -405,34 +379,92 @@ class _HomeFragmentState extends State<HomeFragment> {
                                     fontWeight: FontWeight.bold,
                                   ),
                                 ),
+                              ),
+                            ]),
+                          ),
+                          SizedBox(
+                            height: 30,
+                          ),
+                          GestureDetector(
+                            onTap: () => {
+                              (NavKey.navKey.currentWidget
+                                      as BottomNavigationBar)
+                                  .onTap(3)
+                            },
+                            child: Column(
+                              children: [
                                 Text(
-                                  "Duração média: $_averageExerciseHours",
-                                  textAlign: TextAlign.center,
+                                  "Exercício",
                                   style: TextStyle(
-                                    color: Colors.black54,
-                                    fontSize: 14,
-                                    fontWeight: FontWeight.bold,
-                                  ),
+                                      color: Color(0xFF60B2A3),
+                                      fontFamily: 'Pacifico',
+                                      fontSize: 16),
                                 ),
-                                SizedBox(
-                                  height: 8,
-                                ),
-                                Text(
-                                  "Total calorias gastas: $_totalBurnedCals",
-                                  textAlign: TextAlign.center,
-                                  style: TextStyle(
-                                    color: Colors.black54,
-                                    fontSize: 14,
-                                    fontWeight: FontWeight.bold,
-                                  ),
-                                ),
-                                Text(
-                                  "Média de calorias gastas: $_averageBurnedCals",
-                                  textAlign: TextAlign.center,
-                                  style: TextStyle(
-                                    color: Colors.black54,
-                                    fontSize: 14,
-                                    fontWeight: FontWeight.bold,
+                                CircularPercentIndicator(
+                                  radius: 100.0,
+                                  lineWidth: 10.0,
+                                  percent: _totalSportDays.toDouble() /
+                                      EIGHT_WEEK_FIVE_DAYS,
+                                  center: Column(children: [
+                                    SizedBox(
+                                      height: 20,
+                                    ),
+                                    new Icon(
+                                      Icons.directions_run_rounded,
+                                      size: 50.0,
+                                      color: Color(0xFFF4D481),
+                                    ),
+                                    Text(
+                                      "$_totalSportDays dias",
+                                      textAlign: TextAlign.center,
+                                      style: TextStyle(
+                                          color: Colors.grey, fontSize: 14),
+                                    ),
+                                  ]),
+                                  backgroundColor: Color(0xFFFFF4D6),
+                                  progressColor: Color(0xFFF4D481),
+                                  footer: Column(
+                                    children: [
+                                      Text(
+                                        "Duração total: $_totalExerciseHours horas",
+                                        textAlign: TextAlign.center,
+                                        style: TextStyle(
+                                          color: Colors.black54,
+                                          fontSize: 14,
+                                          fontWeight: FontWeight.bold,
+                                        ),
+                                      ),
+                                      Text(
+                                        "Duração média: $_averageExerciseHours",
+                                        textAlign: TextAlign.center,
+                                        style: TextStyle(
+                                          color: Colors.black54,
+                                          fontSize: 14,
+                                          fontWeight: FontWeight.bold,
+                                        ),
+                                      ),
+                                      SizedBox(
+                                        height: 8,
+                                      ),
+                                      Text(
+                                        "Total calorias gastas: $_totalBurnedCals",
+                                        textAlign: TextAlign.center,
+                                        style: TextStyle(
+                                          color: Colors.black54,
+                                          fontSize: 14,
+                                          fontWeight: FontWeight.bold,
+                                        ),
+                                      ),
+                                      Text(
+                                        "Média de calorias gastas: $_averageBurnedCals",
+                                        textAlign: TextAlign.center,
+                                        style: TextStyle(
+                                          color: Colors.black54,
+                                          fontSize: 14,
+                                          fontWeight: FontWeight.bold,
+                                        ),
+                                      ),
+                                    ],
                                   ),
                                 ),
                               ],

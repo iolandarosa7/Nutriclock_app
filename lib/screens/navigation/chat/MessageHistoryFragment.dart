@@ -349,7 +349,7 @@ class _MessageHistoryFragmentState extends State<MessageHistoryFragment> {
               width: 4,
             ),
             Text(
-              "Eu, ${_getStringTime(DateTime.parse(message.created_at))}",
+              "Eu, ${_getStringTime(DateTime.parse(message.created_at).toLocal())}",
               style: TextStyle(
                   fontFamily: 'PatrickHand', fontSize: 12, color: Colors.black),
             ),
@@ -397,7 +397,7 @@ class _MessageHistoryFragmentState extends State<MessageHistoryFragment> {
               width: 4,
             ),
             Text(
-              "${message.senderName}, ${_getStringTime(DateTime.parse(message.created_at))}",
+              "${message.senderName}, ${_getStringTime(DateTime.parse(message.created_at).toLocal())}",
               style: TextStyle(
                   fontFamily: 'PatrickHand', fontSize: 12, color: Colors.black),
             ),

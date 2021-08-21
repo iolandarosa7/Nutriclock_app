@@ -129,6 +129,9 @@ class _SleepRegisterFragmentState extends State<SleepRegisterFragment> {
                                             fontSize: 15,
                                           ),
                                         ),
+                                        style: TextButton.styleFrom(
+                                          backgroundColor: Color(0x50A3E1CB)
+                                        ),
                                       ),
                                     )
                                   ],
@@ -159,6 +162,9 @@ class _SleepRegisterFragmentState extends State<SleepRegisterFragment> {
                                             color: Color(0xFF000000),
                                             fontSize: 15,
                                           ),
+                                        ),
+                                        style: TextButton.styleFrom(
+                                            backgroundColor: Color(0x50A3E1CB)
                                         ),
                                       ),
                                     ),
@@ -389,6 +395,10 @@ class _SleepRegisterFragmentState extends State<SleepRegisterFragment> {
                                               {
                                                 "display": "Stress",
                                                 "value": "Stress",
+                                              },
+                                              {
+                                                "display": "Crianças pequenas",
+                                                "value": "Crianças pequenas",
                                               },
                                               {
                                                 "display": "Outra(s)",

@@ -351,7 +351,7 @@ class _ExerciseFragmentState extends State<ExerciseFragment> {
                                   child: TextButton(
                                     onPressed: () => _selectDate(context, true),
                                     child: Align(
-                                      alignment: Alignment.bottomRight,
+                                      alignment: Alignment.center,
                                       child: Text(
                                         "${_startTime.hour}:${_startTime.minute > 9 ? _startTime.minute : "0${_startTime.minute}"}",
                                         style: TextStyle(
@@ -359,6 +359,9 @@ class _ExerciseFragmentState extends State<ExerciseFragment> {
                                           fontSize: 15,
                                         ),
                                       ),
+                                    ),
+                                    style: TextButton.styleFrom(
+                                        backgroundColor: Color(0x50A3E1CB)
                                     ),
                                   ),
                                 )
@@ -384,7 +387,7 @@ class _ExerciseFragmentState extends State<ExerciseFragment> {
                                     onPressed: () =>
                                         _selectDate(context, false),
                                     child: Align(
-                                      alignment: Alignment.bottomRight,
+                                      alignment: Alignment.center,
                                       child: Text(
                                         "${_endTime.hour}:${_endTime.minute > 9 ? _endTime.minute : "0${_endTime.minute}"}",
                                         style: TextStyle(
@@ -392,6 +395,9 @@ class _ExerciseFragmentState extends State<ExerciseFragment> {
                                           fontSize: 15,
                                         ),
                                       ),
+                                    ),
+                                    style: TextButton.styleFrom(
+                                        backgroundColor: Color(0x50A3E1CB)
                                     ),
                                   ),
                                 ),

@@ -56,7 +56,7 @@ class _MealUpdateFragmentState extends State<MealUpdateFragment> {
     DropMenu('Prato', 'Prato'),
     DropMenu('Tigela média', 'Tigela média'),
     DropMenu('Pires', 'Pires'),
-    DropMenu('Outro', 'Outro'),
+    DropMenu('Outro', 'Porção/Unidade'),
   ];
   var _autocompleteSuggestions = [];
   var _splitTime;
@@ -73,6 +73,8 @@ class _MealUpdateFragmentState extends State<MealUpdateFragment> {
   var _nutritionalInfoPhotoUrl;
   var _observations;
   var appWidget = AppWidget();
+  var withDia = 'àáâãäåòóôõöøèéêëðçìíîïùúûüñšÿýž';
+  var withoutDia = 'aaaaaaooooooeeeeeciiiiuuuunsyyz';
 
   @override
   void initState() {
@@ -221,12 +223,18 @@ class _MealUpdateFragmentState extends State<MealUpdateFragment> {
                           suggestionsCallback: (pattern) {
                             var list = [];
                             var size = 0;
+
+                            if (pattern.trim().isEmpty) return list;
+
                             _autocompleteSuggestions.forEach((element) {
-                              if (size <= 20 &&
-                                  element
-                                      .toString()
-                                      .toLowerCase()
-                                      .startsWith(pattern)) {
+                              var str = element.toString().toLowerCase();
+                              var ptr = pattern.trim().toLowerCase();
+                              for (int i = 0; i < withDia.length; i++) {
+                                str = str.replaceAll(withDia[i], withoutDia[i]);
+                                ptr = ptr.replaceAll(withDia[i], withoutDia[i]);
+                              }
+
+                              if (size <= 10 && str.startsWith(ptr)) {
                                 list.add(element);
                                 size++;
                               }
@@ -757,7 +765,7 @@ class _MealUpdateFragmentState extends State<MealUpdateFragment> {
             builder: (BuildContext context, StateSetter setState) {
           return AlertDialog(
             title: Text(
-                'Selecionou a unidade "Outro". Seria importante que desse alguma informação adicional sobre o produto.'),
+                'Selecionou a unidade "Porção/Unidade". Seria importante que desse alguma informação adicional sobre a quantidade ingerida do produto.'),
             content: TextFormField(
               maxLines: 4,
               style: TextStyle(color: Color(0xFF000000)),
