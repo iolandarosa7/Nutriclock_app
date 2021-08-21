@@ -277,7 +277,7 @@ class _HomeFragmentState extends State<HomeFragment> {
                         children: [
                           if (_mealPlanType != null) _renderLastMealCard(),
                           SizedBox(
-                            height: 30,
+                            height: 16,
                           ),
                           GestureDetector(
                             onTap: () => {
@@ -371,7 +371,7 @@ class _HomeFragmentState extends State<HomeFragment> {
                                 backgroundColor: Color(0xFFDEF3FF),
                                 progressColor: Color(0xFFA0DDFF),
                                 footer: Text(
-                                  "Média de Horas de Sono: $_averageSleepHours",
+                                  "Média de Horas de Sono: $_averageSleepHours horas",
                                   textAlign: TextAlign.center,
                                   style: TextStyle(
                                     color: Colors.black54,
@@ -435,7 +435,7 @@ class _HomeFragmentState extends State<HomeFragment> {
                                         ),
                                       ),
                                       Text(
-                                        "Duração média: $_averageExerciseHours",
+                                        "Duração média: $_averageExerciseHours horas",
                                         textAlign: TextAlign.center,
                                         style: TextStyle(
                                           color: Colors.black54,
@@ -447,7 +447,7 @@ class _HomeFragmentState extends State<HomeFragment> {
                                         height: 8,
                                       ),
                                       Text(
-                                        "Total calorias gastas: $_totalBurnedCals",
+                                        "Total calorias gastas: $_totalBurnedCals kcal",
                                         textAlign: TextAlign.center,
                                         style: TextStyle(
                                           color: Colors.black54,
@@ -456,7 +456,7 @@ class _HomeFragmentState extends State<HomeFragment> {
                                         ),
                                       ),
                                       Text(
-                                        "Média de calorias gastas: $_averageBurnedCals",
+                                        "Média de calorias gastas: $_averageBurnedCals kcal",
                                         textAlign: TextAlign.center,
                                         style: TextStyle(
                                           color: Colors.black54,

@@ -89,23 +89,21 @@ class _ExerciseCalendarFragmentState extends State<ExerciseCalendarFragment> {
                             bottomRight: Radius.circular(50),
                           ),
                         ),
-                        margin: EdgeInsets.only(top: 20, right: 40, bottom: 20),
+                        margin: EdgeInsets.only(top: 20, right: 40, bottom: 16),
                         shadowColor: Color(0xFFA3E1CB),
                         elevation: 10,
                         child: SizedBox(
                           width: double.infinity,
-                          height: 50,
                           child: Padding(
                             padding:
-                                EdgeInsets.only(top: 8, bottom: 8, left: 20),
+                                EdgeInsets.only(top: 4, bottom: 4, left: 16),
                             child: Row(
                               children: [
                                 Text(
                                   "Relatório Gráfico",
                                   style: TextStyle(
                                     color: Colors.white,
-                                    fontFamily: 'PatrickHand',
-                                    fontSize: 30,
+                                    fontSize: 18,
                                     decoration: TextDecoration.none,
                                     fontWeight: FontWeight.normal,
                                   ),
@@ -115,13 +113,52 @@ class _ExerciseCalendarFragmentState extends State<ExerciseCalendarFragment> {
                                     alignment: Alignment.center,
                                     child: Icon(
                                       Icons.insights_rounded,
-                                      size: 40,
+                                      size: 30,
                                       color: Colors.white,
                                     ),
                                   ),
                                 ),
                               ],
                             ),
+                          ),
+                        ),
+                      ),
+                    ),
+                    Card(
+                      color: Color(0xFFA3E1CB),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.only(
+                          topRight: Radius.circular(50),
+                          bottomRight: Radius.circular(50),
+                        ),
+                      ),
+                      margin: EdgeInsets.only(right: 40, bottom: 20),
+                      shadowColor: Color(0xFFA3E1CB),
+                      elevation: 10,
+                      child: SizedBox(
+                        width: double.infinity,
+                        child: Padding(
+                          padding:
+                          EdgeInsets.only(left: 16, bottom: 4, top: 4),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                "Registar Atividade Física",
+                                style: TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 18,
+                                  decoration: TextDecoration.none,
+                                  fontWeight: FontWeight.w500,
+                                ),
+                              ),
+                              Text("Seleciona uma data abaixo no calendário",
+                                style: TextStyle(
+                                  color: Colors.white70,
+                                  fontSize: 14,
+                                ),
+                              ),
+                            ],
                           ),
                         ),
                       ),

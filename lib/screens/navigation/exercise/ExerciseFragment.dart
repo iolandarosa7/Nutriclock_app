@@ -32,6 +32,7 @@ class _ExerciseFragmentState extends State<ExerciseFragment> {
   var _isLoading = false;
   var _name;
   var _type;
+  var _hourError = false;
   List<DropMenu> _activitiesList = [
     DropMenu('H', 'Domésticas'),
     DropMenu('E', 'Desportivas')
@@ -93,7 +94,7 @@ class _ExerciseFragmentState extends State<ExerciseFragment> {
   Widget build(BuildContext context) {
     return Scaffold(
       key: _scaffoldKey,
-      appBar: appWidget.getAppbar("Atividade Física"),
+      appBar: appWidget.getAppbar("Nova Atividade Física"),
       body: appWidget.getImageContainer(
         "assets/images/bg_green_gradient.png",
         _isLoading,
@@ -361,8 +362,7 @@ class _ExerciseFragmentState extends State<ExerciseFragment> {
                                       ),
                                     ),
                                     style: TextButton.styleFrom(
-                                        backgroundColor: Color(0x50A3E1CB)
-                                    ),
+                                        backgroundColor: Color(0x50A3E1CB)),
                                   ),
                                 )
                               ],
@@ -397,14 +397,21 @@ class _ExerciseFragmentState extends State<ExerciseFragment> {
                                       ),
                                     ),
                                     style: TextButton.styleFrom(
-                                        backgroundColor: Color(0x50A3E1CB)
-                                    ),
+                                        backgroundColor: Color(0x50A3E1CB)),
                                   ),
                                 ),
                               ],
                             ),
                             SizedBox(
-                              height: 30,
+                              height: 15,
+                            ),
+                            if (_hourError)
+                              Text(
+                                "A hora selecionada deve ser inferior a atual",
+                                style: TextStyle(color: Colors.red),
+                              ),
+                            SizedBox(
+                              height: 15,
                             ),
                             SizedBox(
                               width: double.infinity,
@@ -445,7 +452,8 @@ class _ExerciseFragmentState extends State<ExerciseFragment> {
                                     return;
                                   }
 
-                                  if (_calculateTime(_startTime) > _calculateTime(_endTime)) {
+                                  if (_calculateTime(_startTime) >
+                                      _calculateTime(_endTime)) {
                                     appWidget.showSnackbar(
                                         "A hora de início deve ser inferior à hora de fim",
                                         Colors.red,
@@ -508,6 +516,8 @@ class _ExerciseFragmentState extends State<ExerciseFragment> {
       _isLoading = false;
       _name = '';
       _type = null;
+      _startTime = TimeOfDay.now();
+      _endTime = TimeOfDay.now();
     });
   }
 
@@ -540,23 +550,34 @@ class _ExerciseFragmentState extends State<ExerciseFragment> {
         helpText: "Seleciona a hora:",
         cancelText: "Cancelar");
 
-    if (pickedTime != null && pickedTime != time && _calculateTime(pickedTime) < _calculateTime(TimeOfDay.now())) {
+    if (pickedTime != null && pickedTime != time) {
+      if (dateFormat.format(DateTime.now()) ==
+          dateFormat.format(widget.value)) {
+        if (_calculateTime(pickedTime) > _calculateTime(TimeOfDay.now())) {
+          setState(() {
+            _hourError = true;
+          });
+          return;
+        }
+      }
+
       if (isWakeUp) {
         setState(() {
           _startTime = pickedTime;
+          _hourError = false;
         });
         return;
       }
 
       setState(() {
         _endTime = pickedTime;
+        _hourError = false;
       });
     }
   }
-  
+
   _calculateTime(TimeOfDay time) {
-    return time.hour.toDouble() +
-        (time.minute.toDouble() / 60);
+    return time.hour.toDouble() + (time.minute.toDouble() / 60);
   }
 
   void buildCupertinoDatePicker(BuildContext context, bool isWakeUp) async {

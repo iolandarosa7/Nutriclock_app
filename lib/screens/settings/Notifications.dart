@@ -93,7 +93,7 @@ class _NotificationsFragmentState extends State<NotificationsFragment> {
                                   });
                                   _toggleNotifications('SLEEP', value);
                                 },
-                                activeColor: Color(0xFFA3E1CB),
+                                activeColor: Colors.greenAccent,
                               ),
                             ],
                           ),
@@ -121,7 +121,7 @@ class _NotificationsFragmentState extends State<NotificationsFragment> {
                                   });
                                   _toggleNotifications('EXERCISE', value);
                                 },
-                                activeColor: Color(0xFFA3E1CB),
+                                activeColor: Colors.greenAccent,
                               ),
                             ],
                           ),
@@ -152,7 +152,7 @@ class _NotificationsFragmentState extends State<NotificationsFragment> {
                                   });
                                   _toggleNotifications('MEAL_DIARY', value);
                                 },
-                                activeColor: Color(0xFFA3E1CB),
+                                activeColor: Colors.greenAccent,
                               ),
                             ],
                           ),
@@ -183,7 +183,7 @@ class _NotificationsFragmentState extends State<NotificationsFragment> {
                                   });
                                   _toggleNotifications('BIO_MARKER', value);
                                 },
-                                activeColor: Color(0xFFA3E1CB),
+                                activeColor: Colors.greenAccent,
                               ),
                             ],
                           ),
