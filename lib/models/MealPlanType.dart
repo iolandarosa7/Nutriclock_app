@@ -7,7 +7,6 @@ class MealPlanType {
   List<dynamic> ingredients;
   bool opened;
   bool confirmed;
-  // int confirmed;
   String confirmedHours;
   String photoUrl;
 

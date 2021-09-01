@@ -260,7 +260,6 @@ class Network {
     var request = http.MultipartRequest("POST", Uri.parse("$url/$id"));
     request.fields['confirmedHours'] = hours;
     request.headers['Accept'] = 'application/json';
-    request.headers['Content-type'] = 'application/json';
     request.headers['Authorization'] = 'Bearer $token';
 
     if (foodPhoto != null) {

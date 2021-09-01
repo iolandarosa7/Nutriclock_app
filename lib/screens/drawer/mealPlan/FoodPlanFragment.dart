@@ -247,7 +247,7 @@ class _FoodPlanFragmentState extends State<FoodPlanFragment> {
                       if (!isHistory)
                         TextButton.icon(
                           label: Text(
-                            element.confirmed ? 'Confirmar' : 'Confirmado',
+                            element.confirmed ? 'Confirmado' : 'Confirmar',
                             style: TextStyle(
                               color: Color(0xFFA3E1CB),
                               fontSize: 15.0,
@@ -266,7 +266,9 @@ class _FoodPlanFragmentState extends State<FoodPlanFragment> {
                             ),
                           ),
                           onPressed: () {
-                            _showPhotoTimeModal(element);
+                            if (!element.confirmed) {
+                              _showPhotoTimeModal(element);
+                            }
                           },
                         ),
                     ],
@@ -788,7 +790,19 @@ class _FoodPlanFragmentState extends State<FoodPlanFragment> {
           "${_time.hour > 9 ? _time.hour : '0${_time.hour}'}:${_time.minute > 9 ? _time.minute : '0${_time.minute}'}";
       var response =
           await Network().postMealTypeConfirmation(t, _photo, mealPlanType.id);
-      print(response.statusCode);
+      if (response.statusCode == RESPONSE_SUCCESS) {
+        var auxMeals = _meals;
+        auxMeals.forEach((element) {
+          if (element.id == mealPlanType.id) {
+            element.confirmed = true;
+          }
+        });
+
+        setState(() {
+          _meals = auxMeals;
+        });
+      }
+
       setState(() {
         _isLoading = false;
       });
