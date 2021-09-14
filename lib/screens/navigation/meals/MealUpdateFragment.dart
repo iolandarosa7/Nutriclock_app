@@ -200,7 +200,7 @@ class _MealUpdateFragmentState extends State<MealUpdateFragment> {
                                 Icons.restaurant,
                                 color: Color(0xFFA3E1CB),
                               ),
-                              labelText: 'Nome *',
+                              labelText: 'Nome do alimento *',
                               labelStyle: TextStyle(color: Colors.grey),
                               hintStyle: TextStyle(
                                   color: Color(0xFF9b9b9b),
