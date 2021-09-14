@@ -202,7 +202,7 @@ class _ProfileState extends State<Profile> {
                                               padding: const EdgeInsets.only(
                                                   left: 50),
                                               child: Text(
-                                                "Género",
+                                                "Sexo",
                                                 style: TextStyle(
                                                   color: Color(0xFF9b9b9b),
                                                   fontSize: 15,
