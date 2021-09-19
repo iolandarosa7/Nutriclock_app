@@ -765,7 +765,7 @@ class _RegisterState extends State<Register> {
                             borderSide: BorderSide(color: Color(0xFFA3E1CB)),
                           ),
                           suffix: Text('mg/ml'),
-                          hintText: "Posologia",
+                          hintText: "Dosagem",
                           hintStyle: TextStyle(
                               color: Color(0xFF9b9b9b),
                               fontSize: 15,
@@ -968,7 +968,7 @@ class _RegisterState extends State<Register> {
                           drugPosologyToAdd.trim() == "") {
 
                         setState(() {
-                          contentText = "Deve preencher o nome e posologia";
+                          contentText = "Deve preencher o nome e dosagem";
                         });
                         return;
                       }

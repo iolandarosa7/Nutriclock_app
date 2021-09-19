@@ -19,7 +19,7 @@ const int EIGHT_WEEK_FIVE_DAYS = 8 * 5;
 
 const String ERROR_MANDATORY_FIELD = 'O campo não pode estar vazio';
 const String ERROR_INVALID_FORMAT_FIELD = 'Formato inválido';
-const String ERROR_ADD_DRUG_FIELDS = 'Indique o nome e posologia';
+const String ERROR_ADD_DRUG_FIELDS = 'Indique o nome e dosagem';
 const String ERROR_CONFIRMATION_PASS_MUST_BE_EQUAL =
     'Deve ser igual à password';
 const String ERROR_NEW_PASS_MUST_NOT_BE_EQUAL =

@@ -175,7 +175,7 @@ class _MedicationListState extends State<MedicationList> {
                             ),
                           ),
                           suffix: Text('mg/ml'),
-                          hintText: "Posologia",
+                          hintText: "Dosagem",
                           hintStyle: TextStyle(
                             color: Color(0xFF9b9b9b),
                             fontSize: 15,
@@ -280,7 +280,7 @@ class _MedicationListState extends State<MedicationList> {
                           _drugPosology == null ||
                           _drugPosology.trim() == "") {
                         appWidget.showSnackbar(
-                            "Deve preencher o nome e posologia",
+                            "Deve preencher o nome e dosagem",
                             Colors.red,
                             _scaffoldKey);
                         return;
