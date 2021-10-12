@@ -126,41 +126,45 @@ class _ExerciseCalendarFragmentState extends State<ExerciseCalendarFragment> {
                         ),
                       ),
                     ),
-                    Card(
-                      color: Color(0xFFA3E1CB),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.only(
-                          topRight: Radius.circular(50),
-                          bottomRight: Radius.circular(50),
+                    GestureDetector(
+                      onTap: _showRegisterModal,
+                      child: Card(
+                        color: Color(0xFFA3E1CB),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.only(
+                            topRight: Radius.circular(50),
+                            bottomRight: Radius.circular(50),
+                          ),
                         ),
-                      ),
-                      margin: EdgeInsets.only(right: 40, bottom: 20),
-                      shadowColor: Color(0xFFA3E1CB),
-                      elevation: 10,
-                      child: SizedBox(
-                        width: double.infinity,
-                        child: Padding(
-                          padding: EdgeInsets.only(left: 16, bottom: 4, top: 4),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                "Registar Atividade Física",
-                                style: TextStyle(
-                                  color: Colors.white,
-                                  fontSize: 18,
-                                  decoration: TextDecoration.none,
-                                  fontWeight: FontWeight.w500,
+                        margin: EdgeInsets.only(right: 40, bottom: 20),
+                        shadowColor: Color(0xFFA3E1CB),
+                        elevation: 10,
+                        child: SizedBox(
+                          width: double.infinity,
+                          child: Padding(
+                            padding:
+                                EdgeInsets.only(left: 16, bottom: 4, top: 4),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  "Registar Atividade Física",
+                                  style: TextStyle(
+                                    color: Colors.white,
+                                    fontSize: 18,
+                                    decoration: TextDecoration.none,
+                                    fontWeight: FontWeight.w500,
+                                  ),
                                 ),
-                              ),
-                              Text(
-                                "Seleciona uma data abaixo no calendário",
-                                style: TextStyle(
-                                  color: Colors.white70,
-                                  fontSize: 14,
+                                Text(
+                                  "Seleciona uma data abaixo no calendário",
+                                  style: TextStyle(
+                                    color: Colors.white70,
+                                    fontSize: 14,
+                                  ),
                                 ),
-                              ),
-                            ],
+                              ],
+                            ),
                           ),
                         ),
                       ),
@@ -211,6 +215,35 @@ class _ExerciseCalendarFragmentState extends State<ExerciseCalendarFragment> {
         ),
       ),
     );
+  }
+
+  Future<void> _showRegisterModal() async {
+    return showDialog<void>(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            title: Text(
+              "Por favor seleciona uma data no calendário para começar!",
+              textAlign: TextAlign.center,
+              style: TextStyle(
+                fontFamily: 'Roboto',
+              ),
+            ),
+            actions: <Widget>[
+              TextButton(
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+                child: Text(
+                  "Ok",
+                  style: TextStyle(
+                    color: Color(0xFF60B2A3),
+                  ),
+                ),
+              ),
+            ],
+          );
+        });
   }
 
   _showExerciseDetails(DateTime value) {
