@@ -198,7 +198,7 @@ class _HomeState extends State<Home> {
           ),
           IconButton(
             icon: const Icon(Icons.input),
-            tooltip: 'Logout',
+            tooltip: 'Terminar Sessão',
             onPressed: () {
               _showLogoutModal();
             },
@@ -223,7 +223,7 @@ class _HomeState extends State<Home> {
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.ramen_dining),
-            label: 'Diário',
+            label: 'Diário Alimentar',
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.bedtime),
@@ -396,7 +396,7 @@ class _HomeState extends State<Home> {
         builder: (BuildContext context) {
           return AlertDialog(
             title: Text(
-              "Tem a certeza que deseja sair da aplicação?",
+              "Tem a certeza que deseja terminar sessão na aplicação?",
               textAlign: TextAlign.center,
               style: TextStyle(
                 fontFamily: 'Roboto',
