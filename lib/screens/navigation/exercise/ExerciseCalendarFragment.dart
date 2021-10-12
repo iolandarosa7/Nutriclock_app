@@ -20,6 +20,7 @@ class ExerciseCalendarFragment extends StatefulWidget {
 class _ExerciseCalendarFragmentState extends State<ExerciseCalendarFragment> {
   final _scaffoldKey = GlobalKey<ScaffoldState>();
   List<DateTime> _dates = [];
+  final DateRangePickerController _controller = DateRangePickerController();
 
   @override
   void initState() {
@@ -28,6 +29,7 @@ class _ExerciseCalendarFragmentState extends State<ExerciseCalendarFragment> {
   }
 
   _loadData() async {
+    _controller.selectedDate = null;
     try {
       var response = await Network().getWithAuth(EXERCISES_DATES_URL);
 
@@ -138,8 +140,7 @@ class _ExerciseCalendarFragmentState extends State<ExerciseCalendarFragment> {
                       child: SizedBox(
                         width: double.infinity,
                         child: Padding(
-                          padding:
-                          EdgeInsets.only(left: 16, bottom: 4, top: 4),
+                          padding: EdgeInsets.only(left: 16, bottom: 4, top: 4),
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
@@ -152,7 +153,8 @@ class _ExerciseCalendarFragmentState extends State<ExerciseCalendarFragment> {
                                   fontWeight: FontWeight.w500,
                                 ),
                               ),
-                              Text("Seleciona uma data abaixo no calendário",
+                              Text(
+                                "Seleciona uma data abaixo no calendário",
                                 style: TextStyle(
                                   color: Colors.white70,
                                   fontSize: 14,
@@ -167,6 +169,7 @@ class _ExerciseCalendarFragmentState extends State<ExerciseCalendarFragment> {
                       view: DateRangePickerView.month,
                       todayHighlightColor: Color(0xFF60B2A3),
                       selectionColor: Color(0xFFA3E1CB),
+                      controller: _controller,
                       monthCellStyle: DateRangePickerMonthCellStyle(
                         todayTextStyle: TextStyle(
                           color: Color(0xFF60B2A3),
@@ -182,6 +185,7 @@ class _ExerciseCalendarFragmentState extends State<ExerciseCalendarFragment> {
                       onSelectionChanged:
                           (DateRangePickerSelectionChangedArgs args) {
                         final DateTime value = args.value;
+                        if (value == null) return;
                         if (value.compareTo(new DateTime.now()
                                 .subtract(new Duration(days: 3))) <
                             0) {
