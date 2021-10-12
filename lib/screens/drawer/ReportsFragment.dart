@@ -102,7 +102,7 @@ class _ReportsFragmentState extends State<ReportsFragment> {
                     crossAxisAlignment: CrossAxisAlignment.stretch,
                     children: [
                       _renderTitle("Atividade Física"),
-                      _renderIcon(Icons.fitness_center_rounded),
+                      _renderIcon(Icons.directions_run_rounded),
                       _renderSingleRowWithDivider(
                           "Total de registos", _totalExercises),
                       _renderSingleRowWithDivider("Duração média da atividade",
