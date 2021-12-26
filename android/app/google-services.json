@@ -7,9 +7,9 @@
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:241550034683:android:f244e4a53d19f02480d25e",
+        "mobilesdk_app_id": "1:241550034683:android:8d07747e95b4e20380d25e",
         "android_client_info": {
-          "package_name": "com.example.nutriclock_app"
+          "package_name": "pt.ipleiria.nutriclock_app"
         }
       },
       "oauth_client": [
