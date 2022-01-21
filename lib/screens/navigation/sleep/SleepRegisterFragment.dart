@@ -254,7 +254,6 @@ class _SleepRegisterFragmentState extends State<SleepRegisterFragment> {
                                             ),
                                           ),
                                           MultiSelectFormField(
-                                            autovalidate: false,
                                             title: Text(
                                               'Atividades',
                                               style:
@@ -359,7 +358,6 @@ class _SleepRegisterFragmentState extends State<SleepRegisterFragment> {
                                             ),
                                           ),
                                           MultiSelectFormField(
-                                            autovalidate: false,
                                             title: Text(
                                               'Motivos',
                                               style:
