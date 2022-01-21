@@ -213,7 +213,6 @@ class _MedicationListState extends State<MedicationList> {
                             height: 16,
                           ),
                           MultiSelectFormField(
-                            autovalidate: false,
                             title: Text(
                               'Dias de Toma',
                               style: TextStyle(
