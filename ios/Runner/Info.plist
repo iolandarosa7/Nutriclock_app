@@ -25,11 +25,11 @@
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
 	<key>NSCameraUsageDescription</key>
-	<string>Allow access to camera to capture photos</string>
+	<string>A aplicação Nutriclock necessita de permissões para aceder à camâra do seu dispositivo. As suas fotografias serão apenas usadas no âmbito do estudo Nutriclock e não serão divulgadas a terceiros.</string>
 	<key>NSMicrophoneUsageDescription</key>
 	<string>Allow access to microphone</string>
 	<key>NSPhotoLibraryUsageDescription</key>
-	<string>Allow access to photo library</string>
+	<string>A aplicação Nutriclock necessita de permissões para aceder à galeria de imagens do seu dispositivo. As suas imagens serão apenas usadas no âmbito do estudo Nutriclock e não serão divulgadas a terceiros.</string>
 	<key>UIBackgroundModes</key>
 	<array>
 		<string>fetch</string>
