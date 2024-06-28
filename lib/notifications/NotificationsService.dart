@@ -1,10 +1,10 @@
 import 'dart:io' show Platform;
-import 'package:firebase_messaging/firebase_messaging.dart';
+//import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:nutriclock_app/constants/constants.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class NotificationsService {
-  final FirebaseMessaging _fcm;
+  /*final FirebaseMessaging _fcm;
 
   NotificationsService(this._fcm);
 
@@ -36,5 +36,5 @@ class NotificationsService {
         print('Message also contained a notification: ${message.notification}');
       }
     });
-  }
+  }*/
 }

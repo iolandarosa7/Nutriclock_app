@@ -1,5 +1,5 @@
-import 'package:firebase_core/firebase_core.dart';
-import 'package:firebase_messaging/firebase_messaging.dart';
+//import 'package:firebase_core/firebase_core.dart';
+//import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:nutriclock_app/constants/constants.dart' as Constants;
@@ -33,8 +33,8 @@ class _MyAppState extends State<MyApp> {
   }
 
   initFirebase () async {
-    await Firebase.initializeApp();
-    NotificationsService(FirebaseMessaging.instance).initialize();
+    //await Firebase.initializeApp();
+   // NotificationsService(FirebaseMessaging.instance).initialize();
   }
 
   @override
