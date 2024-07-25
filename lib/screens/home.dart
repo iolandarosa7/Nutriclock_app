@@ -27,7 +27,8 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
-  bool _nutriclockGroup = false;
+  int _nutriclockGroup = 0;
+  //bool _nutriclockGroup = false;
   String _name = '';
   String _email = '';
   String _avatarUrl = '';
@@ -295,7 +296,7 @@ class _HomeState extends State<Home> {
                     ),
                     onTap: () => _navigate(_widgetOptions[5]),
                   ),
-                  if (_nutriclockGroup)
+                  if (_nutriclockGroup == 1)
                     ListTile(
                       leading: Icon(
                         Icons.restaurant,
