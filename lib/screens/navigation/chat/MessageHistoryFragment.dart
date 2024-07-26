@@ -31,6 +31,7 @@ class _MessageHistoryFragmentState extends State<MessageHistoryFragment> {
   var channel = IOWebSocketChannel.connect(WEBSOCKET_URL);
   var _shouldConnect = true;
   var _scrollController = ScrollController();
+  var _formKey = GlobalKey<FormState>();
   var hasMore = true;
   final dateFormat = new DateFormat('dd/MM/yyyy hh:mm');
   var appWidget = AppWidget();
@@ -118,8 +119,6 @@ class _MessageHistoryFragmentState extends State<MessageHistoryFragment> {
 
   @override
   Widget build(BuildContext context) {
-    final _formKey = GlobalKey<FormState>();
-
     return Scaffold(
       appBar: appWidget.getAppbar("Histórico de Mensagens"),
       body: appWidget.getImageContainer(
