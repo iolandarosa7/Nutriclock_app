@@ -38,7 +38,7 @@ const IMAGE_BASE_URL = 'https://s3.dev.void.pt/nutriclock';
 const BASE_URL = 'https://nutriclock.dev.void.pt';
 const BASE_API_URL = '$BASE_URL/api';
 // wss://nutriclock-websocket.herokuapp.com
-const WEBSOCKET_URL = 'wss://nutriclock-websocket.herokuapp.com';
+const WEBSOCKET_URL = 'wss://nutriclock-websocket.dev.void.pt/nutriclock';
 
 const FCM_URL = '/fcm';
 const LOGIN_URL = '/login';
