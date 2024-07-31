@@ -3,7 +3,7 @@ class MealPlan {
   String dayOfWeek;
   String date;
   List<dynamic> mealTypes;
-  bool opened;
+  int opened;
 
   MealPlan();
 
@@ -18,6 +18,6 @@ class MealPlan {
       : dayOfWeek = json['dayOfWeek'],
         date = json['date'],
         mealTypes = json['mealTypes'],
-        opened = false,
+        opened = 0,
         id = json['id'];
 }

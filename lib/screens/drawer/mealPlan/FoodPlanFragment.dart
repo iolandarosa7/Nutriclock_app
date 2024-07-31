@@ -214,7 +214,7 @@ class _FoodPlanFragmentState extends State<FoodPlanFragment> {
                           ),
                           Expanded(
                             flex: 1,
-                            child: element.opened
+                            child: element.opened == 1
                                 ? IconButton(
                                     icon: Icon(
                                       Icons.close,
@@ -222,7 +222,7 @@ class _FoodPlanFragmentState extends State<FoodPlanFragment> {
                                     ),
                                     tooltip: 'Fechar detalhes',
                                     onPressed: () {
-                                      element.opened = false;
+                                      element.opened = 0;
                                       setState(() {
                                         _meals = _meals;
                                       });
@@ -235,7 +235,7 @@ class _FoodPlanFragmentState extends State<FoodPlanFragment> {
                                     ),
                                     tooltip: 'Abrir detalhes',
                                     onPressed: () {
-                                      element.opened = true;
+                                      element.opened = 1;
                                       setState(() {
                                         _meals = _meals;
                                       });
@@ -247,7 +247,7 @@ class _FoodPlanFragmentState extends State<FoodPlanFragment> {
                       if (!isHistory)
                         TextButton.icon(
                           label: Text(
-                            element.confirmed ? 'Confirmado' : 'Confirmar',
+                            element.confirmed == 1 ? 'Confirmado' : 'Confirmar',
                             style: TextStyle(
                               color: Color(0xFFA3E1CB),
                               fontSize: 15.0,
@@ -266,7 +266,7 @@ class _FoodPlanFragmentState extends State<FoodPlanFragment> {
                             ),
                           ),
                           onPressed: () {
-                            if (!element.confirmed) {
+                            if (element.confirmed == 0) {
                               _showPhotoTimeModal(element);
                             }
                           },
@@ -276,7 +276,7 @@ class _FoodPlanFragmentState extends State<FoodPlanFragment> {
             ),
             Column(
               children: [
-                element.opened && element.ingredients != null
+                element.opened == 1 && element.ingredients != null
                     ? _renderIngredients(element.ingredients)
                     : SizedBox()
               ],
@@ -467,7 +467,7 @@ class _FoodPlanFragmentState extends State<FoodPlanFragment> {
                     ),
                     Expanded(
                       flex: 1,
-                      child: element.opened
+                      child: element.opened == 1
                           ? IconButton(
                               icon: Icon(
                                 Icons.close,
@@ -475,7 +475,7 @@ class _FoodPlanFragmentState extends State<FoodPlanFragment> {
                               ),
                               tooltip: 'Fechar detalhes',
                               onPressed: () {
-                                element.opened = false;
+                                element.opened = 0;
                                 setState(() {
                                   _meals = _meals;
                                 });
@@ -488,7 +488,7 @@ class _FoodPlanFragmentState extends State<FoodPlanFragment> {
                               ),
                               tooltip: 'Abrir detalhes',
                               onPressed: () {
-                                element.opened = true;
+                                element.opened = 1;
                                 setState(() {
                                   _meals = _meals;
                                 });
@@ -500,7 +500,7 @@ class _FoodPlanFragmentState extends State<FoodPlanFragment> {
               ),
             ),
             Column(
-              children: element.opened && element.mealTypes != null
+              children: element.opened == 1 && element.mealTypes != null
                   ? _renderMeals(element.mealTypes, true)
                   : [SizedBox()],
             )
@@ -794,7 +794,7 @@ class _FoodPlanFragmentState extends State<FoodPlanFragment> {
         var auxMeals = _meals;
         auxMeals.forEach((element) {
           if (element.id == mealPlanType.id) {
-            element.confirmed = true;
+            element.confirmed = 1;
           }
         });
 

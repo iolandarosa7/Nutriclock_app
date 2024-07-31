@@ -5,8 +5,8 @@ class MealPlanType {
   int portion;
   String hour;
   List<dynamic> ingredients;
-  bool opened;
-  bool confirmed;
+  int opened;
+  int confirmed;
   String confirmedHours;
   String photoUrl;
 
@@ -30,7 +30,7 @@ class MealPlanType {
         portion = json['portion'],
         hour = json['hour'],
         ingredients = json['ingredients'],
-        opened = false,
+        opened = 0,
         confirmed = json['confirmed'],
         confirmedHours = json['confirmedHours'],
         photoUrl = json['photoUrl'],
