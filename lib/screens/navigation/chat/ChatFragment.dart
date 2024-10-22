@@ -40,7 +40,7 @@ class _ChatFragmentState extends State<ChatFragment> {
 
   onError(err) {
     var exception = err as WebSocketChannelException;
-    print("socket error ${err.runtimeType.toString()} ${exception.message}");
+    //print("socket error ${err.runtimeType.toString()} ${exception.message}");
   }
 
   onData(event) {

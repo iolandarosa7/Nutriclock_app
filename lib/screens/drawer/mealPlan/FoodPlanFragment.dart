@@ -631,7 +631,7 @@ class _FoodPlanFragmentState extends State<FoodPlanFragment> {
         });
       }
     } catch (error) {
-      print(error);
+      //print(error);
     }
 
     setState(() {
@@ -669,7 +669,7 @@ class _FoodPlanFragmentState extends State<FoodPlanFragment> {
         });
       }
     } catch (error) {
-      print(error);
+      //print(error);
     }
 
     setState(() {
@@ -807,7 +807,7 @@ class _FoodPlanFragmentState extends State<FoodPlanFragment> {
         _isLoading = false;
       });
     } catch (error) {
-      print(error);
+      //print(error);
       this.setState(() {
         _isLoading = false;
       });

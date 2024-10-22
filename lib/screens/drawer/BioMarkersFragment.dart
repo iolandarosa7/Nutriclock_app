@@ -224,7 +224,7 @@ class _BioMarkersFragmentState extends State<BioMarkersFragment> {
         });
       }
     } catch (error) {
-      print(error);
+      //print(error);
     }
 
     setState(() {
@@ -259,7 +259,7 @@ class _BioMarkersFragmentState extends State<BioMarkersFragment> {
         });
       }
     } catch (error) {
-      print(error);
+      //print(error);
     }
 
     setState(() {

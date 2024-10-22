@@ -59,7 +59,7 @@ class _MessageHistoryFragmentState extends State<MessageHistoryFragment> {
 
   onError(err) {
     var exception = err as WebSocketChannelException;
-    print("socket error ${err.runtimeType.toString()} ${exception.message}");
+    //print("socket error ${err.runtimeType.toString()} ${exception.message}");
   }
 
   @override
@@ -250,7 +250,7 @@ class _MessageHistoryFragmentState extends State<MessageHistoryFragment> {
         });
       }
     } catch (error) {
-      print('error $error');
+      //print('error $error');
     }
 
     this.setState(() {
@@ -308,7 +308,7 @@ class _MessageHistoryFragmentState extends State<MessageHistoryFragment> {
           });
         } else {}
       } catch (error) {
-        print('error $error');
+        //print('error $error');
       }
 
       this.setState(() {

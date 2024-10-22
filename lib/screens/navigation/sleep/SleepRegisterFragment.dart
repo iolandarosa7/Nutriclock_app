@@ -492,7 +492,7 @@ class _SleepRegisterFragmentState extends State<SleepRegisterFragment> {
         'motives': _myMotives
       }, SLEEP_URL);
 
-      print({
+      /*print({
         'date': dateFormat.format(widget.value),
         'wakeUpTime':
             "${_parseTwoNumber(_wakeUpTime.hour)}:${_parseTwoNumber(_wakeUpTime.minute)}",
@@ -501,7 +501,7 @@ class _SleepRegisterFragmentState extends State<SleepRegisterFragment> {
         'hasWakeUp': _hasWakeUp,
         'activities': _myActivities,
         'motives': _myMotives
-      });
+      });*/
 
       var body = json.decode(response.body);
 

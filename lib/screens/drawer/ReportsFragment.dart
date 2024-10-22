@@ -290,7 +290,7 @@ class _ReportsFragmentState extends State<ReportsFragment> {
 
   _renderWeekAverage(
       title, averageArray1, percentageArray1, averageArray2, percentageArray2) {
-    print(percentageArray2);
+    //print(percentageArray2);
     return Padding(
       padding: EdgeInsets.only(top: 16, bottom: 4),
       child: Column(
@@ -428,7 +428,7 @@ class _ReportsFragmentState extends State<ReportsFragment> {
       if (response.statusCode == RESPONSE_SUCCESS) {
         Report r = Report.fromJson(json.decode(response.body));
 
-        print(r.percentageCaloriesArray);
+        //print(r.percentageCaloriesArray);
 
         r.averageSleepArray.forEach((element) {
           auxSleepAverage.add(double.parse(element));
@@ -477,7 +477,7 @@ class _ReportsFragmentState extends State<ReportsFragment> {
         });
       }
     } catch (error) {
-      print(error);
+      //print(error);
     }
 
     setState(() {

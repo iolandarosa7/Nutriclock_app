@@ -83,7 +83,7 @@ class _HomeFragmentState extends State<HomeFragment> {
         });
       }
     } catch (error) {
-      print(error);
+      //print(error);
       this.setState(() {
         _isLoading = false;
       });

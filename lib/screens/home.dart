@@ -57,7 +57,7 @@ class _HomeState extends State<Home> {
 
   onError(err) {
     var exception = err as WebSocketChannelException;
-    print(exception);
+    //print(exception);
   }
 
   @override

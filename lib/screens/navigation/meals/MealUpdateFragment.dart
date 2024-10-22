@@ -749,7 +749,7 @@ class _MealUpdateFragmentState extends State<MealUpdateFragment> {
         });
       }
     } catch (error) {
-      print(error);
+      //print(error);
       this.setState(() {
         _isLoading = false;
       });

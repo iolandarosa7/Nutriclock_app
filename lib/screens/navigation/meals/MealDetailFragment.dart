@@ -94,7 +94,7 @@ class _MealDetailFragmentState extends State<MealDetailFragment> {
         _autocompleteSuggestions = list;
       });
     } catch (error) {
-      print(error);
+      //print(error);
       this.setState(() {
         _isLoading = false;
       });

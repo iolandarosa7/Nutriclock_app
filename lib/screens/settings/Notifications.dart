@@ -244,7 +244,7 @@ class _NotificationsFragmentState extends State<NotificationsFragment> {
         _appWidget.showSnackbar("Ocorreu um erro!", Colors.red, _scaffoldKey);
       }
     } catch (error) {
-      print(error);
+      //print(error);
       _appWidget.showSnackbar("Ocorreu um erro!", Colors.red, _scaffoldKey);
     } finally {
       this.setState(() {

@@ -362,7 +362,7 @@ class _MedicationListState extends State<MedicationList> {
         isShowMessage = true;
       }
     } catch (error) {
-      print(error);
+      //print(error);
       isShowMessage = true;
     }
 
@@ -411,7 +411,7 @@ class _MedicationListState extends State<MedicationList> {
         isShowMessage = true;
       }
     } catch (error) {
-      print(error);
+      //print(error);
       isShowMessage = true;
     }
 
@@ -666,7 +666,7 @@ class _MedicationListState extends State<MedicationList> {
         isShowMessage = true;
       }
     } catch (error) {
-      print('error $error');
+      //print('error $error');
       isShowMessage = true;
     }
 
@@ -711,7 +711,7 @@ class _MedicationListState extends State<MedicationList> {
         });
       }
     } catch (error) {
-      print(error);
+      //print(error);
     }
 
     setState(() {
