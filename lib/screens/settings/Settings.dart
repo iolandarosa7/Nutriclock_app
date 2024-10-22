@@ -117,7 +117,7 @@ class _SettingsListState extends State<SettingsList> {
                         MaterialPageRoute(builder: (context) => ChangeEmail()));
                   },
                 ),
-                ListTile(
+                /*ListTile(
                   leading: Icon(Icons.notification_important,
                       color: Color(0xFF60B2A3)),
                   title: Text(
@@ -133,7 +133,7 @@ class _SettingsListState extends State<SettingsList> {
                     Navigator.of(context).push(MaterialPageRoute(
                         builder: (context) => NotificationsFragment()));
                   },
-                ),
+                ),*/
                 if (!_hasEvalution)
                   ListTile(
                     leading: Icon(Icons.help, color: Color(0xFF60B2A3)),
