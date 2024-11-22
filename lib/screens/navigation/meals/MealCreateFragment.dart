@@ -238,7 +238,7 @@ class _MealCreateFragmentState extends State<MealCreateFragment> {
       context: context,
       initialDate: _date,
       locale: Locale('pt', 'PT'),
-      firstDate: nowDate.subtract(Duration(days: 2)),
+      firstDate: nowDate.subtract(Duration(days: 100000)),
       lastDate: nowDate,
       cancelText: 'Cancelar',
       fieldLabelText: 'Data da Refeição',

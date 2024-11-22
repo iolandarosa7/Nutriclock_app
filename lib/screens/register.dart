@@ -241,7 +241,7 @@ class _RegisterState extends State<Register> {
                                             padding:
                                                 const EdgeInsets.only(left: 50),
                                             child: Text(
-                                              "Sexo",
+                                              "Género",
                                               style: TextStyle(
                                                   color: Color(0xFF9b9b9b),
                                                   fontSize: 15,
@@ -1292,6 +1292,12 @@ class _RegisterState extends State<Register> {
     if (usfId == null) {
       appWidget.showSnackbar(
           "Selecione uma Instituição", Colors.red, _scaffoldKey);
+      return;
+    }
+
+    if (gender == null) {
+      appWidget.showSnackbar(
+          "Selecione o Género", Colors.red, _scaffoldKey);
       return;
     }
 
