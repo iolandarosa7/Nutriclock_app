@@ -21,7 +21,6 @@ class MealsFragment extends StatefulWidget {
 class _MealsFragmentState extends State<MealsFragment> {
   var _isLoading = false;
   MealsResponse _data;
-  var _daysFromInitialMeal = 4;
   final _scaffoldKey = GlobalKey<ScaffoldState>();
   var appWidget = AppWidget();
 
@@ -45,7 +44,6 @@ class _MealsFragmentState extends State<MealsFragment> {
 
       if (response.statusCode == RESPONSE_SUCCESS) {
         var data = json.decode(response.body);
-        var daysFromInitialDate = data["daysFromInitialDate"];
         List<dynamic> meals = data["meals"];
         meals.forEach((element) {
           var mealTypeByDate = MealTypeByDate();
@@ -60,7 +58,6 @@ class _MealsFragmentState extends State<MealsFragment> {
           mealResponse.mealsTypeByDate.add(mealTypeByDate);
         });
         this.setState(() {
-          _daysFromInitialMeal = daysFromInitialDate;
           _data = mealResponse;
           _isLoading = false;
         });
@@ -340,20 +337,18 @@ class _MealsFragmentState extends State<MealsFragment> {
     return Scaffold(
       key: _scaffoldKey,
       floatingActionButtonLocation: FloatingActionButtonLocation.endTop,
-      floatingActionButton: _daysFromInitialMeal < 3
-          ? FloatingActionButton(
-              onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => MealCreateFragment()),
-                ).then((value) => {_loadMealsList()});
-              },
-              mini: true,
-              child: Icon(Icons.add),
-              backgroundColor: Color(0xFF60B2A3),
-              elevation: 50,
-            )
-          : SizedBox(),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => MealCreateFragment()),
+          ).then((value) => {_loadMealsList()});
+        },
+        mini: true,
+        child: Icon(Icons.add),
+        backgroundColor: Color(0xFF60B2A3),
+        elevation: 50,
+      ),
       body: Container(
         color: Color(0xFFE2E2E2),
         width: double.infinity,
